@@ -1,0 +1,85 @@
+footer {
+    margin-top: 10em;
+    margin-bottom: 5em;
+}
+
+#footer--data{
+    display: flex;
+    justify-content: space-between;
+}
+
+#footer--logo-wrapper img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    display: inline-flex;
+}
+
+#footer--logo-wrapper p {
+    display: inline-flex;
+}
+
+#footer--copyright{
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid var(--primary-blue);
+    font-size: 10pt;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#footer--copyright p::before{
+    content: "\00A9";
+}
+
+#footer--links{
+    text-transform: uppercase;
+    font-weight: 100;
+}
+
+#footer--links li {
+    line-height: 25px;
+}
+
+address {
+    margin-bottom: 2em;
+}
+
+address p {
+    font-size: 10pt;
+    line-height: 7px;
+}
+
+.social-media-icons{
+    display: inline-flex;
+}
+
+.social-media-icons i{
+    color: #fff;
+    font-size: 16pt;
+    background-color: var(--primary-blue);
+    padding: 10px;
+    border-radius: 50px;
+    width: 23px;
+    text-align: center;
+    margin: 5px;
+}
+
+.social-media-icons i:hover{
+    cursor: pointer;
+    color: var(--primary-orange);
+}
+
+
+@media only screen and (max-width: 720px) {
+    footer{
+        margin: 5em 1em 5em 1em;
+    }
+}
+
+@media only screen and (min-width:721px) and (max-width: 1000px){
+    footer{
+        margin: 5em 3em 5em 3em;
+    }
+}

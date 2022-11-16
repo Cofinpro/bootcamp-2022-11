@@ -1,0 +1,26 @@
+.button{
+    height: 40px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: none;
+    font-family: 'Montserrat', 'sans-serif';
+    font-weight: bold;
+    border: 1px solid var(--primary-orange);
+    color: var(--primary-orange);
+}
+
+.button::before{
+    background-color: #f0f0f0;
+}
+
+.button:hover{
+    cursor: pointer;
+    background-color: var(--primary-orange);
+    border: none;
+    color: #fff;
+}
+
+.button__secondary{
+    background-color: var(--primary-blue);
+}

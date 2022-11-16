@@ -2,106 +2,176 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saskia's Seite</title>
+    <title>Blog</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" type="image/png" href="./assets/blog.png">
+    <script src="https://kit.fontawesome.com/ca10466010.js" crossorigin="anonymous"></script>
 </head>
 <body>
+
+
 <header>
+
     <nav>
-        <h1>Tolle Website</h1>
-        <table cellpadding="15">
-            <tbody>
-            <tr>
-                <td align="middle"><a href="#body">Startseite</a></td>
-                <td><a href="">News</a></td>
-                <td><a href="">About</a></td>
-            </tr>
-            </tbody>
-        </table>
+        <div id="nav">
+            <div id="nav__logo-wrapper">
+                <p class="logo--font">Blog</p>
+            </div>
+
+            <div id="nav__links">
+                <ul>
+                    <li><a href="#news">News</a></li>
+                    <li><a href="">Link</a></li>
+                </ul>
+
+                <div>
+                    <a href="/en">EN</a>
+                    <img src="./assets/icons/globe.png" alt="language switch icon">
+                </div>
+
+
+            </div>
+
+        </div>
+
+
     </nav>
 </header>
 
-<main id="body">
-    <h2>Lorem ipsum dolor sit amet.</h2>
-    <div>
-        <table cellpadding="50">
-            <tbody>
-            <tr>
-                <td>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aperiam architecto assumenda
-                        atque aut earum
-                        est in, minus nemo placeat provident quo quos tempore voluptatem voluptatibus. Aut numquam
-                        obcaecati
-                        perspiciatis! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa eligendi excepturi
-                        nam nostrum
-                        obcaecati quibusdam sequi tempore ut! Blanditiis deleniti eos necessitatibus placeat quae quidem
-                        soluta
-                        sunt? Adipisci aliquid blanditiis consequuntur cum cumque ea excepturi, impedit itaque iusto
-                        neque nisi,
-                        odit quam quasi quos reiciendis sapiente sed tempora veniam voluptate voluptatum? Culpa deserunt
-                        dolorem
-                        doloremque facere minima rerum soluta, vel vero. Aperiam corporis cum cupiditate delectus ea
-                        impedit,
-                        incidunt ipsa nisi provident quo sed unde veniam voluptas. Accusamus ad aut consequatur dolorum
-                        eius, fuga
-                        ipsa iste laboriosam, officia, quo saepe tempora tenetur? Aspernatur blanditiis illo in ipsa
-                        nostrum
-                        obcaecati repellendus?
-                    </p>
+<main id="main">
 
-                    <ul>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                        <li>Lorem ipsum dolor sit amet.</li>
-                    </ul>
-
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur enim fugiat harum id iusto
-                        perferendis
-                        quaerat. Accusantium, ad aliquam aspernatur debitis delectus doloremque eaque, exercitationem
-                        explicabo
-                        fugiat fugit id impedit ipsa ipsam magni mollitia necessitatibus quasi quidem repellat vel
-                        vitae. Cumque
-                        dolor hic laboriosam nam qui saepe ut. Animi at consectetur doloremque harum libero, mollitia
-                        provident quae
-                        quidem quos sed. Necessitatibus, officia vero! Blanditiis esse incidunt mollitia! At atque
-                        debitis
-                        distinctio, maiores nemo quam quisquam reiciendis veritatis? Ex, praesentium, veritatis. Animi
-                        aut dolorem
-                        doloremque ea earum expedita id illo magni natus neque, numquam porro provident quaerat quam,
-                        rerum sequi
-                        soluta?</p>
-
-                </td>
-                <td>
-                    <img src="dog.jpg" alt="Hund" height="400" width="600">
-                </td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="section section--jumbotron">
+        <div class="section--jumbotron__search-bar">
+            <img src="./assets/icons/magnify.png" alt="Magnifying glass">
+            <i>Suchen...</i>
+        </div>
     </div>
+
+    <section class="section section--featured-article grid grid--featured-article" id="news">
+        <div class="grid--featured-article__left-column">
+            <img src="./assets/dog.jpg" alt="Hund">
+        </div>
+        <div class="grid--featured-article__right-column">
+
+            <div>
+
+                <h2 class="category-text">Kategorie</h2>
+                <h3>Hunde sind toll</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquam at corporis debitis ducimus, est
+                    eveniet facilis id laboriosam molestias nobis nulla numquam odio praesentium quaerat quos ratione
+                    repudiandae sit totam vitae? Aliquid asperiores consectetur dolore dolores eveniet, exercitationem
+                    fugiat magni possimus provident repellat reprehenderit saepe sint sunt tempore voluptas.</p>
+
+                <div class="button--group">
+
+                    <div class="author-wrapper">
+                        <img src="./assets/dog.jpg" alt="Max Mustermann Bild">
+                        <p>Max Mustermann </p>
+
+                    </div>
+
+                    <button class="button button__secondary">
+                        Mehr lesen
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="section section--all-articles grid grid--all-articles">
+
+        <div class="card">
+
+            <div class="card--image">
+                <img src="./assets/dog.jpg" alt="Card image">
+            </div>
+
+            <div class="card--body">
+                <h2 class="category-text">Kategorie</h2>
+                <h3>Hunde sind toll</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque corporis dolore dolorem eum
+                    illum, laudantium libero magnam maxime molestias placeat possimus quae, quidem quisquam similique
+                    sunt,
+                    suscipit veniam veritatis!</p>
+                <div class="author-wrapper">
+                    <img src="./assets/dog.jpg" alt="Max Mustermann Bild">
+                    <p>Max Mustermann </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card--image">
+                <img src="./assets/dog.jpg" alt="Card image">
+            </div>
+
+            <div class="card--body">
+                <h2 class="category-text">Kategorie</h2>
+                <h3>Hunde sind toll</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque corporis dolore dolorem eum
+                    illum, laudantium libero magnam maxime molestias placeat possimus quae, quidem quisquam similique
+                    sunt,
+                    suscipit veniam veritatis!</p>
+                <div class="author-wrapper">
+                    <img src="./assets/dog.jpg" alt="Max Mustermann Bild">
+                    <p>Hunde Sohn</p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
 </main>
 
-<hr>
 
 <footer>
-    <table cellspacing="15">
-        <tbody>
-        <tr>
-            <td width="89%">Ansprechpartner</td>
-            <td>Phone <a href="tel:555555">+49 0151 555555</a></td>
-        </tr>
-        <tr>
-            <td width="89%">Max Meier</td>
-            <td>Mail <a href="mailto:saskia.asmussen@cofinpro.de">mail@mail.de</a></td>
-        </tr>
-        <tr>
-            <td width="89%">Adresse XY</td>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
+
+
+    <div id="footer--logo-wrapper">
+        <p class="logo--font">Blog</p>
+    </div>
+
+
+    <div id="footer--data">
+        <address>
+            <p>Cofinpro AG</p>
+            <p>Untermainkai 27-28</p>
+            <p>60329 Frankfurt am Main</p>
+            <p>Mail: <a href="mailto:saskia.asmussen@cofinpro.de">saskia.asmussen@cofinpro.de</a></p>
+            <p>Tel: <a href="tel:015165544172">+49 151 65544172</a></p>
+        </address>
+
+        <div id="footer--links">
+            <ul>
+                <li><a href="/about">About</a></li>
+                <li><a href="/dataprotection">Datenschutz</a></li>
+                <li><a href="/imprint">Impressum</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer--copyright">
+        <p>
+            2022 Bootcamp Cofinpro
+        </p>
+
+        <div class="social-media-icons">
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-youtube"></i>
+        </div>
+
+    </div>
+
+
 </footer>
 
 </body>

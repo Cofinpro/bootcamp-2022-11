@@ -1,0 +1,109 @@
+.section--jumbotron {
+    background-image: url("../../assets/jumbotron-picture.jpg");
+    height: 40vh;
+    border-radius: 3em;
+    background-size: cover;
+    background-position: right;
+}
+
+.section--jumbotron__search-bar{
+    width: 60%;
+    background-color: white;
+    border-radius: 50px;
+    top: 90%;
+    position: relative;
+    height: 50px;
+    border: 1px solid var(--primary-blue);
+    display: flex;
+    align-items: center;
+    margin: auto;
+}
+
+.section--jumbotron__search-bar:hover{
+    border: 1px solid var(--primary-orange);
+    cursor: pointer;
+}
+
+.section--jumbotron__search-bar img {
+    margin-left: 1em;
+    margin-right: 1em;
+    height: 20px;
+    width: auto;
+    object-fit: cover;
+}
+
+.section--jumbotron__search-bar i {
+    color: #aaa;
+}
+
+
+.section--featured-article {
+    margin-top: 10em;
+    margin-bottom: 10em;
+}
+
+.section--featured-article img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50px;
+}
+
+.grid--featured-article__right-column > div {
+    margin: auto 32%;
+    width: 55%;
+    position: relative;
+    color: white;
+    top: 14%;
+}
+
+.grid--featured-article__right-column .category-text{
+    color: #fff;
+}
+
+.section--featured-article p {
+    hyphens: auto;
+    text-align: justify;
+}
+
+@media only screen and (max-width: 720px) {
+    .section {
+        margin: 1em;
+    }
+
+    .section--jumbotron{
+        height: 25vh;
+        margin-bottom: 10em;
+    }
+
+    .section--featured-article{
+        margin-bottom: 5em;
+    }
+
+    .grid--featured-article__right-column > div {
+        margin: 0;
+        width: auto;
+        position: initial;
+        color: white;
+        top: 0;
+        padding: 10%;
+    }
+
+}
+
+@media only screen and (min-width:721px) and (max-width: 1000px){
+    .section {
+        margin: 3em;
+    }
+
+    .section--jumbotron{
+        height: 25vh;
+        margin-bottom: 10em;
+    }
+
+    .grid--featured-article__right-column > div {
+        top: 8%;
+        margin: auto 25%;
+    }
+
+}
