@@ -1,82 +1,69 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="noCat.css" >
     <title>Not quiet a cat</title>
 </head>
     
 <body>
     <header>
-        <h1><img src="https://ih1.redbubble.net/image.683593062.0531/st,small,845x845-pad,1000x1000,f8f8f8.u3.jpg" width="40" height="40"> African palm civet</h1>
+        <h1><img src="https://ih1.redbubble.net/image.683593062.0531/st,small,845x845-pad,1000x1000,f8f8f8.u3.jpg" alt="Africa silhouette" width="40" height="40"> African palm civet</h1>
         <h2><i>Nandinia binotata</i></h2>
-        <blockquote>
             <nav>
-                <h2><a href="#Facts">Some facts</a> > <a href="#Taxonomy">Taxonomy</a></h2>
+                <ul>
+                    <li><a class="innerLink" href="#Facts">Some Facts</a></li>
+                    <li><a class="innerLink" href="#Taxonomy">Taxonomy</a></li>
+                </ul>
             </nav>
-        </blockquote>
     </header>
 
-    <table>
-        <tr>
-            <td rowspan="2">
-                <section id="Facts">
-                    <h3>Some facts</h3>
-                    <ul style="list-style-type:square">
-                        <li>Body length: 37 - 62.5 cm</li>
-                        <li>Tail length: 34 - 76.2 cm</li>
-                        <li>Weight: 1.2 - 3 kg</li>
-                    </ul>
-                    <blockquote>
-                        <p>African palm civets are nocturnal and sleep for hours high up in the trees after eating. Their diet includes mostly fruits but also smaller animals like insects and birds, dead or alive.</p>
-                        <p>In the year 1830 they were first described by british zoologist <b>John Edward Gray</b>. Though the classification has changed many times, placing them at times in the Viverridae <i>(deutsch: Schleichkatzen)</i> family. Just 191 years later with mtDNA analysis the final clue was found and got them their own family, the <b>Nandiniidae</b>.</p>
-                    </blockquote>
-                </section>
-                <br>
-                <section id="Taxonomy">
-                    <h3>Taxonomy</h3>
-                    <ol reversed style="list-style-type:upper-roman">
-                        <li>Species: N. binotata <i>(deutsch: Pardelroller)</i></li>
-                        <li>Genus: Nandinia</li>
-                        <li>Family: Nandiniidae</li>
-                        <li>Suborder: Feliformia <i>(deutsch: Katzenartige)</i></li>
-                        <li>Order: Carnivora</li>
-                        <li>Class: Mammalia</li>
-                    </ol>
-                </section>
-
-            <td width="150" rowspan="2"></td>
-            <td><img src="https://upload.wikimedia.org/wikipedia/commons/0/07/The_carnivores_of_West_Africa_%28Nandinia_binotata%29.png" alt="Drawing of an African palm civet" width="431" height="208"></td>
-            <td width="50" rowspan="2"></td>
-        </tr>
-        <tr>
-            <td><img src="https://www.biolib.cz/IMG/GAL/BIG/334887.jpg" alt="Living African palm civet" width="431" height="252"></td>
-        </tr>
-    </table>
-
-    <br><br><hr>
+    <img id="drawing" src="https://upload.wikimedia.org/wikipedia/commons/0/07/The_carnivores_of_West_Africa_%28Nandinia_binotata%29.png" alt="Drawing of an African palm civet">
+    <section id="Facts">
+        <h3>Some Facts</h3>
+        <ul id="factList">
+            <li>Body length: 37 - 62.5 cm</li>
+            <li>Tail length: 34 - 76.2 cm</li>
+            <li>Weight: 1.2 - 3 kg</li>
+        </ul>
+        <p>African palm civets are nocturnal and sleep for hours high up in the trees after eating. Their diet includes mostly fruits but also smaller animals like insects and birds, dead or alive.</p>
+        <p>In the year 1830 they were first described by british zoologist <b>John Edward Gray</b>. Though the classification has changed many times, placing them at times in the Viverridae <i>(deutsch: Schleichkatzen)</i> family. Just 191 years later with mtDNA analysis the final clue was found and got them their own family, the <b>Nandiniidae</b>.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc omni virtuti vitium contrario nomine opponitur. Hic nihil fuit, quod quaereremus. Praeclare hoc quidem. Duo Reges: constructio interrete. Contemnit enim disserendi elegantiam, confuse loquitur. Tenent mordicus. Non risu potius quam oratione eiciendum? </p>
+        <p>Expectoque quid ad id, quod quaerebam, respondeas. Si enim ad populum me vocas, eum. Uterque enim summo bono fruitur, id est voluptate. Poterat autem inpune; Bonum incolumis acies: misera caecitas. Cur iustitia laudatur? Quid de Platone aut de Democrito loquar? </p>
+    </section>
+    <section id="Taxonomy">
+        <img id="real" src="https://www.biolib.cz/IMG/GAL/BIG/334887.jpg" alt="Living African palm civet" width="431" height="252">
+        <h3>Taxonomy</h3>
+        <ol id="taxoList" reversed>
+            <li>Species: N. binotata <i>(deutsch: Pardelroller)</i></li>
+            <li>Genus: Nandinia</li>
+            <li>Family: Nandiniidae</li>
+            <li>Suborder: Feliformia <i>(deutsch: Katzenartige)</i></li>
+            <li>Order: Carnivora</li>
+            <li>Class: Mammalia</li>
+        </ol>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc omni virtuti vitium contrario nomine opponitur. Hic nihil fuit, quod quaereremus. Praeclare hoc quidem. Duo Reges: constructio interrete. Contemnit enim disserendi elegantiam, confuse loquitur. Tenent mordicus. Non risu potius quam oratione eiciendum? </p>
+        <p>Expectoque quid ad id, quod quaerebam, respondeas. Si enim ad populum me vocas, eum. Uterque enim summo bono fruitur, id est voluptate. Poterat autem inpune; Bonum incolumis acies: misera caecitas. Cur iustitia laudatur? Quid de Platone aut de Democrito loquar? </p>
+    </section>
     <footer>
-        <table>
-            <tr>
-                <th>Links:</th>
-                <td width="850" rowspan="2"></td>
-                <th>Contacts:</th>
-            </tr>
-            <tr>
-                <td>
-                    <img src="https://cdn-icons-png.flaticon.com/512/174/174880.png" alt="Wikipedia logo" width="15" height="15"> <a href="https://en.wikipedia.org/wiki/African_palm_civet" target="_blank">African palm civet</a><br>
-                    <img src="https://cdn-icons-png.flaticon.com/512/174/174880.png" alt="Wikipedia logo" width="15" height="15"> <a href="https://de.wikipedia.org/wiki/Pardelroller" target="_blank">Pardelroller</a><br>
-                    <img src="https://www.redditinc.com/assets/images/site/reddit-logo.png" alt="Reddit logo" width="15" height="15"> <a href="https://www.reddit.com/r/Pardelroller/" target="_blank">r/Pardelroller</a><br>
-                </td>
-                <td width="300">
-                    Mail <a href="mailto:african-palm-civet@persimon.tz">african-palm-civet@persimon.tz</a><br>
-                    Phone <a href="tel:+255 1830-2021">(255) 1830-2021</a>
-                </td>
-                <td><address>2nd persimon tree, left<br> 8th branch<br> Unguja Island<br> Zanzibar<br> Tanzania</address></td>
-            </tr>
-        </table>
+        <div id="Links">
+            <h4>Links:</h4>
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174880.png" alt="Wikipedia logo" width="15" height="15"> <a href="https://en.wikipedia.org/wiki/African_palm_civet" target="_blank">African palm civet</a><br>
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174880.png" alt="Wikipedia logo" width="15" height="15"> <a href="https://de.wikipedia.org/wiki/Pardelroller" target="_blank">Pardelroller</a><br>
+            <img src="https://www.redditinc.com/assets/images/site/reddit-logo.png" alt="Reddit logo" width="15" height="15"> <a href="https://www.reddit.com/r/Pardelroller/" target="_blank">r/Pardelroller</a><br>
+        </div>
+        <div id="Contacts">
+            <h4>Contacts:</h4>
+            Mail <a href="mailto:african-palm-civet@persimon.tz">african-palm-civet@persimon.tz</a><br>
+            Phone <a href="tel:+2551830-2021">(255) 1830-2021</a>
+        </div>
+        <div>
+            <h4>Address:</h4>
+            <address>2nd persimon tree, left<br> 8th branch<br> Unguja Island<br> Zanzibar<br> Tanzania</address>
+        </div>
     </footer>
     
 </body>
+</html>
 </html>
