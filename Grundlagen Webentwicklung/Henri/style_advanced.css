@@ -1,0 +1,135 @@
+.holder {
+    height: 600px;
+    background-color: var(--col_normal);
+    color: var(--col_text);
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 5px 5px 5px 5px;
+    position: relative;
+}
+
+.background {
+    max-width: 100%;
+    height: 100%;
+}
+
+.coin {
+    width: 70px;
+    position: absolute;
+    animation-duration: 10s;
+    animation-iteration-count: 1;
+    animation-name: rot_Y;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+.character {
+    width: 120px;
+    position: absolute;
+    animation-duration: 3s;
+    animation-iteration-count: 1;
+    animation-name: character_anim;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes character_anim {
+    0%{
+        transform: translate(0px, 0px);
+    }
+    10%{
+        transform: translate(100px, 0px); 
+    }
+    20%{
+        transform: translate(200px, -150px); 
+    }
+    30%{
+        transform: translate(250px, 0px); 
+    }
+    40%{
+        transform: translate(300px, 0px); 
+    }
+    50%{
+        transform: translate(400px, -150px); 
+    }
+    60%{
+        transform: translate(450px, 0px); 
+    }
+    70%{
+        transform: translate(500px, 0px); 
+    }
+    80%{
+        transform: translate(600px, -150px); 
+    }
+    90%{
+        transform: translate(650px, 0px); 
+    }
+    100%{
+        transform: translate(800px, 0px); 
+       
+    }
+}
+
+@keyframes coin1 {
+    0%{
+        transform: rotateY(0deg);
+    }
+    6%{
+        visibility: hidden;
+    }
+    10%{
+        transform: rotateY(360deg);
+    }
+    100%{
+        visibility: hidden;
+    }
+}
+
+@keyframes coin2 {
+    0%{
+        transform: rotateY(0deg);
+    }
+    10%{
+        transform: rotateY(360deg);
+    }
+    14%{
+        visibility: hidden;
+    }
+    20%{
+        transform: rotateY(0deg);
+    }
+    100%{
+        visibility: hidden;
+    }
+}
+
+@keyframes coin3 {
+    0%{
+        transform: rotateY(0deg);
+    }
+    10%{
+        transform: rotateY(360deg);
+    }
+    20%{
+        transform: rotateY(0deg);
+    }
+    23%{
+        visibility: hidden;
+    }
+    30%{
+        transform: rotateY(360deg);
+    }
+    100%{
+        visibility: hidden;
+    }
+}
+
+@keyframes rot_Y {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(360deg);
+    }
+  }
+
