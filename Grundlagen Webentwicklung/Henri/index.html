@@ -1,107 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx">
 
 <head>
     <title>Henris Cat</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="images/caticon.png">
+    <link rel="stylesheet" href="style.css">
+    <script src="nojavascript.js"></script>
 </head>
 
 <body>
-    <header>
-        <div align="right">
-            <a href="./Info.html">Info</a>
-            <span>&nbsp;</span>
-            <a href="./details.html">Details</a>
-            <span>&nbsp;</span>
-            <a href="./about.html">About</a>
+    <div class="inner_body">
+        <button id="lightswitch" class="lightswitch" onclick="lightswitchOnClick()"></button>
+        <header>
+            <!-- Navigation -->
+            <nav class="navigation_area">
+                <ul>
+                    <li>
+                        <a href="./info.html">Info</a>
+                    </li>
+                    <li>
+                        <a href="./details.html">Details</a>
+                    </li>
+                    <li>
+                        <a href="./about.html">About</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Header image -->
+            <div class="header_bar">
+                <div class="header_bar_image"></div>
+            </div>
+        </header>
+
+        <!-- Introduction -->
+        <div class="introduction_chapter">
+            <h2>Introduction</h2>
+            <div class="cite_holder">
+                <cite>"Meow" - Cat</cite>
+            </div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum exercitationem quos necessitatibus
+                temporibus
+                officiis, quidem harum dolor, asperiores, quisquam itaque velit. Nostrum labore aliquam ab numquam odit
+                eum
+                optio facere. Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique non pariatur nisi rem
+                ut
+                nostrum fugiat veritatis, iusto repellendus temporibus tempore commodi asperiores vero excepturi.
+                Doloribus
+                tempora voluptas soluta modi. Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic delectus
+                quibusdam
+                aspernatur earum nihil deleniti. Voluptates vitae reprehenderit tempore animi error beatae hic placeat
+                maiores,
+                ex praesentium reiciendis et mollitia.</p>
         </div>
-        <table>
-            <tr>
-                <td><img src="images/caticon.png" width="50px" alt="Cat"></td>
-                <td>
-                    <h1>Henris Cat</h1>
-                </td>
-            </tr>
-        </table>
-    </header>
-    <hr>
 
-    <h2>Introduction</h2>
-    <center>
-        <cite>"Meow" - Cat</cite>
-    </center>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum exercitationem quos necessitatibus temporibus
-        officiis, quidem harum dolor, asperiores, quisquam itaque velit. Nostrum labore aliquam ab numquam odit eum
-        optio facere. Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique non pariatur nisi rem ut
-        nostrum fugiat veritatis, iusto repellendus temporibus tempore commodi asperiores vero excepturi. Doloribus
-        tempora voluptas soluta modi. Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic delectus quibusdam
-        aspernatur earum nihil deleniti. Voluptates vitae reprehenderit tempore animi error beatae hic placeat maiores,
-        ex praesentium reiciendis et mollitia.</p>
-    <br>
-    <hr>
-    <h2>Text and image</h2>
-    <p>
-    <table>
-        <tr>
-            <td>
-                <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil cupiditate dolore illum
-                    perferendis quidem quisquam. Sit dolor debitis perspiciatis perferendis nam aut vitae id illo
-                    fugiat, ullam,
-                    asperiores, maxime odit. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Numquam minima,
-                    illo hic maiores unde error fugiat doloremque, culpa, similique nisi dicta. Quisquam veniam iste
-                    suscipit nulla itaque numquam. Fuga, nisi. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Cumque accusantium rerum maiores vero! Libero perspiciatis odit ipsum, ullam cum eum alias
-                    voluptatum consequuntur voluptatibus ipsam hic architecto suscipit, asperiores illum.
-                </span>
-            </td>
-            <td><img src="images/caticon.png" alt="Cat"></td>
+        <!-- Flexbox and grid chapter -->
+        <div class="flexbox_and_grid_chapter">
+            <h2>Flexbox and Grid Chapters</h2>
 
-        </tr>
-    </table>
+            <!-- Flexbox chapter -->
+            <div class="flexbox_chapter">
+                <h2>Flexbox Chapter</h2>
+                <div class="flexbox_holder">
+                    <img style="flex-grow: 0.1; flex-shrink: 1;" src="images/caticon.png" class="flexbox_element"
+                        alt="flex_element_cat">
+                    <img style="flex-grow: 0.2; flex-shrink: 2;" src="images/caticon.png" class="flexbox_element"
+                        alt="flex_element_cat">
+                    <img style="flex-grow: 0.3; flex-shrink: 3;" src="images/caticon.png" class="flexbox_element"
+                        alt="flex_element_cat">
+                </div>
+            </div>
 
+            <!-- Grid chapter -->
+            <div class="grid_chapter">
+                <h2>Grid Chapter</h2>
+                <div class="grid_holder">
+                    <img class="grid_element" src="images/caticon.png" alt="grid_element_cat">
+                    <img class="grid_element" src="images/caticon.png" alt="grid_element_cat">
+                    <img class="grid_element" src="images/caticon.png" alt="grid_element_cat">
+                    <img class="grid_element" src="images/caticon.png" alt="grid_element_cat">
+                    <img class="grid_element" src="images/caticon.png" alt="grid_element_cat">
+                    <img class="grid_element" src="images/caticon.png" alt="grid_element_cat">
+                    <img class="grid_element" src="images/caticon.png" alt="grid_element_cat">
+                    <img class="grid_element" src="images/caticon.png" alt="grid_element_cat">
+                </div>
+            </div>
+        </div>
 
-    </p>
+        <!-- Response chapter -->
+        <div class="response_chapter">
+            <h2>Responsive chapter</h2>
+            <div class="response_chapter_text">
+                <img class="response_chapter_image" src="images/caticon.png" alt="response_chapter_icon">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nihil cupiditate dolore illum
+                perferendis quidem quisquam. Sit dolor debitis perspiciatis perferendis nam aut vitae id illo
+                fugiat, ullam,
+                asperiores, maxime odit. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Numquam
+                minima,
+                illo hic maiores unde error fugiat doloremque, culpa, similique nisi dicta. Quisquam veniam iste
+                suscipit nulla itaque numquam. Fuga, nisi. Lorem ipsum dolor sit amet consectetur adipisicing
+                elit.
+                Cumque accusantium rerum maiores vero! Libero perspiciatis odit ipsum, ullam cum eum alias
+                voluptatum consequuntur voluptatibus ipsam hic architecto suscipit, asperiores illum.
+            </div>
+        </div>
 
-    <hr>
+        <!-- Float chapter -->
+        <div class="float_chapter">
+            <h2>Float chapter</h2>
+            <div style="float: left;" class="float_chapter_element">
+                <img class="float_chapter_image" src="images/caticon.png" alt="float_chapter_icon">
+                <div style="width: 225px;">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam dignissimos
+                    laborum amet dicta alias blanditiis voluptatibus cum labore iure optio, atque doloremque eum
+                    voluptatem porro reprehenderit! Id vitae veniam aliquid.
+                </div>
+            </div>
 
-    <h2>Text and list</h2>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minima et, voluptatibus expedita quia similique nam
-        voluptas doloribus, reprehenderit dolor, blanditiis nesciunt debitis inventore magnam ea doloremque quisquam
-        ipsam? Commodi, mollitia.</p>
-    <ul>
-        <li>Cat 1</li>
-        <li>Cat 2</li>
-        <li>Cat 3</li>
-    </ul>
-    <hr>
+            <div style="float: right;" class="float_chapter_element">
+                <img class="float_chapter_image" src="images/caticon.png" alt="float_chapter_icon">
+                <div style="width: 225px;">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam dignissimos
+                    laborum amet dicta alias blanditiis voluptatibus cum labore iure optio, atque doloremque eum
+                    voluptatem porro reprehenderit! Id vitae veniam aliquid.
+                </div>
+            </div>
+        </div>
 
-    <footer>
-        <p>
-        <address>
-            <table width="100%">
-                <tr>
-                    <td>
-                        <span>
-                            Henri Dickel <br>
-                            Sesamstraße 12 <br>
-                            12345 Disneyland
-                        </span>
-                    </td>
-                    <td></td>
-                    <td>
-                        <p align="right">
-                            <a href="mailto:henri.dickel@example.com">henri.dickel@example.com</a> <br>
-                            <a href="tel:123-456-7890">123-456-7890</a>
-                        </p>
-                    </td>
-                </tr>
-            </table>
-        </address>
-        </p>
-    </footer>
-
+        <!-- Footer -->
+        <footer>
+            <address>
+                <table>
+                    <tr>
+                        <td>
+                            <span>
+                                Henri Dickel <br>
+                                Sesamstraße 12 <br>
+                                12345 Disneyland
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                <a class="contact_a" href="mailto:henri.dickel@example.com">henri.dickel@example.com</a>
+                                <br>
+                                <a class="contact_a" href="tel:123-456-7890">123-456-7890</a>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </address>
+        </footer>
+    </div>
 </body>
 
 </html>

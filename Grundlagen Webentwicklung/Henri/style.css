@@ -1,0 +1,325 @@
+:root {
+    --col_dark: #111;
+    --col_normal: #333;
+    --col_bright: #555;
+    --col_text: #fff;
+}
+
+body {
+    background-color: var(--col_bright);
+    margin: 0;
+    padding: 0;
+}
+
+.inner_body {
+    max-width: 1000px;
+    margin: auto;
+    color: var(--col_text);
+}
+
+/* Links */
+a:hover {
+    text-decoration: none;
+}
+
+
+/* Lists */
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: var(--col_text);
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: var(--col_dark);
+}
+
+/* Contact data */
+.contact_a {
+    color: var(--col_text);
+}
+
+/* Header */
+.header_bar {
+    background-color: var(--col_normal);
+    height: 100px;
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 5px;
+}
+
+.navigation_area {
+    background-color: var(--col_normal);
+    display: flex;
+    justify-content: end;
+    flex-direction: row;
+    align-items: center;
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 5px 5px 0px 5px;
+}
+
+.lightswitch {
+    margin-left: auto;
+    margin-right: 10px;
+    background-image: url("images/lightmode_lightswitch_icon.png");
+    background-size: 100%;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    margin-top: 10px;
+    border-radius: 45%;
+    position: fixed;
+    z-index: 20;
+}
+
+.header_bar_image {
+    background-image: url("images/caticon.png");
+    background-size: 100px 100px;
+    background-repeat: repeat-x;
+    background-position-x: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-name: header_bar_image_move;
+    animation-timing-function: linear;
+}
+
+@keyframes header_bar_image_move {
+    from {
+        background-position-x: 0px;
+    }
+
+    to {
+        background-position-x: 100px;
+    }
+}
+
+/* Introduction */
+.introduction_chapter {
+    background-color: var(--col_normal);
+    color: var(--col_text);
+    overflow: auto;
+    padding: 15px;
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 0px 5px 0px 5px;
+}
+
+.cite_holder {
+    text-align: center;
+}
+
+/* Flexbox and grid */
+.flexbox_and_grid_chapter {
+    background-color: var(--col_normal);
+    text-align: center;
+    color: var(--col_text);
+    overflow: auto;
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 5px;
+}
+
+@media(max-width: 600px) {
+    .flexbox_chapter {
+        background-color: var(--col_normal);
+        display: block;
+        float: none;
+        width: 100%;
+        border: var(--col_dark);
+        border-style: solid;
+        border-width: 5px 0px 5px 0px;
+    }
+
+    .grid_chapter {
+        background-color: var(--col_normal);
+        display: block;
+        float: none;
+        width: 100%;
+        border: var(--col_dark);
+        border-style: solid;
+        border-width: 0px 0px 0px 0px;
+    }
+}
+
+/* Flexbox chapter */
+.flexbox_chapter {
+    background-color: var(--col_normal);
+    float: left;
+    width: calc(50% - 2.5px);
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 5px 2.5px 0px 0px;
+}
+
+.flexbox_holder {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 675px;
+    padding: 10px;
+}
+
+.flexbox_holder:hover {
+    animation-duration: 4s;
+    animation-iteration-count: 1;
+    animation-name: flexbox_holder_grow;
+    animation-timing-function: linear;
+}
+
+@keyframes flexbox_holder_grow {
+    0% {
+        height: 675px;
+    }
+
+    50% {
+        height: 1000px;
+    }
+
+    100% {
+        height: 675px;
+    }
+}
+
+/* Grid chapter */
+.grid_chapter {
+    background-color: var(--col_normal);
+    text-align: center;
+    color: var(--col_text);
+    float: right;
+    width: calc(50% - 2.5px);
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 5px 0px 0px 2.5px;
+}
+
+.grid_holder {
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+    height: 1000px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid_element {
+    width: 100%;
+    z-index: 10;
+    align-self: center;
+    justify-self: center;
+}
+
+.grid_element:hover {
+    animation-duration: 2s;
+    animation-name: grid_element_hover_anim;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+}
+
+@keyframes grid_element_hover_anim {
+    0% {
+        border-radius: 0%;
+        width: 100%;
+    }
+
+    25% {
+        width: 55%;
+        border-radius: 90%;
+        transform: rotate(0deg);
+    }
+
+    75% {
+        border-radius: 90%;
+        transform: rotate(360deg);
+    }
+
+    100% {
+        border-radius: 0%;
+        transform: rotate(360deg);
+    }
+
+}
+
+/* Response chapter */
+.response_chapter {
+    background-color: var(--col_normal);
+    text-align: center;
+    color: var(--col_text);
+    overflow: auto;
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 0px 5px 5px 5px;
+    padding: 10px;
+}
+
+.response_chapter_text {
+    text-align: left;
+    display: inline-block;
+}
+
+.response_chapter_image {
+    display: inline;
+    float: left;
+    margin: 0px 10px 0px 0px;
+}
+
+/* Float chapter */
+.float_chapter {
+    background-color: var(--col_normal);
+    text-align: center;
+    color: var(--col_text);
+    overflow: auto;
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 0px 5px 5px 5px;
+    padding: 10px;
+}
+
+@keyframes cat_turn_1 {
+    100% {
+        transform: rotateY(180deg);
+    }
+}
+
+@keyframes cat_turn_2 {
+    0% {
+        transform: rotateY(180deg);
+    }
+
+    100% {
+        transform: rotateY(0deg);
+    }
+}
+
+/* Footer chapter */
+table {
+    width: 100%;
+}
+
+footer {
+    background-color: var(--col_normal);
+    text-align: center;
+    color: var(--col_text);
+    overflow: auto;
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 0px 5px 5px 5px;
+    padding: 10px;
+}
+
