@@ -25,12 +25,13 @@
 }
 
 #nav__links ul li {
-    display: inline-block;
+    display: inline-flex;
 }
 
 #nav__links ul {
     padding: 0;
-    display: inline-flex;
+    display: flex;
+    align-items: center;
 }
 
 #nav__links button {
@@ -39,11 +40,6 @@
 
 #nav__links li:not(:first-child){
     margin-left: 3em;
-}
-
-#nav__links div{
-    margin-left: 3em;
-    display: inline-flex;
 }
 
 #nav__links img {

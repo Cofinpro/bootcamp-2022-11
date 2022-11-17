@@ -76,6 +76,16 @@ address p {
     footer{
         margin: 5em 1em 5em 1em;
     }
+
+    #footer--data{
+        display: block;
+    }
+
+    #footer--data ul {
+        padding: 0;
+    }
+
+
 }
 
 @media only screen and (min-width:721px) and (max-width: 1000px){
