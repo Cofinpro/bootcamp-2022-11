@@ -1,0 +1,132 @@
+body {
+    max-width: 1000px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 0.5fr 0.5fr 1.5fr 1.5fr 1fr;
+}
+
+header {
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   }
+
+#Facts {
+    grid-column: 1 / span 1;
+    grid-row: 3 / span 1;
+    margin: 10px;
+}
+
+#Taxonomy {
+    grid-column: 1 / span 2;
+    grid-row: 4 / span 1;
+    margin: 10px;
+}
+
+#factList {
+  list-style: none; /* Remove default bullets */
+}
+
+#factList li::before {
+  content: "\25C8";
+  color: #378c00;
+  display: inline-block;
+  width: 2em;
+  margin-left: -1em;
+}
+
+#taxoList {
+    list-style-type: upper-roman;
+}
+
+nav {
+    font-size: 23px;
+    width: 250px;
+    height: 50px;
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    background-color: #378c00;
+    border: 2px dotted #27e8ff;
+    padding: 10px;
+}
+
+.innerLink {
+    color: black;
+    text-decoration: none;
+}
+
+.innerLink:visited {
+    color: #27e8ff;
+}
+
+.innerLink:hover {
+    color: white;
+    text-decoration: none;
+}
+
+#drawing {
+    grid-column: 2 / span 1;
+    grid-row: 3 / span 1;
+    border: 2px solid black;
+    padding: 2px;
+    margin: 50px;
+    max-width: 292px;
+    height: auto;
+}
+
+@media screen and (max-width:900px) {
+    #drawing {
+        grid-column: 1 / span 1;
+        grid-row: 2 / span 1;
+        border: 2px solid black;
+        padding: 2px;
+        margin: 50px;
+        max-width: 100%;
+        height: auto;
+    }
+    header {
+        grid-column: 1 / span 1;
+        grid-row: 1 / span 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+       }
+}
+
+#real {
+    float: left;
+    border: 2px solid black;
+    padding: 2px;
+    margin: 50px;
+    max-width: 100%;
+    height: auto;
+}
+
+footer {
+    clear: both;
+    grid-column: 1 / span 2;
+    grid-row: 5 / span 1;
+    display: flex;
+    justify-content: space-around;
+    border-top: 5px solid #27e8ff;
+}
+
+a {
+    color: #378c00;
+}
+
+a:visited {
+    color: black;
+}
+
+a:hover {
+    color: #27e8ff;
+    text-decoration: none;
+}
