@@ -1,7 +1,7 @@
 //Dark mode
 var isDarkMode = true;
 
-//Lightswitch
+//Lightswitch on click method
 function lightswitchOnClick() {
     isDarkMode = !isDarkMode;
 

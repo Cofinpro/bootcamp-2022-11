@@ -1,0 +1,24 @@
+.screen_to_little_holder {
+    display: none;
+}
+
+@media(max-width: 999px) {
+    .holder{
+        display: none;
+    }
+
+    .screen_to_little_holder{
+        display: flex;
+        height: 600px;
+        background-color: var(--col_normal);
+        color: var(--col_text);
+        border: var(--col_dark);
+        border-style: solid;
+        border-width: 5px 5px 5px 5px;
+        text-align: center;
+        font-size: larger;
+        align-items: center;
+        justify-content: center;
+    }
+}
+

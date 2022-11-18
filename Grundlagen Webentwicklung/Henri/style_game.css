@@ -1,0 +1,166 @@
+.holder {
+    height: 600px;
+    background-color: var(--col_normal);
+    color: var(--col_text);
+    border: var(--col_dark);
+    border-style: solid;
+    border-width: 5px 5px 5px 5px;
+    position: relative;
+}
+
+.background {
+    max-width: 100%;
+    height: 100%;
+}
+
+.line_horizontal {
+    width: 150px;
+    height: 0px;
+    border: 5px solid var(--col_dark);
+    position: absolute;
+}
+
+.line_vertical {
+    width: 0px;
+    height: 150px;
+    border: 5px solid var(--col_dark);
+    position: absolute;
+}
+
+.character_holder {
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    color: var(--col_text);
+    text-align: center;
+    border-radius: 25%;
+    background-color: rgba(150, 150, 150, 0.1);
+}
+
+.character {
+    width: 120px;
+    position: relative;
+}
+
+.winning_text_background {
+    width: 1000px;
+    height: 0;
+    overflow: hidden;
+    top: 60px;
+    left: calc((100% - 1000px) / 2);
+    z-index: 30;
+    position: fixed;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 80px;
+    line-height: 600px;
+    background-color: var(--col_dark);
+
+    transition: all 1s ease;
+    transition-delay: 16s;
+}
+
+.character_holder:hover {
+    position: absolute;
+    animation-duration: 20s;
+    animation-iteration-count: 1;
+    animation-name: character_anim;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+
+.character_holder:hover .winning_text_background {
+    height: 600px;
+}
+
+
+a.button {
+    position: absolute;
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+    color: initial;
+}
+
+
+
+@keyframes character_anim {
+
+    0% {
+        left: 20px;
+        top: 40px;
+    }
+
+    5% {
+        left: 200px;
+        top: 40px;
+    }
+
+    15% {
+        left: 200px;
+        top: 340px;
+    }
+
+    20% {
+        left: 340px;
+        top: 340px;
+    }
+
+    25% {
+        left: 340px;
+        top: 475px;
+    }
+
+    35% {
+        left: 640px;
+        top: 475px;
+    }
+
+    40% {
+        left: 640px;
+        top: 340px;
+    }
+
+    45% {
+        left: 790px;
+        top: 340px;
+    }
+
+    55% {
+        left: 790px;
+        top: 40px;
+    }
+
+    60% {
+        left: 640px;
+        top: 40px;
+    }
+
+    65% {
+        left: 640px;
+        top: 190px;
+    }
+
+    75% {
+        left: 350px;
+        top: 190px;
+    }
+
+    80% {
+        left: 350px;
+        top: 40px;
+    }
+
+    90% {
+        left: 350px;
+        top: 40px;
+    }
+
+    100% {
+        left: 350px;
+        top: 40px;
+    }
+}
