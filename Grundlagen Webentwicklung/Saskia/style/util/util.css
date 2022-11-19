@@ -1,0 +1,88 @@
+
+.logo--font{
+    font-family: 'Bebas Neue', cursive;
+    color: var(--primary-orange);
+    font-size: 24pt;
+}
+
+.block-text{
+    hyphens: auto;
+    text-align: justify;
+}
+
+.author-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.author-wrapper > img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    display: inline-flex;
+    border-radius: 50px;
+}
+
+.author-wrapper > p {
+    margin-left: 1.5em;
+    display: inline-flex;
+}
+
+.category-text {
+    text-transform: uppercase;
+    font-weight: lighter;
+    font-size: 12pt;
+    color: var(--primary-blue);
+}
+
+.card {
+    border: 1px solid var(--primary-grey);
+    border-radius: 50px;
+    margin-bottom: 4em;
+    transition: box-shadow .3s;
+}
+
+.card:hover{
+    cursor: pointer;
+    box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+
+.card--image img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-top-right-radius: 50px;
+    border-top-left-radius: 50px;
+}
+
+.card--body {
+    padding: 1em 2em 1em 2em;
+}
+
+a:hover{
+    color: var(--primary-blue);
+}
+
+a::before{
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 0.5px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-blue);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+a:hover::before{
+    transform: scaleX(1);
+}
+
+a {
+    position: relative;
+    color: var(--primary-black);
+    text-decoration: none;
+}
+
