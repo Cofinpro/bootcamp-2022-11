@@ -3,7 +3,7 @@ body {
     margin: auto;
     display: grid;
     grid-template-columns: 60% 40%;
-    grid-template-rows: 0.5fr 0.5fr 1.5fr 1.5fr 1fr;
+    grid-template-rows: 0.2fr 0.5fr 1.2fr 1.2fr 0.6fr;
 }
 
 header {
@@ -12,7 +12,33 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-   }
+    justify-content: space-around;
+    margin-bottom: 70px;
+}
+
+#africa:hover {
+    filter: invert(100%);
+}
+
+#name {
+    width: 100%;
+    height: 200px;
+    background-image: linear-gradient(#27e8ff, #1ba2b2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom: 2px dotted #378c00;
+    border-right: 2px dotted #378c00;
+    border-left: 2px dotted #378c00;
+}
+h3:hover {
+    text-decoration: underline;
+    text-decoration-style: wavy;
+}
 
 #Facts {
     grid-column: 1 / span 1;
@@ -27,34 +53,36 @@ header {
 }
 
 #factList {
-  list-style: none; /* Remove default bullets */
+    list-style: none;
 }
 
 #factList li::before {
-  content: "\25C8";
-  color: #378c00;
-  display: inline-block;
-  width: 2em;
-  margin-left: -1em;
+      content: "\25C8";
+      color: #378c00;
+      display: inline-block;
+      width: 30px;
 }
 
 #taxoList {
     list-style-type: upper-roman;
+    display: inline-block;
 }
 
 nav {
     font-size: 23px;
-    width: 250px;
+    width: 350px;
     height: 50px;
 }
 
 nav ul {
     list-style-type: none;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     background-color: #378c00;
     border: 2px dotted #27e8ff;
     padding: 10px;
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
 }
 
 .innerLink {
@@ -76,37 +104,67 @@ nav ul {
     grid-row: 3 / span 1;
     border: 2px solid black;
     padding: 2px;
-    margin: 50px;
+    margin: 25px;
     max-width: 292px;
     height: auto;
 }
 
-@media screen and (max-width:900px) {
+#drawing:hover {
+    border: 2px solid white;
+    animation: rotation360 2s 1 ease-out;
+}
+
+@media screen and (max-width:850px) {
+    body {
+        margin: auto;
+        display: grid;
+        grid-template-columns: 60% 40%;
+        grid-template-rows: 0.2fr 0.2fr 0.7fr 1.2fr 0.4fr;
+    }
     #drawing {
-        grid-column: 1 / span 1;
+        grid-column: 1 / span 2;
         grid-row: 2 / span 1;
         border: 2px solid black;
         padding: 2px;
         margin: 50px;
-        max-width: 100%;
+        max-width: 50%;
         height: auto;
+        display: flex;
+        justify-content: space-around;
     }
     header {
-        grid-column: 1 / span 1;
+        grid-column: 1 / span 2;
         grid-row: 1 / span 1;
         display: flex;
         flex-direction: column;
         align-items: center;
-       }
+        justify-content: space-around;
+        margin: 10px;
+    }
+    #Facts {
+        grid-column: 1 / span 2;
+        grid-row: 3 / span 1;
+        margin: 10px;
+    }
 }
 
 #real {
     float: left;
     border: 2px solid black;
     padding: 2px;
-    margin: 50px;
+    margin: 25px;
     max-width: 100%;
     height: auto;
+}
+
+#real:hover {
+    border: 2px solid white;
+    animation: rotation360 2s 1 ease-out;
+}
+
+@keyframes rotation360 {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 footer {
@@ -115,18 +173,22 @@ footer {
     grid-row: 5 / span 1;
     display: flex;
     justify-content: space-around;
-    border-top: 5px solid #27e8ff;
+    padding-bottom: 10px;
+    background-image: linear-gradient(#27e8ff, #1fb9cc);
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    margin: 10px;
+    align-items: center;
+    border-top: 2px dotted #378c00;
+    border-right: 2px dotted #378c00;
+    border-left: 2px dotted #378c00;
 }
 
 a {
     color: #378c00;
 }
 
-a:visited {
-    color: black;
-}
-
 a:hover {
-    color: #27e8ff;
+    color: black;
     text-decoration: none;
 }
