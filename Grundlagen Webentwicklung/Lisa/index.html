@@ -15,6 +15,7 @@
                     <li><a href="#quotes">Quotes</a></li>
                     <li><a href="#news">News</a></li>
                     <li><a href="#LoremIpsum">Lorem impsum</a></li>
+                    <li><a href="#Taxonomy">Taxonomy</a></li>
                     <li><a href="#contact">Contact information</a></li>
                 </ul>
             </nav>
@@ -41,12 +42,10 @@
                 sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
                 et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
                 dolor sit amet.
-                <br>
                 Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu
                 feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
                 delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
                 sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                <br>
                 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
                 commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
                 vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit
@@ -66,12 +65,10 @@
                 sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
                 et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
                 dolor sit amet.
-                <br>
                 Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu
                 feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
                 delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
                 sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                <br>
                 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
                 commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
                 vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit
@@ -86,12 +83,10 @@
                 sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
                 et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
                 dolor sit amet.
-                <br>
                 Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu
                 feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
                 delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
                 sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                <br>
                 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
                 commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
                 vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit
@@ -111,22 +106,54 @@
                 sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos
                 et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum
                 dolor sit amet.
-                <br>
                 Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu
                 feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
                 delenit augue duis dolore te feugait nulla facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
                 sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                <br>
                 Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea
                 commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat,
                 vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit
                 praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
             </p>
         </section>
+        <section id="Taxonomy">
+            <h2>Taxonomy</h2>
+            Let's make a list with a colored reversed roman counter.
+            <ol id="ol-taxonomy">
+                <li>Species: Felis catus</li>
+                <li>Genus: Felis</li>
+                <li>Subfamily: Felinae</li>
+                <li>Family: Felidae</li>
+                <li>Suborder: Feliformia</li>
+                <li>Order: Carnivora</li>
+                <li>Class: Mammalia</li>
+            </ol>
+            Here we have the problem, that we need to know, how many items will exist
+            and place this magic number in CSS.
+
+            Another way to create such a list would be:
+            <ol id="new-list" reversed>
+                <li><span>Species: Felis catus</span></li>
+                <li><span>Genus: Felis</span></li>
+                <li><span>Subfamily: Felinae</span></li>
+                <li><span>Family: Felidae</span></li>
+                <li><span>Suborder: Feliformia</span></li>
+                <li><span>Order: Carnivora</span></li>
+                <li><span>Class: Mammalia</span></li>
+            </ol>
+            Since <code>&lt;li&gt;</code> contains the counter/bullet and the text itself,
+            we have to place the text in <code>&lt;span&gt;</code>s.
+            But I think it is justifiable that we need to split the counter and text structurally
+            and therefore edit the html-structure.
+        </section>
     </main>
     <aside>
         <div  id="presented-by">
             <p> This webpage is presented by Happy Cookie. </p>
+            <img class="pic happy-pic" src="images/happy-out.jpeg" alt="Happy-🐈">
+            <img class="pic cookie-pic" src="images/cookie-in.jpeg" alt="Cookie-🐈">
+            <img class="pic happy-pic" src="images/happy-out.jpeg" alt="Happy-🐈">
+            <img class="pic cookie-pic" src="images/cookie-in.jpeg" alt="Cookie-🐈">
             <img class="pic happy-pic" src="images/happy-out.jpeg" alt="Happy-🐈">
             <img class="pic cookie-pic" src="images/cookie-in.jpeg" alt="Cookie-🐈">
             <img class="pic happy-pic" src="images/happy-out.jpeg" alt="Happy-🐈">
