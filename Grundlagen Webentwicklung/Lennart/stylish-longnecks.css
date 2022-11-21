@@ -1,0 +1,199 @@
+/* Import Google fonts */
+@import url(https://fonts.googleapis.com/css?family=Roboto|Rubik+Microbe&effect=outline);
+
+
+/* General styling */
+* {
+    box-sizing: border-box;
+  }
+
+body {
+    margin: 0;
+    background: rgb(2,0,36); /* Default background */
+    background: linear-gradient(3deg, rgba(2,0,36,1) 0%, rgba(173,94,46,1) 35%, rgba(255,194,101,1) 100%);
+}
+
+#mainframe {
+    height: 100vh; /* 100vh = 100% der Höhe des Viewports */
+
+    /* grid conainer settings */
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* Three rows: header, main, footer */
+    grid-template-columns: 1fr auto 1fr; /* 1 column: No sidebar, two "spacers" */
+    grid-template-areas: /* define 5 named areas */
+        "area-left header-area area-right"
+        "area-left main-area area-right"
+        "area-left footer-area area-right";
+}
+
+
+/* Header styling */
+#mainframe > header { /* > is the CSS child selector */
+    grid-area: header-area;
+    margin: 0;
+    width: 100vw; /* Die ganze Breite des Viewports nutzen, aber max. 1000px */
+    max-width: 1000px;
+
+    /* Set a nice header background image with blurred borders */
+    background-image: url(https://static.spektrum.de/fm/912/iStock-687031234.jpg?width=2000&height=630&fit=crop&auto=webp);
+    background-size: cover;
+}
+
+#headline {
+    /* Anordnung von Icon + Headline */
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+#headline > h1 {
+    font-family: "Rubik Microbe";
+    font-size: 40px;
+    font-weight: 600;
+    margin-left: 5px;
+
+    /* The following was replaced with Google Outline style
+    /*background-image: repeating-conic-gradient(from 12deg at 50% 60%, black 0deg, black 2deg, #ad5e2e 2deg, #ad5e2e 5deg, #ffc265 4deg, #ffc265 7deg);*/
+    /*color: transparent; /* Wir wollen nur den Hintergrund sehen, nicht die Font Color */
+    /*background-clip: text; /* ensures that the background doesn’t extend beyond an element (the text) */
+    /*-webkit-background-clip: text;*/
+}
+
+#mainframe > header > nav {
+    border-style: solid;
+    border-width: thin;
+    border-color: #649b04;
+    border-radius: 10px;
+    background-color: aliceblue;
+    margin: 5px;
+}
+
+#mainframe > header > nav > ul {
+    display: flex;
+    list-style-type: none;
+    padding: 0; /* Override default padding for lists */
+    margin: 5px;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#mainframe > header > nav > ul > li {
+    /* Default h2 style */
+    font-family: "Roboto";
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+
+/* Main content styling */
+#mainframe > main {
+    grid-area: main-area;
+    overflow: auto; /* Fixed header and footer */
+    padding: 15px 5px 10px 5px;
+    width: 100vw;
+    max-width: 1000px;
+    border-top: 4px solid tan;
+    font-family: "Roboto";
+    background-color: aliceblue;
+}
+
+#img-giraffe-cross {
+    float: right;
+    margin-left: 10px;
+    width: 58%;
+    height: auto;
+}
+
+#img-giraffe-patterns {
+    float: right;
+    margin-left: 10px;
+}
+
+#img-giraffe-closeup {
+    float: left;
+    margin-right: 10px;
+}
+
+#giraffenwissen > ul {
+    list-style: circle outside url(leaf-green-color-icon.svg);
+}
+
+#systematik > ol {
+    list-style-type: upper-roman;
+}
+
+
+/* Footer styling */
+#mainframe > footer {
+    grid-area: footer-area;
+    width: 100vw;
+    max-width: 1000px;
+    border-top: 4px solid tan;
+    margin-top: 0px; /* spacing before "hrule" */
+    padding-top: 0;
+    padding-bottom: 0;
+    font-family: "Roboto";
+    background-color: aliceblue;
+
+    /* Define inner grid for footer */
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 3fr 2fr; /* => 60% zu 40% */
+    grid-template-areas:
+        "links-area contact-area"
+        "bad-links-area contact-area";
+}
+
+.footer-section > ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#footer-section-links {
+    grid-area: links-area;
+    padding-left: 10px;
+}
+
+#footer-section-bad-links {
+    grid-area: bad-links-area;
+    padding-left: 10px;
+}
+
+#footer-section-contact {
+    grid-area: contact-area;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#footer-section-contact > h3 {
+    align-self: center;
+}
+
+
+/* Link styling */
+.navigation-link {
+    color: tan;
+    text-decoration: none;
+}
+
+.navigation-link:visited {
+    color: tan;
+}
+
+.navigation-link:hover {
+    color: sandybrown;
+    text-decoration: underline wavy sandybrown;
+}
+
+
+/* Responsive media query at the end of the file! */
+@media screen and (max-width: 862px) { /* 862px ist die maximale Auflösung des Bildes in der Weite */
+    #img-giraffe-cross {
+        display: inline-block;
+        margin-left: 0;
+        width: 100%;
+        height: auto;
+    }
+}
