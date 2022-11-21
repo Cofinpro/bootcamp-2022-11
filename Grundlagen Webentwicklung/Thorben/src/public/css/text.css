@@ -1,0 +1,75 @@
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-family: 'Baloo Paaji', cursive;
+    line-height: 1.2;
+    color: orange;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.75rem;
+}
+
+h4 {
+    font-size: 1.5rem;
+}
+
+h5 {
+    font-size: 1.25rem;
+}
+
+h6 {
+    font-size: 1rem;
+}
+
+.section .section-title {
+    font-size: calc(20px + 15 * ((100vw - 300px) / 1000));
+}
+
+.section .section-subtitle {
+    margin-bottom: 6px;
+    font-weight: 400;
+    opacity: .6;
+}
+
+p {
+    font-size: calc(13px + 2 * ((100vw - 300px) / 1000));
+    font-weight: 100;
+    opacity: 1;
+    letter-spacing: 1px;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: calc(15px + 5 * ((100vw - 300px) / 1000));
+}
+
+.margin-0 {
+    margin: 0;
+}
+
+.text-light {
+    color: #f8f9fa;
+}
+
+.text-align-left {
+    text-align: left;
+}
+
+.text-align-right {
+    text-align: right;
+}
+
+.text-align-center {
+    text-align: center;
+}
