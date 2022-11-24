@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <title>Henris Cat</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="images/caticon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_slider.css">
+    <script src="nojavascript.js"></script>
+</head>
+
+<body>
+    <div class="inner_body">
+        <button id="lightswitch" class="lightswitch" onclick="lightswitchOnClick()"></button>
+        <header>
+            <!-- Navigation -->
+            <nav class="navigation_area">
+                <ul>
+                    <li>
+                    <li>
+                        <a href="./index.html">Main</a>
+                    </li>
+                    <li>
+                        <a href="./animation.html">Animation</a>
+                    </li>
+                    <li>
+                        <a href="./game.html">Game</a>
+                    </li>
+                    <li>
+                        <a href="./slider.html">Slider</a>
+                    </li>
+                    <li>
+                        <a href="./guestbook.html">Guestbook</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <div id="main">
+            <div id="slider_holder" class="slider_holder">
+                <div id="cat_text" class="top_text_holder">Cat_1</div>
+                <img draggable="false" onclick="prevCat()" style="transform: rotateY(180deg);" class="button"
+                    src="images/slider/next.png" alt="prev_button">
+                <img draggable="false" id="cat_image" class="slider_holder_image" src="images/slider/cat_1.gif"
+                    alt="cat">
+                <img draggable="false" onclick="nextCat()" class="button" src="images/slider/next.png"
+                    alt="next_button">
+            </div>
+        </div>
+
+
+    </div>
+</body>
+
+<script>
+    const cats_arr = [1, 2, 3, 4]
+    let cat_index = 0;
+
+    function nextCat() {
+        console.log("Next cat");
+        cat_index = (cat_index + 1) % cats_arr.length;
+        setCat(cat_index);
+    }
+
+    function prevCat() {
+        console.log("Prev cat");
+        cat_index--;
+        if (cat_index < 0) cat_index = cats_arr.length - 1;
+        setCat(cat_index);
+    }
+
+    function setCat(index) {
+        //Text
+        $catText = document.getElementById('cat_text');
+        $catText.textContent = `Cat_${cats_arr[cat_index]}`;
+
+        //Image
+        $catImage = document.getElementById('cat_image');
+        $catImage.src = `images/slider/cat_${cats_arr[cat_index]}.gif`;
+
+    }
+
+</script>
