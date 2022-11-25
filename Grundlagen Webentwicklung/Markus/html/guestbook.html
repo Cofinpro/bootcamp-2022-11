@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel = "stylesheet" href="style.css">
+    <link rel = "stylesheet" href="guestbookstyles.css">
+    <script>
+        window.onload = function() {
+                getDataFromBackendAndParseToList();
+        }
+
+        function getDataFromBackendAndParseToList(){
+            const returnobject = getFromBackend();
+            const listOfComments = document.getElementById("listOfComments");
+
+            for (let i = 0; i < returnobject.length; i++){
+                appendCommentsToList(returnobject[i].name,returnobject[i].datetime,
+                returnobject[i].comment,listOfComments)
+            }
+        } 
+
+        function getFromBackend(){
+            const xhr = new XMLHttpRequest();
+            const urlOfBackend = "http://localhost:8810/api/comment"
+            xhr.open("GET",urlOfBackend,false);
+            xhr.setRequestHeader('Content-type','application/json','charset=utf-8');
+            xhr.send("");
+            return JSON.parse(xhr.responseText);
+        }
+
+        function sendAndParseToListWithoutReload(){
+            let form = {
+                name: document.getElementById("name"),
+                comment: document.getElementById("comment"),
+                isDog: document.getElementById("dogtest")
+            }
+            
+            if (dogAndHundCheck(form.name) || dogAndHundCheck(form.comment) 
+            || form.isDog.checked==false){
+                alert("Get off my Page Filthy creature!")
+                resetForm(form);
+            } else {
+                const listOfComments = document.getElementById("listOfComments");
+                var today = new Date(); 
+                const dateAsString = today.toDateString() + " " + today.toTimeString().substr(0,5);
+                
+                let values = {
+                    name: form.name.value,
+                    comment: form.comment.value,
+                    datetime: dateAsString
+
+                    }
+                    
+                appendCommentsToList(form.name.value,dateAsString,form.comment.value, listOfComments);
+                postToBackend(values);
+                resetForm(form);
+            }
+        }
+
+        function appendCommentsToList(name, dateAsString, comment, listOfComments){
+            let commentOut = document.createElement('li');
+            commentOut.appendChild(document.createTextNode(`${comment}`))
+            commentOut.setAttribute("class","commentout")
+            listOfComments.prepend(commentOut)
+
+            let nameDate = document.createElement('li');
+            nameDate.appendChild(document.createTextNode(
+            `${name}, at ${dateAsString}`));
+            nameDate.setAttribute("class", "nameDate")
+            listOfComments.prepend(nameDate)
+
+
+        }
+
+        function postToBackend(formValues){
+            const json = JSON.stringify(formValues);
+            console.log(json)
+            const xhr = new XMLHttpRequest();
+            const urlOfBackend = "http://localhost:8810/api/comment/save"
+            xhr.open("POST",urlOfBackend,false);
+            xhr.setRequestHeader('Content-type','application/json','charset=utf-8');
+            xhr.send(json);
+        }
+
+        function resetForm(formValues){
+            formValues.name.value="";
+            formValues.comment.value="";
+            formValues.isDog.checked=false;
+        }
+        function dogAndHundCheck(element){
+            return (element.value.toLowerCase().includes("dog") || 
+            element.value.toLowerCase().includes("hund"))
+        }
+    </script>
+    <title>Guestbook</title>
+</head>
+
+<body>
+    <header>
+        <h1 id="headline">
+            <img src="logo.png"  alt="A logo" id="logo">This is the most amazing Guestbook EVER<br>
+        </h1>
+        <hr>
+        <nav class="navOnTop">
+            <ul class="horizontalList">
+                <li><a href="website.html">Back to main Page</a></li>
+                <li><a href="mailto:Markus.Kremer@Cofinpro.de">Complaint hotline</a></li>
+                <li><a href="dogs.html">DONT CLICK ME</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        <div class="guestbookwrapper">
+            <div id ="leftblock">
+                <h3 class="subheadings">Leave a comment!</h3>
+                Enter your Name here: 
+                <textarea    rows ="1" id = "name"></textarea><br><br>
+                Enter your Comment or feedback here: 
+                <textarea rows="6"  id ="comment"></textarea><br><br>
+                <div>I am not a dog: <input id ="dogtest" type="checkbox"><br></div>
+                <button onclick="sendAndParseToListWithoutReload()">Submit</button>
+            </div>
+            <div id="rightblock">
+                <h3 class="subheadings">Comments</h3>
+                <hr>
+                <ul id="listOfComments">
+                </ul>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <hr>
+        <address>
+            <div>
+                Contact for Dogs:<br>
+                No one<br>
+                Contact for cats<br>
+                Anyone
+            </div>
+            <div>
+                <a href="mailto:Niemand@niemand.de"> Mail für Hunde</a><br>
+                <br>
+                <a href="Tel:+4915165544178">Für Katzen</a>
+            </div>
+        </address>
+    </footer>
+</body>
+
+</html>

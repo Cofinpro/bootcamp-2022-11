@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Cats are awesome</title>
+</head>
+
+<body>
+
+    <header>
+        <h1 id="headline">
+            <img src="logo.png" alt="A logo" id="logo">Cats are awesome<br>
+        </h1>
+        <hr>
+        <nav class="navOnTop">
+            <ul class="horizontalList">
+                <li><a href="dogs.html">For dogs click here</a></li>
+                <li><a href="guestbook.html">Guestbook</a></li>
+                <li><a href="mailto:Markus.Kremer@Cofinpro.de">Complaint hotline</a></li>
+                <li><a href="dogs.html">DONT CLICK ME</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </header>
+
+
+    <div class="wrapper">
+
+        <div id="leftblock">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi aperiam architecto assumenda
+                atque aut earum est in, minus nemo placeat provident quo quos tempore voluptatem voluptatibus. Aut
+                numquam
+                obcaecati perspiciatis! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa eligendi
+                excepturi
+                nam nostrum obcaecati quibusdam sequi tempore ut! Blanditiis deleniti eos necessitatibus placeat quae
+                quidem
+                soluta sunt? Adipisci aliquid blanditiis consequuntur cum cumque ea excepturi, impedit itaque iusto
+                neque nisi, odit quam quasi quos reiciendis sapiente sed tempora veniam voluptate voluptatum? Culpa
+                deserunt
+                dolorem doloremque facere minima rerum so
+            </p>
+            <ol>
+                <li> This is a bullet point!</li>
+                <li> This too!</li>
+            </ol>
+            <p>
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+                labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+                et
+                ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem
+                ipsum
+                dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+                dolore
+                magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+                Stet
+                clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+        </div>
+        <div id="imagecontainer">
+            <img src="Arrow_right.png" style="rotate: 180deg;" alt="An arrow" class ="arrow" onclick="prevAndSetCat()">
+            <img src="cat.webp" alt="A cat" id="catimage">
+            <img src="Arrow_right.png"alt="An arrow" class="arrow" onclick="nextAndSetCat()">
+        </div>
+    </div>
+    <footer>
+        <hr>
+        <address>
+            <div>
+                Ansprechpartner Hunde<br>
+                Niemand<br>
+                Ansprechpartner Katzen<br>
+                Jeder
+            </div>
+            <div>
+                <a href="mailto:Niemand@niemand.de"> Mail für Hunde</a><br>
+                <br>
+                <a href="Tel:+4915165544178">Für Katzen</a>
+            </div>
+        </address>
+
+    </footer>
+    <script>
+        let idx = 0;
+        const catImageNames= new Map();
+        catImageNames.set(0,"cat.webp");
+        catImageNames.set(1,"cat_2.png");
+        catImageNames.set(2,"cat_3.png");
+        catImageNames.set(3,"cat_4.png");
+        catImageNames.set(4,"cat_5.png");
+        function nextAndSetCat(){
+            idx++;
+            picIndex = determinePicIndex(idx,catImageNames);
+            nextImage=catImageNames.get(picIndex);
+            setCat(nextImage);
+        }
+        function setCat(image){
+            cat = document.getElementById("catimage");
+            cat.src=image;
+        }
+        function prevAndSetCat(){
+            idx--;
+            picIndex = determinePicIndex(idx,catImageNames);
+            prevImage = catImageNames.get(picIndex);
+            setCat(prevImage);
+        }
+        function determinePicIndex(idx,catImageNames){
+            picIndex =idx%catImageNames.size;
+            if (picIndex<0) picIndex = Math.abs(catImageNames.size+picIndex);
+            console.log(picIndex);
+            return picIndex;
+        }
+    </script>
+</body>
+
+</html>
