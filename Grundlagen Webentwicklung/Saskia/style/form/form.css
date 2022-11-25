@@ -1,0 +1,45 @@
+.form-field{
+    margin-bottom: 25px;
+}
+
+.form-field label{
+    display: none;
+}
+
+input {
+    padding: 10px;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #c0c0c0;
+    background-color: #f9f9f9;
+    margin: 10px 0;
+    display: block;
+    width: 95%;
+    font-family: 'Montserrat', 'sans-serif';
+}
+
+input:focus{
+    outline: none;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid var(--primary-orange);
+}
+
+textarea{
+    display: block;
+    width: 99%;
+    margin-top: 10px;
+    font-family: 'Montserrat', 'sans-serif';
+    border: 1px solid var(--primary-grey);
+}
+
+textarea:focus{
+    outline: none;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid var(--primary-orange);
+}
+

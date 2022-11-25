@@ -23,9 +23,17 @@
     border-radius: 50px;
 }
 
-.author-wrapper > p {
+.author-wrapper div {
     margin-left: 1.5em;
-    display: inline-flex;
+    display: inline-block;
+}
+
+.author-wrapper p {
+    margin: 0;
+}
+
+.author-wrapper small{
+    display: block;
 }
 
 .category-text {

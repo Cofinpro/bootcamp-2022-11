@@ -1,4 +1,4 @@
-#nav{
+.nav{
     margin: 2em 0 5em 0;
     justify-content: space-between;
     display: flex;
@@ -6,56 +6,56 @@
     align-items: center;
 }
 
-#nav__logo-wrapper{
+.nav__logo-wrapper{
     display: flex;
 }
 
-#nav__logo-wrapper > img {
+.nav__logo-wrapper > img {
     display: inline-flex;
     width: 30px;
 }
 
-#nav__logo-wrapper > p {
+.nav__logo-wrapper > p {
     display: inline-flex;
 }
 
-#nav__links{
+.nav__links{
     display: flex;
     align-items: center;
 }
 
-#nav__links ul li {
+.nav__links ul li {
     display: inline-flex;
 }
 
-#nav__links ul {
+.nav__links ul {
     padding: 0;
     display: flex;
     align-items: center;
 }
 
-#nav__links button {
+.nav__links button {
     display: inline-flex;
 }
 
-#nav__links li:not(:first-child){
+.nav__links li:not(:first-child){
     margin-left: 3em;
 }
 
-#nav__links img {
+.nav__links img {
     cursor: pointer;
     height: 18px;
     margin-left: 6px;
 }
 
 @media only screen and (max-width: 720px) {
-    #nav{
+    .nav{
         margin: 2em 1em 5em 1em;
     }
 }
 
 @media only screen and (min-width:721px) and (max-width: 1000px){
-    #nav{
+    .nav{
         margin: 2em 3em 5em 3em;
     }
 }

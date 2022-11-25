@@ -6,7 +6,7 @@
     background-position: right;
 }
 
-.section--jumbotron__search-bar{
+.section--jumbotron__search-bar {
     width: 60%;
     background-color: white;
     border-radius: 50px;
@@ -19,7 +19,7 @@
     margin: auto;
 }
 
-.section--jumbotron__search-bar:hover{
+.section--jumbotron__search-bar:hover {
     border: 1px solid var(--primary-orange);
     cursor: pointer;
 }
@@ -49,7 +49,7 @@
     border-radius: 50px;
 }
 
-.section--featured-article .button--group{
+.section--featured-article .button--group {
     justify-content: space-between;
     display: flex;
     align-items: center;
@@ -63,7 +63,7 @@
     top: 14%;
 }
 
-.grid--featured-article__right-column .category-text{
+.grid--featured-article__right-column .category-text {
     color: #fff;
 }
 
@@ -91,18 +91,83 @@
     margin-right: 50px;
 }
 
+.section--article img {
+    width: 100%;
+    height: 30rem;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.section--article h2 {
+    text-align: center;
+}
+
+.section--article figure{
+    margin: 0;
+}
+
+.section--article blockquote {
+    text-align: center;
+    font-size: 16pt;
+    font-weight: bold;
+    margin: 0;
+}
+
+.section--article__text{
+    padding: 2em 0;
+}
+
+.section--article__whole-text{
+    margin-top: 5em;
+}
+
+.section--comments{
+    border-top: 1px solid var(--primary-grey);
+    margin-top: 5em;
+    padding-top: 4em;
+}
+
+.section--comments__all{
+    display: block;
+}
+
+.section--comments__all img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50px;
+    display: inline-flex;
+    margin-right: 1em;
+}
+
+.section--comments__all div {
+    display: inline-block;
+    border-bottom: 1px solid var(--primary-grey);
+    width: 100%;
+    padding: 15px 0;
+}
+
+.section--comments__all div p {
+    line-height: 10px;
+}
+
+.section--comments__new-comment{
+    background-color: #f9f9f9;
+    padding: 2em;
+    margin-top: 5em;
+}
 
 @media only screen and (max-width: 720px) {
     .section {
         margin: 1em;
     }
 
-    .section--jumbotron{
+    .section--jumbotron {
         height: 25vh;
         margin-bottom: 10em;
     }
 
-    .section--featured-article{
+    .section--featured-article {
         margin-bottom: 5em;
     }
 
@@ -116,12 +181,12 @@
     }
 }
 
-@media only screen and (min-width:721px) and (max-width: 1000px){
+@media only screen and (min-width: 721px) and (max-width: 1000px) {
     .section {
         margin: 3em;
     }
 
-    .section--jumbotron{
+    .section--jumbotron {
         height: 25vh;
         margin-bottom: 10em;
     }

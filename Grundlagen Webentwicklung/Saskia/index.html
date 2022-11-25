@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>Saskia's Seite</title>
     <link rel="stylesheet" href="style/style.css">
-    <link rel="icon" type="image/png" href="./assets/blog.png">
+    <link rel="icon" type="image/png" href="./assets/icons/icon.png">
     <script src="https://kit.fontawesome.com/ca10466010.js" crossorigin="anonymous"></script>
+    <!-- <script src="./script/index.js"></script> -->
+    <script src="./script/slider.js"></script>
 </head>
 <body>
 
@@ -13,15 +15,15 @@
 <header>
 
     <nav>
-        <div id="nav">
-            <div id="nav__logo-wrapper">
+        <div class="nav">
+            <div class="nav__logo-wrapper">
                 <p class="logo--font">Blog</p>
             </div>
 
-            <div id="nav__links">
+            <div class="nav__links">
                 <ul>
                     <li><a href="#news">News</a></li>
-                    <li><a href="">Link</a></li>
+                    <li><a href="page.html">Link</a></li>
                     <li>
                         <a href="/en">EN</a>
                         <img src="./assets/icons/globe.png" alt="language switch icon">
@@ -37,12 +39,170 @@
 
 <main id="main">
 
-    <div class="section section--jumbotron">
+    <div class="section section--slider">
+
+        <div class="slider">
+
+            <div class="slider--slide">
+
+                <div class="author-wrapper">
+                    <img src="./assets/dog.jpg" alt="Max Mustermann Bild">
+                    <div>
+                        <p>Max Mustermann </p>
+                        <small>Autor</small>
+                    </div>
+                </div>
+
+                <div class="slider--slide__text ">
+                    <h1>Hello World</h1>
+                    <h2 class="category-text">Kategorie</h2>
+                    <p class="block-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur corporis cumque delectus
+                        earum eveniet, explicabo ipsam iste maxime nesciunt placeat, quos reiciendis sit voluptas. Animi
+                        autem cum deleniti minima neque, officiis rem repellat reprehenderit tempore vel! Beatae eius
+                        pariatur reprehenderit!
+                    </p>
+                    <div class="slider--slide__information">
+                        <small><i class="fa fa-eye"></i>120</small>
+                        <small><i class="fa fa-comment fa-regular"></i>10</small>
+                        <small><i class="fa fa-regular fa-calendar"></i>25.11.2022</small>
+                    </div>
+                </div>
+
+
+                <img class="slider--slide__image" src="./assets/dog.jpg" alt="Slider-image">
+
+                <div class="slider--slide__trending">
+                    <p>Trending</p>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" height="50%"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"
+                              d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"
+                              d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path>
+                    </svg>
+                </div>
+
+
+            </div>
+
+            <div class="slider--slide">
+
+                <div class="author-wrapper">
+                    <img src="./assets/dog.jpg" alt="Max Mustermann Bild">
+                    <div>
+                        <p>Max Mustermann </p>
+                        <small>Autor</small>
+                    </div>
+                </div>
+
+                <div class="slider--slide__text ">
+                    <h1>Hello World</h1>
+                    <h2 class="category-text">Kategorie</h2>
+                    <p class="block-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur corporis cumque delectus
+                        earum eveniet, explicabo ipsam iste maxime nesciunt placeat, quos reiciendis sit voluptas. Animi
+                        autem cum deleniti minima neque, officiis rem repellat reprehenderit tempore vel! Beatae eius
+                        pariatur reprehenderit!
+                    </p>
+                    <div class="slider--slide__information">
+                        <small><i class="fa fa-eye"></i>120</small>
+                        <small><i class="fa fa-comment fa-regular"></i>10</small>
+                        <small><i class="fa fa-regular fa-calendar"></i>25.11.2022</small>
+                    </div>
+                </div>
+
+
+                <img class="slider--slide__image" src="./assets/dogs/dog_2.jpg" alt="Slider-image">
+
+                <div class="slider--slide__trending">
+                    <p>Trending</p>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" height="50%"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"
+                              d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"
+                              d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path>
+                    </svg>
+                </div>
+
+
+            </div>
+
+            <div class="slider--slide">
+
+                <div class="author-wrapper">
+                    <img src="./assets/dog.jpg" alt="Max Mustermann Bild">
+                    <div>
+                        <p>Max Mustermann </p>
+                        <small>Autor</small>
+                    </div>
+                </div>
+
+                <div class="slider--slide__text ">
+                    <h1>Hello World</h1>
+                    <h2 class="category-text">Kategorie</h2>
+                    <p class="block-text">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur corporis cumque delectus
+                        earum eveniet, explicabo ipsam iste maxime nesciunt placeat, quos reiciendis sit voluptas. Animi
+                        autem cum deleniti minima neque, officiis rem repellat reprehenderit tempore vel! Beatae eius
+                        pariatur reprehenderit!
+                    </p>
+                    <div class="slider--slide__information">
+                        <small><i class="fa fa-eye"></i>120</small>
+                        <small><i class="fa fa-comment fa-regular"></i>10</small>
+                        <small><i class="fa fa-regular fa-calendar"></i>25.11.2022</small>
+                    </div>
+                </div>
+
+
+                <img class="slider--slide__image" src="./assets/dogs/dog_3.jpg" alt="Slider-image">
+
+                <div class="slider--slide__trending">
+                    <p>Trending</p>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" height="50%"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"
+                              d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="0.5"
+                              d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path>
+                    </svg>
+                </div>
+
+
+            </div>
+
+            <div class="slider--previous-btn" id="prev">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="40%"
+                     height="40%"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </div>
+
+            <div class="slider--next-btn" id="next">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="40%"
+                     height="40%"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </div>
+
+            <div class="slider--indicator-points" id="slider-points">
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- <div class="section section--jumbotron" style="margin-top: 10rem">
         <div class="section--jumbotron__search-bar">
             <img src="./assets/icons/magnify.png" alt="Magnifying glass">
             <i>Suchen...</i>
         </div>
-    </div>
+    </div> -->
 
     <section class="section section--featured-article grid grid--featured-article" id="news">
         <div class="grid--featured-article__left-column">
@@ -54,7 +214,8 @@
 
                 <h2 class="category-text">Kategorie</h2>
                 <h3>Hunde sind toll</h3>
-                <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquam at corporis debitis ducimus, est
+                <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad aliquam at corporis
+                    debitis ducimus, est
                     eveniet facilis id laboriosam molestias nobis nulla numquam odio praesentium quaerat quos ratione
                     repudiandae sit totam vitae? Aliquid asperiores consectetur dolore dolores eveniet, exercitationem
                     fugiat magni possimus provident repellat reprehenderit saepe sint sunt tempore voluptas.</p>
@@ -63,8 +224,10 @@
 
                     <div class="author-wrapper">
                         <img src="./assets/dog.jpg" alt="Max Mustermann Bild">
-                        <p>Max Mustermann </p>
-
+                        <div>
+                            <p>Max Mustermann </p>
+                            <small>Autor</small>
+                        </div>
                     </div>
 
                     <button class="button button__secondary">
@@ -90,13 +253,17 @@
             <div class="card--body">
                 <h2 class="category-text">Kategorie</h2>
                 <h3>Hunde sind toll</h3>
-                <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque corporis dolore dolorem eum
+                <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque corporis
+                    dolore dolorem eum
                     illum, laudantium libero magnam maxime molestias placeat possimus quae, quidem quisquam similique
                     sunt,
                     suscipit veniam veritatis!</p>
                 <div class="author-wrapper">
                     <img src="./assets/dog.jpg" alt="Max Mustermann Bild">
-                    <p>Max Mustermann </p>
+                    <div>
+                        <p>Max Mustermann </p>
+                        <small>Autor</small>
+                    </div>
                 </div>
             </div>
 
@@ -111,13 +278,17 @@
             <div class="card--body">
                 <h2 class="category-text">Kategorie</h2>
                 <h3>Hunde sind toll</h3>
-                <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque corporis dolore dolorem eum
+                <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque corporis
+                    dolore dolorem eum
                     illum, laudantium libero magnam maxime molestias placeat possimus quae, quidem quisquam similique
                     sunt,
                     suscipit veniam veritatis!</p>
                 <div class="author-wrapper">
                     <img src="./assets/dog.jpg" alt="Max Mustermann Bild">
-                    <p>Hunde Sohn</p>
+                    <div>
+                        <p>Max Mustermann </p>
+                        <small>Autor</small>
+                    </div>
                 </div>
             </div>
 
@@ -132,7 +303,8 @@
         </div>
         <h2 class="category-text">Hunde sind toll</h2>
         <h4>Bitte nicht stören!</h4>
-        <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci cupiditate, error est ipsum magni nesciunt
+        <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci cupiditate, error est
+            ipsum magni nesciunt
             numquam sequi. A atque blanditiis culpa cupiditate distinctio dolore illum ipsum libero magnam, minima
             minus, necessitatibus quo rem sapiente sunt suscipit vitae? Aliquam animi consequatur deserunt doloribus
             eaque eveniet ex hic in magni, minima, nisi numquam omnis pariatur quaerat, quasi quis sequi totam unde?
@@ -150,12 +322,12 @@
 <footer>
 
 
-    <div id="footer--logo-wrapper">
+    <div class="footer--logo-wrapper">
         <p class="logo--font">Blog</p>
     </div>
 
 
-    <div id="footer--data">
+    <div class="footer--data">
         <address>
             <p>Cofinpro AG</p>
             <p>Untermainkai 27-28</p>
@@ -164,7 +336,7 @@
             <p>Tel: <a href="tel:015165544172">+49 151 65544172</a></p>
         </address>
 
-        <div id="footer--links">
+        <div class="footer--links">
             <ul>
                 <li><a href="/about">About</a></li>
                 <li><a href="/dataprotection">Datenschutz</a></li>
@@ -173,7 +345,7 @@
         </div>
     </div>
 
-    <div id="footer--copyright">
+    <div class="footer--copyright">
         <p>
             2022 Bootcamp Cofinpro
         </p>

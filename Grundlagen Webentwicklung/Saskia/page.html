@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="style/style.css">
+    <link rel="icon" type="image/png" href="./assets/icons/icon.png">
+    <script src="https://kit.fontawesome.com/ca10466010.js" crossorigin="anonymous"></script>
+    <script src="./script/index.js"></script>
+</head>
+<body>
+
+<header>
+
+    <nav>
+        <div class="nav">
+            <div class="nav__logo-wrapper">
+                <p class="logo--font">Blog</p>
+            </div>
+
+            <div class="nav__links">
+                <ul>
+                    <li><a href="index.html">News</a></li>
+                    <li><a href="">Link</a></li>
+                    <li>
+                        <a href="/en">EN</a>
+                        <img src="./assets/icons/globe.png" alt="language switch icon">
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+
+    </nav>
+</header>
+
+<main id="main">
+
+    <section class="section section--article">
+
+        <img src="./assets/dogs/dog_4.jpg" alt="Blog Article Picture">
+        <div class="section--article__text">
+            <h2 class="category-text">Kategorie</h2>
+            <figure>
+                <blockquote>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A, expedita?</p>
+                </blockquote>
+            </figure>
+            <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, asperiores
+                aspernatur consectetur eum ipsa
+                qui repellendus! Ad facere laudantium minima nam ratione? Accusantium animi beatae commodi
+                deserunt. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, asperiores
+                aspernatur consectetur eum ipsa. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet
+                aspernatur consequuntur cupiditate ex facilis hic, illum, incidunt molestiae provident quas quibusdam
+                repellendus vitae voluptatum. Commodi eius modi repudiandae saepe soluta.
+                qui repellendus!</p>
+            <p class="block-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, asperiores
+                aspernatur consectetur eum ipsa
+                qui repellendus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim ex in sequi voluptas
+                voluptatum! Dolorum fugit optio sint suscipit totam.</p>
+        </div>
+
+    </section>
+
+
+    <section class="section section--comments">
+        <div id="comments" class="section--comments__all">
+            <h2 class="category-text">Alle Kommentare</h2>
+        </div>
+        <div class="section--comments__new-comment">
+            <h3>Neuen Kommentar erstellen</h3>
+            <form method="post" id="comment-form">
+
+                <div class="form-field">
+                    <label for="email">E-Mail</label>
+                    <input type="email" id="email" name="email" placeholder="Email">
+                    <small class="error"></small>
+                </div>
+
+                <div class="form-field">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Name">
+                    <small class="error"></small>
+                </div>
+
+                <div class="form-field">
+                    <label for="title">Titel</label>
+                    <input type="text" id="title" name="title" placeholder="Titel">
+                    <small class="error"></small>
+                </div>
+
+                <div class="form-field">
+                    <label for="comment">Kommentar</label>
+                    <textarea id="comment" name="comment" placeholder="Kommentar"></textarea>
+                    <small class="error"></small>
+                </div>
+
+                <button type="submit" class="button">Kommentar erstellen</button>
+
+            </form>
+
+        </div>
+    </section>
+
+</main>
+
+<footer>
+
+
+    <div class="footer--logo-wrapper">
+        <p class="logo--font">Blog</p>
+    </div>
+
+
+    <div class="footer--data">
+        <address>
+            <p>Cofinpro AG</p>
+            <p>Untermainkai 27-28</p>
+            <p>60329 Frankfurt am Main</p>
+            <p>Mail: <a href="mailto:saskia.asmussen@cofinpro.de">saskia.asmussen@cofinpro.de</a></p>
+            <p>Tel: <a href="tel:015165544172">+49 151 65544172</a></p>
+        </address>
+
+        <div class="footer--links">
+            <ul>
+                <li><a href="/about">About</a></li>
+                <li><a href="/dataprotection">Datenschutz</a></li>
+                <li><a href="/imprint">Impressum</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer--copyright">
+        <p>
+            2022 Bootcamp Cofinpro
+        </p>
+
+        <div class="social-media-icons">
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-youtube"></i>
+        </div>
+
+    </div>
+
+
+</footer>
+
+</body>
+</html>

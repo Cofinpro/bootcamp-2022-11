@@ -6,6 +6,8 @@
 @import "footer/footer.css";
 @import "grid/grid.css";
 @import "util/util.css";
+@import "form/form.css";
+@import "slider/slider.css";
 
 :root{
     --primary-black: #3a3a3a;
