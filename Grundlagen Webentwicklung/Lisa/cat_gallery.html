@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+  <meta charset="UTF-8">
+  <link type="text/css" rel="stylesheet" href="stylesheet_gallery.css">
+  <script src="script_gallery.js"></script>
+  <title>Cofinpro Cats rocking the Web</title>
+</head>
+<body class="layout-grid-site">
+<header>
+  <div id="start">
+    <h1><a href="./index.html"><img src="images/cofinpro_logo.svg" alt="Cofinpro Logo"></a>Cats</h1>
+    <nav>
+      <ul>
+        <li><a href="./index.html">Start</a></li>
+        <li><a href="./index.html#quotes">Quotes</a></li>
+        <li><a href="./index.html#news">News</a></li>
+        <li><a href="./index.html#Taxonomy">Taxonomy</a></li>
+        <li><a href="./cat_gallery.html">Gallery</a></li>
+        <li><a href="./cat_guests.html">Guest Book</a></li>
+        <li><a href="#contact">Contact information</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div id="buttons-gallery-previous">
+    <button class="previous-button" onclick="scrollPic(-1)">&#8678;</button>
+  </div>
+  <div id="gallery">
+    <img id="pic-gallery-0" class="pic" src="images/happy-out.jpeg" alt="Happy-🐈">
+    <img class="pic" src="images/cookie-in.jpeg" alt="Cookie-🐈">
+  </div>
+  <div id="buttons-gallery-next">
+    <button class="next-button" onclick="scrollPic(1)">&#8680;</button>
+  </div>
+</main>
+<footer>
+  <h2>Contact information</h2>
+  <address id="contact">
+    <div id="postal-address">
+      <p>Cofinpro Cats</p>
+      <p>Lisa's place.</p>
+      <p>Will move to the new home as soon as possible (with Lisa, of course).</p>
+    </div>
+    <div>
+      <p id="phone">
+        Phone <a href="tel:069555555">069/555 555</a>
+      </p>
+      <p id="mail">
+        Mail <a href="mailto:coolcats@cofinpro.de">coolcats@cofinpro.de</a>
+      </p>
+    </div>
+  </address>
+</footer>
+</body>
+</html>

@@ -1,0 +1,91 @@
+body {
+    max-width: 1000px;
+    margin: auto;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.pic {
+    width: 40%;
+    margin: 20px;
+}
+
+.happy-pic {
+    float: right;
+}
+
+.cookie-pic {
+    float: left;
+}
+
+h2 {
+    clear: both;
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#contact {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+#contact p {
+    margin: 0;
+    padding: 0;
+}
+
+#phone {
+    text-align: right;
+}
+
+#mail {
+    text-align: right;
+}
+
+
+.layout-grid-site {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20vh 1fr 20vh;
+}
+
+header {
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+
+main {
+    grid-row-start: 2;
+    grid-column-start: 1;
+}
+
+main > div {
+    display: flex;
+    justify-content: space-around;
+    align-content: flex-start;
+}
+
+footer {
+    margin-top: 20px;
+    grid-row-start: 3;
+    grid-column-start: 1;
+    border-top: 4px solid green;
+}
+
+#form-guest-book {
+    max-width: 500px;
+}
+
+#comments-guest-book {
+    min-width: 30vw;
+    margin: 50px;
+}

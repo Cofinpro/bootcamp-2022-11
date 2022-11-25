@@ -1,0 +1,88 @@
+body {
+    max-width: 1000px;
+    margin: auto;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.pic {
+    width: 40%;
+    margin: auto;
+    display: none;
+}
+
+#pic-gallery-0 {
+    display: block;
+}
+
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#contact {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+#contact p {
+    margin: 0;
+    padding: 0;
+}
+
+#phone {
+    text-align: right;
+}
+
+#mail {
+    text-align: right;
+}
+
+.layout-grid-site {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20vh 1fr 20vh;
+}
+
+header {
+    grid-row-start: 1;
+    grid-column-start: 1;
+}
+
+main {
+    grid-row-start: 2;
+    grid-column-start: 1;
+    display: flex;
+    justify-content: space-around;
+}
+
+footer {
+    margin-top: 20px;
+    grid-row-start: 3;
+    grid-column-start: 1;
+    border-top: 4px solid green;
+}
+
+.next-button, .previous-button {
+    text-decoration: none;
+
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
