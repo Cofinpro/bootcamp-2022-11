@@ -1,0 +1,15 @@
+.image {
+    width: 400px;
+    float: right;
+    margin: 1vw;
+    clip-path: polygon(13% 0, 84% 0, 100% 100%, 24% 100%);
+}
+
+@media (max-width: 1000px) {
+    .image {
+        width: calc(40vw);
+        float: inherit;
+        align-self: center;
+        margin: 1vw;
+    }
+}

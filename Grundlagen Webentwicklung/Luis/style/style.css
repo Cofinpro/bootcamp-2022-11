@@ -1,0 +1,98 @@
+@import "guestbook/commentSection.css";
+@import "mainPage/mainPage.css";
+@import "imageSlider/imageSlider.css";
+@import "button/button.css";
+
+.body {
+    display: grid;
+    grid-template: 1fr / 1fr 1000px 1fr;
+    background-color: rgb(240, 255, 240);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.pageWrapper {
+    display: grid;
+    grid-template: 60px 1fr 5% / 1fr;
+}
+
+.navigationWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.navigationLogo {
+    align-self: center;
+    margin-right: 1em;
+    height: 30px;
+}
+
+.navigationTitle {
+    align-self: center;
+}
+
+.navigationLinks {
+    list-style: none;
+    display: inline;
+    align-self: center;
+}
+
+li .navigationLinks {
+    display: inline;
+}
+
+#imageSliderImage {
+    width: 400px;
+    float: inherit;
+}
+
+.footer {
+    border-top: 2px;
+    border-top-style: solid;
+}
+
+.footerAddress {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mail {
+    float: right;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+a:link {
+    text-decoration: none;
+    color: black;
+}
+
+a:visited {
+    text-decoration: none;
+    color: black;
+}
+
+a:active {
+    text-decoration: none;
+    color: black;
+}
+
+@media (max-width: 1000px) {
+    .body {
+        display: grid;
+        grid-template: 1fr / 1fr;
+        background-color: honeydew;
+    }
+
+    .pageWrapper {
+        display: grid;
+        grid-template: 6.5vh 1fr 5vh / 1fr;
+    }
+
+    #imageSliderImage {
+        width: calc(39vw);
+    }
+}
+

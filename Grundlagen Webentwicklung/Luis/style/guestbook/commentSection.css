@@ -1,0 +1,37 @@
+.guestbookWrapper {
+    display: grid;
+    grid-template: 1fr / 0.5fr 0.5fr;
+}
+
+.form {
+    list-style: none;
+}
+
+.commentEntry {
+    border-bottom: solid orange;
+}
+
+label {
+    display: inline-block;
+}
+
+.col-label {
+    width: 25%;
+    float: left;
+    margin-top: 5px;
+}
+
+.col-input {
+    width: 75%;
+    float: left;
+    margin-top: 5px;
+}
+
+#comment {
+    resize: none;
+}
+
+input, textarea {
+    border-radius: 5px;
+    border: solid black;
+}
