@@ -1,0 +1,128 @@
+body {
+    max-width: 1000px;
+    margin: auto;
+    display: grid;
+    grid-template-rows: .2fr 2.9fr .2fr;
+}
+
+header {
+    grid-row: 1 / span 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 10px 0 10px;
+}
+
+#africa {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+}
+#africa:hover { filter: invert(100%); }
+
+#name {
+    width: 100%;
+    height: 200px;
+    background-image: linear-gradient(#27e8ff, #1ba2b2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 20px;
+    border-radius: 0 0 20px 20px;
+    border-bottom: 2px dotted #378c00;
+    border-right: 2px dotted #378c00;
+    border-left: 2px dotted #378c00;
+}
+
+.slideshow {
+    grid-row: 2 / span 1;
+    position: relative;
+    margin: auto;
+    border: black solid 2px;
+}
+
+.none { display: none; }
+
+img {
+    max-width: 500px;
+    max-height: 500px;
+    padding: 20px;
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  color: #378c00;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.2s ease;
+  user-select: none;
+  padding: 8px 14px;
+  border-radius: 50%;
+  background-color: black;
+}
+
+.prev:hover, .next:hover {
+    color: black;
+    background-color: #378c00;
+}
+
+.next { right: -20px; }
+.prev { left: -20px; }
+
+.prev:hover, .next:hover { color: black; }
+
+.text {
+      color: black;
+      font-size: 20px;
+      position: absolute;
+      bottom: -30px;
+      width: 100%;
+      text-align: center;
+}
+
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+      from {
+        transform: translateX(-50%);
+        opacity: .3;}
+      to {
+        transform: translateX(0%);
+        opacity: 1;}
+}
+
+footer {
+    grid-row: 3 / span 1;
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 10px;
+    background-image: linear-gradient(#27e8ff, #1fb9cc);
+    border-radius: 20px 20px 0 0;
+    margin: 10px 10px 0 10px;
+    align-items: center;
+    border-top: 2px dotted #378c00;
+    border-right: 2px dotted #378c00;
+    border-left: 2px dotted #378c00;
+}
+
+.links {
+    padding: 0;
+}
+
+a {
+    color: #378c00;
+}
+
+a:hover {
+    color: black;
+    text-decoration: none;
+}
