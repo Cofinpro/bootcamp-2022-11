@@ -1,4 +1,4 @@
-.section--jumbotron {
+/* .section--jumbotron {
     background-image: url("../../assets/jumbotron-picture.jpg");
     height: 40vh;
     border-radius: 3em;
@@ -35,7 +35,7 @@
 .section--jumbotron__search-bar i {
     color: #aaa;
 }
-
+*/
 
 .section--featured-article {
     margin-top: 10em;
@@ -140,19 +140,42 @@
     margin-right: 1em;
 }
 
-.section--comments__all div {
-    display: inline-block;
+.section--comments__all .comment-wrapper {
+    display: flex;
     border-bottom: 1px solid var(--primary-grey);
     width: 100%;
     padding: 15px 0;
 }
 
-.section--comments__all div p {
-    line-height: 10px;
+.section--comments__all .comment-title {
+    line-height: 1pt;
+}
+
+.section--comments__all .comment-buttons span {
+    font-size: 10pt;
+    padding: 5px 15px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.section--comments__all .comment-buttons span:hover {
+    cursor: pointer;
+    background-color: var(--primary-blue);
+    color: #fff;
+}
+
+.section--comments__all .comment-buttons span i{
+    margin-right: 5px;
+    color: #7f7f7f;
+}
+
+.section--comments__all .comment-buttons span:hover i{
+    color: #fff;
 }
 
 .section--comments__new-comment{
     background-color: #f9f9f9;
+    border-radius: 15px;
     padding: 2em;
     margin-top: 5em;
 }

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style/style.css">
     <link rel="icon" type="image/png" href="./assets/icons/icon.png">
     <script src="https://kit.fontawesome.com/ca10466010.js" crossorigin="anonymous"></script>
-    <script src="./script/index.js"></script>
+    <script src="script/comment.js"></script>
 </head>
 <body>
 
@@ -21,7 +21,7 @@
             <div class="nav__links">
                 <ul>
                     <li><a href="index.html">News</a></li>
-                    <li><a href="">Link</a></li>
+                    <li><a href="page.html">Gästebuch</a></li>
                     <li>
                         <a href="/en">EN</a>
                         <img src="./assets/icons/globe.png" alt="language switch icon">
@@ -39,7 +39,7 @@
 
     <section class="section section--article">
 
-        <img src="./assets/dogs/dog_4.jpg" alt="Blog Article Picture">
+        <img src="./assets/dogs/guest-book.jpg" alt="Blog Article Picture">
         <div class="section--article__text">
             <h2 class="category-text">Kategorie</h2>
             <figure>
@@ -66,7 +66,7 @@
 
     <section class="section section--comments">
         <div id="comments" class="section--comments__all">
-            <h2 class="category-text">Alle Kommentare</h2>
+            <h2 class="category-text">Alle Kommentare <span id="comment-count"></span></h2>
         </div>
         <div class="section--comments__new-comment">
             <h3>Neuen Kommentar erstellen</h3>

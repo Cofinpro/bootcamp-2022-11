@@ -1,5 +1,5 @@
 .form-field{
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .form-field label{
@@ -29,10 +29,13 @@ input:focus{
 
 textarea{
     display: block;
-    width: 99%;
+    width: 94%;
     margin-top: 10px;
     font-family: 'Montserrat', 'sans-serif';
     border: 1px solid var(--primary-grey);
+    padding: 15px;
+    font-size: 11pt;
+    border-radius: 20px;
 }
 
 textarea:focus{
@@ -43,3 +46,6 @@ textarea:focus{
     border-bottom: 1px solid var(--primary-orange);
 }
 
+.error{
+    color: var(--primary-orange);
+}
