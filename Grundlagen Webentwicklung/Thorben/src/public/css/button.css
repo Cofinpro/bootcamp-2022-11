@@ -43,3 +43,45 @@
     color: #fff;
     background-color: orange;
 }
+
+.icon-button {
+    border: none;
+    background-color: inherit;
+    padding: 3px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.icon-button p {
+    color: #444;
+    opacity: .7;
+}
+
+.icon-button {
+    border: none;
+    background-color: inherit;
+    padding: 3px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.icon-button p {
+    color: #444;
+    opacity: .7;
+}
+
+.icon-button {
+    border: none;
+    background-color: inherit;
+    padding: 3px;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.icon-button p {
+    color: #444;
+    opacity: .7;
+}

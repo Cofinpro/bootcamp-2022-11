@@ -2,11 +2,22 @@
 @import "button.css";
 @import "header.css";
 @import "text.css";
+@import "image-gallery.css";
+@import "guest_book.css";
+
+:root {
+    --cofinpro-orange: #ee7d00;
+    --primary-black: #000;
+    --primary-grey: #333;
+    --light-grey: #dee2e6;
+    --heart-primary: #ff6060;
+}
 
 html {
     font-family: sans-serif;
     line-height: 1.15;
     scroll-behavior: smooth;
+    justify-content: center;
 }
 
 body {
@@ -19,8 +30,8 @@ body {
     text-align: left;
     background-color: #fff;
     width: 100%;
-    max-width: 1000px;
-    align-content: center;
+    display: grid;
+    grid-template: 1fr / 1fr 1000px 1fr;
 }
 
 .custom-navbar {
@@ -74,7 +85,7 @@ a {
 }
 
 a:hover, a:active {
-    color: orange;
+    color: var(--cofinpro-orange);
     text-decoration: none;
 }
 
@@ -141,16 +152,18 @@ caption {
 .row {
     display: flex;
     flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-    justify-content: center;
+    justify-content: left;
+}
+
+.column {
+    display: table-caption;
 }
 
 .section {
     padding: 70px 10px;
 }
 
-.section-small .container .row{
+.section-small .container .row {
     padding: 40px;
     flex-wrap: nowrap;
     align-items: center;
@@ -164,8 +177,8 @@ caption {
 
 .service-card {
     position: relative;
-    max-height: 230px;
-    border: 1px solid #dee2e6;
+    height: 230px;
+    border: 1px solid var(--light-grey);
     overflow: hidden;
     border-radius: 3px;
 }
@@ -195,7 +208,7 @@ caption {
 }
 
 .background-primary {
-    background-color: orange;
+    background-color: var(--cofinpro-orange);
 }
 
 .align-items-center {
@@ -217,7 +230,7 @@ caption {
 .blog-card {
     display: flex;
     text-align: left;
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--light-grey);
     margin-bottom: 30px;
     border-radius: 0;
     overflow: hidden;
@@ -272,7 +285,7 @@ caption {
 .footer {
     display: flex;
     min-height: 70px;
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid var(--light-grey);
     align-items: center;
 }
 
@@ -303,8 +316,8 @@ caption {
 }
 
 .footer .social-links a:hover {
-    background: orange;
-    border-color: orange;
+    background: var(--cofinpro-orange);
+    border-color: var(--cofinpro-orange);
     color: #fff;
     text-decoration: none;
 }
@@ -333,7 +346,7 @@ caption {
         margin: auto auto 20px;
     }
 
-    .section-small .container .row{
+    .section-small .container .row {
         padding: 40px 0;
         flex-wrap: nowrap;
         align-items: center;

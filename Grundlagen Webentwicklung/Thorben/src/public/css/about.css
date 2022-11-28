@@ -1,0 +1,7 @@
+.about {
+  background-image: url(../../res/svg/about-bg.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  padding: 100px 0 100px 0;
+}
