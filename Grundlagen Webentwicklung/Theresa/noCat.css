@@ -3,7 +3,7 @@ body {
     margin: auto;
     display: grid;
     grid-template-columns: 60% 40%;
-    grid-template-rows: 0.2fr 0.5fr 1.2fr 1.2fr 0.6fr;
+    grid-template-rows: 0.2fr 0.5fr 1.2fr 1.2fr 0.2fr;
 }
 
 header {
@@ -70,7 +70,7 @@ h3:hover {
 
 nav {
     font-size: 23px;
-    width: 350px;
+    width: 550px;
     height: 50px;
 }
 
@@ -177,7 +177,7 @@ footer {
     background-image: linear-gradient(#27e8ff, #1fb9cc);
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
-    margin: 10px;
+    margin: 10px 10px 0 10px;
     align-items: center;
     border-top: 2px dotted #378c00;
     border-right: 2px dotted #378c00;
