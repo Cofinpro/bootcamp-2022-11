@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel = "stylesheet" href="css/GeneralStyle.css">
+    <link rel = "stylesheet" href="css/GuestbookStyle.css">
+    <title>Guestbook</title>
+</head>
+
+<body>
+    <header>
+        <h1 id="headline">
+            <img src="pictures/logo.png" style="cursor:pointer;" alt="A logo" id="logo" onclick="location.href = 'website.html'">This is the most amazing Guestbook EVER<br>
+        </h1>
+        <hr>
+        <nav class="navOnTop">
+            <ul class="horizontalList">
+                <li><a href="website.html">Back to main Page</a></li>
+                <li><a href="mailto:Markus.Kremer@Cofinpro.de">Complaint hotline</a></li>
+                <li><a href="dogs.html">DONT CLICK ME</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </header>
+
+    <main>
+        <div class="guestbookWrapper">
+            <div id ="leftBlock">
+                <h3 class="subheadings">Leave a comment!</h3>
+                Enter your Name here: 
+                <textarea    rows ="1" id = "name"></textarea><br><br>
+                Enter your Comment or feedback here: 
+                <textarea rows="6"  id ="comment"></textarea><br><br>
+                <div>I am not a dog: <input id ="dogTest" type="checkbox"><br></div>
+                <button onclick="addComment()">Submit</button>
+            </div>
+            <div id="rightBlock">
+                <h3 class="subheadings">Comments</h3>
+                <hr>
+                <ul id="listOfComments">
+                </ul>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <hr>
+        <address>
+            <div>
+                Contact for Dogs:<br>
+                No one<br>
+                Contact for cats<br>
+                Anyone
+            </div>
+            <div>
+                <a href="mailto:Niemand@niemand.de"> Mail für Hunde</a><br>
+                <br>
+                <a href="Tel:+4915165544178">Für Katzen</a>
+            </div>
+        </address>
+    </footer>
+</body>
+<script src = "javascriptFiles/BackendConnection.js"></script>
+<script src = "javascriptFiles/DisplayData.js"></script>
+<script src = "javascriptFiles/FrontendLogic.js"></script>
+</html>
