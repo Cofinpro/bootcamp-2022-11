@@ -3,9 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
     <link rel="icon" type="image/png"
         href="https://images.vexels.com/media/users/3/129927/isolated/preview/c984785bab699b228ee21cb74afaec70-gruselige-halloween-katze.png">
+    <script src="imageSlider.js"></script>
     <title>Sport Cats</title>
 </head>
 
@@ -18,15 +19,23 @@
             <h1 class="navigationTitle">Sport Cats</h1>
             <ul class="navigationLinks">
                 <li class="navigationLinks"><a href="index.html">Startseite</a></li>
-                <li class="navigationLinks"><a href="https://www.google.de">News</a></li>
+                <li class="navigationLinks"><a href="guestPage.html">Gästebuch</a></li>
                 <li class="navigationLinks"><a href=#>About</a></li>
             </ul>
         </nav>
         <main>
             <h2>Sport Cats</h2>
+            <div id="imageSlider" class="imageSlider">
+                <button class="sliderButton" onclick="changeImage(-1)">&lt;</button>
+                <div>
+                    <img id="imageSliderImage" src="https://i0.wp.com/theverybesttop10.com/wp-content/uploads/2016/09/Top-10-Fit-Active-Cats-Who-Love-Sports-10-510x366.jpg?resize=600%2C430" alt="Testimage">
+                </div>
+                    <button class="sliderButton" onclick="changeImage(+1)">&gt;</button>
+            </div>
             <img class="image"
-                src="https://the18.com/sites/default/files/styles/featured_mobile__621x709_/public/photo-story-images/20200407-The18-Image-Soccer-Cat-Feature2.jpg?itok=rPtx78i7"
-                alt="Soccer Cat"><br>
+                 src="https://the18.com/sites/default/files/styles/featured_mobile__621x709_/public/photo-story-images/20200407-The18-Image-Soccer-Cat-Feature2.jpg?itok=rPtx78i7"
+                 alt="Soccer Cat">
+            <br>
             Sports:
             <ul>
                 <li>Soccer</li>
@@ -129,5 +138,4 @@
     </div>
     <div class="whiteSpace"></div>
 </body>
-
 </html>

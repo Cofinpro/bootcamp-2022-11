@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style/style.css">
+  <link rel="icon" type="image/png"
+        href="https://images.vexels.com/media/users/3/129927/isolated/preview/c984785bab699b228ee21cb74afaec70-gruselige-halloween-katze.png">
+  <title>Sport Cats</title>
+</head>
+<body class="body">
+<div class="whiteSpace"></div>
+<div class="pageWrapper">
+  <nav class="navigationWrapper">
+    <img class="navigationLogo"
+         src="https://www.ardeaprints.com/p/172/cat-football-kicking-volley-11688073.jpg.webp" alt="Logo">
+    <h1 class="navigationTitle">Sport Cats</h1>
+    <ul class="navigationLinks">
+      <li class="navigationLinks"><a href="index.html">Startseite</a></li>
+      <li class="navigationLinks"><a href="guestPage.html">Gästebuch</a></li>
+      <li class="navigationLinks"><a href=#>About</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>Sport Cats</h2>
+    <div class="guestbookWrapper">
+      <div class="formWrapper">
+        <form id="form">
+          <h3>Neuer Kommentar</h3>
+          <div class="formList">
+            <div class="listItem">
+              <div class="col-label">
+                <label for="name">Name</label>
+              </div>
+              <div class="col-input">
+                <input type="text" id="name" name="name">
+              </div>
+            </div>
+            <div class="listItem">
+              <div class="col-label">
+                <label for="comment">Kommentar</label>
+              </div>
+              <div class="col-input">
+                <textarea id="comment" name="comment"></textarea>
+              </div>
+            </div>
+            <div class="listItem">
+              <div class="col-input">
+                <button type="submit">Absenden</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="guestbookEntries" id="guestbookEntries">
+      </div>
+    </div>
+  </main>
+  <footer class="footer">
+    <h3>Kontakt</h3>
+    <div class="footerAddress">
+      <address>
+        Luis Geyer
+        <br>
+        UMK 27
+      </address>
+      <p class="mail"><a href="mailto:luis.geyer@cofinpro.de">📧 Mail senden</a></p>
+    </div>
+  </footer>
+</div>
+<div class="whiteSpace"></div>
+<script src="guestbook.js"></script>
+</body>
+</html>

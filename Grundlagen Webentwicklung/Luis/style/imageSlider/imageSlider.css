@@ -1,0 +1,37 @@
+.imageSlider {
+    width: 400px;
+    height: 300px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 35px;
+}
+
+#imageSliderImage {
+    width: 400px;
+    height: 300px;
+}
+
+.sliderButton {
+    background-color: transparent;
+    color: orange;
+}
+
+.sliderButton:hover {
+    background-color: transparent;
+    border: none;
+}
+
+@media (max-width: 1000px) {
+
+    .imageSlider {
+        width: calc(40vw);
+        height: calc(40vh);
+        margin-bottom: 4vh;
+        float: inherit;
+    }
+
+    #imageSliderImage {
+        width: calc(40vw);
+    }
+}

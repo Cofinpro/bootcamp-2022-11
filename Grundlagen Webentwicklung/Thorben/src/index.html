@@ -6,197 +6,267 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cool Cats</title>
     <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/image-gallery.css">
     <script src="https://kit.fontawesome.com/ca10466010.js" crossorigin="anonymous"></script>
 </head>
 <body id="home">
-<nav class="custom-navbar">
-    <div class="container">
-        <a class="logo" href="#">
-            <img src="res/svg/cofinpro_logo.svg" alt="Cofinpro-Logo">
-            <p>#Cool Cats</p>
-        </a>
-        <ul class="nav">
-            <li class="item">
-                <a class="link" href="#home">Home</a>
-            </li>
-            <li class="item">
-                <a class="link" href="#about-cofinpro">About</a>
-            </li>
-            <li class="item">
-                <a class="link" href="#about-bootcamp">Bootcamp</a>
-            </li>
-            <li class="item">
-                <a class="link" href="#jokes">Jokes</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<div class="test-container"></div>
+<div>
+    <nav class="custom-navbar">
+        <div class="container">
+            <a class="logo" href="#">
+                <img src="res/svg/cofinpro_logo.svg" alt="Cofinpro-Logo">
+                <p>#Cool Cats</p>
+            </a>
+            <ul class="nav">
+                <li class="item">
+                    <a class="link" href="#home">Home</a>
+                </li>
+                <li class="item">
+                    <a class="link" href="#about-cofinpro">About</a>
+                </li>
+                <li class="item">
+                    <a class="link" href="#about-bootcamp">Bootcamp</a>
+                </li>
+                <li class="item">
+                    <a class="link" href="#jokes">Jokes</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <header id="home-header" class="header">
+        <div class="overlay"></div>
+        <div class="header-content container">
+            <h1 class="header-title">
+                <span class="up">Project:</span>
+                <span class="down">"Cool Cats"</span>
+            </h1>
+            <p class="header-subtitle">DER CSS CRASH-COURSE<br>@ BOOTCAMP 2022</p>
+            <a href="#about-cofinpro" class="button-primary button">NEUGIERIG GEWORDEN?</a>
+        </div>
+    </header>
 
-<header id="home-h" class="header">
-    <div class="overlay"></div>
-    <div class="header-content container">
-        <h1 class="header-title">
-            <span class="up">Project:</span>
-            <span class="down">"Cool Cats"</span>
-        </h1>
-        <p class="header-subtitle">DER CSS CRASH-COURSE<br>@ BOOTCAMP 2022</p>
-        <a href="#about-cofinpro" class="button-primary button">NEUGIERIG GEWORDEN?</a>
-    </div>
-</header>
+    <section id="image-carousel">
+        <h3 class="header-subtitle text-align-center margin-0">Katzen sind die besten!</h3>
+        <div class="slider-container">
+            <div class="slider-content">
+                <div class="slider-single">
+                    <img class="slider-single-image" src="./res/img/doctor.jpg" alt="1"/>
+                    <h1 class="slider-single-title">Katze beim Doktor</h1>
+                    <a class="slider-single-likes" href="javascript:void(0);">
+                        <i class="fa fa-heart"></i>
+                        <p>1,247</p>
+                    </a>
+                </div>
 
-<section class="section" id="about-cofinpro">
-    <div class="container text-align-center">
-        <div class="about">
-            <div class="about-img-holder">
-                <img src="res/svg/cofinpro-in-zahlen.svg" class="about-img" alt="Cofinpro Logo">
-            </div>
-            <div class="about-caption">
-                <p class="section-subtitle">Was ist...</p>
-                <h2 class="section-title">COFINPRO?</h2>
-                <p>
-                    Wir sind die Management-, Fach- und Technologieberatung für Deutschlands führende Banken und
-                    Fondsgesellschaften. Mit unserer Expertise in Kredit, Wertpapier und Zahlungsverkehr begleiten
-                    und navigieren wir unsere Kunden durch die Herausforderungen von Digitalisierung, neuen
-                    Marktanforderungen und Regulatorik.<br><br>
+                <div class="slider-single">
+                    <img class="slider-single-image" src="./res/img/schnurrito.jpeg" alt="2"/>
+                    <h1 class="slider-single-title">Kann man das essen?!</h1>
+                    <a class="slider-single-likes" href="javascript:void(0);">
+                        <i class="fa fa-heart"></i>
+                        <p>1,247</p>
+                    </a>
+                </div>
 
-                    Unsere Consultants konzentrieren sich auf Digitalisierung, neue Marktanforderungen und
-                    Regulatorik in den Beratungsfeldern Management-, Fach- und Technologieberatung.<br><br>
+                <div class="slider-single">
+                    <img class="slider-single-image" src="./res/img/knast-katze.jpeg" alt="3"/>
+                    <h1 class="slider-single-title">Akte: 1243</h1>
+                    <a class="slider-single-likes" href="javascript:void(0);">
+                        <i class="fa fa-heart"></i>
+                        <p>1,247</p>
+                    </a>
+                </div>
 
-                    Wir bauen auf ein Beratungskonzept, das alle Elemente der Wertschöpfungskette für Unternehmen in
-                    der Finanzindustrie abdeckt. Als Management- und Fachberatung mit Fokus auf Kredit, Wertpapier und
-                    Zahlungsverkehr sowie Technologieberatung für agile Architekturen bieten wir unseren Kunden
-                    zukunftsfähige Lösungen für ihr Geschäftsmodell. Persönlich, unabhängig und im
-                    vertrauensvollen Kontakt.
-                </p>
-                <a type="button" href="https://cofinpro.de/cofinpro/" class="button-primary-outline button rounded">
-                    Ab auf die Homepage!
-                </a>
+                <div class="slider-single">
+                    <img class="slider-single-image" src="./res/img/fauli.jpeg" alt="4"/>
+                    <h1 class="slider-single-title">Fitness-Freak</h1>
+                    <a class="slider-single-likes" href="javascript:void(0);">
+                        <i class="fa fa-heart"></i>
+                        <p>1,247</p>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="section" id="about-bootcamp">
-    <div class="container text-align-center">
-        <p class="section-subtitle">Was ist das...</p>
-        <h6 class="section-title">BOOTCAMP?</h6>
-        <div class="row">
-            <div class="service-card-container service-card-container">
-                <div class="service-card">
-                    <div class="body">
-                        <img src="res/svg/pencil-case.svg" alt="" class="icon">
-                        <h6 class="title">Einführung</h6>
-                        <p class="subtitle">
-                            Optimale Einführung neuer Mitarbeitenden in das Unternehmen.
-                        </p>
-                    </div>
+    <section class="section" id="about-cofinpro">
+        <div class="container text-align-center">
+            <div class="about">
+                <div class="about-img-holder">
+                    <img src="res/svg/cofinpro-in-zahlen.svg" class="about-img" alt="Cofinpro Logo">
+                </div>
+                <div class="about-caption">
+                    <p class="section-subtitle">Was ist...</p>
+                    <h2 class="section-title">COFINPRO?</h2>
+                    <p>
+                        Wir sind die Management-, Fach- und Technologieberatung für Deutschlands führende Banken und
+                        Fondsgesellschaften. Mit unserer Expertise in Kredit, Wertpapier und Zahlungsverkehr begleiten
+                        und navigieren wir unsere Kunden durch die Herausforderungen von Digitalisierung, neuen
+                        Marktanforderungen und Regulatorik.<br><br>
+
+                        Unsere Consultants konzentrieren sich auf Digitalisierung, neue Marktanforderungen und
+                        Regulatorik in den Beratungsfeldern Management-, Fach- und Technologieberatung.<br><br>
+
+                        Wir bauen auf ein Beratungskonzept, das alle Elemente der Wertschöpfungskette für Unternehmen
+                        in
+                        der Finanzindustrie abdeckt. Als Management- und Fachberatung mit Fokus auf Kredit, Wertpapier
+                        und
+                        Zahlungsverkehr sowie Technologieberatung für agile Architekturen bieten wir unseren Kunden
+                        zukunftsfähige Lösungen für ihr Geschäftsmodell. Persönlich, unabhängig und im
+                        vertrauensvollen Kontakt.
+                    </p>
+                    <a type="button" href="https://cofinpro.de/cofinpro/" class="button-primary-outline button rounded">
+                        Ab auf die Homepage!
+                    </a>
                 </div>
             </div>
-            <div class="service-card-container service-card-container">
-                <div class="service-card">
-                    <div class="body">
-                        <img src="res/svg/shipped.svg" alt="" class="icon">
-                        <h6 class="title">Coding-Camp</h6>
-                        <p class="subtitle">
-                            Vermittlung von Grundlagen verwendeter Programmiersprachen und Frameworks.
-                        </p>
+        </div>
+    </section>
+
+    <section class="section" id="about-bootcamp">
+        <div class="container text-align-center">
+            <p class="section-subtitle">Was ist das...</p>
+            <h6 class="section-title">BOOTCAMP?</h6>
+            <div class="row">
+                <div class="service-card-container service-card-container">
+                    <div class="service-card">
+                        <div class="body">
+                            <img src="res/svg/pencil-case.svg" alt="" class="icon">
+                            <h6 class="title">Einführung</h6>
+                            <p class="subtitle">
+                                Optimale Einführung neuer Mitarbeitenden in das Unternehmen.
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="service-card-container service-card-container">
-                <div class="service-card">
-                    <div class="body">
-                        <img src="res/svg/startup.svg" alt="" class="icon">
-                        <h6 class="title">Teamwork</h6>
-                        <p class="subtitle">
-                            Teamarbeit & Austausch als Einführung in die alltägliche Projektarbeit.
-                        </p>
+                <div class="service-card-container service-card-container">
+                    <div class="service-card">
+                        <div class="body">
+                            <img src="res/svg/shipped.svg" alt="" class="icon">
+                            <h6 class="title">Coding-Camp</h6>
+                            <p class="subtitle">
+                                Vermittlung von Grundlagen verwendeter Programmiersprachen und Frameworks.
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="service-card-container service-card-container">
-                <div class="service-card">
-                    <div class="body">
-                        <img src="res/svg/toolbox.svg" alt="" class="icon">
-                        <h6 class="title">Socializing</h6>
-                        <div class="subtitle">
-                            <p>Förderung des "Wir-Gefühls".</p>
+                <div class="service-card-container service-card-container">
+                    <div class="service-card">
+                        <div class="body">
+                            <img src="res/svg/startup.svg" alt="" class="icon">
+                            <h6 class="title">Teamwork</h6>
+                            <p class="subtitle">
+                                Teamarbeit & Austausch als Einführung in die alltägliche Projektarbeit.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="service-card-container service-card-container">
+                    <div class="service-card">
+                        <div class="body">
+                            <img src="res/svg/toolbox.svg" alt="" class="icon">
+                            <h6 class="title">Socializing</h6>
+                            <div class="subtitle">
+                                <p>Förderung des "Wir-Gefühls".</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="section-small background-primary">
-    <div class="container text-align-center">
-        <div class="row">
-            <div class="horizontal-banner text-align-left">
-                <p class="margin-0 text-light">Klingt spannend?</p>
-                <h6 class="title text-light">Bewirb dich doch!</h6>
+    <section class="section-small background-primary">
+        <div class="container text-align-center">
+            <div class="row">
+                <div class="horizontal-banner text-align-left">
+                    <p class="margin-0 text-light">Klingt spannend?</p>
+                    <h6 class="title text-light">Bewirb dich doch!</h6>
+                </div>
+                <div class="horizontal-banner text-align-right">
+                    <a href="https://cofinpro.de/karriere/" class="button-secondary button rounded">Auf gehts!</a>
+                </div>
             </div>
-            <div class="horizontal-banner text-align-right">
-                <a href="https://cofinpro.de/karriere/" class="button-secondary button rounded">Auf gehts!</a>
+        </div>
+    </section>
+
+    <section class="section" id="jokes">
+        <div class="container text-align-center">
+            <p class="section-subtitle">Ablenkung gefällig?</p>
+            <h6 class="section-title">Achtung, der Witz kommt flach!</h6>
+            <div class="blog-card">
+                <div class="blog-card-header">
+                    <img src="res/img/doctor.jpg" class="blog-card-img" alt="cat-01">
+                </div>
+                <div class="blog-card-body">
+                    <h5 class="blog-card-title">Der Tierarzt</h5>
+                    <p class="blog-card-caption">
+                        <a class="posting-likes" href="javascript:void(0);"><i class="fa fa-heart"></i> 234</a>
+                        <a href="javascript:void(0);"><i class="fa fa-comment"></i> 123</a>
+                    </p>
+                    <p>Bei einem Tierarzt läutet das Telefon: "Gleich kommt meine Frau mit unserer Katze zu Ihnen.
+                        Bitte geben Sie Ihr eine Spritze, damit sie friedlich einschläft…."</p>
+
+                    <p><b>"Gerne" sagt der Tierarzt, "aber findet Ihre Katze alleine nach Hause?"</b></p>
+                </div>
+            </div>
+            <div class="blog-card">
+                <div class="blog-card-header">
+                    <img src="res/img/cat-bird.jpg" class="blog-card-img" alt="cat-02">
+                </div>
+                <div class="blog-card-body">
+                    <h5 class="blog-card-title">Der Kanarienvogel</h5>
+
+                    <p class="blog-card-caption">
+                        <a class="posting-likes" href="javascript:void(0);"><i class="fa fa-heart"></i> 456</a>
+                        <a href="javascript:void(0);"><i class="fa fa-comment"></i> 264</a>
+                    </p>
+
+                    <p>
+                        Zwei Katzen sitzen vor einem Vogelkäfig und beobachten den Vogel<br>
+                        Sagt die eine: "Das ist kein Kanarienvogel, der ist ja grün."
+                    </p>
+                    <p>Sagt die andere: <b>"Vielleicht ist er noch nicht reif?"</b></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="contact" class="section guest-book">
+        <div class="container">
+            <div class="row">
+                <form class="guest-book__form" id="form" action="#" method="post">
+                    <h4>Neuer Kommentar:</h4>
+                    <p>Was beschäftigt dich?</p>
+                    <div class="column">
+                        <input type="text" name="name" id="comment__name" placeholder="Name" autocomplete="on">
+                        <textarea name="message" class="form-control" id="comment__text" placeholder="Message"></textarea>
+                        <button type="submit" id="form-submit" class="button-primary button rounded"
+                                onclick="addPost()">Send Message
+                        </button>
+                    </div>
+                </form>
+                <div id="commentList" class="guest-book__posts"></div>
             </div>
         </div>
     </div>
-</section>
 
-<section class="section" id="jokes">
-    <div class="container text-align-center">
-        <p class="section-subtitle">Ablenkung gefällig?</p>
-        <h6 class="section-title">Achtung, der Witz kommt flach!</h6>
-        <div class="blog-card">
-            <div class="blog-card-header">
-                <img src="res/img/doctor.jpg" class="blog-card-img" alt="cat-01">
+    <div class="container">
+        <footer class="footer">
+            <p>Made with 🧡 by <a href="https://cofinpro.de">Cofinpro</a></p>
+            <div class="social-links text-align-right">
+                <a href="https://www.facebook.com/Cofinpro" class="link"><i class="fa fa-facebook"></i></a>
+                <a href="https://twitter.com/cofinpro_ag?lang=de" class="link"><i class="fa fa-twitter"></i></a>
+                <a href="https://instagram.com/cofinpro_ag" class="link"><i class="fa fa-instagram"></i></a>
+                <a href="https://www.youtube.com/channel/UC7sM2sP8l2E60A4rZrA6ZTQ" class="link">
+                    <i class="fa fa-youtube"></i>
+                </a>
             </div>
-            <div class="blog-card-body">
-                <h5 class="blog-card-title">Der Tierarzt</h5>
-                <p class="blog-card-caption">
-                    <a href="#"><i class="fa fa-heart"></i> 234</a>
-                    <a href="#"><i class="fa fa-comment"></i> 123</a>
-                </p>
-                <p>Bei einem Tierarzt läutet das Telefon: "Gleich kommt meine Frau mit unserer Katze zu Ihnen.
-                    Bitte geben Sie Ihr eine Spritze, damit sie friedlich einschläft…."</p>
-
-                <p><b>"Gerne" sagt der Tierarzt, "aber findet Ihre Katze alleine nach Hause?"</b></p>
-            </div>
-        </div>
-        <div class="blog-card">
-            <div class="blog-card-header">
-                <img src="res/img/cat-bird.jpg" class="blog-card-img" alt="cat-02">
-            </div>
-            <div class="blog-card-body">
-                <h5 class="blog-card-title">Der Kanarienvogel</h5>
-
-                <p class="blog-card-caption">
-                    <a href="#"><i class="fa fa-heart"></i> 456</a>
-                    <a href="#"><i class="fa fa-comment"></i> 264</a>
-                </p>
-
-                <p>
-                    Zwei Katzen sitzen vor einem Vogelkäfig und beobachten den Vogel<br>
-                    Sagt die eine: "Das ist kein Kanarienvogel, der ist ja grün."
-                </p>
-                <p>Sagt die andere: <b>"Vielleicht ist er noch nicht reif?"</b></p>
-            </div>
-        </div>
+        </footer>
     </div>
-</section>
-
-<div class="container">
-    <footer class="footer">
-        <p>Made with 🧡 by <a href="https://cofinpro.de">Cofinpro</a></p>
-        <div class="social-links text-align-right">
-            <a href="https://www.facebook.com/Cofinpro" class="link"><i class="fa fa-facebook"></i></a>
-            <a href="https://twitter.com/cofinpro_ag?lang=de" class="link"><i class="fa fa-twitter"></i></a>
-            <a href="https://instagram.com/cofinpro_ag" class="link"><i class="fa fa-instagram"></i></a>
-            <a href="https://www.youtube.com/channel/UC7sM2sP8l2E60A4rZrA6ZTQ" class="link">
-                <i class="fa fa-youtube"></i>
-            </a>
-        </div>
-    </footer>
+    <script src="./public/js/image_gallery.js"></script>
+    <script src="./public/js/guest_book.js"></script>
 </div>
+<div class="empty"></div>
 </body>
 </html>

@@ -1,3 +1,8 @@
+@import "guestbook/commentSection.css";
+@import "mainPage/mainPage.css";
+@import "imageSlider/imageSlider.css";
+@import "button/button.css";
+
 .body {
     display: grid;
     grid-template: 1fr / 1fr 1000px 1fr;
@@ -35,11 +40,9 @@ li .navigationLinks {
     display: inline;
 }
 
-.image {
+#imageSliderImage {
     width: 400px;
-    float: right;
-    margin: 1vw;
-    clip-path: polygon(13% 0, 84% 0, 100% 100%, 24% 100%);
+    float: inherit;
 }
 
 .footer {
@@ -69,13 +72,11 @@ a:link {
 a:visited {
     text-decoration: none;
     color: black;
-
 }
 
 a:active {
     text-decoration: none;
     color: black;
-
 }
 
 @media (max-width: 1000px) {
@@ -90,10 +91,8 @@ a:active {
         grid-template: 6.5vh 1fr 5vh / 1fr;
     }
 
-    .image {
-        width: calc(40vw);
-        float: inherit;
-        align-self: center;
-        margin: 1vw;
+    #imageSliderImage {
+        width: calc(39vw);
     }
 }
+

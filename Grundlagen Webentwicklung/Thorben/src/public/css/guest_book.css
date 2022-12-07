@@ -1,0 +1,130 @@
+.guest-book {
+    padding: 160px 0;
+    background: var(--cofinpro-orange);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.guest-book .section-heading h2, .guest-book .section-heading h2 em, .guest-book .section-heading h2 span {
+    color: #fff
+}
+
+.guest-book .section-heading p {
+    color: #fff;
+    margin-top: 30px
+}
+
+.guest-book .container .row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.guest-book__form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid;
+}
+
+.guest-book__form input {
+    font-family: "Open Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.5;
+    height: 46px;
+    border-radius: 10px;
+    border: 1px solid;
+    outline: 0;
+    color: #212529;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.guest-book__form input::placeholder {
+    color: #2a2a2a
+}
+
+.guest-book__form textarea {
+    font-family: "Open Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.5;
+    height: 140px;
+    border-radius: 10px;
+    border: 1px solid;
+    color: #212529;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    resize: none;
+    outline: 0;
+}
+
+.guest-book__form textarea::placeholder {
+    color: #212529;
+}
+
+.post {
+    width: 530px;
+    padding: 20px 0 25px 30px;
+    margin: 0 0 10px 10px;
+    border: 1px solid;
+    border-radius: 10px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.post .post-content__image {
+    max-width: 60px;
+    max-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0 4px 9px rgba(241, 241, 244, 0.72);
+    background-color: #ffffff;
+}
+
+.post .post-content__image img {
+    width: 53px;
+    height: 53px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post .post-content {
+    width: 100%;
+    margin: 0 0 0 20px;
+}
+
+.post .post-content .row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 20px 0 0;
+    height: 20px;
+}
+
+.post .post-content .post-content__title {
+    color: #4a4545;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -.18px;
+    line-height: 24px;
+    margin: 0;
+}
+
+.post .post-content .post-content__description {
+    color: #696d74;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: normal;
+    line-height: 24px;
+}
+
+.posting-likes i {
+    color: var(--heart-primary);
+    animation-name: heartbeat;
+    animation-duration: 500ms;
+    animation-fill-mode: forwards;
+}
