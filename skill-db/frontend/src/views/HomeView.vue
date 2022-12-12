@@ -1,10 +1,13 @@
 <template>
-  <main>
-    <TheWelcome />
-  </main>
-  <v-chip>Test 123</v-chip>
+  <h1>Hello World!</h1>
 </template>
 
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+<script>
+export default {
+  name: "HomeView"
+}
 </script>
+
+<style scoped>
+
+</style>

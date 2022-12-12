@@ -1,0 +1,8 @@
+@import "button/button.css";
+
+:root{
+    --primary-black: #3a3a3a;
+    --primary-blue: #9bc3ee;
+    --primary-orange: #ec7b1a;
+    --primary-grey: #f0f0f0;
+}

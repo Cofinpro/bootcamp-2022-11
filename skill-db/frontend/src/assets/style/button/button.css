@@ -1,0 +1,9 @@
+.v-btn{
+   color: var(--primary-orange) !important;
+   border: 1px dashed var(--primary-orange) !important;
+}
+
+.v-btn:hover{
+   color: #fff !important;
+   background-color: var(--primary-orange) !important;
+}
