@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire">
+    <SideBar></SideBar>
     <RouterView/>
   </v-app>
 </template>
