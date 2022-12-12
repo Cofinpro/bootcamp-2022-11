@@ -49,7 +49,7 @@ const refreshTokenFn = async () => {
     }
 
     try {
-        const response = await axios.post("api/token/refresh", refreshTokenRequest);
+        const response = await axios.post("api/v1/token/refresh", refreshTokenRequest);
         const session = response.data;
         if (!session?.accessToken) {
             localStorage.removeItem("refresh_token");

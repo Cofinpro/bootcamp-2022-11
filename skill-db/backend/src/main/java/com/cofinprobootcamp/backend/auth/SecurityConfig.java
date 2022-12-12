@@ -51,7 +51,7 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/api/token", "/api/token/refresh", "/api/token/verify").permitAll()
+                        .requestMatchers("/api/v1/token", "/api/v1/token/refresh", "/api/v1/token/verify").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)

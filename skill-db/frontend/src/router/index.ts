@@ -30,10 +30,11 @@ router.beforeEach((to, from, next) => {
             "username": username,
         }
 
-        axios.post("/api/token/verify", user)
+        axios.post("/api/v1/token/verify", user)
             .then((result) => {
                 if (result.data) {
                     next();
+                    return;
                 }
                 next('/login');
             }).catch((error) => {
