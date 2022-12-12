@@ -1,31 +1,31 @@
 <template>
-  <v-app id="inspire">
-    <v-app-bar>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Application</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-    </v-app-bar>
-
     <v-main>
-      <v-container >
-        <v-row >
-          <v-col v-for="n in 22" :key="n" cols="4" elevation="5">
-            <v-card height="200"></v-card>
+      <v-container>
+        <v-row>
+          <v-col v-for="card in cardList" :key="card.getId()" lg="4" elevation="5" md="6">
+            <OverviewCard :id="card.getId()"
+                          :name="card.getName()"
+                          :job-title="card.getJobTitle()"
+                          :primary-skill="card.getPrimarySkill()"/>
           </v-col>
         </v-row>
       </v-container>
     </v-main>
-  </v-app>
 </template>
 
 <script lang="ts">
+import OverviewCard from "@/components/OverviewCard.vue";
+import {useOverviewStore} from "@/stores/OverviewStore";
+
 export default {
-  //
+  components: {OverviewCard},
+  setup() {
+    const overviewStore = useOverviewStore();
+    overviewStore.loadAllOverviews();
+    const cardList = overviewStore.cards
+    return {
+      cardList,
+    };
+  }
 }
 </script>
