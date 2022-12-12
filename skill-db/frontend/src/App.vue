@@ -1,18 +1,16 @@
 <template>
-  <v-app id="bootcamp">
-
-
-    <v-main>
-        <router-view/>
-    </v-main>
+  <v-app id="inspire">
+    <RouterView/>
   </v-app>
-
-
 </template>
 
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
+<script lang="ts">
+import SideBar from './components/SideBar.vue'
+export default {
+  components: {SideBar},
+}
 </script>
 
 <style scoped>
+
 </style>
