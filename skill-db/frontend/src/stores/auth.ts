@@ -1,7 +1,7 @@
 import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
 import axios from "axios";
-import {LoginRequest} from "@/model/LoginRequest";
+import type {LoginRequest} from "@/model/LoginRequest";
 import router from "@/router";
 
 export const useAuthStore = defineStore('auth', {
