@@ -1,9 +1,10 @@
 <template>
-  <v-main>
+  <v-container>
     <h1>{{ detail.getName() }}'s Profil</h1>
     <h2>Hier kannst das Profil anschauen und bearbeiten!</h2>
     <v-btn outlined color="red">
-      Edit <v-icon color="white">mdi-email</v-icon>
+      Edit
+      <v-icon color="white">mdi-email</v-icon>
     </v-btn>
     <h4>Name</h4>
     <v-chip>{{ detail.getName() }}</v-chip>
@@ -25,7 +26,7 @@
         <v-chip>{{ reference }}</v-chip>
       </li>
     </ul>
-  </v-main>
+  </v-container>
 </template>
 
 <script>
@@ -45,7 +46,7 @@ export default {
 </script>
 
 <style scoped>
-.v-chip{
+.v-chip {
   margin-bottom: 10px;
 }
 </style>

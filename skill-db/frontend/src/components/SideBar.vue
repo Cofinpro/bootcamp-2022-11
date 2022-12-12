@@ -23,15 +23,28 @@
         </v-list-item>-->
       </v-list>
       <div>
-        <button>Logout</button>
+        <v-btn @click="logout">Logout</v-btn>
       </div>
     </div>
   </v-navigation-drawer>
 </template>
 
 <script type="text/babel">
+import {useAuthStore} from "@/stores/auth";
+
 export default {
   props: ['id'],
+  setup() {
+    const store = useAuthStore();
+    return {
+      store
+    }
+  },
+  methods: {
+    logout() {
+      this.store.logout();
+    }
+  }
 }
 
 </script>
