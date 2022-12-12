@@ -22,8 +22,12 @@ public class ProfileService {
         profileRepository.saveAndFlush(profile);
     }
 
-    public void deleteProfile(Profile profile) {
-        profileRepository.delete(profile);
+    public void updateProfile(Profile profile) {
+        profileRepository.saveAndFlush(profile);
+    }
+
+    public void deleteProfileById(Long id) {
+        profileRepository.deleteById(id);
     }
 
     public ProfileDTO getProfileById(Long id) {
@@ -35,4 +39,6 @@ public class ProfileService {
         List<Profile> profiles = profileRepository.findAll();
         return profiles.stream().map(ProfileDTO::new).toList();
     }
+
+
 }

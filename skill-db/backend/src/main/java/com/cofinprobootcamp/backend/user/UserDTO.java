@@ -3,26 +3,24 @@ package com.cofinprobootcamp.backend.user;
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.role.Role;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 public record UserDTO(
+        Long id,
         String email,
         String firstName,
         String lastName,
-        Date birthDate,
+        LocalDate birthDate,
         int age,
         String jobTitle,
         boolean locked,
-        boolean emailConfirmed,
         Role role,
-        Profile primaryProfile,
-        List<Profile> ownedProfiles,
-        List<Profile> editableProfiles
+        Profile profile
 ) {
 
     public UserDTO(User user) {
         this(
+                user.getId(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
@@ -30,11 +28,8 @@ public record UserDTO(
                 user.getAge(),
                 user.getJobTitle(),
                 user.isLocked(),
-                user.isEmailConfirmed(),
                 user.getRole(),
-                user.getPrimaryProfile(),
-                user.getOwnedProfiles(),
-                user.getEditableProfiles());
+                user.getProfile());
     }
 
 }

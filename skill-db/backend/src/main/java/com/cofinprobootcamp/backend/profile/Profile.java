@@ -3,6 +3,7 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -14,24 +15,19 @@ public class Profile {
     @Id
     @GeneratedValue
     private Long id;
+    @NotNull
     private String jobTitle;
+    @NotNull
     private String degree;
+    @NotNull
     private Expertises primaryExpertise;
+    @NotNull
     private String referenceText;
-    private float version;
-    private boolean archived;
-    /**
-     * Can be edited by all users
-     */
-    private boolean isOpen;
-
-    @ManyToMany
-    private List<User> editUsers;
 
     @ElementCollection
     private List<String> skills;
 
-    @ManyToOne
+    @OneToOne
     private User owner;
 
 }

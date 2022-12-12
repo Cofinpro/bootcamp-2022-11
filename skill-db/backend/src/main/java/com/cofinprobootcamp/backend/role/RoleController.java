@@ -17,13 +17,13 @@ public class RoleController {
         roleService.createRole(role);
     }
 
-    @DeleteMapping(path = "")
-    public void deleteRole(@RequestBody Role role){
-        roleService.deleteRole(role);
+    @DeleteMapping(path = "/{id}")
+    public void deleteRoleById(@PathVariable Long id){
+        roleService.deleteRoleById(id);
     }
 
-    @GetMapping(path = "/")
-    public RoleDTO getRole(@RequestParam Long id) {
+    @GetMapping(path = "/{id}")
+    public RoleDTO getRoleById(@PathVariable Long id) {
         return roleService.getRoleById(id);
     }
 

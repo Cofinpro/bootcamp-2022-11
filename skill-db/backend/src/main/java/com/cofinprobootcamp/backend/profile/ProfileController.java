@@ -1,8 +1,5 @@
 package com.cofinprobootcamp.backend.profile;
 
-import com.cofinprobootcamp.backend.user.User;
-import com.cofinprobootcamp.backend.user.UserDTO;
-import com.cofinprobootcamp.backend.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,13 +17,18 @@ public class ProfileController {
         profileService.createProfile(profile);
     }
 
-    @DeleteMapping(path = "")
-    public void deleteProfile(@RequestBody Profile profile){
-        profileService.deleteProfile(profile);
+    @PutMapping(path = "")
+    public void updateProfile(@RequestBody Profile profile) {
+        profileService.updateProfile(profile);
     }
 
-    @GetMapping(path = "/")
-    public ProfileDTO getProfile(@RequestParam Long id) {
+    @DeleteMapping(path = "/{id}")
+    public void deleteProfileById(@PathVariable Long id){
+        profileService.deleteProfileById(id);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ProfileDTO getProfile(@PathVariable Long id) {
         return profileService.getProfileById(id);
     }
 

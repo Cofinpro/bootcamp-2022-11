@@ -2,13 +2,18 @@ package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.role.Role;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "AppUser")
 public class User {
@@ -17,48 +22,33 @@ public class User {
     @GeneratedValue
     private Long id;
     /**
-     * unique identifier for each user
+     * Unique identifier for each user
      */
+    @NotBlank
+    @Column(unique=true)
     private String email;
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
-    private Date birthDate;
+    @NotNull
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDate;
+    @NotNull
+    private String jobTitle;
     @Transient
     private int age;
-    private String jobTitle;
+
     /**
-     * User is set to locked by admin
-     * User can't log in neither commit any actions
+     * Locked users can't log in neither commit any actions
      */
     private boolean locked;
     @ManyToOne
     private Role role;
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Profile> ownedProfiles;
+    @OneToOne
+    private Profile profile;
 
-    /**
-     * User is allowed to edit those profiles (even if they are owned by a different user)
-     */
-    @ManyToMany(mappedBy = "editUsers", cascade = CascadeType.ALL)
-    private List<Profile> editableProfiles;
-
-    //TODO
-    /**
-     * Make sure profiles.get(0) is primary
-     */
-    @Transient
-    private Profile primaryProfile;
-
-    //TODO
-    /**
-     Is this needed?
-     Discuss in Sprint 2.0
-     */
-    private boolean emailConfirmed;
-
-
-    //TODO implement
     public int getAge() {
-        return 0;
+        return Period.between(birthDate, LocalDate.now()).getYears();
     }
 }

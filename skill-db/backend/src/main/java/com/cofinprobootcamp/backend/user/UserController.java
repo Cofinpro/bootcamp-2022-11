@@ -17,13 +17,13 @@ public class UserController {
         userService.createUser(user);
     }
 
-    @DeleteMapping(path = "")
-    public void deleteUser(@RequestBody User user){
-        userService.deleteUser(user);
+    @DeleteMapping(path = "{id}")
+    public void deleteUserById(@PathVariable Long id){
+        userService.deleteUserById(id);
     }
 
-    @GetMapping(path = "/")
-    public UserDTO getUser(@RequestParam Long id) {
+    @GetMapping(path = "{id}")
+    public UserDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 

@@ -1,9 +1,4 @@
 package com.cofinprobootcamp.backend.enums;
 
-//TODO
-
-/**
- * Naming
- */
-public enum Expertises { TECH, SPEC
-}
+//TODO Naming
+public enum Expertises { TECH, SPEC}

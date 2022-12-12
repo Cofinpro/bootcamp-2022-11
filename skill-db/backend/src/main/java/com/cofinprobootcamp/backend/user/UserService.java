@@ -22,10 +22,6 @@ public class UserService {
         userRepository.saveAndFlush(user);
     }
 
-    public void deleteUser(User user) {
-        userRepository.delete(user);
-    }
-
     public UserDTO getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         return new UserDTO(userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
@@ -34,5 +30,9 @@ public class UserService {
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map(UserDTO::new).toList();
+    }
+
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
 }
