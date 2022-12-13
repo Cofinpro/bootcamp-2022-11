@@ -34,11 +34,14 @@ public class ProfileService {
         Optional<Profile> profileOptional = profileRepository.findById(id);
         return new ProfileDTO(profileOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
-
+    //Not needed anymore(??)
     public List<ProfileDTO> getAllProfiles() {
         List<Profile> profiles = profileRepository.findAll();
         return profiles.stream().map(ProfileDTO::new).toList();
     }
 
-
+    public List<OverviewDTO> getAllOverviewDTOs() {
+        List<Profile> profiles = profileRepository.findAll();
+        return profiles.stream().map(OverviewDTO::new).toList();
+    }
 }

@@ -10,7 +10,8 @@ import java.util.Optional;
 
 @Service
 public class RoleService {
-
+    //Field Injection is not recommended, you can not unit test this!
+    //Better to use Constructor based injection
     @Autowired
     private RoleRepository roleRepository;
 

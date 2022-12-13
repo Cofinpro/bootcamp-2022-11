@@ -8,7 +8,8 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/v1/role")
 public class RoleController {
-
+    //Field Injection is not recommended, you can not unit test this!
+    //Better to use Constructor based injection
     @Autowired
     private RoleService roleService;
 

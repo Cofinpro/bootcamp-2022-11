@@ -8,7 +8,8 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/v1/user")
 public class UserController {
-
+    //Field Injection is not recommended, you can not unit test this!
+    //Better to use Constructor based injection
     @Autowired
     private UserService userService;
 

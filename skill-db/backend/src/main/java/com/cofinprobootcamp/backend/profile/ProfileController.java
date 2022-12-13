@@ -8,7 +8,8 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/v1/profile")
 public class ProfileController {
-
+    //Field Injection is not recommended, you can not unit test this!
+    //Better to use Constructor based injection
     @Autowired
     private ProfileService profileService;
 
@@ -32,8 +33,9 @@ public class ProfileController {
         return profileService.getProfileById(id);
     }
 
+    //Access Point not tested bc I don't know how with JWT
     @GetMapping(path = "")
-    public List<ProfileDTO> getAllProfiles() {
-        return profileService.getAllProfiles();
+    public List<OverviewDTO> getAllProfileOverviews() {
+        return profileService.getAllOverviewDTOs();
     }
 }

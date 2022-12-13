@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
-
+//TODO: jobtitle als enum oder datenbank damit wir ein drop-down draus machen können?
 @Entity
 @Data
 public class Profile {

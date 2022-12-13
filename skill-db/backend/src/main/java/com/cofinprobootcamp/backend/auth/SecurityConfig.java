@@ -45,7 +45,8 @@ public class SecurityConfig {
     public SecurityConfig(RsaKeyProperties rsaKeys) {
         this.rsaKeys = rsaKeys;
     }
-
+    //authorizeRequests is used here, why? doku says it is deprecated, why dont we use
+    // authorizeHttpRequests instead like doku says?
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
