@@ -5,30 +5,32 @@
       expand-on-hover
       app
   >
-    <div class="wrapper">
-      <v-list nav dense>
-        <v-list-item id="logo">
-          <img src="@/assets/pictures/Logo.png" alt="Cofinpro logo">
-        </v-list-item>
-        <v-list-item link>
-          <v-icon size="small">mdi-account-box-multiple-outline</v-icon>
-          <RouterLink to="/">Profilübersicht</RouterLink>
-        </v-list-item>
-        <v-list-item link>
-          <v-icon size="small">mdi-account-box-outline</v-icon>
-          <RouterLink to="/test">Detailtest</RouterLink>
-        </v-list-item>
-<!--        <v-list-item>
-          <RouterLink :to="{ name: 'userDetail', params: { id: id }}">Dein Profil</RouterLink>
-        </v-list-item>-->
-      </v-list>
-          <div class="logout">
-            <v-btn @click="logout">
-              Ausloggen
-              <v-icon color="--primary-orange">mdi-exit-to-app</v-icon>
-            </v-btn>
-          </div>
-    </div>
+    <!-- <div class="wrapper"> -->
+    <v-list nav dense>
+      <v-list-item id="logo">
+        <img src="@/assets/pictures/Logo.png" alt="Cofinpro logo">
+      </v-list-item>
+      <v-list-item link>
+        <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-multiple-outline</v-icon>
+        <RouterLink to="/">Profilübersicht</RouterLink>
+      </v-list-item>
+      <v-list-item link>
+        <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-outline</v-icon>
+        <RouterLink to="/test">Detailtest</RouterLink>
+      </v-list-item>
+      <!--        <v-list-item link>
+                <RouterLink :to="{ name: 'userDetail', params: { id: id }}">Dein Profil</RouterLink>
+              </v-list-item>-->
+    </v-list>
+
+    <template v-slot:append>
+      <div class="ma-10 pa-5">
+        <v-btn >
+          LOGOUT
+          <v-icon class="ml-3" @click="logout">mdi-exit-to-app</v-icon>
+        </v-btn>
+      </div>
+    </template>
   </v-navigation-drawer>
 </template>
 

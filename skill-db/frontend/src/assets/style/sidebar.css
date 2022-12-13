@@ -6,28 +6,11 @@ a {
 #logo {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 40%;
     margin-bottom: 30px;
 }
 
-.wrapper .v-list-item {
+.v-list-item {
     display: flex;
     justify-content: start;
-    margin-left: 30px;
-    margin-right: 30px;
-}
-
-.v-list-item .v-icon {
-    margin: 10px;
-    color: lightgrey;
-}
-
-.logout {
-    display: flex;
-    justify-content: center;
-    margin-top: 550px; /*TODO get button to bottom without magic numbers*/
-}
-
-.wrapper .v-icon {
-    margin-left: 10px;
 }
