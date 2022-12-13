@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.cofinprobootcamp.backend.config.ProfileConfiguration.*;
+
 @Service
 public class TokenService {
 
@@ -59,7 +61,7 @@ public class TokenService {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuedAt(now)
-                .expiresAt(now.plus(3, ChronoUnit.SECONDS))
+                .expiresAt(now.plus(REFRESH_TOKEN_DURATION_HOURS, ChronoUnit.HOURS))
                 .subject(authentication.getName())
                 .build();
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
@@ -74,7 +76,7 @@ public class TokenService {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuedAt(now)
-                .expiresAt(now.plus(2, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(ACCESS_TOKEN_DURATION_MINUTES, ChronoUnit.MINUTES))
                 .subject(username)
                 .build();
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
