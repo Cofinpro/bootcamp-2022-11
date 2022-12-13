@@ -22,7 +22,7 @@ const router = createRouter({
       path: '/test',
       name: 'test',
       component: DetailView,
-    }
+    },
     /*{
       path: '/details/:id',
       name: 'userDetails',

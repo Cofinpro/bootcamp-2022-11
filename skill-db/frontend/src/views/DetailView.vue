@@ -1,45 +1,32 @@
 <template>
-  <v-container>
-    <h1>{{ detail.getName() }}'s Profil</h1>
-    <h2>Hier kannst das Profil anschauen und bearbeiten!</h2>
-    <v-btn outlined color="red">
-      Edit
-      <v-icon color="white">mdi-email</v-icon>
-    </v-btn>
-    <h4>Name</h4>
-    <v-chip>{{ detail.getName() }}</v-chip>
-    <h4>Alter</h4>
-    <v-chip>{{ detail.getAge() }}</v-chip>
-    <h4>Jobtitel</h4>
-    <v-chip>{{ detail.getJobTitle() }}</v-chip>
-    <h4>Primärkompetenz</h4>
-    <v-chip>{{ detail.getPrimarySkill() }}</v-chip>
-    <h4>Technologien</h4>
-    <ul>
-      <li v-for="technology in detail.getTechnologies()">
-        <v-chip>{{ technology }}</v-chip>
-      </li>
-    </ul>
-    <h4>Referenzen</h4>
-    <ul>
-      <li v-for="reference in detail.getReferences()">
-        <v-chip>{{ reference }}</v-chip>
-      </li>
-    </ul>
-  </v-container>
+  <DetailComponent :details="details"></DetailComponent>
+  <v-btn><!-- @click ="showSettings">-->
+    <v-icon color="--primary-orange" @click="settingIsVisible = !settingIsVisible">mdi-cog</v-icon>
+    <v-card v-if="settingIsVisible">
+      jsdfdsfsdf
+    </v-card>
+  </v-btn>
+  <EditComponent></EditComponent>
 </template>
 
-<script>
+<script lang="ts">
 import {useDetailStore} from "@/stores/DetailStore";
 import {DetailModel} from "@/models/DetailModel";
+import DetailComponent from "@/components/DetailComponent.vue";
+import EditComponent from "@/components/EditComponent.vue";
 
 export default {
+  components: {EditComponent, DetailComponent},
   setup() {
     const detailStore = useDetailStore();
     detailStore.loadDemoDetails();
-    const detail = detailStore.details;
+    const details = detailStore.details;
+
+    const settingIsVisible = false;
+
     return {
-      detail,
+      details,
+      settingIsVisible,
     };
   }
 }
