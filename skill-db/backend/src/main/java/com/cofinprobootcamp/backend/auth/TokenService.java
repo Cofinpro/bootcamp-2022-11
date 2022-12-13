@@ -24,6 +24,11 @@ public class TokenService {
         this.jwtDecoder = jwtDecoder;
     }
 
+    /**
+     * Generates the access- and refresh token for the given user
+     * @param authentication
+     * @return Map, consisting of access token and refresh token
+     */
     public Map<String, String> generateToken(Authentication authentication) {
         Instant now = Instant.now();
         String scope = authentication.getAuthorities().stream()
@@ -45,17 +50,27 @@ public class TokenService {
         return tokens;
     }
 
+    /**
+     * Generates a new refresh token for the given user
+     * @param authentication
+     * @return String with the refresh token
+     */
     public String generateRefreshToken(Authentication authentication) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuedAt(now)
-                .expiresAt(now.plus(1, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(3, ChronoUnit.SECONDS))
                 .subject(authentication.getName())
                 .build();
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    public String generateNewToken(String username) {
+    /**
+     * Generates a new access token for the given user
+     * @param username
+     * @return String with the access token
+     */
+    public String generateNewAccessToken(String username) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuedAt(now)
@@ -65,6 +80,12 @@ public class TokenService {
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
+    /**
+     * Verifies if the given token is not expired
+     * @param token
+     * @param username
+     * @return boolean: true in case the token is not expired; false in case the token is expired
+     */
     public boolean verifyToken(String token, String username) {
         try {
             Jwt jwt = jwtDecoder.decode(token);

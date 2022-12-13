@@ -20,6 +20,11 @@ const router = createRouter({
     ]
 })
 
+/**
+ * Checks before each request (except to "/login") if the refreshToken is still valid.
+ * In case the token is not valid anymore, the user will be redirected to the login page and
+ * has to log in again.
+ */
 router.beforeEach((to, from, next) => {
     if (to.path !== '/login') {
         const refreshToken = localStorage.getItem("refresh_token");
@@ -43,7 +48,6 @@ router.beforeEach((to, from, next) => {
     } else {
         next();
     }
-
 
 })
 
