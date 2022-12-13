@@ -25,7 +25,7 @@
 
     <template v-slot:append>
       <div class="ma-10 pa-5">
-        <v-btn >
+        <v-btn elevation="0">
           LOGOUT
           <v-icon class="ml-3" @click="logout">mdi-exit-to-app</v-icon>
         </v-btn>
