@@ -11,7 +11,6 @@ import java.util.Optional;
 @Service
 public class ProfileService {
 
-    @Autowired
     private ProfileRepository profileRepository;
 
     public ProfileService(ProfileRepository profileRepository) {

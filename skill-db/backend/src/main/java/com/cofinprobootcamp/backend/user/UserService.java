@@ -10,9 +10,6 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    //Field Injection is not recommended, you can not unit test this!
-    //Better to use Constructor based injection
-    @Autowired
     private UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {

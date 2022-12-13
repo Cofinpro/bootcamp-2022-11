@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.Period;
-// Warum brauchen wir überhaupt Id wenn wir email haben, die unique sein muss?
+// Warum brauchen wir überhaupt Id wenn wir email haben, die unique sein muss? Diskutieren morgen bzw einfach raus
 // (Im frontend) brauchen wir die auf jeden fall nicht
 // Is locked somehow implemented in the security functions?
-// Do we even need age variable if getter doesnt even use it?
+// Do we even need age variable if getter doesnt even use it? raus
 // If removed, the getter should ofc not be named getXXX
 @Data
 @NoArgsConstructor
@@ -40,9 +40,6 @@ public class User {
     private LocalDate birthDate;
     @NotNull
     private String jobTitle;
-    @Transient
-    private int age;
-
     /**
      * Locked users can't log in neither commit any actions
      */

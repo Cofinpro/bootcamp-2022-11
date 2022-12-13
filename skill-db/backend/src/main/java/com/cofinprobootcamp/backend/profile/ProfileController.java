@@ -10,8 +10,11 @@ import java.util.List;
 public class ProfileController {
     //Field Injection is not recommended, you can not unit test this!
     //Better to use Constructor based injection
-    @Autowired
     private ProfileService profileService;
+
+    public ProfileController(ProfileService profileService) {
+        this.profileService = profileService;
+    }
 
     @PostMapping(path = "")
     public void createProfile(@RequestBody Profile profile) {
