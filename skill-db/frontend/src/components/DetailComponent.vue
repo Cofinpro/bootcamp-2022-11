@@ -20,7 +20,7 @@
     </ul>
     <h4>Referenzen</h4>
     <ul>
-      <li v-for="reference in details.getReferences().split('\n')">
+      <li v-for="reference in details.getReferences().split(',')">
         <v-chip>{{ reference }}</v-chip>
       </li>
     </ul>

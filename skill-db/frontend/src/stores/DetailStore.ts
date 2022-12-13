@@ -14,12 +14,13 @@ export const useDetailStore = defineStore('detailStore',{
                 id: 0,
                 age: 20,
                 firstName: "Max",
+                birthDate: "2022-12-10",
                 lastName: "Mustewrmann",
                 degree: "Master of Nothing",
                 primarySkill: "Tech",
                 jobTitle: "Consultant",
                 technologies: ["Nothing", "Less than Nothing"],
-                references: "No references\nreally none"
+                references: "No references,really none"
             })
         },
         loadDetailsById(id: number){

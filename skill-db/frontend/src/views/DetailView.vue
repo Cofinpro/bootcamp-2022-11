@@ -6,7 +6,7 @@
       jsdfdsfsdf
     </v-card>
   </v-btn>
-  <EditComponent></EditComponent>
+  <EditComponent :details="details"></EditComponent>
 </template>
 
 <script lang="ts">
