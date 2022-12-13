@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DetailView from '../views/DetailView.vue'
+import NewView from '../views/NewView.vue'
 import axios from "axios";
 import {el} from "vuetify/locale";
 import LoginView from "@/views/LoginView.vue";
@@ -22,6 +23,11 @@ const router = createRouter({
       path: '/test',
       name: 'test',
       component: DetailView,
+    },
+    {
+        path: '/details/new',
+        name: 'new',
+        component: NewView
     }
     /*{
       path: '/details/:id',
