@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import {ConvertToOverviewCard, OverviewModel} from "@/models/OverviewModel";
+import axios from "axios";
 
 export const useOverviewStore = defineStore('OverviewStore', {
     state: () => ({
@@ -7,7 +8,16 @@ export const useOverviewStore = defineStore('OverviewStore', {
         loading: Boolean(false),
     }),
     actions: {
-        loadAllOverviews() {
+        loadOverview(): void {
+            this.loading = true;
+            axios.get('/api/v1/profile').then((response) =>{
+                this.cards.push(ConvertToOverviewCard.toOverviewCard(response));
+            }).catch((error) =>{
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        loadDummyOverview() {
             this.loading = true;
             this.cards = [
                 ConvertToOverviewCard.toOverviewCard(

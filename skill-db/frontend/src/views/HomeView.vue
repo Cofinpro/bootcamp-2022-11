@@ -3,7 +3,7 @@
     <h1>Profilübersicht</h1>
     <h2>Übersicht über alle vorhandenen Profile</h2>
   </div>
-  <v-btn elevation="1" outlined>
+  <v-btn>
     Neues Profil erstellen
   </v-btn>
   <v-container>
@@ -26,7 +26,7 @@ export default {
   components: {OverviewCard},
   setup() {
     const overviewStore = useOverviewStore();
-    overviewStore.loadAllOverviews();
+    overviewStore.loadDummyOverview();
     const cardList = overviewStore.cards
     return {
       cardList,

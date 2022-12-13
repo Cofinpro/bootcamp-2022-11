@@ -1,40 +1,46 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DetailView from '../views/DetailView.vue'
 import axios from "axios";
 import {el} from "vuetify/locale";
 import LoginView from "@/views/LoginView.vue";
+import UserOverView from "@/views/UserOverView.vue"
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/login',
-      name: 'Login',
-      component: LoginView
-    },
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: DetailView,
-    }
-    /*{
-      path: '/details/:id',
-      name: 'userDetails',
-      component: UserDetails,
-      props: true,
-    },*/
-    /*{
-      path: '/logout',
-      name: 'logout',
-      component: Logout
-    }*/
-  ]
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: '/login',
+            name: 'Login',
+            component: LoginView
+        },
+        {
+            path: '/',
+            name: 'home',
+            component: HomeView
+        },
+        {
+            path: '/test',
+            name: 'test',
+            component: DetailView,
+        },
+        {
+            path: '/UserTest',
+            name: 'usertest',
+            component: UserOverView,
+        }
+        /*{
+        path: '/details/:id',
+        name: 'userDetails',
+        component: UserDetails,
+        props: true,
+      },*/
+        /*{
+          path: '/logout',
+          name: 'logout',
+          component: Logout
+        }*/
+    ]
 })
 
 /**
