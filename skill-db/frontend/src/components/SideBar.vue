@@ -1,30 +1,33 @@
 <template>
   <v-navigation-drawer
-      color="#F1F1F1"
-      elevation="4"
+      elevation="0"
       permanent
       expand-on-hover
       app
   >
-    <v-divider/>
     <div class="wrapper">
       <v-list nav dense>
-        <v-list-item link href="#">
-          <img src="@/assets/pictures/Logo.png" alt="A logo">
+        <v-list-item id="logo">
+          <img src="@/assets/pictures/Logo.png" alt="Cofinpro logo">
         </v-list-item>
-        <v-list-item link href="#">
+        <v-list-item link>
+          <v-icon size="small">mdi-account-box-multiple-outline</v-icon>
           <RouterLink to="/">Profilübersicht</RouterLink>
         </v-list-item>
-        <v-list-item>
+        <v-list-item link>
+          <v-icon size="small">mdi-account-box-outline</v-icon>
           <RouterLink to="/test">Detailtest</RouterLink>
         </v-list-item>
 <!--        <v-list-item>
           <RouterLink :to="{ name: 'userDetail', params: { id: id }}">Dein Profil</RouterLink>
         </v-list-item>-->
       </v-list>
-      <div>
-        <v-btn @click="logout">Logout</v-btn>
-      </div>
+          <div class="logout">
+            <v-btn @click="logout">
+              Ausloggen
+              <v-icon color="--primary-orange">mdi-exit-to-app</v-icon>
+            </v-btn>
+          </div>
     </div>
   </v-navigation-drawer>
 </template>

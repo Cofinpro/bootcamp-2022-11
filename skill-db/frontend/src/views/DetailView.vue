@@ -1,11 +1,21 @@
 <template>
   <v-container>
     <h1>{{ detail.getName() }}'s Profil</h1>
-    <h2>Hier kannst das Profil anschauen und bearbeiten!</h2>
-    <v-btn outlined color="red">
-      Edit
-      <v-icon color="white">mdi-email</v-icon>
-    </v-btn>
+    <h2>Hier kannst du das Profil anschauen und bearbeiten!</h2>
+
+    <v-menu>
+      <template v-slot:activator="{ toggleSettings }">
+        <v-btn @click="toggleSettings">
+          <v-icon color="--primary-orange">mdi-cog</v-icon>
+        </v-btn>
+      </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>Bearbeiten</v-list-item-title>
+          </v-list-item>
+        </v-list>
+    </v-menu>
+
     <h4>Name</h4>
     <v-chip>{{ detail.getName() }}</v-chip>
     <h4>Alter</h4>
@@ -38,8 +48,13 @@ export default {
     const detailStore = useDetailStore();
     detailStore.loadDemoDetails();
     const detail = detailStore.details;
+
+    let showSettings = false;
+    const toggleSettings = () => {
+      showSettings = !showSettings;
+    }
     return {
-      detail,
+      detail, showSettings, toggleSettings
     };
   }
 }
