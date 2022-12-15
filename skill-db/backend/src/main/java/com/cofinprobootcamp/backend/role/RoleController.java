@@ -1,12 +1,11 @@
 package com.cofinprobootcamp.backend.role;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/role")
+@RequestMapping(path = "/api/v1/roles")
 public class RoleController {
     private RoleService roleService;
 
@@ -19,12 +18,12 @@ public class RoleController {
         roleService.createRole(role);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "{id}")
     public void deleteRoleById(@PathVariable Long id){
         roleService.deleteRoleById(id);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "{id}")
     public RoleDTO getRoleById(@PathVariable Long id) {
         return roleService.getRoleById(id);
     }

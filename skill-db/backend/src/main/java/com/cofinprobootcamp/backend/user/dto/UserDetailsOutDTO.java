@@ -1,11 +1,12 @@
-package com.cofinprobootcamp.backend.user;
+package com.cofinprobootcamp.backend.user.dto;
 
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.role.Role;
+import com.cofinprobootcamp.backend.user.User;
 
 import java.time.LocalDate;
 
-public record UserDTO(
+public record UserDetailsOutDTO(
         Long id,
         String email,
         String firstName,
@@ -18,7 +19,7 @@ public record UserDTO(
         Profile profile
 ) {
 
-    public UserDTO(User user) {
+    public UserDetailsOutDTO(User user) {
         this(
                 user.getId(),
                 user.getEmail(),

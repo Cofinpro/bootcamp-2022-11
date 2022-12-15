@@ -1,36 +1,41 @@
 package com.cofinprobootcamp.backend.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cofinprobootcamp.backend.user.dto.UserDetailsOutDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/user")
+@RequestMapping(path = "/api/v1/users")
 public class UserController {
-    private UserService userService;
-    public UserController(UserService userService){
+    private final UserService userService;
+
+    public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @PostMapping(path = "")
     public void createUser(@RequestBody User user) {
         userService.createUser(user);
     }
 
     @DeleteMapping(path = "{id}")
-    public void deleteUserById(@PathVariable Long id){
+    public void deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
     }
 
     @GetMapping(path = "{id}")
-    public UserDTO getUserById(@PathVariable Long id) {
+    public UserDetailsOutDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @GetMapping(path = "")
-    public List<UserDTO> getAllUsers() {
+    public List<UserDetailsOutDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
-
+    @GetMapping(path = "/expertises")
+    public List<String> getAllExpertises() {
+        return userService.getAllExpertises();
+    }
 }
