@@ -1,6 +1,8 @@
-package com.cofinprobootcamp.backend.profile;
+package com.cofinprobootcamp.backend.profile.DTO;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.profile.Profile;
+
 import java.util.List;
 
 public record ProfileOutDTO(

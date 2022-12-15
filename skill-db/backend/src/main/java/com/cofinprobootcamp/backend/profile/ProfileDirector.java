@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.profile;
 
+import com.cofinprobootcamp.backend.profile.DTO.ProfileInDTO;
 import com.cofinprobootcamp.backend.user.User;
 
 public class ProfileDirector {

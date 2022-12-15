@@ -1,4 +1,6 @@
-package com.cofinprobootcamp.backend.profile;
+package com.cofinprobootcamp.backend.profile.DTO;
+
+import com.cofinprobootcamp.backend.profile.Profile;
 
 public record ProfileOverviewOutDTO(
         Long id,

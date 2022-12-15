@@ -1,5 +1,8 @@
 package com.cofinprobootcamp.backend.profile;
 
+import com.cofinprobootcamp.backend.profile.DTO.ProfileInDTO;
+import com.cofinprobootcamp.backend.profile.DTO.ProfileOutDTO;
+import com.cofinprobootcamp.backend.profile.DTO.ProfileOverviewOutDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
