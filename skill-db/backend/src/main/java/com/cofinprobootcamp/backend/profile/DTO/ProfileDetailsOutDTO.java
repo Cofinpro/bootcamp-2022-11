@@ -5,7 +5,7 @@ import com.cofinprobootcamp.backend.profile.Profile;
 
 import java.util.List;
 
-public record ProfileOutDTO(
+public record ProfileDetailsOutDTO(
         Long id,
         String jobTitle,
         String degree,
@@ -17,7 +17,7 @@ public record ProfileOutDTO(
         String birthDate
 ) {
 
-    public ProfileOutDTO(Profile profile) {
+    public ProfileDetailsOutDTO(Profile profile) {
         this(
                 profile.getId(),
                 profile.getJobTitle(),

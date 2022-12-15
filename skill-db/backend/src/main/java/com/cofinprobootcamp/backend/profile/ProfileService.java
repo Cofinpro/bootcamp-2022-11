@@ -1,7 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
-import com.cofinprobootcamp.backend.profile.DTO.ProfileInDTO;
-import com.cofinprobootcamp.backend.profile.DTO.ProfileOutDTO;
+import com.cofinprobootcamp.backend.profile.DTO.ProfileCreateInDTO;
+import com.cofinprobootcamp.backend.profile.DTO.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.DTO.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.user.UserRepository;
 import com.cofinprobootcamp.backend.user.User;
@@ -24,7 +24,7 @@ public class ProfileService {
         this.userRepository = userRepository;
     }
 
-    public void createProfileAndUpdateUser(ProfileInDTO profileInDTO) {
+    public void createProfileAndUpdateUser(ProfileCreateInDTO profileInDTO) {
         //TODO: replace RuntimeException by custom exception!
 
         User user = userRepository.findUserByEmail(profileInDTO.email())
@@ -43,7 +43,7 @@ public class ProfileService {
     }
     //changing email does not work since
     // id of user is not given to frontend here!
-    public void updateProfileAndUpdateUser(ProfileInDTO profileInDTO,
+    public void updateProfileAndUpdateUser(ProfileCreateInDTO profileInDTO,
                                            Long id) {
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
@@ -61,14 +61,14 @@ public class ProfileService {
         profileRepository.deleteById(id);
     }
 
-    public ProfileOutDTO getProfileById(Long id) {
+    public ProfileDetailsOutDTO getProfileById(Long id) {
         Optional<Profile> profileOptional = profileRepository.findById(id);
-        return new ProfileOutDTO(profileOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new ProfileDetailsOutDTO(profileOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
     //Not needed anymore(??)
-    public List<ProfileOutDTO> getAllProfiles() {
+    public List<ProfileDetailsOutDTO> getAllProfiles() {
         List<Profile> profiles = profileRepository.findAll();
-        return profiles.stream().map(ProfileOutDTO::new).toList();
+        return profiles.stream().map(ProfileDetailsOutDTO::new).toList();
     }
 
     public List<ProfileOverviewOutDTO> getAllOverviewDTOs() {

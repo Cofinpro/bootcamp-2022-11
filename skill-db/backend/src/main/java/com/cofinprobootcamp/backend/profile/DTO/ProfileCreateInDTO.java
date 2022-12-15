@@ -7,7 +7,7 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public record ProfileInDTO(
+public record ProfileCreateInDTO(
         @NotBlank
         String firstName,
         @NotBlank
