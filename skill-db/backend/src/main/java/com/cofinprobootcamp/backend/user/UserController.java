@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,12 +22,12 @@ public class UserController {
     }
 
     @GetMapping(path = "{id}")
-    public UserDTO getUserById(@PathVariable Long id) {
+    public UserOutDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @GetMapping(path = "")
-    public List<UserDTO> getAllUsers() {
+    public List<UserOutDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 

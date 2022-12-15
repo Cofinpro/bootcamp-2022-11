@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.profile;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,8 +7,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/v1/profile")
 public class ProfileController {
-    //Field Injection is not recommended, you can not unit test this!
-    //Better to use Constructor based injection
+
     private ProfileService profileService;
 
     public ProfileController(ProfileService profileService) {
@@ -17,13 +15,14 @@ public class ProfileController {
     }
 
     @PostMapping(path = "")
-    public void createProfile(@RequestBody Profile profile) {
-        profileService.createProfile(profile);
+    public void createProfile(@RequestBody ProfileInDTO profileInDTO) {
+        profileService.createProfileAndUpdateUser(profileInDTO);
     }
 
-    @PutMapping(path = "")
-    public void updateProfile(@RequestBody Profile profile) {
-        profileService.updateProfile(profile);
+    @PutMapping(path = "/{id}")
+    public void updateProfile(@PathVariable Long id,
+                              @RequestBody ProfileInDTO profileInDTO) {
+        profileService.updateProfileAndUpdateUser(profileInDTO,id);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -32,13 +31,13 @@ public class ProfileController {
     }
 
     @GetMapping(path = "/{id}")
-    public ProfileDTO getProfile(@PathVariable Long id) {
+    public ProfileOutDTO getProfile(@PathVariable Long id) {
         return profileService.getProfileById(id);
     }
 
     //Access Point not tested bc I don't know how with JWT
     @GetMapping(path = "")
-    public List<OverviewDTO> getAllProfileOverviews() {
+    public List<ProfileOverviewOutDTO> getAllProfileOverviews() {
         return profileService.getAllOverviewDTOs();
     }
 }

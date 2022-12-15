@@ -4,12 +4,15 @@ import com.cofinprobootcamp.backend.enums.UserRights;
 import com.cofinprobootcamp.backend.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
 
     @Id

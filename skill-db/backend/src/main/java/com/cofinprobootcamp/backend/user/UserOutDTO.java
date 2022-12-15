@@ -5,28 +5,26 @@ import com.cofinprobootcamp.backend.role.Role;
 
 import java.time.LocalDate;
 
-public record UserDTO(
-        Long id,
+public record UserOutDTO(
         String email,
         String firstName,
         String lastName,
+        String phoneNumber,
         LocalDate birthDate,
         int age,
-        String jobTitle,
         boolean locked,
         Role role,
         Profile profile
 ) {
 
-    public UserDTO(User user) {
+    public UserOutDTO(User user) {
         this(
-                user.getId(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
+                user.getPhoneNumber(),
                 user.getBirthDate(),
                 user.getAge(),
-                user.getJobTitle(),
                 user.isLocked(),
                 user.getRole(),
                 user.getProfile());

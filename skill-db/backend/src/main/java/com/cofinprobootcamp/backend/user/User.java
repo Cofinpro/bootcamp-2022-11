@@ -6,31 +6,32 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Pattern;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
-// Warum brauchen wir überhaupt Id wenn wir email haben, die unique sein muss? Diskutieren morgen bzw einfach raus
-// (Im frontend) brauchen wir die auf jeden fall nicht
-// Is locked somehow implemented in the security functions?
-// Do we even need age variable if getter doesnt even use it? raus
-// If removed, the getter should ofc not be named getXXX
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "AppUser")
 public class User {
 
     @Id
     @GeneratedValue
-    private Long id;
-    /**
-     * Unique identifier for each user
-     */
+    Long id;
+
+    //TODO: Schönere exception werfen falls email schon in use
     @NotBlank
     @Column(unique=true)
+    @Pattern(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*" +
+                    "@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")
     private String email;
+    @NotBlank
+    @Pattern(regexp = "\\d+")
+    private String phoneNumber;
     @NotBlank
     private String firstName;
     @NotBlank
@@ -38,8 +39,8 @@ public class User {
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
-    @NotNull
-    private String jobTitle;
+    //TODO: Jobtitle hier raus??? der ist ja schon im profile
+
     /**
      * Locked users can't log in neither commit any actions
      */

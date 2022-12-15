@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,14 +19,14 @@ public class UserService {
         userRepository.saveAndFlush(user);
     }
 
-    public UserDTO getUserById(Long id) {
+    public UserOutDTO getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
-        return new UserDTO(userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new UserOutDTO(userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
-    public List<UserDTO> getAllUsers() {
+    public List<UserOutDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map(UserDTO::new).toList();
+        return users.stream().map(UserOutDTO::new).toList();
     }
 
     public void deleteUserById(Long id) {

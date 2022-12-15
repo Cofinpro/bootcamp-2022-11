@@ -1,21 +1,21 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
-import com.cofinprobootcamp.backend.user.User;
-
 import java.util.List;
 
-public record ProfileDTO(
+public record ProfileOutDTO(
         Long id,
         String jobTitle,
         String degree,
         Expertises primaryExpertise,
         String referenceText,
         List<String> skills,
-        User owner
+        String firstName,
+        String lastName,
+        String birthDate
 ) {
 
-    public ProfileDTO(Profile profile) {
+    public ProfileOutDTO(Profile profile) {
         this(
                 profile.getId(),
                 profile.getJobTitle(),
@@ -24,6 +24,12 @@ public record ProfileDTO(
                 profile.getReferenceText(),
                 profile.getSkills(),
                 profile.getOwner()
+                        .getFirstName(),
+                profile.getOwner()
+                        .getLastName(),
+                profile.getOwner()
+                        .getBirthDate()
+                        .toString() //ISO Format as specified  in frontend, String parsed in frontend
         );
     }
 
