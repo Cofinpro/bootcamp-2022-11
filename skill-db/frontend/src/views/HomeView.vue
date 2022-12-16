@@ -40,7 +40,7 @@ export default {
   components: {OverviewCard, ButtonWithTooltip},
   setup() {
     const overviewStore = useOverviewStore();
-    overviewStore.loadDummyOverview();
+    overviewStore.loadOverview();
     const cardList = overviewStore.cards
     return {
       cardList,

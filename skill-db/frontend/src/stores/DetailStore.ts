@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {ConvertToOverviewCard, OverviewModel} from "@/models/OverviewModel";
 import {ConvertToDetailModel, DetailModel} from "@/models/DetailModel";
-import axios from "axios";
+import axios from "@/axios";
 
 export const useDetailStore = defineStore('detailStore',{
     state: () => ({
