@@ -3,9 +3,7 @@ a {
     color: grey;
 }
 
-#logo {
-    display: flex;
-    justify-content: center;
+.logo {
     margin-top: 40%;
     margin-bottom: 30px;
 }

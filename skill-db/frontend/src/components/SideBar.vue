@@ -7,7 +7,7 @@
   >
     <!-- <div class="wrapper"> -->
     <v-list nav dense>
-      <v-list-item id="logo">
+      <v-list-item class="logo d-flex justify-center">
         <img src="@/assets/images/Logo.png" alt="Cofinpro logo">
       </v-list-item>
       <v-list-item link>
@@ -25,16 +25,16 @@
 
     <template v-slot:append>
       <div class="ma-10 pa-5">
-        <v-btn elevation="0">
+        <v-btn elevation="0" @click="logout">
           LOGOUT
-          <v-icon class="ml-3" @click="logout">mdi-exit-to-app</v-icon>
+          <v-icon class="ml-3">mdi-exit-to-app</v-icon>
         </v-btn>
       </div>
     </template>
   </v-navigation-drawer>
 </template>
 
-<script type="text/babel">
+<script>
 import {useAuthStore} from "@/stores/auth";
 
 export default {

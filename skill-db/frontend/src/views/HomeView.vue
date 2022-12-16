@@ -5,21 +5,23 @@
   </div>
 
   <div class="searchAndButtons d-flex justify-space-between align-center">
-    <v-card id="searchbar" color="grey" width="45%" height="20%">Searchbar</v-card>
-    <div class="buttons">
+    <v-card class="searchbar d-flex justify-center" color="grey" width="45%" height="20%">Searchbar</v-card>
+    <div class="d-flex justify-space-between">
       <ButtonWithTooltip tooltip="Liste exportieren" icon="mdi-file-export" @clicked="exportProfiles"/>
       <ButtonWithTooltip tooltip="Neues Profil erstellen" icon="mdi-plus-thick" @clicked="createProfile"/>
-      <ButtonWithTooltip tooltip="Filter" icon="mdi-filter" @click="filterProfiles"/>
+      <ButtonWithTooltip tooltip="Filter" icon="mdi-filter" @clicked="filterProfiles"/>
     </div>
   </div>
 
   <div class="activeFilter">
     <h5>Aktive Filter:</h5>
-    <v-chip class="mt-2 mr-3">Filter1</v-chip>
-    <v-chip class="mt-2">Filter2</v-chip>
+    <div class="mt-2">
+      <v-chip class="mr-3">Filter1</v-chip>
+      <v-chip>Filter2</v-chip>
+    </div>
   </div>
 
-  <v-container class="cards">
+  <v-container class="cards mt-2">
     <v-row>
       <v-col v-for="card in cardList" :key="card.getId()" lg="3" md="4" sm="6" xs ="12">
         <OverviewCard :id="card.getId()"
@@ -41,6 +43,7 @@ export default {
   components: {OverviewCard, ButtonWithTooltip},
   setup() {
     const overviewStore = useOverviewStore();
+    /*overviewStore.loadOverview();*/
     overviewStore.loadDummyOverview();
     const cardList = overviewStore.cards
     return {
@@ -53,7 +56,7 @@ export default {
       router.push(`/details/new`);
     },
     exportProfiles() {
-      console.log("Here you can export the shown profile to xlsx")
+      console.log("Here you can export the shown profile to xlsx");
     },
     filterProfiles() {
       console.log("Start filtering.");
