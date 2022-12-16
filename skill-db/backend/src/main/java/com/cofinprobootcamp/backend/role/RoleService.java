@@ -11,7 +11,6 @@ import java.util.Optional;
 @Service
 public class RoleService {
 
-    @Autowired
     private RoleRepository roleRepository;
 
     public RoleService(RoleRepository roleRepository) {
@@ -22,10 +21,6 @@ public class RoleService {
         roleRepository.saveAndFlush(role);
     }
 
-    public void deleteRole(Role role) {
-        roleRepository.delete(role);
-    }
-
     public RoleDTO getRoleById(Long id) {
         Optional<Role> roleOptional = roleRepository.findById(id);
         return new RoleDTO(roleOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
@@ -34,5 +29,9 @@ public class RoleService {
     public List<RoleDTO> getAllRoles() {
         List<Role> roles = roleRepository.findAll();
         return roles.stream().map(RoleDTO::new).toList();
+    }
+
+    public void deleteRoleById(Long id) {
+        roleRepository.deleteById(id);
     }
 }

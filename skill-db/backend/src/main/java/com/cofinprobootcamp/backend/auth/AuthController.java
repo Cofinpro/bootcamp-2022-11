@@ -21,7 +21,7 @@ public class AuthController {
     public AuthController(TokenService tokenService, AuthenticationManager authenticationManager) {
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
-    }
+}
 
     /**
      * Handles the login. In case the user credentials are valid, it returns an object containing

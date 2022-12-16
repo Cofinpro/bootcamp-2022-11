@@ -1,6 +1,10 @@
 package com.cofinprobootcamp.backend.profile;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
+import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
+import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
+import com.cofinprobootcamp.backend.user.UserRepository;
+import com.cofinprobootcamp.backend.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,28 +15,53 @@ import java.util.Optional;
 @Service
 public class ProfileService {
 
-    @Autowired
     private ProfileRepository profileRepository;
+    private UserRepository userRepository;
 
-    public ProfileService(ProfileRepository profileRepository) {
+    public ProfileService(ProfileRepository profileRepository,
+    UserRepository userRepository) {
         this.profileRepository = profileRepository;
+        this.userRepository = userRepository;
     }
 
-    public void createProfile(Profile profile) {
+    public void createProfileAndUpdateUser(ProfileCreateInDTO profileInDTO) {
+        //TODO: replace RuntimeException by custom exception!
+
+        User user = userRepository.findUserByEmail(profileInDTO.email())
+                .orElseThrow(RuntimeException::new);
+        Profile profile = ProfileDirector.DTOToEntity(profileInDTO,user);
+        profile.setOwner(user);
+        profile = profileRepository.saveAndFlush(profile);
+        user.setProfile(profile);
+        userRepository.saveAndFlush(user);
+    }
+    //changing email does not work since
+    // id of user is not given to frontend here!
+    public void updateProfileAndUpdateUser(ProfileCreateInDTO profileInDTO,
+                                           Long id) {
+        User user = userRepository.findUserByEmail(profileInDTO.email())
+                .orElseThrow(RuntimeException::new);
+        Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user);
+        profile.setId(id);
         profileRepository.saveAndFlush(profile);
     }
 
-    public void deleteProfile(Profile profile) {
-        profileRepository.delete(profile);
+    public void deleteProfileById(Long id) {
+        profileRepository.deleteById(id);
     }
 
-    public ProfileDTO getProfileById(Long id) {
+    public ProfileDetailsOutDTO getProfileById(Long id) {
         Optional<Profile> profileOptional = profileRepository.findById(id);
-        return new ProfileDTO(profileOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new ProfileDetailsOutDTO(profileOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+    }
+    //Not needed anymore(??)
+    public List<ProfileDetailsOutDTO> getAllProfiles() {
+        List<Profile> profiles = profileRepository.findAll();
+        return profiles.stream().map(ProfileDetailsOutDTO::new).toList();
     }
 
-    public List<ProfileDTO> getAllProfiles() {
+    public List<ProfileOverviewOutDTO> getAllOverviewDTOs() {
         List<Profile> profiles = profileRepository.findAll();
-        return profiles.stream().map(ProfileDTO::new).toList();
+        return profiles.stream().map(ProfileOverviewOutDTO::new).toList();
     }
 }

@@ -5,11 +5,12 @@ import com.cofinprobootcamp.backend.enums.UserRights;
 import java.util.List;
 
 public record RoleDTO(
+        Long id,
         String name,
         List<UserRights> userRights
 ) {
 
     public RoleDTO(Role role) {
-        this(role.getName(), role.getUserRights());
+        this(role.getId(), role.getName(), role.getUserRights());
     }
 }

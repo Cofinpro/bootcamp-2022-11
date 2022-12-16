@@ -1,37 +1,47 @@
 package com.cofinprobootcamp.backend.profile;
 
-import com.cofinprobootcamp.backend.user.User;
-import com.cofinprobootcamp.backend.user.UserDTO;
-import com.cofinprobootcamp.backend.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
+import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
+import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/profile")
+@CrossOrigin
+@RequestMapping(path = "/api/v1/profiles")
 public class ProfileController {
+    //Field Injection is not recommended, you can not unit test this!
+    //Better to use Constructor based injection
+    private final ProfileService profileService;
 
-    @Autowired
-    private ProfileService profileService;
+    public ProfileController(ProfileService profileService) {
+        this.profileService = profileService;
+    }
 
     @PostMapping(path = "")
-    public void createProfile(@RequestBody Profile profile) {
-        profileService.createProfile(profile);
+    public void createProfile(@RequestBody ProfileCreateInDTO profileInDTO) {
+        profileService.createProfileAndUpdateUser(profileInDTO);
     }
 
-    @DeleteMapping(path = "")
-    public void deleteProfile(@RequestBody Profile profile){
-        profileService.deleteProfile(profile);
+    @PutMapping(path = "/{id}")
+    public void updateProfile(@PathVariable Long id,
+                              @RequestBody ProfileCreateInDTO profileInDTO) {
+        profileService.updateProfileAndUpdateUser(profileInDTO,id);
     }
 
-    @GetMapping(path = "/")
-    public ProfileDTO getProfile(@RequestParam Long id) {
+    @DeleteMapping(path = "/{id}")
+    public void deleteProfileById(@PathVariable Long id){
+        profileService.deleteProfileById(id);
+    }
+
+    @GetMapping(path = "/{id}")
+    public ProfileDetailsOutDTO getProfile(@PathVariable Long id) {
         return profileService.getProfileById(id);
     }
 
     @GetMapping(path = "")
-    public List<ProfileDTO> getAllProfiles() {
-        return profileService.getAllProfiles();
+    public List<ProfileOverviewOutDTO> getAllProfileOverviews() {
+        return profileService.getAllOverviewDTOs();
     }
 }
