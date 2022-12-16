@@ -1,4 +1,4 @@
-package com.cofinprobootcamp.backend.profile.DTO;
+package com.cofinprobootcamp.backend.profile.dto;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.fasterxml.jackson.annotation.JsonFormat;
