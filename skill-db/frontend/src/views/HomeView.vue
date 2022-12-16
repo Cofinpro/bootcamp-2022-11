@@ -67,3 +67,21 @@ export default {
   }
 }
 </script>
+
+<style>
+body {
+  margin: 5%;
+}
+
+h4 {
+  margin-top: 1%;
+}
+
+.searchAndButtons {
+  margin-top: 4%;
+}
+
+.activeFilter {
+  margin-top: 1%;
+}
+</style>

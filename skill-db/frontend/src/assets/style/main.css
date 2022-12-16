@@ -1,7 +1,6 @@
 @import "button/button.css";
 @import "sidebar.css";
 @import "button/tooltip.css";
-@import "homeview.css";
 
 :root{
     --primary-black: #3a3a3a;
