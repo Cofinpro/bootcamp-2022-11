@@ -33,14 +33,14 @@ public enum Expertises {
     UNDEFINED("undefined");
 
     /*
-    Zwischengespeichertes Array, da Expertises.values() in public Methoden benötigt wird
-    und sonst bei jedem Call neu konstruiert werden müsste.
+     * Zwischengespeichertes Array, da Expertises.values() in public Methoden benötigt wird
+     * und sonst bei jedem Call neu konstruiert werden müsste.
      */
     private static final Expertises[] values;
 
     /*
-    Statische Initialisierung von values über interne Enum Methode values().
-    Das nach außen gegebene Array enthält den UNDEFINED Wert nicht.
+     * Statische Initialisierung von values über interne Enum Methode values().
+     * Das nach außen gegebene Array enthält den UNDEFINED Wert nicht.
      */
     static {
         Expertises[] tmp = Expertises.values();
@@ -59,8 +59,8 @@ public enum Expertises {
     // Public enum instance methods
 
     /*
-    toString() ist automatisch implementiert und liefert den Namen
-    der Enum-Konstante als String.
+     * toString() ist automatisch implementiert und liefert den Namen
+     * der Enum-Konstante als String.
      */
 
     /**

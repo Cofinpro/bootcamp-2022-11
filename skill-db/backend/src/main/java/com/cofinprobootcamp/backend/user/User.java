@@ -2,6 +2,7 @@ package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.role.Role;
+import com.cofinprobootcamp.backend.utils.Regex;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -32,10 +33,10 @@ public class User {
     //TODO: Schönere exception werfen falls email schon in use
     @NotBlank
     @Column(unique=true)
-    @Pattern(regexp = "[\\w.]+@\\w+\\.\\w+")
+    @Pattern(regexp = Regex.VALID_MAIL_ADDRESS)
     private String email;
 
-    /**
+    /*
      * Locked users can't log in neither commit any actions
      */
     private boolean locked;

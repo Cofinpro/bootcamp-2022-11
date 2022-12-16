@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile.dto;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.utils.Regex;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 
@@ -23,11 +24,11 @@ public record ProfileCreateInDTO(
         @NotEmpty
         List<String> skills,
         @NotBlank
-        @Pattern(regexp = "\\d{11,13}")
+        @Pattern(regexp = Regex.VALID_PHONE_NUMBER)
         String phoneNumber,
         @NotBlank
         @Email
-        @Pattern(regexp = "[\\w.]+@\\w+\\.\\w+")
+        @Pattern(regexp = Regex.VALID_MAIL_ADDRESS)
         String email,
         @NotNull
         @JsonFormat(pattern = "yyyy-MM-dd")
