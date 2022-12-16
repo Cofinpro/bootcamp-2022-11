@@ -78,7 +78,7 @@
 
 <script>
 import {useAuthStore} from "@/stores/auth";
-import {LoginRequest} from "@/model/LoginRequest";
+import {LoginRequest} from "@/models/LoginRequest";
 
 export default {
   name: "LoginView",

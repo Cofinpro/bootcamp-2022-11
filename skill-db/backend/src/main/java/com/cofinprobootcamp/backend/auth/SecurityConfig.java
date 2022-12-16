@@ -79,6 +79,10 @@ public class SecurityConfig {
     }*/
 
 
+    /**
+     * Creation of InMemoryUser for authentication
+     * @return
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return new InMemoryUserDetailsManager(
@@ -110,6 +114,10 @@ public class SecurityConfig {
         };
     }
 
+    /**
+     * Config for Cors-Policy
+     * @return
+     */
     private CorsConfigurationSource getCorsConfiguration() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
