@@ -7,7 +7,7 @@
   >
     <!-- <div class="wrapper"> -->
     <v-list nav dense>
-      <v-list-item id="logo">
+      <v-list-item class="logo d-flex justify-center">
         <img src="@/assets/images/Logo.png" alt="Cofinpro logo">
       </v-list-item>
       <RouterLink to="/">
@@ -40,7 +40,7 @@
   </v-navigation-drawer>
 </template>
 
-<script type="text/babel">
+<script>
 import {useAuthStore} from "@/stores/auth";
 
 export default {
