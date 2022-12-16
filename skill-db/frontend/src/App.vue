@@ -14,6 +14,11 @@ import SideBar from './components/SideBar.vue'
 import router from "@/router";
 export default {
   components: {SideBar},
+  watch: {
+    '$route' (to, from) {
+      document.title = to.meta.title || 'Website'
+    }
+  }
 }
 </script>
 
