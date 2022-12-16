@@ -10,24 +10,30 @@
       <v-list-item id="logo">
         <img src="@/assets/images/Logo.png" alt="Cofinpro logo">
       </v-list-item>
-      <v-list-item link>
-        <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-multiple-outline</v-icon>
-        <RouterLink to="/">Profilübersicht</RouterLink>
-      </v-list-item>
-      <v-list-item link>
-        <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-outline</v-icon>
-        <RouterLink to="/test">Detailtest</RouterLink>
-      </v-list-item>
-      <!--        <v-list-item link>
-                <RouterLink :to="{ name: 'userDetail', params: { id: id }}">Dein Profil</RouterLink>
-              </v-list-item>-->
+      <RouterLink to="/">
+        <v-list-item link>
+          <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-multiple-outline</v-icon>
+          Profilübersicht
+        </v-list-item>
+      </RouterLink>
+      <RouterLink to="/test">
+        <v-list-item link>
+          <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-outline</v-icon>
+          Detailtest
+        </v-list-item>
+      </RouterLink>
+      <!-- <RouterLink :to="{ name: 'userDetail', params: { id: id }}">
+             <v-list-item link>
+                Dein Profil
+              </v-list-item>
+           </RouterLink>-->
     </v-list>
 
     <template v-slot:append>
       <div class="ma-10 pa-5">
-        <v-btn elevation="0">
+        <v-btn elevation="0" @click="logout">
           LOGOUT
-          <v-icon class="ml-3" @click="logout">mdi-exit-to-app</v-icon>
+          <v-icon class="ml-3">mdi-exit-to-app</v-icon>
         </v-btn>
       </div>
     </template>
