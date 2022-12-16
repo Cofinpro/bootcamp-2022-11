@@ -1,53 +1,97 @@
 <template>
-  <v-container>
-    <h1>{{ detail.getFirstName() }}'s Profil</h1>
-    <h2>Hier kannst du das Profil anschauen und bearbeiten!</h2>
-
-    <v-menu :close-on-content-click="false">
-      <template v-slot:activator="{ props }">
-        <v-btn v-bind="props"
-               min-width="40px" width="40px" height="35px"
-               class="pa-0" elevation="0">
-          <v-icon size="large">
-            mdi-cog
-          </v-icon>
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item link>
-          <v-list-item-title @click="toggleEdit"> Bearbeiten </v-list-item-title>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-title @click="deleteProfile"> Löschen </v-list-item-title>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-title @click="lockProfile"> Sperren </v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-
-
-    <h4>Name</h4>
-    <v-chip>{{ detail.getFirstName() }}</v-chip>
-    <h4>Alter</h4>
-    <v-chip>{{ detail.getAge() }}</v-chip>
-    <h4>Jobtitel</h4>
-    <v-chip>{{ detail.getJobTitle() }}</v-chip>
-    <h4>Primärkompetenz</h4>
-    <v-chip>{{ detail.getPrimarySkill() }}</v-chip>
-    <h4>Technologien</h4>
-    <ul>
-      <li v-for="technology in detail.getTechnologies()">
-        <v-chip>{{ technology }}</v-chip>
-      </li>
-    </ul>
-    <h4>Referenzen</h4>
-    <ul>
-      <li v-for="reference in detail.getReferences()">
-        <v-chip>{{ reference }}</v-chip>
-      </li>
-    </ul>
-  </v-container>
+  <v-row class="header">
+    <v-col cols="3">
+      <div class="icon"></div>
+    </v-col>
+    <v-col class="d-flex flex-column header_content">
+      <v-row class="h-100">
+        <v-col>
+          <h1> {{ detail.getFirstName() }} {{ detail.getLastName() }}</h1>
+          <h3>{{ detail.getJobTitle() }}, {{ detail.getAge() }}</h3>
+        </v-col>
+        <v-col cols="1">
+          <v-menu :close-on-content-click="false">
+            <template v-slot:activator="{ props }">
+              <v-btn v-bind="props"
+                     min-width="40px" width="40px" height="35px"
+                     class="pa-0" elevation="0">
+                <v-icon size="large">
+                  mdi-cog
+                </v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item link>
+                <v-list-item-title @click="toggleEdit"> Bearbeiten</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title @click="deleteProfile"> Löschen</v-list-item-title>
+              </v-list-item>
+              <v-list-item link>
+                <v-list-item-title @click="lockProfile"> Sperren</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-col>
+      </v-row>
+      <div class="d-flex w-50 justify-space-between">
+      <div class="d-flex flex-column">
+        <div>
+          <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-email</v-icon>
+          <p class="div-16">max.mustermann@cofinpro.de</p>
+        </div>
+        <div>
+          <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-phone</v-icon>
+          <p class="div-17">+49 176 65544 000</p>
+        </div>
+      </div>
+      <div class ="d-flex flex-column">
+        <div>
+          <!--              <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-crown-outline</v-icon>-->
+          <p class="div-19"> {{ detail.getPrimarySkill() }}</p>
+        </div>
+        <div>
+          <!--              <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-cake-variant-outline</v-icon>-->
+          <p class="div-20"> {{ detail.getBirthDate() }}</p>
+        </div>
+      </div>
+      </div>
+    </v-col>
+  </v-row>
+  <v-row class="div-22">
+    <v-col cols="3">
+      <div class="div-23">
+        <div class="div-24">
+          <div class="block_title">Skills</div>
+          <div class="block_content">
+            <ul>
+              <li v-for="skill in detail.getTechnologies()">
+                <v-chip>{{ skill }}</v-chip>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="div-26">
+          <div class="block_title">Abschluss</div>
+          <div class="block_content">
+            B.Sc. Wirtschaftinformatik
+          </div>
+        </div>
+      </div>
+    </v-col>
+    <v-col>
+      <div class="div-28">
+        <div class="block_title">Referenzen</div>
+        <div class="block_content">
+          <ul>
+            <li v-for="reference in detail.getReferences()">
+              <v-chip>{{ reference }}</v-chip>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -86,7 +130,102 @@ export default {
 </script>
 
 <style scoped>
-.v-chip {
-  margin-bottom: 10px;
+.header {
+  display: flex;
+  max-width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 48px 24px;
+  background-color: rgba(255, 255, 255, 1);
 }
+
+.header_content {
+  height: 256px;
+}
+
+.icon {
+  display: flex;
+  height: 256px;
+  border-radius: 12px;
+  background-color: rgba(196, 196, 196, 1);
+}
+
+.div-22 {
+  display: flex;
+}
+
+.div-23 {
+  display: flex;
+  flex-direction: column;
+  max-width: 392px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.div-24 {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 8px;
+  padding: 8px 12px;
+  border-color: rgba(217, 217, 217, 1);
+  border-width: 1px;
+  border-style: solid;
+  background-color: rgba(255, 255, 255, 1);
+  width: 100%;
+}
+
+.block_title {
+  max-width: 100%;
+  color: rgba(0, 0, 0, 1);
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 4px;
+  text-align: left;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+}
+
+.div-26 {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 24px;
+  border-radius: 8px;
+  padding: 8px 12px;
+  border-color: rgba(217, 217, 217, 1);
+  border-width: 1px;
+  border-style: solid;
+  background-color: rgba(255, 255, 255, 1);
+  width: 100%;
+}
+
+.block_content {
+  max-width: 100%;
+  align-self: stretch;
+  width: 100%;
+  margin-top: 12px;
+  color: rgba(58, 58, 58, 1);
+  font-size: 16px;
+  line-height: 20px;
+  text-align: left;
+  font-family: "Poppins", sans-serif;
+}
+
+.div-28 {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 8px;
+  padding: 8px 12px;
+  width: 100%;
+  height: 100%;
+}
+
 </style>
