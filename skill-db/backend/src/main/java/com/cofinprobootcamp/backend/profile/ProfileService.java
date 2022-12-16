@@ -3,6 +3,7 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
+import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.skills.SkillRepository;
 import com.cofinprobootcamp.backend.user.UserRepository;
@@ -37,7 +38,7 @@ public class ProfileService {
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
         Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
-        Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user, skillSet);
+        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet);
         profile.setOwner(user);
         profile = profileRepository.saveAndFlush(profile);
         user.setProfile(profile);
@@ -46,13 +47,14 @@ public class ProfileService {
 
     //changing email does not work since
     // id of user is not given to frontend here!
-
-    public void updateProfile(ProfileCreateInDTO profileInDTO,
+ // --> should give back "outer id" of profile and update that way!
+    public void updateProfile(ProfileUpdateInDTO profileInDTO,
                               Long id) {
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
         Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
-        Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user, skillSet);
+        Profile current = user.getProfile();
+        Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet);
         profile.setId(id);
         profileRepository.saveAndFlush(profile);
     }

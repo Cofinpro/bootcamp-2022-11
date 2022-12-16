@@ -16,7 +16,7 @@ public class SkillController {
         return skillRepository
                 .findAll()
                 .stream()
-                .map(skill -> skill.getName())
+                .map(Skill::getName)
                 .toList();
     }
 }

@@ -5,7 +5,7 @@ package com.cofinprobootcamp.backend.config;
  * that may be used to analyze input {@code String}s send to a web end point.
  *
  * @author l-rehm
- * @version 1.0
+ * @version 1.1
  */
 public final class Regex {
     /*
