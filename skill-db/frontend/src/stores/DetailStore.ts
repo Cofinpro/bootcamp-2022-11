@@ -25,7 +25,7 @@ export const useDetailStore = defineStore('detailStore',{
         },
         loadDetailsById(id: number){
             this.loading = true;
-            axios.get(`/api/v1/profile/${id}`).then((response) =>{
+            axios.get(`/api/v1/profiles/${id}`).then((response) =>{
                 this.details = ConvertToDetailModel.toDetail(response);
             }).catch((error) => {
                 console.log(error);
