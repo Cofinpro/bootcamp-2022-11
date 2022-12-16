@@ -22,4 +22,7 @@ public class Skill {
     private String name;
     @ManyToMany(mappedBy = "skillSet")
     Set<Profile> profileSet;
+    public Skill(String name) {
+        this.name = name;
+    }
 }

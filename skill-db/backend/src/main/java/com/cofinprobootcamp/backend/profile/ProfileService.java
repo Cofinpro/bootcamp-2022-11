@@ -11,10 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
@@ -22,6 +22,7 @@ public class ProfileService {
     private ProfileRepository profileRepository;
     private UserRepository userRepository;
     private SkillRepository skillRepository;
+
     public ProfileService(ProfileRepository profileRepository,
                           UserRepository userRepository,
                           SkillRepository skillRepository) {
@@ -30,38 +31,30 @@ public class ProfileService {
         this.skillRepository = skillRepository;
     }
 
-    public void createProfileAndUpdateUser(ProfileCreateInDTO profileInDTO) {
+    public void createProfileAndAssignToUser(ProfileCreateInDTO profileInDTO) {
         //TODO: replace RuntimeException by custom exception!
 
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
-        Set<Skill> skillSet = new HashSet<>();
-        for (String name : profileInDTO.skills()) {
-            Optional<Skill> foundSkill = skillRepository.findSkillByName(name);
-            if (foundSkill.isPresent()) {
-                skillSet.add(foundSkill.get());
-            } else {
-               Skill newSkill = new Skill();
-               newSkill.setName(name);
-               skillSet.add(skillRepository.save(newSkill));
-            }
-        }
-        Profile profile = ProfileDirector.DTOToEntity(profileInDTO,user, skillSet);
+        Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
+        Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user, skillSet);
         profile.setOwner(user);
         profile = profileRepository.saveAndFlush(profile);
         user.setProfile(profile);
         userRepository.saveAndFlush(user);
     }
+
     //changing email does not work since
     // id of user is not given to frontend here!
-    public void updateProfileAndUpdateUser(ProfileCreateInDTO profileInDTO,
-                                           Long id) {
+
+    public void updateProfile(ProfileCreateInDTO profileInDTO,
+                              Long id) {
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
-    /*    Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user);
+        Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
+        Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user, skillSet);
         profile.setId(id);
         profileRepository.saveAndFlush(profile);
-     */
     }
 
     public void deleteProfileById(Long id) {
@@ -72,7 +65,9 @@ public class ProfileService {
         Optional<Profile> profileOptional = profileRepository.findById(id);
         return new ProfileDetailsOutDTO(profileOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
+
     //Not needed anymore(??)
+
     public List<ProfileDetailsOutDTO> getAllProfiles() {
         List<Profile> profiles = profileRepository.findAll();
         return profiles.stream().map(ProfileDetailsOutDTO::new).toList();
@@ -81,5 +76,15 @@ public class ProfileService {
     public List<ProfileOverviewOutDTO> getAllOverviewDTOs() {
         List<Profile> profiles = profileRepository.findAll();
         return profiles.stream().map(ProfileOverviewOutDTO::new).toList();
+    }
+
+    private Set<Skill> findSkillIfExistsElseCreateSkill(List<String> skillInputs) {
+        return skillInputs
+                .stream()
+                .map(name -> {
+                    Optional<Skill> foundSkill = skillRepository.findSkillByName(name);
+                    return foundSkill.orElse(new Skill(name));
+                })
+                .collect(Collectors.toSet());
     }
 }

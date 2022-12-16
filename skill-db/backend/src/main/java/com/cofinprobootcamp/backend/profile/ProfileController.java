@@ -20,13 +20,13 @@ public class ProfileController {
 
     @PostMapping(path = "")
     public void createProfile(@RequestBody ProfileCreateInDTO profileInDTO) {
-        profileService.createProfileAndUpdateUser(profileInDTO);
+        profileService.createProfileAndAssignToUser(profileInDTO);
     }
 
     @PutMapping(path = "/{id}")
     public void updateProfile(@PathVariable Long id,
                               @RequestBody ProfileCreateInDTO profileInDTO) {
-        profileService.updateProfileAndUpdateUser(profileInDTO,id);
+        profileService.updateProfile(profileInDTO,id);
     }
 
     @DeleteMapping(path = "/{id}")
