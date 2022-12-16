@@ -1,4 +1,4 @@
-package com.cofinprobootcamp.backend.user;
+package com.cofinprobootcamp.backend.user.dto;
 
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.role.Role;

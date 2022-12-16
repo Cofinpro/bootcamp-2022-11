@@ -13,6 +13,10 @@ public class SkillController {
     }
     @GetMapping("")
     public List<String> getSkills() {
-        return skillRepository.findAll().stream().map(skill -> skill.getName()).toList();
+        return skillRepository
+                .findAll()
+                .stream()
+                .map(skill -> skill.getName())
+                .toList();
     }
 }
