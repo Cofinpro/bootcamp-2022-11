@@ -1,7 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
-import com.cofinprobootcamp.backend.user.dto.UserDetailsOutDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,14 +20,14 @@ public class UserService {
         userRepository.saveAndFlush(user);
     }
 
-    public UserDetailsOutDTO getUserById(Long id) {
+    public UserOutDTO getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
-        return new UserDetailsOutDTO(userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new UserOutDTO(userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
-    public List<UserDetailsOutDTO> getAllUsers() {
+    public List<UserOutDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map(UserDetailsOutDTO::new).toList();
+        return users.stream().map(UserOutDTO::new).toList();
     }
 
     public void deleteUserById(Long id) {

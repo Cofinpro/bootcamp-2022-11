@@ -1,4 +1,4 @@
-package com.cofinprobootcamp.backend.profile.dto;
+package com.cofinprobootcamp.backend.profile.DTO;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.profile.Profile;
@@ -9,7 +9,7 @@ public record ProfileDetailsOutDTO(
         Long id,
         String jobTitle,
         String degree,
-        String primaryExpertise,
+        Expertises primaryExpertise,
         String referenceText,
         List<String> skills,
         String firstName,
@@ -22,13 +22,15 @@ public record ProfileDetailsOutDTO(
                 profile.getId(),
                 profile.getJobTitle(),
                 profile.getDegree(),
-                profile.getPrimaryExpertise()
-                        .toFullNameString(),
+                profile.getPrimaryExpertise(),
                 profile.getReferenceText(),
                 profile.getSkills(),
-                profile.getFirstName(),
-                profile.getLastName(),
-                profile.getBirthDate()
+                profile.getOwner()
+                        .getFirstName(),
+                profile.getOwner()
+                        .getLastName(),
+                profile.getOwner()
+                        .getBirthDate()
                         .toString() //ISO Format as specified  in frontend, String parsed in frontend
         );
     }

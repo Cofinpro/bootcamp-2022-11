@@ -45,8 +45,7 @@ public class SecurityConfig {
     public SecurityConfig(RsaKeyProperties rsaKeys) {
         this.rsaKeys = rsaKeys;
     }
-    //authorizeRequests is used here, why? doku says it is deprecated, why dont we use
-    // authorizeHttpRequests instead like doku says?
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -80,6 +79,10 @@ public class SecurityConfig {
     }*/
 
 
+    /**
+     * Creation of InMemoryUser for authentication
+     * @return
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         return new InMemoryUserDetailsManager(
@@ -111,6 +114,10 @@ public class SecurityConfig {
         };
     }
 
+    /**
+     * Config for Cors-Policy
+     * @return
+     */
     private CorsConfigurationSource getCorsConfiguration() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();

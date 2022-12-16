@@ -1,20 +1,24 @@
-package com.cofinprobootcamp.backend.profile.dto;
+package com.cofinprobootcamp.backend.profile.DTO;
 
 import com.cofinprobootcamp.backend.profile.Profile;
 
 public record ProfileOverviewOutDTO(
         Long id,
-        String name,
+        String firstName,
+        String lastName,
         String jobTitle,
         String primaryExpertise
 ) {
     public ProfileOverviewOutDTO(Profile profile){
         this(
                 profile.getId(),
-                profile.getFirstName() + " " + profile.getLastName(),
+                profile.getOwner()
+                        .getFirstName(),
+                profile.getOwner()
+                        .getLastName(),
                 profile.getJobTitle(),
                 profile.getPrimaryExpertise()
-                        .toFullNameString()
+                        .toString()
         );
     }
 }
