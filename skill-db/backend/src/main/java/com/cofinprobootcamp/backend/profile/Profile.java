@@ -4,13 +4,13 @@ import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.LinkedList;
 import java.util.List;
+
 //TODO: jobtitle als enum oder datenbank damit wir ein drop-down draus machen können?
 @Entity
 @Getter
@@ -34,6 +34,7 @@ public class Profile {
     private List<String> skills;
     private LocalDate birthDate;
     @OneToOne
+    @JoinColumn(unique = true)
     private User owner;
 
     public Profile(ProfileCreateInDTO profileIn) {

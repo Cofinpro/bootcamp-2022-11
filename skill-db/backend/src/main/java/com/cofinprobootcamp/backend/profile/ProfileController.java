@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "/api/v1/profiles")
 public class ProfileController {
     //Field Injection is not recommended, you can not unit test this!
@@ -39,7 +40,6 @@ public class ProfileController {
         return profileService.getProfileById(id);
     }
 
-    //Access Point not tested bc I don't know how with JWT
     @GetMapping(path = "")
     public List<ProfileOverviewOutDTO> getAllProfileOverviews() {
         return profileService.getAllOverviewDTOs();

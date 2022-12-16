@@ -35,6 +35,7 @@ public class User {
     @ManyToOne
     private Role role;
     @OneToOne
+    @JoinColumn(unique = true)
     private Profile profile;
 
 }

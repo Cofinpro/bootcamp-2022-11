@@ -30,7 +30,7 @@ public class ProfileService {
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
         Profile profile = ProfileDirector.DTOToEntity(profileInDTO,user);
-
+        profile.setOwner(user);
         profile = profileRepository.saveAndFlush(profile);
         user.setProfile(profile);
         userRepository.saveAndFlush(user);
