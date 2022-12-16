@@ -41,7 +41,7 @@
                     :rules="[rules.required]"
                 >
                 </v-text-field>
-                <v-text-field
+                <v-text-field class="align-content-sp"
                     v-model="userRequestLogin.password"
                     :append-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="visible ? 'text' : 'password'"
@@ -52,7 +52,7 @@
                     counter
                 ></v-text-field>
                 <v-btn @click="login()" class="mb-10 mt-10" block
-                       :disabled="!valid">
+                       :disabled="!valid" elevation="0">
                   Login
                 </v-btn>
               </v-form>
