@@ -17,7 +17,7 @@
 
         <v-row>
           <v-col cols="12">
-            <img src="../assets/images/Logo.png" alt="Logo">
+            <img src="../assets/images/Skill_DB_Logo.svg" width="220" alt="Logo">
           </v-col>
         </v-row>
 

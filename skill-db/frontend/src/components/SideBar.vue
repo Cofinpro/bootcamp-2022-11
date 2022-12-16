@@ -8,7 +8,7 @@
     <!-- <div class="wrapper"> -->
     <v-list nav dense>
       <v-list-item class="logo d-flex justify-center">
-        <img src="@/assets/images/Logo.png" alt="Cofinpro logo">
+        <img src="@/assets/images/Skill_DB_Logo.svg" width="220" alt="Cofinpro logo">
       </v-list-item>
       <RouterLink to="/">
         <v-list-item link>
