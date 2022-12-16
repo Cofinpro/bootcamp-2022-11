@@ -28,16 +28,6 @@ public class User {
     @Column(unique=true)
     @Pattern(regexp = "[\\w.]+@\\w+\\.\\w+")
     private String email;
-    @NotBlank
-    @Pattern(regexp = "\\d+")
-    private String phoneNumber;
-    @NotBlank
-    private String firstName;
-    @NotBlank
-    private String lastName;
-    @NotNull
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDate;
     /**
      * Locked users can't log in neither commit any actions
      */
@@ -47,7 +37,4 @@ public class User {
     @OneToOne
     private Profile profile;
 
-    public int getAge() {
-        return Period.between(birthDate, LocalDate.now()).getYears();
-    }
 }

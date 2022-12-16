@@ -26,12 +26,9 @@ public record ProfileDetailsOutDTO(
                         .toFullNameString(),
                 profile.getReferenceText(),
                 profile.getSkills(),
-                profile.getOwner()
-                        .getFirstName(),
-                profile.getOwner()
-                        .getLastName(),
-                profile.getOwner()
-                        .getBirthDate()
+                profile.getFirstName(),
+                profile.getLastName(),
+                profile.getBirthDate()
                         .toString() //ISO Format as specified  in frontend, String parsed in frontend
         );
     }

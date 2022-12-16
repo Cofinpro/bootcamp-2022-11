@@ -29,11 +29,6 @@ public class ProfileService {
 
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
-        user.setPhoneNumber(profileInDTO.phoneNumber());
-        user.setFirstName(profileInDTO.firstName());
-        user.setLastName(profileInDTO.lastName());
-        user.setBirthDate(profileInDTO.birthDate());
-
         Profile profile = ProfileDirector.DTOToEntity(profileInDTO,user);
 
         profile = profileRepository.saveAndFlush(profile);
@@ -46,11 +41,6 @@ public class ProfileService {
                                            Long id) {
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
-        user.setPhoneNumber(profileInDTO.phoneNumber());
-        user.setFirstName(profileInDTO.firstName());
-        user.setLastName(profileInDTO.lastName());
-        user.setBirthDate(profileInDTO.birthDate());
-
         Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user);
         profile.setId(id);
         profileRepository.saveAndFlush(profile);

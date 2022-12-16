@@ -12,10 +12,8 @@ public record ProfileOverviewOutDTO(
     public ProfileOverviewOutDTO(Profile profile){
         this(
                 profile.getId(),
-                profile.getOwner()
-                        .getFirstName(),
-                profile.getOwner()
-                        .getLastName(),
+                profile.getFirstName(),
+                profile.getLastName(),
                 profile.getJobTitle(),
                 profile.getPrimaryExpertise()
                         .toFullNameString()

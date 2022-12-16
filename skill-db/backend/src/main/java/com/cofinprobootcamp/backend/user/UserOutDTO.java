@@ -9,11 +9,6 @@ import java.time.LocalDate;
 
 public record UserOutDTO(
         String email,
-        String firstName,
-        String lastName,
-        String phoneNumber,
-        LocalDate birthDate,
-        int age,
         boolean locked,
         Role role,
         Profile profile
@@ -21,11 +16,6 @@ public record UserOutDTO(
     public UserOutDTO(User user) {
         this(
                 user.getEmail(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getPhoneNumber(),
-                user.getBirthDate(),
-                user.getAge(),
                 user.isLocked(),
                 user.getRole(),
                 user.getProfile());
