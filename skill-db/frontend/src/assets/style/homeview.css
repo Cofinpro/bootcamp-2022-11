@@ -8,19 +8,12 @@ body {
 
 h4 {
     margin-top: 1%;
-    font-weight: normal;
 }
 
 .searchAndButtons {
-    margin-top: 5%;
-    display: flex;
-    justify-content: space-between;
+    margin-top: 4%;
 }
 
 .activeFilter {
-    margin-top: 2%;
-}
-
-.cards {
-
+    margin-top: 1%;
 }

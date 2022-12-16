@@ -1,25 +1,27 @@
 <template>
   <div class="headline">
     <h3>Profilübersicht</h3>
-    <h4>Übersicht über alle vorhandenen Profile</h4>
+    <h4 class="font-weight-regular">Übersicht über alle vorhandenen Profile</h4>
   </div>
 
-  <div class="searchAndButtons">
+  <div class="searchAndButtons d-flex justify-space-between align-center">
     <v-card id="searchbar" color="grey" width="45%" height="20%">Searchbar</v-card>
-    <ButtonWithTooltip tooltip="Liste exportieren" icon="mdi-file-export" @clicked="exportProfiles"/>
-    <ButtonWithTooltip tooltip="Neues Profil erstellen" icon="mdi-plus-thick" @clicked="createProfile"/>
-    <ButtonWithTooltip tooltip="Filter" icon="mdi-filter" @click="filterProfiles"/>
+    <div class="buttons">
+      <ButtonWithTooltip tooltip="Liste exportieren" icon="mdi-file-export" @clicked="exportProfiles"/>
+      <ButtonWithTooltip tooltip="Neues Profil erstellen" icon="mdi-plus-thick" @clicked="createProfile"/>
+      <ButtonWithTooltip tooltip="Filter" icon="mdi-filter" @click="filterProfiles"/>
+    </div>
   </div>
 
   <div class="activeFilter">
     <h5>Aktive Filter:</h5>
-    <v-chip class="mt-3 mr-3">Filter1</v-chip>
-    <v-chip class="mt-3">Filter2</v-chip>
+    <v-chip class="mt-2 mr-3">Filter1</v-chip>
+    <v-chip class="mt-2">Filter2</v-chip>
   </div>
 
   <v-container class="cards">
     <v-row>
-      <v-col v-for="card in cardList" :key="card.getId()" lg="4" elevation="5" md="6">
+      <v-col v-for="card in cardList" :key="card.getId()" lg="3" md="4" sm="6" xs ="12">
         <OverviewCard :id="card.getId()"
                       :name="card.getName()"
                       :job-title="card.getJobTitle()"
