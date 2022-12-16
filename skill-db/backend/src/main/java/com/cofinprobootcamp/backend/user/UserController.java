@@ -19,12 +19,12 @@ public class UserController {
         userService.createUser(user);
     }
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "/{id}")
     public void deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "/{id}")
     public UserOutDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
@@ -33,6 +33,8 @@ public class UserController {
     public List<UserOutDTO> getAllUsers() {
         return userService.getAllUsers();
     }
-
-
+    @GetMapping(path = "/expertises")
+    public List<String> getAllExpertises() {
+        return userService.getAllExpertises();
+    }
 }

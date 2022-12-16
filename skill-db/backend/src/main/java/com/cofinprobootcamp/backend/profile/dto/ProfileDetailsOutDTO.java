@@ -9,7 +9,7 @@ public record ProfileDetailsOutDTO(
         Long id,
         String jobTitle,
         String degree,
-        Expertises primaryExpertise,
+        String primaryExpertise,
         String referenceText,
         List<String> skills,
         String firstName,
@@ -22,7 +22,8 @@ public record ProfileDetailsOutDTO(
                 profile.getId(),
                 profile.getJobTitle(),
                 profile.getDegree(),
-                profile.getPrimaryExpertise(),
+                profile.getPrimaryExpertise()
+                        .toFullNameString(),
                 profile.getReferenceText(),
                 profile.getSkills(),
                 profile.getOwner()

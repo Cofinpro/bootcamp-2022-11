@@ -32,7 +32,6 @@ public class ProfileService {
         user.setPhoneNumber(profileInDTO.phoneNumber());
         user.setFirstName(profileInDTO.firstName());
         user.setLastName(profileInDTO.lastName());
-        user.setEmail(profileInDTO.email());
         user.setBirthDate(profileInDTO.birthDate());
 
         Profile profile = ProfileDirector.DTOToEntity(profileInDTO,user);
