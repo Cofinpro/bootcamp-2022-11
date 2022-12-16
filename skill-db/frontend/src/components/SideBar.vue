@@ -8,7 +8,7 @@
     <!-- <div class="wrapper"> -->
     <v-list nav dense>
       <v-list-item id="logo">
-        <img src="@/assets/pictures/Logo.png" alt="Cofinpro logo">
+        <img src="@/assets/images/Logo.png" alt="Cofinpro logo">
       </v-list-item>
       <v-list-item link>
         <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-multiple-outline</v-icon>

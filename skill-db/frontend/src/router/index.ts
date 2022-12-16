@@ -12,34 +12,44 @@ const router = createRouter({
     {
       path: '/login',
       name: 'Login',
-      component: LoginView
+      component: LoginView,
+      meta: {
+        title: 'Login'
+      }
     },
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: {
+          title: 'Profilübersicht'
+      }
     },
     {
       path: '/test',
       name: 'test',
       component: DetailView,
+      meta: {
+          title: 'Detail-Test'
+      }
     },
     {
         path: '/details/new',
         name: 'new',
-        component: NewView
+        component: NewView,
+        meta: {
+            title: 'Neues Profil erstellen'
+        }
     }
     /*{
       path: '/details/:id',
       name: 'userDetails',
       component: UserDetails,
       props: true,
+      meta: {
+        title: Profil-Detailansicht
+      }
     },*/
-    /*{
-      path: '/logout',
-      name: 'logout',
-      component: Logout
-    }*/
   ]
 })
 

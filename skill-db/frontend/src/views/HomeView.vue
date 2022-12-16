@@ -3,58 +3,22 @@
     <h1>Profilübersicht</h1>
     <h2>Übersicht über alle vorhandenen Profile</h2>
   </div>
+
   <div class="searchAndButtons">
     <v-card color="grey" width="45%" height="20%">Searchbar</v-card>
-
-    <v-tooltip top>
-      <template v-slot:activator="{ props }">
-        <v-btn elevation="0" class="ma-2"
-               min-width="40px" width="40px" height="35"
-               v-bind="props"
-        >
-          <v-icon size="large" @click="exportProfiles"> mdi-file-export </v-icon>
-        </v-btn>
-      </template>
-      <span>Liste exportieren</span>
-    </v-tooltip>
-
-    <v-tooltip bottom>
-      <template v-slot:activator="{ props }">
-        <v-btn elevation="0" class="ma-2"
-               min-width="40px" width="40px" height="35"
-               v-bind="props"
-        >
-          <v-icon size="large" @click="createProfile"> mdi-plus-thick </v-icon>
-        </v-btn>
-      </template>
-      <span>Neues Profil erstellen</span>
-    </v-tooltip>
-
-    <v-tooltip left>
-      <template v-slot:activator="{ props }">
-        <v-btn elevation="0" class="ma-2"
-               min-width="40px" width="40px" height="35"
-               v-bind="props"
-        >
-          <v-icon size="large" @click="filterProfiles"> mdi-filter </v-icon>
-        </v-btn>
-      </template>
-      <span>Filter</span>
-    </v-tooltip>
-
+    <ButtonWithTooltip tooltip="Liste exportieren" icon="mdi-file-export" @clicked="exportProfiles"/>
+    <ButtonWithTooltip tooltip="Neues Profil erstellen" icon="mdi-plus-thick" @clicked="createProfile"/>
+    <ButtonWithTooltip tooltip="Filter" icon="mdi-filter" @click="filterProfiles"/>
   </div>
 
   <div class="activeFilter">
-
     <h3>Aktive Filter:</h3>
     <v-chip class="ma-2">
       Filter1</v-chip>
     <v-chip>Filter2</v-chip>
-
-
   </div>
 
-  <v-container>
+  <v-container class="cards">
     <v-row>
       <v-col v-for="card in cardList" :key="card.getId()" lg="4" elevation="5" md="6">
         <OverviewCard :id="card.getId()"
@@ -68,11 +32,12 @@
 
 <script lang="ts">
 import OverviewCard from "@/components/OverviewCard.vue";
+import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
 import {useOverviewStore} from "@/stores/OverviewStore";
 import router from "@/router";
 
 export default {
-  components: {OverviewCard},
+  components: {OverviewCard, ButtonWithTooltip},
   setup() {
     const overviewStore = useOverviewStore();
     overviewStore.loadAllOverviews();
@@ -92,6 +57,9 @@ export default {
     filterProfiles() {
       console.log("Start filtering.");
     }
+  },
+  metaInfo: {
+    title: "Overview",
   }
 }
 </script>
