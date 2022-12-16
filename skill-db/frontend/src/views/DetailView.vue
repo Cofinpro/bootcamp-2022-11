@@ -35,26 +35,26 @@
         </v-col>
       </v-row>
       <div class="d-flex w-50 justify-space-between">
-      <div class="d-flex flex-column">
-        <div>
-          <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-email</v-icon>
-          <p class="div-16">max.mustermann@cofinpro.de</p>
+        <div class="d-flex flex-column">
+          <p>
+            <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-email</v-icon>
+            max.mustermann@cofinpro.de
+          </p>
+          <p class="mt-3">
+            <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-crown-outline</v-icon>
+            {{ detail.getPrimarySkill() }}
+          </p>
         </div>
-        <div>
-          <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-phone</v-icon>
-          <p class="div-17">+49 176 65544 000</p>
+        <div class="d-flex flex-column">
+          <p>
+            <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-phone</v-icon>
+            +49 176 65544 000
+          </p>
+          <p class="mt-3">
+            <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-cake-variant-outline</v-icon>
+            {{ detail.getBirthDate() }}
+          </p>
         </div>
-      </div>
-      <div class ="d-flex flex-column">
-        <div>
-          <!--              <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-crown-outline</v-icon>-->
-          <p class="div-19"> {{ detail.getPrimarySkill() }}</p>
-        </div>
-        <div>
-          <!--              <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-cake-variant-outline</v-icon>-->
-          <p class="div-20"> {{ detail.getBirthDate() }}</p>
-        </div>
-      </div>
       </div>
     </v-col>
   </v-row>
