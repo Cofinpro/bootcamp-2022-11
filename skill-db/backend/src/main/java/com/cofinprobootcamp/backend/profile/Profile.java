@@ -34,7 +34,7 @@ public class Profile {
     private String referenceText;
     @ManyToMany
     @JoinTable(
-            name ="Profile_skill",
+            name ="profile_skill",
             joinColumns = @JoinColumn(name = "profile_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )

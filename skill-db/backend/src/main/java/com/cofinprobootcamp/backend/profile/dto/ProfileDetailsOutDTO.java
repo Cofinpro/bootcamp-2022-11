@@ -2,6 +2,7 @@ package com.cofinprobootcamp.backend.profile.dto;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.profile.Profile;
+import com.cofinprobootcamp.backend.skills.Skill;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ public record ProfileDetailsOutDTO(
         String degree,
         String primaryExpertise,
         String referenceText,
+        List<String> skills,
         String firstName,
         String lastName,
         String birthDate
@@ -24,6 +26,10 @@ public record ProfileDetailsOutDTO(
                 profile.getPrimaryExpertise()
                         .toFullNameString(),
                 profile.getReferenceText(),
+                profile.getSkillSet()
+                        .stream()
+                        .map(Skill::getName)
+                        .toList(),
                 profile.getFirstName(),
                 profile.getLastName(),
                 profile.getBirthDate()

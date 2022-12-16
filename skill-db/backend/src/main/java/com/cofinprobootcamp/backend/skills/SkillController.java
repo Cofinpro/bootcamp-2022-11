@@ -1,19 +1,18 @@
 package com.cofinprobootcamp.backend.skills;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/skills")
+@RequestMapping("/api/v1/skills")
 public class SkillController {
     SkillRepository skillRepository;
     public SkillController(SkillRepository skillRepository) {
         this.skillRepository = skillRepository;
     }
-    @PostMapping("")
-    public Skill addSkill(@RequestBody Skill skill) {
-        return skillRepository.save(skill);
+    @GetMapping("")
+    public List<String> getSkills() {
+        return skillRepository.findAll().stream().map(skill -> skill.getName()).toList();
     }
 }
