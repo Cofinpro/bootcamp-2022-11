@@ -83,7 +83,7 @@ public class ProfileService {
                 .stream()
                 .map(name -> {
                     Optional<Skill> foundSkill = skillRepository.findSkillByName(name);
-                    return foundSkill.orElse(new Skill(name));
+                    return foundSkill.orElse(skillRepository.save(new Skill(name)));
                 })
                 .collect(Collectors.toSet());
     }
