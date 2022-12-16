@@ -83,10 +83,9 @@ public class ProfileService {
     private Set<Skill> findSkillIfExistsElseCreateSkill(List<String> skillInputs) {
         return skillInputs
                 .stream()
-                .map(name -> {
-                    Optional<Skill> foundSkill = skillRepository.findSkillByName(name);
-                    return foundSkill.orElse(skillRepository.save(new Skill(name)));
-                })
+                .map(name -> skillRepository.findSkillByName(name)
+                        .orElse(skillRepository.save(new Skill(name)))
+                )
                 .collect(Collectors.toSet());
     }
 }
