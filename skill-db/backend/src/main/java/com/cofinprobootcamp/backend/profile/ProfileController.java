@@ -1,7 +1,8 @@
 package com.cofinprobootcamp.backend.profile;
 
-import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
+import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
+import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,21 +19,22 @@ public class ProfileController {
     }
 
     @PostMapping(path = "")
-    public void createProfile(@RequestBody Profile profile) {
-        profileService.createProfile(profile);
+    public void createProfile(@RequestBody ProfileCreateInDTO profileInDTO) {
+        profileService.createProfileAndUpdateUser(profileInDTO);
     }
 
-    @PutMapping(path = "")
-    public void updateProfile(@RequestBody Profile profile) {
-        profileService.updateProfile(profile);
+    @PutMapping(path = "/{id}")
+    public void updateProfile(@PathVariable Long id,
+                              @RequestBody ProfileCreateInDTO profileInDTO) {
+        profileService.updateProfileAndUpdateUser(profileInDTO,id);
     }
 
-    @DeleteMapping(path = "{id}")
-    public void deleteProfileById(@PathVariable Long id) {
+    @DeleteMapping(path = "/{id}")
+    public void deleteProfileById(@PathVariable Long id){
         profileService.deleteProfileById(id);
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "/{id}")
     public ProfileDetailsOutDTO getProfile(@PathVariable Long id) {
         return profileService.getProfileById(id);
     }

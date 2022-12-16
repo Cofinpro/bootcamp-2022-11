@@ -1,4 +1,4 @@
-package com.cofinprobootcamp.backend.user.dto;
+package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.role.Role;
@@ -6,31 +6,28 @@ import com.cofinprobootcamp.backend.user.User;
 
 import java.time.LocalDate;
 
-public record UserDetailsOutDTO(
-        Long id,
+
+public record UserOutDTO(
         String email,
         String firstName,
         String lastName,
+        String phoneNumber,
         LocalDate birthDate,
         int age,
-        String jobTitle,
         boolean locked,
         Role role,
         Profile profile
 ) {
-
-    public UserDetailsOutDTO(User user) {
+    public UserOutDTO(User user) {
         this(
-                user.getId(),
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
+                user.getPhoneNumber(),
                 user.getBirthDate(),
                 user.getAge(),
-                user.getJobTitle(),
                 user.isLocked(),
                 user.getRole(),
                 user.getProfile());
     }
-
 }

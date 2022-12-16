@@ -21,10 +21,8 @@ public class AuthController {
     public AuthController(TokenService tokenService, AuthenticationManager authenticationManager) {
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
-    }
-    // Vielleicht in zukunft (späterer fix) nicht mit Response entities, da diese vom
-    // Rest controller eigentlich automatisch generiert werden! ist kein breaking change
-    // aber dann hätte wir das überall einheitlicher
+}
+
     @PostMapping
     public ResponseEntity<Object> token(@RequestBody LoginRequest userLogin) {
         System.out.println(userLogin.username());

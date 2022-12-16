@@ -1,4 +1,4 @@
-package com.cofinprobootcamp.backend.profile.dto;
+package com.cofinprobootcamp.backend.profile.DTO;
 
 import com.cofinprobootcamp.backend.profile.Profile;
 
@@ -18,7 +18,7 @@ public record ProfileOverviewOutDTO(
                         .getLastName(),
                 profile.getJobTitle(),
                 profile.getPrimaryExpertise()
-                        .toFullNameString()
+                        .toString()
         );
     }
 }
