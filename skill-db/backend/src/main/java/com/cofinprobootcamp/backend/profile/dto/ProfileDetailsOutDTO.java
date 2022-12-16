@@ -11,7 +11,6 @@ public record ProfileDetailsOutDTO(
         String degree,
         String primaryExpertise,
         String referenceText,
-        List<String> skills,
         String firstName,
         String lastName,
         String birthDate
@@ -25,7 +24,6 @@ public record ProfileDetailsOutDTO(
                 profile.getPrimaryExpertise()
                         .toFullNameString(),
                 profile.getReferenceText(),
-                profile.getSkills(),
                 profile.getFirstName(),
                 profile.getLastName(),
                 profile.getBirthDate()

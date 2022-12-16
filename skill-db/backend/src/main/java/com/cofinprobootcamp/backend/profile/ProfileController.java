@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequestMapping(path = "/api/v1/profiles")
 public class ProfileController {
     //Field Injection is not recommended, you can not unit test this!

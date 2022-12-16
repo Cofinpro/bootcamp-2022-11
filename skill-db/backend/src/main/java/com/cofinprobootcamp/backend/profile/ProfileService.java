@@ -3,6 +3,7 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
+import com.cofinprobootcamp.backend.skills.SkillRepository;
 import com.cofinprobootcamp.backend.user.UserRepository;
 import com.cofinprobootcamp.backend.user.User;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,13 @@ public class ProfileService {
 
     private ProfileRepository profileRepository;
     private UserRepository userRepository;
-
+    private SkillRepository skillRepository;
     public ProfileService(ProfileRepository profileRepository,
-    UserRepository userRepository) {
+                          UserRepository userRepository,
+                          SkillRepository skillRepository) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
+        this.skillRepository = skillRepository;
     }
 
     public void createProfileAndUpdateUser(ProfileCreateInDTO profileInDTO) {
@@ -29,7 +32,7 @@ public class ProfileService {
 
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
-        Profile profile = ProfileDirector.DTOToEntity(profileInDTO,user);
+        Profile profile = ProfileDirector.DTOToEntity(profileInDTO,user, skillRepository.findById(Long.parseLong("1")).get());
         profile.setOwner(user);
         profile = profileRepository.saveAndFlush(profile);
         user.setProfile(profile);
@@ -41,9 +44,10 @@ public class ProfileService {
                                            Long id) {
         User user = userRepository.findUserByEmail(profileInDTO.email())
                 .orElseThrow(RuntimeException::new);
-        Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user);
+    /*    Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user);
         profile.setId(id);
         profileRepository.saveAndFlush(profile);
+     */
     }
 
     public void deleteProfileById(Long id) {
