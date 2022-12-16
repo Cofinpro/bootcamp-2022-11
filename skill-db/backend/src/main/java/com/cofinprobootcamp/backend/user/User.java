@@ -2,7 +2,7 @@ package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.role.Role;
-import com.cofinprobootcamp.backend.utils.Regex;
+import com.cofinprobootcamp.backend.config.Regex;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -23,7 +23,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "app_users")
+@Table(name = "app_user")
 public class User {
 
     @Id

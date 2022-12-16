@@ -1,4 +1,4 @@
-package com.cofinprobootcamp.backend.utils;
+package com.cofinprobootcamp.backend.config;
 
 /**
  * Pseudo-static class that serves as a "storage" for the various regular expressions
@@ -25,7 +25,7 @@ public final class Regex {
      * A valid email address consists of at least one symbol followed by an "@" followed
      * by at least another symbol followed by a dot followed by at least another symbol.
      */
-    public static final String VALID_MAIL_ADDRESS = "[\\w.]+@\\w+\\.\\w+"; // "[^@]+@[^@.]+\\.[^@]+" may be better to exclude additional @ symbols
+    public static final String VALID_MAIL_ADDRESS = "^\\w[\\w.\\-]+@[\\w.\\-]+\\.\\w+$";
 
     // Private constructor to emulate a 'static class'
     private Regex() {
