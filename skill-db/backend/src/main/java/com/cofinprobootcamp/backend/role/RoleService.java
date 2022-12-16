@@ -1,6 +1,6 @@
 package com.cofinprobootcamp.backend.role;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cofinprobootcamp.backend.role.dto.RoleInOutDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,14 +21,14 @@ public class RoleService {
         roleRepository.saveAndFlush(role);
     }
 
-    public RoleDTO getRoleById(Long id) {
+    public RoleInOutDTO getRoleById(Long id) {
         Optional<Role> roleOptional = roleRepository.findById(id);
-        return new RoleDTO(roleOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new RoleInOutDTO(roleOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
-    public List<RoleDTO> getAllRoles() {
+    public List<RoleInOutDTO> getAllRoles() {
         List<Role> roles = roleRepository.findAll();
-        return roles.stream().map(RoleDTO::new).toList();
+        return roles.stream().map(RoleInOutDTO::new).toList();
     }
 
     public void deleteRoleById(Long id) {

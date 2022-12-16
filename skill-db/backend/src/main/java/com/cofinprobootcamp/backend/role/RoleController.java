@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.role;
 
+import com.cofinprobootcamp.backend.role.dto.RoleInOutDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,12 +25,12 @@ public class RoleController {
     }
 
     @GetMapping(path = "{id}")
-    public RoleDTO getRoleById(@PathVariable Long id) {
+    public RoleInOutDTO getRoleById(@PathVariable Long id) {
         return roleService.getRoleById(id);
     }
 
     @GetMapping(path = "")
-    public List<RoleDTO> getAllRoles() {
+    public List<RoleInOutDTO> getAllRoles() {
         return roleService.getAllRoles();
     }
 

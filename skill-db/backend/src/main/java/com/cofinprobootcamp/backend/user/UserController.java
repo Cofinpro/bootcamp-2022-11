@@ -1,6 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
