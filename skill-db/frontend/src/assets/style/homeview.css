@@ -1,0 +1,26 @@
+body {
+    margin: 5%;
+}
+
+.headline {
+    margin-top: 8%;
+}
+
+h4 {
+    margin-top: 1%;
+    font-weight: normal;
+}
+
+.searchAndButtons {
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.activeFilter {
+    margin-top: 2%;
+}
+
+.cards {
+
+}

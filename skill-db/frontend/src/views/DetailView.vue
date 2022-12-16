@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>{{ detail.getName() }}'s Profil</h1>
+    <h1>{{ detail.getFirstName() }}'s Profil</h1>
     <h2>Hier kannst du das Profil anschauen und bearbeiten!</h2>
 
     <v-menu :close-on-content-click="false">
@@ -28,7 +28,7 @@
 
 
     <h4>Name</h4>
-    <v-chip>{{ detail.getName() }}</v-chip>
+    <v-chip>{{ detail.getFirstName() }}</v-chip>
     <h4>Alter</h4>
     <v-chip>{{ detail.getAge() }}</v-chip>
     <h4>Jobtitel</h4>

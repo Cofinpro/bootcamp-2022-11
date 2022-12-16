@@ -1,21 +1,20 @@
 <template>
   <div class="headline">
-    <h1>Profilübersicht</h1>
-    <h2>Übersicht über alle vorhandenen Profile</h2>
+    <h3>Profilübersicht</h3>
+    <h4>Übersicht über alle vorhandenen Profile</h4>
   </div>
 
   <div class="searchAndButtons">
-    <v-card color="grey" width="45%" height="20%">Searchbar</v-card>
+    <v-card id="searchbar" color="grey" width="45%" height="20%">Searchbar</v-card>
     <ButtonWithTooltip tooltip="Liste exportieren" icon="mdi-file-export" @clicked="exportProfiles"/>
     <ButtonWithTooltip tooltip="Neues Profil erstellen" icon="mdi-plus-thick" @clicked="createProfile"/>
     <ButtonWithTooltip tooltip="Filter" icon="mdi-filter" @click="filterProfiles"/>
   </div>
 
   <div class="activeFilter">
-    <h3>Aktive Filter:</h3>
-    <v-chip class="ma-2">
-      Filter1</v-chip>
-    <v-chip>Filter2</v-chip>
+    <h5>Aktive Filter:</h5>
+    <v-chip class="mt-3 mr-3">Filter1</v-chip>
+    <v-chip class="mt-3">Filter2</v-chip>
   </div>
 
   <v-container class="cards">
