@@ -45,7 +45,7 @@ public enum Expertises {
     static {
         Expertises[] tmp = Expertises.values();
         values = new Expertises[tmp.length - 1];
-        System.arraycopy(tmp,0,values,0, tmp.length - 1);
+        System.arraycopy(tmp, 0, values, 0, tmp.length - 1);
     }
 
     // Instance field
@@ -65,6 +65,7 @@ public enum Expertises {
 
     /**
      * Gets the enum type's full name.
+     *
      * @return A {@code String} representation of full name
      */
     public String toFullNameString() {
@@ -76,6 +77,7 @@ public enum Expertises {
     /**
      * Gets a full name {@code String} representation of each {@code Expertises} constant
      * defined in the enum.
+     *
      * @return An array of {@code String} values
      */
     public static List<String> getAllDefinedValuesAsString() {
@@ -86,6 +88,7 @@ public enum Expertises {
 
     /**
      * Creates a suitable Expertises type from an input {@code String}.
+     *
      * @param fullName The full name as a {@code String}
      * @return An {@code Expertises} type corresponding to {@code fullName} OR {@code Expertises.UNDEFINED}
      */
