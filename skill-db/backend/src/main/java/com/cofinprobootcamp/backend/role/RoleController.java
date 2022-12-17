@@ -14,6 +14,7 @@ public class RoleController {
         this.roleService = roleService;
     }
 
+
     @PostMapping(path = "")
     public void createRole(@RequestBody Role role) {
         roleService.createRole(role);

@@ -11,35 +11,53 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/v1/profiles")
 public class ProfileController {
-    //Field Injection is not recommended, you can not unit test this!
-    //Better to use Constructor based injection
     private final ProfileService profileService;
 
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
 
+    /**
+     * @param profileInDTO
+     * creates profile in database if email of user exists
+     */
     @PostMapping(path = "")
     public void createProfile(@RequestBody ProfileCreateInDTO profileInDTO) {
         profileService.createProfileAndAssignToUser(profileInDTO);
     }
 
+    /**
+     * @param id
+     * @param profileInDTO
+     * updates profile by Id
+     */
     @PutMapping(path = "/{id}")
     public void updateProfile(@PathVariable Long id,
                               @RequestBody ProfileUpdateInDTO profileInDTO) {
         profileService.updateProfile(profileInDTO,id);
     }
 
+    /**
+     * @param id
+     * delete profile by Id
+     */
     @DeleteMapping(path = "/{id}")
     public void deleteProfileById(@PathVariable Long id){
         profileService.deleteProfileById(id);
     }
 
+    /**
+     * @param id
+     * @return profile detail view
+     */
     @GetMapping(path = "/{id}")
     public ProfileDetailsOutDTO getProfile(@PathVariable Long id) {
         return profileService.getProfileById(id);
     }
 
+    /**
+     * @return get all overview DTOs
+     */
     @GetMapping(path = "")
     public List<ProfileOverviewOutDTO> getAllProfileOverviews() {
         return profileService.getAllOverviewDTOs();
