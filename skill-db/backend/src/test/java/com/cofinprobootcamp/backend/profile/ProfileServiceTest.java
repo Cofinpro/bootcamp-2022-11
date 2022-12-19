@@ -1,20 +1,16 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
-import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
+import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
-import com.cofinprobootcamp.backend.skills.SkillRepository;
 import com.cofinprobootcamp.backend.skills.SkillService;
 import com.cofinprobootcamp.backend.user.User;
-import com.cofinprobootcamp.backend.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -23,8 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+
 
 @ExtendWith(SpringExtension.class)
 class ProfileServiceTest {
@@ -88,7 +83,7 @@ class ProfileServiceTest {
     */
 
     @Test
-    void getProfileById() {
+    void getProfileById() throws ProfileNotFoundException {
         Mockito.when(profileRepository.findById(1L))
                 .thenReturn(Optional.of(profile));
 
