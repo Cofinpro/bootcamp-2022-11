@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class ProfileService {
 
-    private ProfileRepository profileRepository;
-    private UserRepository userRepository;
-    private SkillRepository skillRepository;
+    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
+    private final SkillRepository skillRepository;
 
     public ProfileService(ProfileRepository profileRepository,
                           UserRepository userRepository,
@@ -34,12 +34,9 @@ public class ProfileService {
 
     public void createProfileAndAssignToUser(ProfileCreateInDTO profileInDTO) {
         //TODO: replace RuntimeException by custom exception!
-
-        User user = userRepository.findUserByEmail(profileInDTO.email())
-                .orElseThrow(RuntimeException::new);
+        User user = userRepository.findUserByEmail(profileInDTO.email()).orElseThrow(RuntimeException::new); // Create method that throws descriptive custom exception
         Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet);
-        profile.setOwner(user);
         profile = profileRepository.saveAndFlush(profile);
         user.setProfile(profile);
         userRepository.saveAndFlush(user);
@@ -47,15 +44,13 @@ public class ProfileService {
 
     //changing email does not work since
     // id of user is not given to frontend here!
- // --> should give back "outer id" of profile and update that way!
-    public void updateProfile(ProfileUpdateInDTO profileInDTO,
-                              Long id) {
-        User user = userRepository.findUserByEmail(profileInDTO.email())
-                .orElseThrow(RuntimeException::new);
+    // --> should give back "outer id" of profile and update that way!
+    public void updateProfile(ProfileUpdateInDTO profileInDTO, Long outerId) {
+        // In theory: convert outerId to internal id
+        Profile current = profileRepository.getReferenceById(outerId);
         Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
-        Profile current = user.getProfile();
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet);
-        profile.setId(id);
+        profile.setId(outerId);
         profileRepository.saveAndFlush(profile);
     }
 
@@ -65,14 +60,11 @@ public class ProfileService {
 
     public ProfileDetailsOutDTO getProfileById(Long id) {
         Optional<Profile> profileOptional = profileRepository.findById(id);
-        return new ProfileDetailsOutDTO(profileOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
-    }
-
-    //Not needed anymore(??)
-
-    public List<ProfileDetailsOutDTO> getAllProfiles() {
-        List<Profile> profiles = profileRepository.findAll();
-        return profiles.stream().map(ProfileDetailsOutDTO::new).toList();
+        return new ProfileDetailsOutDTO(
+                profileOptional.orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+                )
+        );
     }
 
     public List<ProfileOverviewOutDTO> getAllOverviewDTOs() {
@@ -81,11 +73,10 @@ public class ProfileService {
     }
 
     private Set<Skill> findSkillIfExistsElseCreateSkill(List<String> skillInputs) {
-        return skillInputs
-                .stream()
-                .map(name -> skillRepository.findSkillByName(name)
-                        .orElse(skillRepository.save(new Skill(name)))
-                )
+        return skillInputs.stream()
+                .map(
+                        name -> skillRepository.findSkillByName(name)
+                                .orElse(skillRepository.save(new Skill(name))))
                 .collect(Collectors.toSet());
     }
 }

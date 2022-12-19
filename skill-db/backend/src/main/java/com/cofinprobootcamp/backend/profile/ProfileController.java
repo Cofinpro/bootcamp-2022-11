@@ -24,14 +24,13 @@ public class ProfileController {
         profileService.createProfileAndAssignToUser(profileInDTO);
     }
 
-    @PutMapping(path = "/{id}")
-    public void updateProfile(@PathVariable Long id,
-                              @RequestBody ProfileUpdateInDTO profileInDTO) {
-        profileService.updateProfile(profileInDTO,id);
+    @PatchMapping(path = "/{id}")
+    public void updateProfile(@PathVariable Long id, @RequestBody ProfileUpdateInDTO profileInDTO) {
+        profileService.updateProfile(profileInDTO, id);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteProfileById(@PathVariable Long id){
+    public void deleteProfileById(@PathVariable Long id) {
         profileService.deleteProfileById(id);
     }
 

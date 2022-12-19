@@ -24,7 +24,6 @@ public class ProfileDirector {
                 .build();
     }
 
-    // Work-in-progress, must fetch existing fields
     public static Profile UpdateInDTOToEntity(ProfileUpdateInDTO profileInDTO, Profile current, Set<Skill> skillSet) {
         current.setFirstName(profileInDTO.firstName());
         current.setLastName(profileInDTO.lastName());
@@ -33,6 +32,7 @@ public class ProfileDirector {
         current.setPrimaryExpertise(Expertises.fromFullNameString(profileInDTO.primaryExpertise()));
         current.setReferenceText(profileInDTO.referenceText());
         current.setSkillSet(skillSet);
+        current.setPhoneNumber(profileInDTO.phoneNumber());
         return current;
     }
 }
