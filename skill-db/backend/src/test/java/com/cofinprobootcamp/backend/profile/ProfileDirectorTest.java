@@ -6,11 +6,9 @@ import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
 import org.junit.jupiter.api.Test;
 
-import java.security.PublicKey;
 import java.time.LocalDate;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 
 class ProfileDirectorTest {
@@ -18,7 +16,7 @@ class ProfileDirectorTest {
     @Test
     void createInDTOToEntity() {
         ProfileCreateInDTO profileInDTO = new ProfileCreateInDTO(
-                0L,
+                "email@email.de",
                 "first",
                 "last",
                 "title",
@@ -27,7 +25,6 @@ class ProfileDirectorTest {
                 "references",
                 List.of("skill"),
                 "12345678901",
-                "email@email.de",
                 LocalDate.parse("1997-10-10")
         );
         User user = new User();

@@ -29,6 +29,12 @@ public final class Regex {
      */
     public static final String VALID_MAIL_ADDRESS = "^\\w[\\w.\\-]+@[\\w.\\-]+\\.\\w+$";
 
+    /**
+     * A regular expression that can be used to specify the date format for printing
+     * and {@code String} representation.
+     */
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+
     // Private constructor to emulate a 'static class'
     private Regex() {
     }
