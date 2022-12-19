@@ -17,6 +17,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    // New DTO here
     public void createUser(User user) {
         userRepository.saveAndFlush(user);
     }

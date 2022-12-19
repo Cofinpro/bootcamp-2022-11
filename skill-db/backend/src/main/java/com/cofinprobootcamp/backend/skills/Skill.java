@@ -1,7 +1,7 @@
 package com.cofinprobootcamp.backend.skills;
 
 import com.cofinprobootcamp.backend.profile.Profile;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

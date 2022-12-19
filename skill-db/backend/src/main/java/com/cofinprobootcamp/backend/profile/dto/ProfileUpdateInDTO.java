@@ -1,7 +1,7 @@
 package com.cofinprobootcamp.backend.profile.dto;
 
 import com.cofinprobootcamp.backend.config.Regex;
-import jakarta.validation.constraints.*;
+import javax.validation.constraints.*;
 
 import java.util.List;
 

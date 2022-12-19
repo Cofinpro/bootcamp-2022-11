@@ -47,7 +47,7 @@ public class ProfileService {
     // --> should give back "outer id" of profile and update that way!
     public void updateProfile(ProfileUpdateInDTO profileInDTO, Long outerId) {
         // In theory: convert outerId to internal id
-        Profile current = profileRepository.getReferenceById(outerId);
+        Profile current = profileRepository.findById(outerId).orElseThrow(RuntimeException::new);
         Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet);
         profile.setId(outerId);

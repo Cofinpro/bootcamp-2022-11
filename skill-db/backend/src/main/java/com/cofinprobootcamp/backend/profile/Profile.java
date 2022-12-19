@@ -1,7 +1,6 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
-import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
 import javax.persistence.*;
@@ -9,8 +8,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 //TODO: jobtitle als enum oder datenbank damit wir ein drop-down draus machen können?
