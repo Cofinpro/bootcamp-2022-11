@@ -2,10 +2,11 @@ package com.cofinprobootcamp.backend.role;
 
 import com.cofinprobootcamp.backend.enums.UserRights;
 import com.cofinprobootcamp.backend.user.User;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import lombok.*;
 
+import javax.persistence.Entity;
 import java.util.List;
 
 @Entity

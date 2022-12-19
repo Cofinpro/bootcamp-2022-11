@@ -3,9 +3,11 @@ package com.cofinprobootcamp.backend.user;
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.config.Regex;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import lombok.*;
 
 /**

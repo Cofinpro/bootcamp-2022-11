@@ -2,7 +2,7 @@ package com.cofinprobootcamp.backend.profile.dto;
 
 import com.cofinprobootcamp.backend.config.Regex;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.*;
+import javax.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.util.List;

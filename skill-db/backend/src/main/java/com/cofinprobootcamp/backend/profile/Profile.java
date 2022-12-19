@@ -4,7 +4,7 @@ import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
