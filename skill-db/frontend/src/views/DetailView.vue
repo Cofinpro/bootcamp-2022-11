@@ -58,6 +58,7 @@ export default {
   setup() {
     const detailStore = useDetailStore();
     detailStore.loadDemoDetails();
+    /*detailStore.loadDetailsById(ID); TODO how are we getting the ID here?*/
     const detail = detailStore.details;
 
     const locked = ref(false);

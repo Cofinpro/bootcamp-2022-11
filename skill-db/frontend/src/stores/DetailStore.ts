@@ -1,8 +1,6 @@
 import {defineStore} from "pinia";
-import {ConvertToOverviewCard, OverviewModel} from "@/models/OverviewModel";
 import {ConvertToDetailModel, DetailModel} from "@/models/DetailModel";
 import axios from "@/axios";
-import EditComponent from "@/components/EditComponent.vue";
 
 export const useDetailStore = defineStore('detailStore',{
     state: () => ({
@@ -51,7 +49,7 @@ export const useDetailStore = defineStore('detailStore',{
                     'primaryExpertise': edits.getPrimarySkill(),
                     'referenceText': edits.getReferences(),
                     'skills': edits.getTechnologies(),
-                    'phoneNumber': "12312312312",
+                    'phoneNumber': "12312312312", /*TODO how do we get phoneNumber and email from user*/
                     'email': "test@test.com",
                     'birthDate': edits.getBirthDate()
                 }).then(() =>{}).catch((error) => {
@@ -70,7 +68,7 @@ export const useDetailStore = defineStore('detailStore',{
                 'primaryExpertise': edits.getPrimarySkill(),
                 'referenceText': edits.getReferences(),
                 'skills': edits.getTechnologies(),
-                'phoneNumber': "123123123123",
+                'phoneNumber': "123123123123", /*TODO how do we get phoneNumber and email from user*/
                 'email': "test@test.com",
                 'birthDate': edits.getBirthDate()
             }).then(() =>{}).catch((error) => {

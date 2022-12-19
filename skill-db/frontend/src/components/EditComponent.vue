@@ -47,10 +47,7 @@
   </v-container>
 </template>
 <script>
-import {
-  ConvertToDetailModelForOutput,
-  DetailModel
-} from "@/models/DetailModel";
+import { ConvertToDetailModelForOutput } from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 
@@ -67,8 +64,8 @@ export default {
       technologies: '',
       references: '',
       jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect', 'Senior Manager', 'Senior Architect', 'Director', 'Partner'],
-      primarys: ['Tech', 'Fach'],
-      givenTechnologies: ['Java', 'Vue'],
+      primarys: ['Technologie', 'Fach', 'Management'],
+      givenTechnologies: ['Java', 'Vue'], /*TODO get from backend*/
     }
   },
   mounted() {
