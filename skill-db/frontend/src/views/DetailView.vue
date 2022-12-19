@@ -26,8 +26,10 @@
       </v-list>
     </v-menu>
 
+    <DetailComponent v-if="!editMode" :details="detail"/>
+    <EditComponent v-if="editMode" :details="detail"/>
 
-    <h4>Name</h4>
+<!--    <h4>Name</h4>
     <v-chip>{{ detail.getFirstName() }}</v-chip>
     <h4>Alter</h4>
     <v-chip>{{ detail.getAge() }}</v-chip>
@@ -43,44 +45,51 @@
     </ul>
     <h4>Referenzen</h4>
     <ul>
-      <li v-for="reference in detail.getReferences()">
+      <li v-for="reference in references">
         <v-chip>{{ reference }}</v-chip>
       </li>
-    </ul>
+    </ul>-->
   </v-container>
 </template>
 
 <script lang="ts">
 import {useDetailStore} from "@/stores/DetailStore";
+import DetailComponent from "@/components/DetailComponent.vue";
+import EditComponent from "@/components/EditComponent.vue";
+import {ref} from "vue";
 
 export default {
+  components: {EditComponent, DetailComponent},
   setup() {
     const detailStore = useDetailStore();
     detailStore.loadDemoDetails();
     const detail = detailStore.details;
 
-    let showSettings: boolean = false;
-    let editMode: boolean = false;
-    let locked: boolean = false;
+    const references = detail.getReferences().split(",");
 
-    return {
-      detail, showSettings,
-      editMode, locked
-    };
-  },
-  methods: {
-    toggleEdit(): void {
-      this.editMode = !this.editMode;
-      console.log("Now you can edit.");
-    },
-    lockProfile(): void {
-      this.locked = !this.locked;
+    let showSettings: boolean = false;
+    const editMode = ref(false);
+    const locked = ref(false);
+
+    function toggleEdit(): void {
+      editMode.value = true;
+    }
+
+    function lockProfile(): void {
+      locked.value = !locked.value;
       console.log("This profile is now locked away.");
-    },
-    deleteProfile(): void {
+    }
+
+    function deleteProfile(): void {
       /*ask a second time, before delete*/
       console.log("You want to delete this profile? OK.")
-    },
+    }
+
+    return {
+      detail, showSettings, editMode,
+      toggleEdit, lockProfile, deleteProfile,
+      references
+    };
   }
 }
 </script>
