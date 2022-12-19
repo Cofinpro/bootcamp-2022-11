@@ -51,7 +51,12 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests(auth -> auth
-                        .requestMatchers("/api/v1/token", "/api/v1/token/refresh", "/api/v1/token/verify").permitAll()
+                        .mvcMatchers("/swagger-ui/*").permitAll()
+                        .mvcMatchers("/v3/api-docs/swagger-config").permitAll()
+                        .mvcMatchers("/v3/*").permitAll()
+                        .mvcMatchers("/api/v1/token").permitAll()
+                        .mvcMatchers("/api/v1/token/refresh").permitAll()
+                        .mvcMatchers("/api/v1/token/verify").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
