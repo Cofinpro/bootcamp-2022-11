@@ -22,8 +22,10 @@ public final class Regex {
 
     /**
      * A regular expression that can be used by a matcher to find valid email addresses.
-     * A valid email address consists of at least one symbol followed by an "@" followed
-     * by at least another symbol followed by a dot followed by at least another symbol.
+     * A valid email address consists of at least one allowed symbol (letter [A-Za-z] or
+     * digit or certain special characters like dot [.] and dash [-]) followed by an "@"
+     * followed by at least another symbol followed by a dot followed by at least another
+     * symbol.
      */
     public static final String VALID_MAIL_ADDRESS = "^\\w[\\w.\\-]+@[\\w.\\-]+\\.\\w+$";
 
