@@ -33,8 +33,7 @@ public class ProfileService {
         return profileRepository.saveAndFlush(profile);
     }
 
-    //changing email does not work since
-    // outerId of user is not given to frontend here!
+    // changing email does not work since outerId of user is not given to frontend here!
     // --> should give back "outer outerId" of profile and update that way!
     public void updateProfile(ProfileUpdateInDTO profileInDTO, Long outerId) throws ProfileNotFoundException {
         // In theory: convert outerId to internal id
@@ -59,13 +58,6 @@ public class ProfileService {
         return profiles.stream()
                 .map(ProfileOverviewOutDTO::new)
                 .toList();
-    }
-
-    private Set<Skill> findSkillIfExistsElseCreateSkill(List<String> skillInputs) {
-        return skillInputs.stream()
-                .map(name -> skillRepository.findSkillByName(name)
-                                .orElse(skillRepository.save(new Skill(name))))
-                .collect(Collectors.toSet());
     }
 
     public List<String> getAllExpertises() {
