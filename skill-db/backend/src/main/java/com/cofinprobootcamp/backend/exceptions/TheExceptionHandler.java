@@ -16,5 +16,14 @@ public class TheExceptionHandler {
         );
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(JobTitleNotFoundException.class)
+    public ResponseEntity<CustomErrorMessage> handleJobTitleNotFoundException(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "The jobtitle was not found. This error should never occur if front and backend are synced",
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
 }
 

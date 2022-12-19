@@ -2,6 +2,8 @@ package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
+import com.cofinprobootcamp.backend.jobTitle.JobTitle;
+import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
@@ -28,20 +30,23 @@ class ProfileServiceTest {
     ProfileRepository profileRepository;
     @Mock
     SkillService skillService;
+    @Mock
+    JobTitleService jobTitleService;
     Profile profile;
 
     @BeforeEach
     public void initialize(){
         MockitoAnnotations.openMocks(this);
         profileService = new ProfileService(profileRepository,
-                skillService
+                skillService,
+                jobTitleService
                 );
         Set<Skill> skillSet = new HashSet<>();
         skillSet.add(new Skill(" "));
         profile = Profile.builder()
                 .firstName("")
                 .lastName("")
-                .jobTitle("")
+                .jobTitle(new JobTitle(""))
                 .phoneNumber("")
                 .degree("")
                 .primaryExpertise(Expertises.SPEC)

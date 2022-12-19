@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
 import javax.persistence.*;
@@ -24,7 +25,9 @@ public class Profile {
     private Long id;
     private String firstName;
     private String lastName;
-    private String jobTitle;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "jobtitle_id")
+    private JobTitle jobTitle;
     private String phoneNumber;
     private String degree;
     private Expertises primaryExpertise;

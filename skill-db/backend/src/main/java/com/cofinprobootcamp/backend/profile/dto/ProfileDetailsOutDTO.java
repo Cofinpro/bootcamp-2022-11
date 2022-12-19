@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.profile.dto;
 
-import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.skills.Skill;
 
@@ -21,7 +20,7 @@ public record ProfileDetailsOutDTO(
     public ProfileDetailsOutDTO(Profile profile) {
         this(
                 profile.getId(),
-                profile.getJobTitle(),
+                profile.getJobTitle().getName(),
                 profile.getDegree(),
                 profile.getPrimaryExpertise()
                         .toFullNameString(),

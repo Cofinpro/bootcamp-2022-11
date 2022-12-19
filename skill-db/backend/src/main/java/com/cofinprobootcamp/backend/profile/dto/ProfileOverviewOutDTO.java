@@ -12,7 +12,7 @@ public record ProfileOverviewOutDTO(
         this(
                 profile.getId(),
                 profile.getFirstName() + " " + profile.getLastName(),
-                profile.getJobTitle(),
+                profile.getJobTitle().getName(),
                 profile.getPrimaryExpertise()
                         .toFullNameString()
         );
