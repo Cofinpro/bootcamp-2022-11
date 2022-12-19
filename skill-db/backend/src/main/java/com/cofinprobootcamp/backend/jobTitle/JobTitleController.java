@@ -19,6 +19,9 @@ public class JobTitleController {
                 .map(JobTitle::getName)
                 .toList();
     }
+
+    // Für addJobTitle sollte noch ein DTO angelegt werden oder die Entity darf nicht zwangsläufig eine ID
+    // require → sonst muss das FrontEnd eine ID für neue Titel spezifizieren, das sollte das BE tun!
     @PostMapping("")
     public void addJobTitle(@RequestBody JobTitle jobTitle) {
         jobTitleRepository.save(jobTitle);
