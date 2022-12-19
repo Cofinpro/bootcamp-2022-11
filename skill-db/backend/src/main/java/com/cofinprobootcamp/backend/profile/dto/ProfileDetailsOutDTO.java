@@ -29,7 +29,7 @@ public record ProfileDetailsOutDTO(Long outerId, String jobTitle, String degree,
     public ProfileDetailsOutDTO(Profile profile) {
         this(
                 profile.getId(),
-                profile.getJobTitle(),
+                profile.getJobTitle().getName(),
                 profile.getDegree(),
                 profile.getPrimaryExpertise().toFullNameString(),
                 profile.getReferenceText(),

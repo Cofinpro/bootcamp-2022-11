@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.profile;
 
+import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
@@ -26,7 +27,8 @@ public class ProfileController {
      * creates profile in database if authorized
      */
     @PostMapping(path = "")
-    public void createProfile(@RequestBody ProfileCreateInDTO profileInDTO) {
+    public void createProfile(@RequestBody ProfileCreateInDTO profileInDTO)
+            throws JobTitleNotFoundException {
         User user = userService.getUserByEmail(profileInDTO.email());
         Profile profile = profileService.createProfile(profileInDTO, user);
         userService.assignProfileToUser(user,profile);
@@ -40,7 +42,7 @@ public class ProfileController {
     @PatchMapping(path = "/{id}")
     public void updateProfile(@PathVariable Long id,
                               @RequestBody ProfileUpdateInDTO profileInDTO)
-            throws ProfileNotFoundException {
+            throws ProfileNotFoundException, JobTitleNotFoundException {
         profileService.updateProfile(profileInDTO, id);
     }
 
