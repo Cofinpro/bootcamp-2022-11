@@ -12,7 +12,7 @@ public class UserDirector {
                     .role(role)
                     .build();
         } else {
-            throw new RuntimeException("Invalid user role specified!");
+            throw new RuntimeException("Invalid user role specified!"); // Custom exception would be desired here
         }
     }
 }

@@ -43,7 +43,7 @@ public class ProfileDirector {
         if (!exp.equals(Expertises.UNDEFINED)) {
             return exp;
         } else {
-            throw new RuntimeException("Invalid expertises type specified!");
+            throw new RuntimeException("Invalid expertises type specified!"); // Custom exception would be desired here
         }
     }
 }
