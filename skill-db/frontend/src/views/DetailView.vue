@@ -14,41 +14,35 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item link>
-          <v-list-item-title @click="toggleEdit"> Bearbeiten </v-list-item-title>
+        <v-list-item link @click="toggleEdit">
+          <v-list-item-title> Bearbeiten </v-list-item-title>
         </v-list-item>
-        <v-list-item link>
-          <v-list-item-title @click="deleteProfile"> Löschen </v-list-item-title>
+        <v-list-item link @click.stop="toggleDelete">
+          <v-list-item-title> Löschen </v-list-item-title>
         </v-list-item>
-        <v-list-item link>
-          <v-list-item-title @click="lockProfile"> Sperren </v-list-item-title>
+        <v-list-item link @click="lockProfile">
+          <v-list-item-title> Sperren </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
 
-    <DetailComponent v-if="!editMode" :details="detail"/>
-    <EditComponent v-if="editMode" :details="detail"/>
+    <v-dialog v-model="toDelete" max-width="200">
+      <v-card>
+        <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="deleteProfile">
+            Ja
+          </v-btn>
+          <v-btn @click="toggleDelete" class="ml-2">
+            Nein
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
-<!--    <h4>Name</h4>
-    <v-chip>{{ detail.getFirstName() }}</v-chip>
-    <h4>Alter</h4>
-    <v-chip>{{ detail.getAge() }}</v-chip>
-    <h4>Jobtitel</h4>
-    <v-chip>{{ detail.getJobTitle() }}</v-chip>
-    <h4>Primärkompetenz</h4>
-    <v-chip>{{ detail.getPrimarySkill() }}</v-chip>
-    <h4>Technologien</h4>
-    <ul>
-      <li v-for="technology in detail.getTechnologies()">
-        <v-chip>{{ technology }}</v-chip>
-      </li>
-    </ul>
-    <h4>Referenzen</h4>
-    <ul>
-      <li v-for="reference in references">
-        <v-chip>{{ reference }}</v-chip>
-      </li>
-    </ul>-->
+    <DetailComponent v-if="!editMode" :details="detail"/>
+    <EditComponent v-if="editMode" :details="detail" v-on:editMode="editMode"/>
   </v-container>
 </template>
 
@@ -57,6 +51,7 @@ import {useDetailStore} from "@/stores/DetailStore";
 import DetailComponent from "@/components/DetailComponent.vue";
 import EditComponent from "@/components/EditComponent.vue";
 import {ref} from "vue";
+import router from "@/router";
 
 export default {
   components: {EditComponent, DetailComponent},
@@ -70,9 +65,14 @@ export default {
     let showSettings: boolean = false;
     const editMode = ref(false);
     const locked = ref(false);
+    const toDelete = ref(false);
 
     function toggleEdit(): void {
       editMode.value = true;
+    }
+
+    function toggleDelete(): void {
+      toDelete.value = !toDelete.value;
     }
 
     function lockProfile(): void {
@@ -83,11 +83,13 @@ export default {
     function deleteProfile(): void {
       /*ask a second time, before delete*/
       console.log("You want to delete this profile? OK.")
+      router.push(`/`);
     }
 
     return {
-      detail, showSettings, editMode,
-      toggleEdit, lockProfile, deleteProfile,
+      detail, showSettings, editMode, toDelete,
+      toggleEdit, toggleDelete,
+      lockProfile, deleteProfile,
       references
     };
   }
