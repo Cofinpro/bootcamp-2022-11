@@ -18,7 +18,7 @@ class ProfileDirectorTest {
     @Test
     void createInDTOToEntity() {
         ProfileCreateInDTO profileInDTO = new ProfileCreateInDTO(
-                0L,
+                "email@email.de",
                 "first",
                 "last",
                 "title",
@@ -27,7 +27,6 @@ class ProfileDirectorTest {
                 "references",
                 List.of("skill"),
                 "12345678901",
-                "email@email.de",
                 LocalDate.parse("1997-10-10")
         );
         User user = new User();

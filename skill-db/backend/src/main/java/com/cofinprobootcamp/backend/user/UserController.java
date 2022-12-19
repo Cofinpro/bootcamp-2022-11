@@ -33,7 +33,6 @@ public class UserController {
     public List<UserOutDTO> getAllUsers() {
         return userService.getAllUsers();
     }
-
     @GetMapping(path = "/expertises")
     public List<String> getAllExpertises() {
         return userService.getAllExpertises();

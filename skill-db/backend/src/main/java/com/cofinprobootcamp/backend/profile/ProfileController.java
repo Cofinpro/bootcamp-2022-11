@@ -4,26 +4,33 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
+import com.cofinprobootcamp.backend.user.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+import com.cofinprobootcamp.backend.user.User;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/profiles")
 public class ProfileController {
     private final ProfileService profileService;
-
-    public ProfileController(ProfileService profileService) {
+    private final UserService userService;
+    public ProfileController(ProfileService profileService,
+                             UserService userService) {
         this.profileService = profileService;
+        this.userService = userService;
     }
 
     /**
      * @param profileInDTO
-     * creates profile in database if email of user exists
+     * creates profile in database if authorized
      */
     @PostMapping(path = "")
     public void createProfile(@RequestBody ProfileCreateInDTO profileInDTO) {
-        profileService.createProfileAndAssignToUser(profileInDTO);
+        User user = userService.getUserByEmail(profileInDTO.email());
+        Profile profile = profileService.createProfile(profileInDTO, user);
+        userService.assignProfileToUser(user,profile);
     }
 
     /**

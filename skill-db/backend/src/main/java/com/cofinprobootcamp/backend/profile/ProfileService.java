@@ -6,6 +6,7 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.skills.SkillRepository;
+import com.cofinprobootcamp.backend.skills.SkillService;
 import com.cofinprobootcamp.backend.user.UserRepository;
 import com.cofinprobootcamp.backend.user.User;
 import org.springframework.http.HttpStatus;
@@ -21,25 +22,18 @@ import java.util.stream.Collectors;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
-    private final UserRepository userRepository;
-    private final SkillRepository skillRepository;
+    private final SkillService skillService;
 
     public ProfileService(ProfileRepository profileRepository,
-                          UserRepository userRepository,
-                          SkillRepository skillRepository) {
+                          SkillService skillService) {
         this.profileRepository = profileRepository;
-        this.userRepository = userRepository;
-        this.skillRepository = skillRepository;
+        this.skillService = skillService;
     }
 
-    public void createProfileAndAssignToUser(ProfileCreateInDTO profileInDTO) {
-        //TODO: replace RuntimeException by custom exception!
-        User user = userRepository.findUserByEmail(profileInDTO.email()).orElseThrow(RuntimeException::new); // Create method that throws descriptive custom exception
-        Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
+    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) {
+        Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet);
-        profile = profileRepository.saveAndFlush(profile);
-        user.setProfile(profile);
-        userRepository.saveAndFlush(user);
+        return profileRepository.saveAndFlush(profile);
     }
 
     //changing email does not work since
@@ -48,9 +42,8 @@ public class ProfileService {
     public void updateProfile(ProfileUpdateInDTO profileInDTO, Long outerId) {
         // In theory: convert outerId to internal id
         Profile current = profileRepository.findById(outerId).orElseThrow(RuntimeException::new);
-        Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
+        Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet);
-        profile.setId(outerId);
         profileRepository.saveAndFlush(profile);
     }
 
@@ -70,13 +63,5 @@ public class ProfileService {
     public List<ProfileOverviewOutDTO> getAllOverviewDTOs() {
         List<Profile> profiles = profileRepository.findAll();
         return profiles.stream().map(ProfileOverviewOutDTO::new).toList();
-    }
-
-    private Set<Skill> findSkillIfExistsElseCreateSkill(List<String> skillInputs) {
-        return skillInputs.stream()
-                .map(
-                        name -> skillRepository.findSkillByName(name)
-                                .orElse(skillRepository.save(new Skill(name))))
-                .collect(Collectors.toSet());
     }
 }

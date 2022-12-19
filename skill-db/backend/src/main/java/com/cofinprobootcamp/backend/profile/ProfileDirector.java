@@ -24,7 +24,9 @@ public class ProfileDirector {
                 .build();
     }
 
-    public static Profile UpdateInDTOToEntity(ProfileUpdateInDTO profileInDTO, Profile current, Set<Skill> skillSet) {
+    public static Profile UpdateInDTOToEntity(ProfileUpdateInDTO profileInDTO,
+                                              Profile current,
+                                              Set<Skill> skillSet) {
         current.setFirstName(profileInDTO.firstName());
         current.setLastName(profileInDTO.lastName());
         current.setJobTitle(profileInDTO.jobTitle());
