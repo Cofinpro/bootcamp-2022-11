@@ -58,20 +58,18 @@
       </div>
     </v-col>
   </v-row>
-  <v-row class="div-22">
+  <v-row class="pl-6 pr-6">
     <v-col cols="3">
-      <div class="div-23">
-        <div class="div-24">
+      <div>
+        <div class="content_card">
           <div class="block_title">Skills</div>
-          <div class="block_content">
-            <ul>
-              <li v-for="skill in detail.getTechnologies()">
+          <div class="d-flex">
+              <p v-for="skill in detail.getTechnologies()" class="pa-1 flex-wrap">
                 <v-chip>{{ skill }}</v-chip>
-              </li>
-            </ul>
+              </p>
           </div>
         </div>
-        <div class="div-26">
+        <div class="content_card mt-5">
           <div class="block_title">Abschluss</div>
           <div class="block_content">
             B.Sc. Wirtschaftinformatik
@@ -79,13 +77,13 @@
         </div>
       </div>
     </v-col>
-    <v-col>
-      <div class="div-28">
+    <v-col class="w-100">
+      <div class="pl-6 pt-2">
         <div class="block_title">Referenzen</div>
         <div class="block_content">
-          <ul>
+          <ul class="pl-6">
             <li v-for="reference in detail.getReferences()">
-              <v-chip>{{ reference }}</v-chip>
+              <p>{{ reference }}</p>
             </li>
           </ul>
         </div>
@@ -150,19 +148,7 @@ export default {
   background-color: rgba(196, 196, 196, 1);
 }
 
-.div-22 {
-  display: flex;
-}
-
-.div-23 {
-  display: flex;
-  flex-direction: column;
-  max-width: 392px;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-.div-24 {
+.content_card {
   display: flex;
   flex-direction: column;
   max-width: 100%;
@@ -181,6 +167,7 @@ export default {
   max-width: 100%;
   color: rgba(0, 0, 0, 1);
   font-size: 16px;
+  font-weight: bold;
   line-height: 20px;
   letter-spacing: 4px;
   text-align: left;
@@ -188,44 +175,11 @@ export default {
   width: 100%;
 }
 
-.div-26 {
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin-top: 24px;
-  border-radius: 8px;
-  padding: 8px 12px;
-  border-color: rgba(217, 217, 217, 1);
-  border-width: 1px;
-  border-style: solid;
-  background-color: rgba(255, 255, 255, 1);
-  width: 100%;
-}
-
 .block_content {
-  max-width: 100%;
-  align-self: stretch;
-  width: 100%;
   margin-top: 12px;
-  color: rgba(58, 58, 58, 1);
   font-size: 16px;
-  line-height: 20px;
   text-align: left;
   font-family: "Poppins", sans-serif;
-}
-
-.div-28 {
-  display: flex;
-  flex-direction: column;
-  max-width: 100%;
-  justify-content: flex-start;
-  align-items: flex-start;
-  border-radius: 8px;
-  padding: 8px 12px;
-  width: 100%;
-  height: 100%;
 }
 
 </style>
