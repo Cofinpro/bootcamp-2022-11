@@ -1,12 +1,15 @@
 package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.enums.RolesEnum;
+import com.cofinprobootcamp.backend.enums.UserRights;
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.config.Regex;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.*;
+
+import java.util.List;
 
 /**
  * This is plain data object representing the user of the skills platform,
@@ -49,5 +52,9 @@ public class User {
 
     @OneToOne
     @JoinColumn(unique = true)
-    private Profile profile;
+    private Profile profile = null;
+
+    public List<UserRights> getUserRights() {
+        return this.role.getAllAssociatedUserRights();
+    }
 }

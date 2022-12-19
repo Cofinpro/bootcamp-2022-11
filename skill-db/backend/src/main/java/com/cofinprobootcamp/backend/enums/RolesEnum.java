@@ -4,16 +4,48 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum RolesEnum {
-    ADMIN("Administrator"),
-    USER("Nutzer"),
+    /**
+     * Administrator role
+     * <br>
+     * This role allows to create, update, delete and view profiles for any user.
+     */
+    ADMIN("Administrator") {
+        @Override
+        public List<UserRights> getAllAssociatedUserRights() {
+            return List.of(UserRights.ANY_CREATE, UserRights.ANY_DELETE, UserRights.ANY_EDIT);
+        }
+    },
+
+    /**
+     * User role
+     * <br>
+     * This role allows to create, update, delete and view profiles for the user themselves.
+     */
+    USER("Nutzer") {
+        @Override
+        public List<UserRights> getAllAssociatedUserRights() {
+            return List.of(UserRights.SELF_CREATE, UserRights.SELF_DELETE, UserRights.SELF_EDIT);
+        }
+    },
     /**
      * Fallback constant in case of unsuitable input string.
      * Must always be the last defined constant!
      */
-    UNDEFINED("undefined");
+    UNDEFINED("undefined") {
+        @Override
+        public List<UserRights> getAllAssociatedUserRights() {
+            return List.of(); // Zero-element list
+        }
+    };
+
+    /**
+     * Gets the list of associated user rights defined for this role constant.
+     * @return A {@code List} of {@code UserRights} types
+     */
+    public abstract List<UserRights> getAllAssociatedUserRights();
 
     /*
-     * Zwischengespeichertes Array, da Expertises.values() in public Methoden benötigt wird
+     * Zwischengespeichertes Array, da RolesEnum.values() in public Methoden benötigt wird
      * und sonst bei jedem Call neu konstruiert werden müsste.
      */
     private static final RolesEnum[] values;
@@ -51,7 +83,7 @@ public enum RolesEnum {
     // Public enum static methods
 
     /**
-     * Gets a full name {@code String} representation of each {@code Expertises} constant
+     * Gets a display name {@code String} representation of each {@code RolesEnum} constant
      * defined in the enum.
      *
      * @return An array of {@code String} values
@@ -68,7 +100,7 @@ public enum RolesEnum {
      * @param displayName The full name as a {@code String}
      * @return An {@code Expertises} type corresponding to {@code displayName} OR {@code Expertises.UNDEFINED}
      */
-    public static RolesEnum fromFullNameString(String displayName) {
+    public static RolesEnum fromDisplayName(String displayName) {
         if (displayName == null || displayName.isBlank()) {
             return RolesEnum.UNDEFINED;
         }

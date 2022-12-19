@@ -34,4 +34,9 @@ public class UserController {
     public List<UserOutDTO> getAllUsers() {
         return userService.getAllUsers();
     }
+
+    @GetMapping(path = "/roles")
+    public List<String> getAllUserRoles() {
+        return userService.getAllUserRoles();
+    }
 }

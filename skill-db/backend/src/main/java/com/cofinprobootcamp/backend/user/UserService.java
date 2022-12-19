@@ -1,5 +1,7 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.enums.RolesEnum;
+import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.http.HttpStatus;
@@ -35,5 +37,9 @@ public class UserService {
 
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public List<String> getAllUserRoles() {
+        return RolesEnum.getAllDefinedValuesAsString();
     }
 }
