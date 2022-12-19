@@ -17,11 +17,13 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "profile")
 public class Profile {
 
     @Id
     @GeneratedValue
     private Long id;
+
     private String firstName;
     private String lastName;
     private String jobTitle;
@@ -29,6 +31,7 @@ public class Profile {
     private String degree;
     private Expertises primaryExpertise;
     private String referenceText;
+
     @ManyToMany
     @JoinTable(
             name ="profile_skill",
@@ -37,13 +40,12 @@ public class Profile {
     )
     private Set<Skill> skillSet;
     private LocalDate birthDate;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User owner;
 
-
     public int getAge() {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
-
 }

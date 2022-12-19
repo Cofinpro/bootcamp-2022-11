@@ -1,6 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -11,14 +11,15 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     // New DTO here
-    public void createUser(User user) {
+    public void createUser(UserCreateInDTO inDTO) {
+        User user = UserDirector.CreateInDTOToEntity(inDTO);
         userRepository.saveAndFlush(user);
     }
 
@@ -34,9 +35,5 @@ public class UserService {
 
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
-    }
-
-    public List<String> getAllExpertises() {
-        return Expertises.getAllDefinedValuesAsString();
     }
 }

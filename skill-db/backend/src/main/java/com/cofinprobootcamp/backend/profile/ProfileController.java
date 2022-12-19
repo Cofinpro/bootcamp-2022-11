@@ -61,4 +61,13 @@ public class ProfileController {
     public List<ProfileOverviewOutDTO> getAllProfileOverviews() {
         return profileService.getAllOverviewDTOs();
     }
+
+    /**
+     * Fetches a list of all defined primary expertises from the server.
+     * @return A list of unique {@code String}s representing the types of expertises
+     */
+    @GetMapping(path = "/expertises")
+    public List<String> getAllExpertises() { // makes more sense to have this as an endpoint under profiles, where content is actually stored
+        return profileService.getAllExpertises();
+    }
 }

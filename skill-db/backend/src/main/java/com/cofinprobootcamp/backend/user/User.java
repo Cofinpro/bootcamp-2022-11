@@ -1,12 +1,10 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.enums.RolesEnum;
 import com.cofinprobootcamp.backend.profile.Profile;
-import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.config.Regex;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.*;
 
@@ -24,6 +22,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "app_user")
 public class User {
@@ -38,13 +37,15 @@ public class User {
     @Pattern(regexp = Regex.VALID_MAIL_ADDRESS)
     private String email;
 
-    /*
-     * Locked users can't log in neither commit any actions
+    /**
+     * Locked users can't log in neither commit any actions.
      */
-    private boolean locked;
+    private boolean locked = false; // Default value
 
-    @ManyToOne
-    private Role role;
+//    @ManyToOne
+//    private Role role;
+    // For now as enum
+    private RolesEnum role = RolesEnum.USER; // Default value
 
     @OneToOne
     @JoinColumn(unique = true)

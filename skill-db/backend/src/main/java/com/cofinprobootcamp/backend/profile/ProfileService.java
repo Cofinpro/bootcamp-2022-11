@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.profile;
 
+import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
@@ -43,10 +44,10 @@ public class ProfileService {
     }
 
     //changing email does not work since
-    // id of user is not given to frontend here!
-    // --> should give back "outer id" of profile and update that way!
+    // outerId of user is not given to frontend here!
+    // --> should give back "outer outerId" of profile and update that way!
     public void updateProfile(ProfileUpdateInDTO profileInDTO, Long outerId) {
-        // In theory: convert outerId to internal id
+        // In theory: convert outerId to internal outerId
         Profile current = profileRepository.findById(outerId).orElseThrow(RuntimeException::new);
         Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet);
@@ -69,14 +70,19 @@ public class ProfileService {
 
     public List<ProfileOverviewOutDTO> getAllOverviewDTOs() {
         List<Profile> profiles = profileRepository.findAll();
-        return profiles.stream().map(ProfileOverviewOutDTO::new).toList();
+        return profiles.stream()
+                .map(ProfileOverviewOutDTO::new)
+                .toList();
     }
 
     private Set<Skill> findSkillIfExistsElseCreateSkill(List<String> skillInputs) {
         return skillInputs.stream()
-                .map(
-                        name -> skillRepository.findSkillByName(name)
+                .map(name -> skillRepository.findSkillByName(name)
                                 .orElse(skillRepository.save(new Skill(name))))
                 .collect(Collectors.toSet());
+    }
+
+    public List<String> getAllExpertises() {
+        return Expertises.getAllDefinedValuesAsString();
     }
 }

@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class UserController {
     }
 
     @PostMapping(path = "")
-    public void createUser(@RequestBody User user) {
+    public void createUser(@RequestBody UserCreateInDTO user) {
         userService.createUser(user);
     }
 
@@ -32,10 +33,5 @@ public class UserController {
     @GetMapping(path = "")
     public List<UserOutDTO> getAllUsers() {
         return userService.getAllUsers();
-    }
-
-    @GetMapping(path = "/expertises")
-    public List<String> getAllExpertises() {
-        return userService.getAllExpertises();
     }
 }
