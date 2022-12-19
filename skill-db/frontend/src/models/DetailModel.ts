@@ -119,3 +119,20 @@ export class ConvertToDetailModel{
         return `${date.split('-')[2]}.${date.split('-')[1]}.${date.split('-')[0]}`
     }
 }
+export class ConvertToDetailModelForOutput{
+    public static toDetail(object: any): DetailModel{
+        const detailModel = new DetailModel();
+        detailModel.setFirstName(String(object?.firstName));
+        detailModel.setLastName(String(object?.lastName));
+        detailModel.setBirthDate(this.convertDateToISO(object?.birthdate));
+        detailModel.setDegree(String(object?.degree));
+        detailModel.setJobTitle(String(object?.jobTitle));
+        detailModel.setPrimarySkill(String(object?.primarySkill));
+        detailModel.setTechnologies(object?.technologies);
+        detailModel.setReferences(object?.references);
+        return detailModel;
+    }
+    private static convertDateToISO(date: String): String {
+        return `${date.split(".")[2]}-${date.split(".")[1]}-${date.split(".")[0]}`;
+    }
+}

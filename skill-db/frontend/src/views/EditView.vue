@@ -41,7 +41,7 @@
       </v-overlay>
     </div>
 
-  <EditComponent update=false :details="detail"/>
+  <EditComponent update=true :detail="detail"/>
   </v-container>
 </template>
 
@@ -53,8 +53,12 @@ import {useDetailStore} from "@/stores/DetailStore";
 
 export default {
   components: {EditComponent},
-  props: ['detail'],
   setup() {
+    const detailStore = useDetailStore();
+    detailStore.loadDemoDetails();
+    /*detailStore.loadDetailsById();*/
+    const detail = detailStore.details;
+
     const locked = ref(false);
     const toDelete = ref(false);
 
@@ -69,13 +73,12 @@ export default {
     }
 
     function deleteProfile(): void {
-      /*const detailStore = useDetailStore();
-      detailStore.deleteDetailsByID(detail.getId());*/
+      /*detailStore.deleteDetailsByID(detail.getId());*/
       router.push(`/`);
     }
 
     return {
-      toDelete, locked, toggleDelete,
+      detail, toDelete, locked, toggleDelete,
       lockProfile, deleteProfile
     };
   },

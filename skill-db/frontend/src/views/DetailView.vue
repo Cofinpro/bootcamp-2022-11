@@ -79,7 +79,7 @@ export default {
     }
 
     function deleteProfile(): void {
-      detailStore.deleteDetailsByID(detail.getId());
+      /*detailStore.deleteDetailsByID(detail.getId()); TODO server/backend problems*/
       router.push(`/`);
     }
 
