@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.enums.RolesEnum;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
@@ -28,9 +29,18 @@ public class UserService {
         return new UserOutDTO(userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
+    public User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email).orElseThrow(RuntimeException::new);
+    }
+
     public List<UserOutDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map(UserOutDTO::new).toList();
+    }
+
+    public User assignProfileToUser(User user, Profile profile) {
+        user.setProfile(profile);
+        return userRepository.saveAndFlush(user);
     }
 
     public void deleteUserById(Long id) {
