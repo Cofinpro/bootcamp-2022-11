@@ -1,7 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.enums.RolesEnum;
-import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.http.HttpStatus;
@@ -19,7 +18,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // New DTO here
     public void createUser(UserCreateInDTO inDTO) {
         User user = UserDirector.CreateInDTOToEntity(inDTO);
         userRepository.saveAndFlush(user);

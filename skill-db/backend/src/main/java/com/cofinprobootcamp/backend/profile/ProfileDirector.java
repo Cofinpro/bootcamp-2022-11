@@ -16,7 +16,7 @@ public class ProfileDirector {
                 .jobTitle(profileInDTO.jobTitle())
                 .phoneNumber(profileInDTO.phoneNumber())
                 .degree(profileInDTO.degree())
-                .primaryExpertise(Expertises.fromFullNameString(profileInDTO.primaryExpertise()))
+                .primaryExpertise(convertFromStringOrThrow(profileInDTO.primaryExpertise()))
                 .referenceText(profileInDTO.referenceText())
                 .skillSet(skillSet)
                 .birthDate(profileInDTO.birthDate())
@@ -29,10 +29,19 @@ public class ProfileDirector {
         current.setLastName(profileInDTO.lastName());
         current.setJobTitle(profileInDTO.jobTitle());
         current.setDegree(profileInDTO.degree());
-        current.setPrimaryExpertise(Expertises.fromFullNameString(profileInDTO.primaryExpertise()));
+        current.setPrimaryExpertise(convertFromStringOrThrow(profileInDTO.primaryExpertise()));
         current.setReferenceText(profileInDTO.referenceText());
         current.setSkillSet(skillSet);
         current.setPhoneNumber(profileInDTO.phoneNumber());
         return current;
+    }
+
+    private static Expertises convertFromStringOrThrow(String fullName) {
+        Expertises exp = Expertises.fromFullNameString(fullName);
+        if (!exp.equals(Expertises.UNDEFINED)) {
+            return exp;
+        } else {
+            throw new RuntimeException("Invalid expertises type specified!");
+        }
     }
 }

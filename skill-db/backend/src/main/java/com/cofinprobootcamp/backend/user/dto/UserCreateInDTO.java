@@ -1,8 +1,9 @@
 package com.cofinprobootcamp.backend.user.dto;
 
-import com.cofinprobootcamp.backend.enums.RolesEnum;
+import com.cofinprobootcamp.backend.config.Regex;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 /**
  * A DTO that is used to pass information about a new user to the application. The necessary information includes
@@ -13,5 +14,5 @@ import javax.validation.constraints.NotBlank;
  *                 Must not be blank and should match the valid email template
  * @param userRole A {@code String} representation of the new user's role (i.e., its display name)
  */
-public record UserCreateInDTO(@NotBlank String email, RolesEnum userRole) {
+public record UserCreateInDTO(@NotBlank @Pattern(regexp = Regex.VALID_MAIL_ADDRESS) String email, String userRole) {
 }
