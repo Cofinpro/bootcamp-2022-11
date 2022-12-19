@@ -23,7 +23,9 @@ public class RoleService {
 
     public RoleInOutDTO getRoleById(Long id) {
         Optional<Role> roleOptional = roleRepository.findById(id);
-        return new RoleInOutDTO(roleOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new RoleInOutDTO(roleOptional.orElseThrow(() -> {
+            return new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }));
     }
 
     public List<RoleInOutDTO> getAllRoles() {
