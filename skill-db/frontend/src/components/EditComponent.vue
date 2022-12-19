@@ -21,30 +21,29 @@
           v-model="birthdate"
           :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"
           label="Geburtsdatum"></v-text-field>
-      <v-text-field
-          v-model="jobTitle"
-          :rules="[v => v.length > 1 || 'Erforderlich!']"
-          label="Jobtitel"
-      ></v-text-field>
 
-      <v-text-field
-          v-model="primarySkill"
-          :rules="[v => v.length > 1 || 'Erforderlich!']"
-          label="PrimärKompetenz"
-      ></v-text-field>
+      <v-autocomplete
+          v-model="jobTitle" :items="jobs" label="Jobbezeichnung"
+          :rules="[v => v.length > 1 || 'Erforderlich!']">
+      </v-autocomplete>
 
-      <v-text-field
-          v-model="technologies"
-          :rules="[v => v.length > 1 || 'Erforderlich!']"
-          label="Technologien">
-      </v-text-field>
+      <v-autocomplete
+          v-model="primarySkill" :items="primarys" label="Primärkompetenz"
+          :rules="[v => v.length > 1 || 'Erforderlich!']">
+      </v-autocomplete>
+
+      <v-autocomplete
+          multiple auto-select-first label="Technologien"
+          v-model="technologies" :items="givenTechnologies"
+          :rules="[v => v.length > 1 || 'Erforderlich!']">
+      </v-autocomplete>
 
       <v-text-field
           v-model="references"
           :rules="[v => v.length > 1 || 'Erforderlich!']"
           label="Referenzen">
       </v-text-field>
-      <v-btn @click="convertDateFormatToISO(birthdate)">Submit Profile</v-btn>
+      <v-btn @click="convertDateFormatToISO(birthdate)" elevation="0">Profil erstellen</v-btn>
     </v-form>
   </v-container>
 </template>
@@ -52,12 +51,12 @@
 import {DetailModel} from "@/models/DetailModel";
 
 export default {
-  props: {
+  props: ["details"]/*{
     details: {
       type: DetailModel,
       default: new DetailModel()
     }
-  },
+  }*/,
   data() {
     return {
       firstName: '',
@@ -68,6 +67,9 @@ export default {
       primarySkill: '',
       technologies: '',
       references: '',
+      jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect'],
+      primarys: ['Tech', 'Fach', 'Managment'],
+      givenTechnologies: ['Java', 'Vue'],
     }
   },
   mounted() {
@@ -77,12 +79,12 @@ export default {
     this.birthdate = this.details.getBirthDate();
     this.jobTitle = this.details.getJobTitle();
     this.primarySkill = this.details.getPrimarySkill();
-    this.technologies = this.details.getTechnologies().join(",");
+    this.technologies = this.details.getTechnologies().join(", ");
     this.references = this.details.getReferences();
   },
   methods: {
     checkDateFormat(date) {
-      return /[0-9]{2}\.[0-9]{2}\.[0-9]{4}/.test(date)
+      return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
     },
     convertDateFormatToISO(date) {
       return `${date.split(".")[2]}-${date.split(".")[1]}-${date.split(".")[0]}`;
