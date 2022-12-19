@@ -31,7 +31,28 @@ export const useDetailStore = defineStore('detailStore',{
                 console.log(error);
             });
             this.loading = false;
-        }
+        },
+        deleteDetailsByID(id: number) {
+            this.loading = true;
+            axios.delete(`/api/v1/profiles/${id}`).then(() =>{}).catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        /*createProfile(profile: ) {
+            this.loading = true;
+            axios.post(`/api/v1/profiles/`).then(() =>{}).catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        updateProfile(profile: , id: number) {
+            this.loading = true;
+            axios.post(`/api/v1/profiles/{id}`).then(() =>{}).catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },*/
     },
     }
     )

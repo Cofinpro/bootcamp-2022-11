@@ -3,7 +3,7 @@
     <h1>Neues Profil erstellen</h1>
     <h2>Hier kannst du ein neues Profil anlegen!</h2>
 
-    <EditComponent :details="detail"/>
+    <EditComponent :detail="detail" :detail-store="detailStore" update=true />
   </v-container>
 </template>
 
@@ -20,7 +20,7 @@ export default {
     const detail = detailStore.details;
 
     return {
-      detail
+      detail, detailStore
     }
   }
 }

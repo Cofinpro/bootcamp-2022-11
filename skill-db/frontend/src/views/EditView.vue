@@ -1,5 +1,6 @@
 <template>
   <v-container>
+
     <v-menu :close-on-content-click="false">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props"
@@ -11,9 +12,6 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item link @click="enterEdit">
-          <v-list-item-title> Bearbeiten </v-list-item-title>
-        </v-list-item>
         <v-list-item link @click.stop="toggleDelete">
           <v-list-item-title> Löschen </v-list-item-title>
         </v-list-item>
@@ -39,34 +37,26 @@
     </v-dialog>
 
     <div>
-    <v-overlay v-model="locked" absolute>
-    </v-overlay>
-
-    <DetailComponent :details="detail"/>
+      <v-overlay v-model="locked" absolute>
+      </v-overlay>
     </div>
+
+  <EditComponent update=false :details="detail"/>
   </v-container>
 </template>
 
 <script lang="ts">
-import {useDetailStore} from "@/stores/DetailStore";
-import DetailComponent from "@/components/DetailComponent.vue";
+import EditComponent from "@/components/EditComponent.vue";
 import {ref} from "vue";
 import router from "@/router";
+import {useDetailStore} from "@/stores/DetailStore";
 
 export default {
-  components: {DetailComponent},
+  components: {EditComponent},
+  props: ['detail'],
   setup() {
-    const detailStore = useDetailStore();
-    detailStore.loadDemoDetails();
-    const detail = detailStore.details;
-
     const locked = ref(false);
     const toDelete = ref(false);
-
-    function enterEdit(): void {
-      router.push('/detail/edit/1');
-      /*router.push({ name: 'editView', params: { id: detail.getId()}});*/
-    }
 
     function toggleDelete(): void {
       toDelete.value = !toDelete.value;
@@ -79,18 +69,19 @@ export default {
     }
 
     function deleteProfile(): void {
-      detailStore.deleteDetailsByID(detail.getId());
+      /*const detailStore = useDetailStore();
+      detailStore.deleteDetailsByID(detail.getId());*/
       router.push(`/`);
     }
 
     return {
-      detail, toDelete, locked,
-      enterEdit, toggleDelete,
+      toDelete, locked, toggleDelete,
       lockProfile, deleteProfile
     };
-  }
+  },
 }
 </script>
 
 <style scoped>
+
 </style>

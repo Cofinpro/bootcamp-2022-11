@@ -1,7 +1,5 @@
 <template>
   <v-container>
-    <h1>{{ details.getFirstName() }}'s Profil</h1>
-    <h2>Hier kannst das Profil anschauen und bearbeiten!</h2>
     <v-form @submit.prevent>
       <v-text-field v-model="firstName"
                     :rules="[v => v.length > 1 || 'Erforderlich!']"
@@ -23,7 +21,7 @@
           label="Geburtsdatum"></v-text-field>
 
       <v-autocomplete
-          v-model="jobTitle" :items="jobs" label="Jobbezeichnung"
+          v-model="jobTitle" :items="jobs" label="Jobprofil"
           :rules="[v => v.length > 1 || 'Erforderlich!']">
       </v-autocomplete>
 
@@ -43,20 +41,18 @@
           :rules="[v => v.length > 1 || 'Erforderlich!']"
           label="Referenzen">
       </v-text-field>
-      <v-btn @click="convertDateFormatToISO(birthdate)" elevation="0">Profil erstellen</v-btn>
+      <v-btn @click="clicked(birthdate)" elevation="0">Profil erstellen</v-btn>
+      <v-btn @click="leave" elevation="0">Abbrechen</v-btn>
     </v-form>
   </v-container>
 </template>
 <script>
 import {DetailModel} from "@/models/DetailModel";
+import router from "@/router";
+import {useDetailStore} from "@/stores/DetailStore";
 
 export default {
-  props: ["details"]/*{
-    details: {
-      type: DetailModel,
-      default: new DetailModel()
-    }
-  }*/,
+  props: ['detail', 'update'],
   data() {
     return {
       firstName: '',
@@ -67,22 +63,30 @@ export default {
       primarySkill: '',
       technologies: '',
       references: '',
-      jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect'],
-      primarys: ['Tech', 'Fach', 'Managment'],
+      jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect', 'Senior Manager', 'Senior Architect', 'Director', 'Partner'],
+      primarys: ['Tech', 'Fach'],
       givenTechnologies: ['Java', 'Vue'],
     }
   },
-  mounted() {
-    this.firstName = this.details.getFirstName();
-    this.lastName = this.details.getLastName();
-    this.degree = this.details.getDegree();
-    this.birthdate = this.details.getBirthDate();
-    this.jobTitle = this.details.getJobTitle();
-    this.primarySkill = this.details.getPrimarySkill();
-    this.technologies = this.details.getTechnologies().join(", ");
-    this.references = this.details.getReferences();
-  },
   methods: {
+    clicked(date) {
+      /*`${date.split(".")[2]}-${date.split(".")[1]}-${date.split(".")[0]}`;*/
+      /*const detailStore = useDetailStore();
+      if(this.update) {
+        detailStore.updateProfile();
+      } else {
+        detailStore.createProfile();
+      }*/
+    },
+    leave() {
+      if(this.update === true) {
+        console.log(this.update);
+        router.push('/');
+      } else {
+        router.push('/test');
+        /*router.push( { name: userDetails, params: {this.detail.getId()}});*/
+      }
+    },
     checkDateFormat(date) {
       return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
     },
