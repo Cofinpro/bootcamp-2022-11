@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {ConvertToUserModel, UserModel} from "@/models/UserModel";
-// import axios from "@/axios";
+import axios from "@/axios";
 
 export const useUserStore = defineStore('userStore',{
     state: () => ({
@@ -28,6 +28,16 @@ export const useUserStore = defineStore('userStore',{
                     emailConfirmed: false,
                 }
             )]
+        },  loadUsers(): void {
+            this.loading = true;
+            axios.get("/api/v1/users").then(response => {
+                console.log(response.data);
+                response.data.forEach((element: object) => {
+                    this.users.push(ConvertToUserModel.toUserModel(element))
+                })
+                this.users.forEach(user => console.log(user));
+            } )
         }
+
     }
 })

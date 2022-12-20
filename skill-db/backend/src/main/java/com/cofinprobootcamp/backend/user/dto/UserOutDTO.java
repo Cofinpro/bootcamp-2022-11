@@ -16,6 +16,6 @@ public record UserOutDTO(
                 user.getUsername(),
                 user.isLocked(),
                 user.getRole(),
-                user.getProfile().getId());
+                user.getProfile() != null ? user.getProfile().getId() : null);
     }
 }

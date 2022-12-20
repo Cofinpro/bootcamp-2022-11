@@ -4,6 +4,8 @@ import com.cofinprobootcamp.backend.enums.UserRights;
 import com.cofinprobootcamp.backend.user.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -27,6 +29,7 @@ public class Role {
 
     //TODO Set correct cascade type
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<User> users;
 
 

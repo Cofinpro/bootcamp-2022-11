@@ -10,7 +10,7 @@ export default {
   components: {UserDetails},
   setup() {
     const userStore = useUserStore();
-    userStore.loadDummyUser();
+    userStore.loadUsers();
     const users = userStore.users;
     return {
       users,
