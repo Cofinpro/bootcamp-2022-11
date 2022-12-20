@@ -20,6 +20,7 @@ public class Role {
     @GeneratedValue
     private Long id;
     @NotBlank
+    @Column(unique = true)
     private String name;
     @ElementCollection
     private List<UserRights> userRights;

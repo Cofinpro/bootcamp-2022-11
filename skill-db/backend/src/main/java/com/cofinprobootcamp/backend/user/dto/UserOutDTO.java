@@ -21,7 +21,7 @@ import java.util.List;
 public record UserOutDTO(String email, boolean locked, String role, List<String> userRights, Long profileOuterId) {
     public UserOutDTO(User user) {
         this(
-                user.getEmail(),
+                user.getUsername(),
                 user.isLocked(),
                 user.getRole().toString(),
                 user.getUserRights().stream()

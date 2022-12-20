@@ -6,19 +6,28 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -26,24 +35,31 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 import static com.cofinprobootcamp.backend.config.ProfileConfiguration.FRONTEND_URL;
 import static org.springframework.security.config.Customizer.withDefaults;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final RsaKeyProperties rsaKeys;
 
-    public SecurityConfig(RsaKeyProperties rsaKeys) {
+    private final RsaKeyProperties rsaKeys;
+    private final UserDetailsServiceImpl userDetailsService;
+
+    public SecurityConfig(RsaKeyProperties rsaKeys, UserDetailsServiceImpl userDetailsService) {
         this.rsaKeys = rsaKeys;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -57,6 +73,7 @@ public class SecurityConfig {
                         .mvcMatchers("/api/v1/token").permitAll()
                         .mvcMatchers("/api/v1/token/refresh").permitAll()
                         .mvcMatchers("/api/v1/token/verify").permitAll()
+                        .mvcMatchers("/api/v1/users").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
@@ -70,32 +87,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
+    public AuthenticationManager authenticationManager() throws Exception {
         var authProvider = new DaoAuthenticationProvider();
-        // authProvider.setPasswordEncoder(passwordEncoder());
-        // authProvider.setUserDetailsService(userDetailsService);
         authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
+
     }
 
-    /* @Bean
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }*/
-
-
-    /**
-     * Creation of InMemoryUser for authentication
-     * @return
-     */
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new InMemoryUserDetailsManager(
-                User.withUsername("admin")
-                        .password("{noop}password")
-                        .authorities("read")
-                        .build()
-        );
     }
 
     @Bean
@@ -123,7 +125,7 @@ public class SecurityConfig {
      * Config for Cors-Policy
      * @return
      */
-    private CorsConfigurationSource getCorsConfiguration() {
+   private CorsConfigurationSource getCorsConfiguration() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
