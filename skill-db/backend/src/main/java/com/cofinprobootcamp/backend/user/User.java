@@ -1,18 +1,13 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.enums.RolesEnum;
-import com.cofinprobootcamp.backend.enums.UserRights;
 import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.config.Regex;
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-
-import java.util.List;
 
 /**
  * This is plain data object representing the user of the skills platform,
@@ -39,15 +34,17 @@ public class User {
 
     //TODO: Schönere exception werfen falls email schon in use
 
-    // private String email;
 
+    /**
+     * The User entity's username. Is always an email address.
+     */
     @NotBlank
     @Column(unique=true)
     @Pattern(regexp = Regex.VALID_MAIL_ADDRESS)
     private String username;
 
     @NotBlank
-    @Length(min = 8)
+    @Length(min = Regex.MINIMUM_PASSWORD_LENGTH)
     private String password;
 
     /**

@@ -1,9 +1,12 @@
 package com.cofinprobootcamp.backend.enums;
 
+import com.cofinprobootcamp.backend.role.Role;
+import com.cofinprobootcamp.backend.role.RoleDirector;
+
 import java.util.Arrays;
 import java.util.List;
 
-public enum RolesEnum {
+public enum StandardRoles {
     /**
      * Administrator role
      * <br>
@@ -39,6 +42,14 @@ public enum RolesEnum {
     };
 
     /**
+     * Creates a new {@code Role} entity depending on the implementing enum constant.
+     * @return A {@code Role} object with set name and {@code UserRights}
+     */
+    public Role createNewRoleEntity() {
+        return RoleDirector.roleFromSpecification(this.name(), this.toString(), this.getAllAssociatedUserRights());
+    }
+
+    /**
      * Gets the list of associated user rights defined for this role constant.
      * @return A {@code List} of {@code UserRights} types
      */
@@ -48,15 +59,15 @@ public enum RolesEnum {
      * Zwischengespeichertes Array, da RolesEnum.values() in public Methoden benötigt wird
      * und sonst bei jedem Call neu konstruiert werden müsste.
      */
-    private static final RolesEnum[] values;
+    private static final StandardRoles[] values;
 
     /*
      * Statische Initialisierung von values über interne Enum Methode values().
      * Das nach außen gegebene Array enthält den UNDEFINED Wert nicht.
      */
     static {
-        RolesEnum[] tmp = RolesEnum.values();
-        values = new RolesEnum[tmp.length - 1];
+        StandardRoles[] tmp = StandardRoles.values();
+        values = new StandardRoles[tmp.length - 1];
         System.arraycopy(tmp, 0, values, 0, tmp.length - 1);
     }
 
@@ -64,7 +75,7 @@ public enum RolesEnum {
     private final String displayName;
 
     // Constructor
-    RolesEnum(String displayName) {
+    StandardRoles(String displayName) {
         this.displayName = displayName;
     }
 
@@ -90,7 +101,7 @@ public enum RolesEnum {
      */
     public static List<String> getAllDefinedValuesAsString() {
         return Arrays.stream(values)
-                .map(RolesEnum::toString)
+                .map(StandardRoles::toString)
                 .toList();
     }
 
@@ -100,13 +111,13 @@ public enum RolesEnum {
      * @param displayName The full name as a {@code String}
      * @return An {@code Expertises} type corresponding to {@code displayName} OR {@code Expertises.UNDEFINED}
      */
-    public static RolesEnum fromDisplayName(String displayName) {
+    public static StandardRoles fromDisplayName(String displayName) {
         if (displayName == null || displayName.isBlank()) {
-            return RolesEnum.UNDEFINED;
+            return StandardRoles.UNDEFINED;
         }
         return Arrays.stream(values)
                 .filter(expertises -> expertises.toString().equals(displayName))
                 .findFirst()
-                .orElse(RolesEnum.UNDEFINED);
+                .orElse(StandardRoles.UNDEFINED);
     }
 }

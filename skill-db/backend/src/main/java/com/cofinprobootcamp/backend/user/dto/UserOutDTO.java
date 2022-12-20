@@ -24,7 +24,7 @@ public record UserOutDTO(String email, boolean locked, String role, List<String>
                 user.getUsername(),
                 user.isLocked(),
                 user.getRole().toString(),
-                user.getUserRights().stream()
+                user.getRole().getUserRights().stream()
                         .map(UserRights::name)
                         .toList(),
                 user.getProfile() != null ? user.getProfile().getId() : null

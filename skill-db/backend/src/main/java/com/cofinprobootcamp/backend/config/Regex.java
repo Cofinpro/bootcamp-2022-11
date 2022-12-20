@@ -35,6 +35,8 @@ public final class Regex {
      */
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
+    public static final int MINIMUM_PASSWORD_LENGTH = 8;
+
     // Private constructor to emulate a 'static class'
     private Regex() {
     }

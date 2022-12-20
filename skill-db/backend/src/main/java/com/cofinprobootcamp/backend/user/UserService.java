@@ -1,12 +1,12 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
 import com.cofinprobootcamp.backend.profile.Profile;
-import com.cofinprobootcamp.backend.enums.RolesEnum;
+import com.cofinprobootcamp.backend.enums.StandardRoles;
+import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,14 +25,20 @@ public class UserService {
     }
 
     public void createUser(UserCreateInDTO inDTO) {
-        User user = UserDirector.CreateInDTOToEntity(inDTO);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role role = new Role(); // Hier die korrekte Rolle laden
+        String password = passwordEncoder.encode(inDTO.password());
+        User user = UserDirector.CreateInDTOToEntity(inDTO, password, role);
         userRepository.saveAndFlush(user);
     }
 
     public UserOutDTO getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         return new UserOutDTO(userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+    }
+
+    public User getUserByUsername(String email) {
+        Optional<User> userOptional = userRepository.findByUsername(email);
+        return userOptional.orElseThrow(UserNotFoundException::new);
     }
 
     public List<UserOutDTO> getAllUsers() {
@@ -50,6 +56,6 @@ public class UserService {
     }
 
     public List<String> getAllUserRoles() {
-        return RolesEnum.getAllDefinedValuesAsString();
+        return StandardRoles.getAllDefinedValuesAsString();
     }
 }

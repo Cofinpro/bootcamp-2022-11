@@ -10,10 +10,8 @@ import org.springframework.web.context.request.WebRequest;
 public class TheExceptionHandler {
     @ExceptionHandler(ProfileNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleProfileNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage(
-                "The Profile was not found!",
-                wr.getDescription(false)
-        );
+        CustomErrorMessage body = new CustomErrorMessage("The Profile was not found!",
+                wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
@@ -21,16 +19,21 @@ public class TheExceptionHandler {
     public ResponseEntity<CustomErrorMessage> handleJobTitleNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
                 "The jobtitle was not found. This error should never occur if front and backend are synced",
-                wr.getDescription(false)
-        );
+                wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(ExpertiseNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleExpertiseNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage(
-                "The Expertise was not found.",
-                wr.getDescription(false)
-        );
+        CustomErrorMessage body = new CustomErrorMessage("The Expertise was not found.",
+                wr.getDescription(false));
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<CustomErrorMessage> handleUserNotFoundException(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage("No user with the given username/email exists!",
+                wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 }
