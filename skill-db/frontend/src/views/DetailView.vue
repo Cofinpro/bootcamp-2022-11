@@ -63,10 +63,11 @@
       <div>
         <div class="content_card">
           <div class="block_title">Skills</div>
+          <SearchableMultiSelectDropdown :options="myOptions"/>
           <div class="d-flex">
-              <p v-for="skill in detail.getTechnologies()" class="pa-1 flex-wrap">
-                <v-chip>{{ skill }}</v-chip>
-              </p>
+            <p v-for="skill in detail.getTechnologies()" class="pa-1 flex-wrap">
+              <v-chip>{{ skill }}</v-chip>
+            </p>
           </div>
         </div>
         <div class="content_card mt-5">
@@ -78,6 +79,7 @@
       </div>
     </v-col>
     <v-col class="w-100">
+      <SearchableDropdown/>
       <div class="pl-6 pt-2">
         <div class="block_title">Referenzen</div>
         <div class="block_content">
@@ -94,6 +96,7 @@
 
 <script lang="ts">
 import {useDetailStore} from "@/stores/DetailStore";
+import SearchableMultiSelectDropdown from "@/components/SearchableMultiSelectDropdown.vue";
 
 export default {
   setup() {
@@ -123,6 +126,18 @@ export default {
       /*ask a second time, before delete*/
       console.log("You want to delete this profile? OK.")
     },
+  },
+  data() {
+    return {
+      myOptions: [
+        {value: 1, text: 'Option 1'},
+        {value: 2, text: 'Option 2'},
+        {value: 3, text: 'Option 3'}
+      ],
+    }
+  },
+  components: {
+    SearchableMultiSelectDropdown: SearchableMultiSelectDropdown
   }
 }
 </script>
