@@ -4,6 +4,7 @@ import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -16,7 +17,7 @@ public class UserController {
     }
 
     @PostMapping(path = "")
-    public void createUser(@RequestBody UserCreateInDTO user) {
+    public void createUser(@RequestBody @Valid UserCreateInDTO user) {
         userService.createUser(user);
     }
 

@@ -9,6 +9,8 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.user.UserService;
 import org.springframework.web.bind.annotation.*;
 import com.cofinprobootcamp.backend.user.User;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,7 +29,7 @@ public class ProfileController {
      * creates profile in database if authorized
      */
     @PostMapping(path = "")
-    public void createProfile(@RequestBody ProfileCreateInDTO profileInDTO)
+    public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO)
             throws JobTitleNotFoundException {
         User user = userService.getUserByEmail(profileInDTO.email());
         Profile profile = profileService.createProfile(profileInDTO, user);
@@ -41,7 +43,7 @@ public class ProfileController {
      */
     @PatchMapping(path = "/{id}")
     public void updateProfile(@PathVariable Long id,
-                              @RequestBody ProfileUpdateInDTO profileInDTO)
+                              @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
             throws ProfileNotFoundException, JobTitleNotFoundException {
         profileService.updateProfile(profileInDTO, id);
     }

@@ -25,5 +25,13 @@ public class TheExceptionHandler {
         );
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(ExpertiseNotFoundException.class)
+    public ResponseEntity<CustomErrorMessage> handleExpertiseNotFoundException(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "The Expertise was not found.",
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
 }
 

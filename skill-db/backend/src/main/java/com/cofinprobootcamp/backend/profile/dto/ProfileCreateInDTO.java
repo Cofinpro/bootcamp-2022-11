@@ -32,10 +32,24 @@ import java.util.List;
  * @param birthDate        A {@code String} representation of that user's birthdate who is the owner of the profile
  *                         (The format is specified as "yyyy-MM-dd"). Cannot be {@code null}
  */
-public record ProfileCreateInDTO(@NotBlank @Pattern(regexp = Regex.VALID_MAIL_ADDRESS) String email,
-                                 @NotBlank String firstName, @NotBlank String lastName, @NotBlank String jobTitle,
-                                 @NotBlank String degree, @NotNull String primaryExpertise,
-                                 @NotNull String referenceText, @NotEmpty List<@NotBlank String> skills,
-                                 @NotBlank @Pattern(regexp = Regex.VALID_PHONE_NUMBER) String phoneNumber,
-                                 @NotNull @JsonFormat(pattern = Regex.DATE_FORMAT) LocalDate birthDate) {
+public record ProfileCreateInDTO(@NotBlank(message = "Field can not be left blank!")
+                                 @Pattern(regexp = Regex.VALID_MAIL_ADDRESS, message = "Enter a valid Email Address!")
+                                 String email,
+                                 @NotBlank(message = "Field  first name can not be left blank!")
+                                 String firstName,
+                                 @NotBlank(message = "Field last name can not be left blank!")
+                                 String lastName,
+                                 @NotBlank(message = "Field job title can not be left blank!")
+                                 String jobTitle,
+                                 @NotBlank(message = "Field degree can not be left blank!")
+                                 String degree,
+                                 @NotNull(message = "Field Expertise can not be left blank!")
+                                 String primaryExpertise,
+                                 @NotNull(message = "Reference text can not be left blank!")
+                                 String referenceText,
+                                 @NotEmpty(message = "Skill List can not be left blank")
+                                 List<@NotBlank(message = "Entry in skill list can not be blank") String> skills,
+                                 @NotBlank(message = "phone number can not be left blank")
+                                 @Pattern(regexp = Regex.VALID_PHONE_NUMBER, message = "phone number has to be a valid format") String phoneNumber,
+                                 @NotNull(message = "Date can not be null" ) @JsonFormat(pattern = Regex.DATE_FORMAT) LocalDate birthDate) {
 }
