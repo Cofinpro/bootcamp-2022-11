@@ -34,7 +34,7 @@ public class ProfileService {
 
     public void createProfileAndAssignToUser(ProfileCreateInDTO profileInDTO) {
         //TODO: replace RuntimeException by custom exception!
-        User user = userRepository.findUserByEmail(profileInDTO.email()).orElseThrow(RuntimeException::new); // Create method that throws descriptive custom exception
+        User user = userRepository.findByUsername(profileInDTO.email()).orElseThrow(RuntimeException::new); // Create method that throws descriptive custom exception
         Set<Skill> skillSet = findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet);
         profile = profileRepository.saveAndFlush(profile);

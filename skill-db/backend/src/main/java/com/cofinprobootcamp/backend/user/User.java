@@ -5,10 +5,12 @@ import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.config.Regex;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 /**
  * This is plain data object representing the user of the skills platform,
@@ -38,6 +40,13 @@ public class User {
     @Pattern(regexp = Regex.VALID_MAIL_ADDRESS)
     private String email;
 
+    @Column
+    private String username;
+
+    @NotBlank
+    @Length(min = 8)
+    private String password;
+
     /*
      * Locked users can't log in neither commit any actions
      */
@@ -49,4 +58,5 @@ public class User {
     @OneToOne
     @JoinColumn(unique = true)
     private Profile profile;
+
 }

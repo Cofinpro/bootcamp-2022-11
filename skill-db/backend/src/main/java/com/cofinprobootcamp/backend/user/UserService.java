@@ -3,6 +3,9 @@ package com.cofinprobootcamp.backend.user;
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -11,14 +14,17 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
     // New DTO here
     public void createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.saveAndFlush(user);
     }
 
