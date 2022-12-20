@@ -21,65 +21,36 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item link>
-                <v-list-item-title @click="toggleEdit"> Bearbeiten</v-list-item-title>
+              <v-list-item link @click="enterEdit">
+                <v-list-item-title> Bearbeiten</v-list-item-title>
               </v-list-item>
-              <v-list-item link>
-                <v-list-item-title @click="deleteProfile"> Löschen</v-list-item-title>
+              <v-list-item link @click.stop="toggleDelete">
+                <v-list-item-title> Löschen</v-list-item-title>
               </v-list-item>
-              <v-list-item link>
-                <v-list-item-title @click="lockProfile"> Sperren</v-list-item-title>
+              <v-list-item link @click="lockProfile">
+                <v-list-item-title> Sperren</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-container>
-            <v-menu :close-on-content-click="false">
-              <template v-slot:activator="{ props }">
-                <v-btn v-bind="props"
-                       min-width="40px" width="40px" height="35px"
-                       class="pa-0" elevation="0">
-                  <v-icon size="large">
-                    mdi-cog
-                  </v-icon>
+
+          <v-dialog v-model="toDelete" max-width="200">
+            <v-card>
+              <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="deleteProfile">
+                  Ja
                 </v-btn>
-              </template>
-              <v-list>
-                <v-list-item link @click="enterEdit">
-                  <v-list-item-title> Bearbeiten </v-list-item-title>
-                </v-list-item>
-                <v-list-item link @click.stop="toggleDelete">
-                  <v-list-item-title> Löschen </v-list-item-title>
-                </v-list-item>
-                <v-list-item link @click="lockProfile">
-                  <v-list-item-title> Sperren </v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-
-            <v-dialog v-model="toDelete" max-width="200">
-              <v-card>
-                <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn @click="deleteProfile">
-                    Ja
-                  </v-btn>
-                  <v-btn @click="toggleDelete" class="ml-2">
-                    Nein
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-<!--            <div>
-              <v-overlay v-model="locked" absolute>
-              </v-overlay>
-
-              <DetailComponent :details="detail"/>
-            </div>-->
-          </v-container>
+                <v-btn @click="toggleDelete" class="ml-2">
+                  Nein
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-overlay v-model="locked" absolute/>
         </v-col>
       </v-row>
-      <div class="d-flex w-50 justify-space-between">
+      <div class="d-flex w-66 justify-space-between">
         <div class="d-flex flex-column">
           <p>
             <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-email</v-icon>
@@ -124,7 +95,6 @@
       </div>
     </v-col>
     <v-col class="w-100">
-      <SearchableDropdown/>
       <div class="pl-6 pt-2">
         <div class="block_title">Referenzen</div>
         <div class="block_content">
@@ -201,7 +171,6 @@ export default {
   max-width: 100%;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 48px 24px;
   background-color: rgba(255, 255, 255, 1);
 }
 
