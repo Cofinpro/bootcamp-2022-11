@@ -1,4 +1,3 @@
-import {ref, computed} from 'vue'
 import {defineStore} from 'pinia'
 import axios from "axios";
 import type {LoginRequest} from "@/models/LoginRequest";
@@ -32,6 +31,29 @@ export const useAuthStore = defineStore('auth', {
            this.role = "";
            router.push("/login");
         },
+        async isLoggedIn(): boolean {
+            const refreshToken = localStorage.getItem("refresh_token");
+            const username = localStorage.getItem("username");
+
+            const user = {
+                "refreshToken": refreshToken,
+                "username": username,
+            }
+
+            return await axios.post("/api/v1/token/verify", user)
+                .then((result) => {
+                    if (result.data) {
+                        return true;
+                    }
+                    return false;
+                }).catch((error) => {
+                    console.log(error.response)
+                    return false;
+                })
+        },
+        isAdmin(): boolean{
+            return this.role === 'ROLE_ADMIN'
+        }
     }
 
 })
