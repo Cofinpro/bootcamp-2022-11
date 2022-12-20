@@ -43,8 +43,8 @@ const router = createRouter({
         }
     },
     {
-        path: '/UserTest',
-        name: 'usertest',
+        path: '/admin/users',
+        name: 'userOverview',
         component: UserOverView,
     },
     /*{

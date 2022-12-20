@@ -22,6 +22,19 @@
           Detailtest
         </v-list-item>
       </RouterLink>
+      <v-divider class="divider" v-if="this.store.role === 'ROLE_ADMIN'"></v-divider>
+      <RouterLink to="/admin/users" v-if="this.store.role === 'ROLE_ADMIN'">
+        <v-list-item link>
+          <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-outline</v-icon>
+          Nutzerübersicht
+        </v-list-item>
+      </RouterLink>
+      <RouterLink to="/admin/users" v-if="this.store.role === 'ROLE_ADMIN'">
+        <v-list-item link>
+          <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-outline</v-icon>
+          Rollenübersicht
+        </v-list-item>
+      </RouterLink>
       <!-- <RouterLink :to="{ name: 'userDetail', params: { id: id }}">
              <v-list-item link>
                 Dein Profil
@@ -61,4 +74,8 @@ export default {
 </script>
 
 <style lang="css">
+.divider {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 </style>
