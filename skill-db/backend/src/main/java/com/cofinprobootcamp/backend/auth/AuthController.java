@@ -36,7 +36,7 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
         Map<String, String> tokens = tokenService.generateToken(authentication);
-        return ResponseEntity.ok().body(Map.of("tokens", tokens, "username", userLogin.username()));
+        return ResponseEntity.ok().body(Map.of("tokens", tokens, "username", userLogin.username(), "role", authentication.getAuthorities().stream().findFirst()));
     }
 
     /**

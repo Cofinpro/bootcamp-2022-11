@@ -35,12 +35,12 @@ public class User {
     Long id;
 
     //TODO: Schönere exception werfen falls email schon in use
+
+    // private String email;
+
     @NotBlank
     @Column(unique=true)
     @Pattern(regexp = Regex.VALID_MAIL_ADDRESS)
-    private String email;
-
-    @Column
     private String username;
 
     @NotBlank

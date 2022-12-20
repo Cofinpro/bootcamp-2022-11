@@ -7,6 +7,8 @@ import router from "@/router";
 export const useAuthStore = defineStore('auth', {
     state: () =>({
         loggedIn: false,
+        username: "",
+        role: "",
     }),
 
     actions: {
@@ -16,14 +18,18 @@ export const useAuthStore = defineStore('auth', {
                 localStorage.setItem("refresh_token", result.data.tokens["refresh_token"]);
                 localStorage.setItem("username", result.data.username);
                 this.loggedIn = true;
+                this.username = result.data.username;
+                this.role = result.data.role.authority;
                 router.push('/');
             }).catch((error) => {
                 console.log(error.response)
-            })
+            });
         },
         logout(): void{
            localStorage.clear();
            this.loggedIn = false;
+           this.username = "";
+           this.role = "";
            router.push("/login");
         },
     }

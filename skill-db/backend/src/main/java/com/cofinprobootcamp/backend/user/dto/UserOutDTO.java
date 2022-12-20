@@ -10,9 +10,10 @@ public record UserOutDTO(
         Role role,
         long profileId
 ) {
+    // TODO: email zu username ändern?
     public UserOutDTO(User user) {
         this(
-                user.getEmail(),
+                user.getUsername(),
                 user.isLocked(),
                 user.getRole(),
                 user.getProfile().getId());
