@@ -25,7 +25,7 @@ export const useDetailStore = defineStore('detailStore',{
         loadDetailsById(id: number){
             this.loading = true;
             axios.get(`/api/v1/profiles/${id}`).then((response) =>{
-                this.details = ConvertToDetailModel.toDetail(response);
+                this.details = ConvertToDetailModel.toDetail(response.data);
             }).catch((error) => {
                 console.log(error);
             });
@@ -33,7 +33,7 @@ export const useDetailStore = defineStore('detailStore',{
         },
         deleteDetailsByID(id: number) {
             this.loading = true;
-            axios.delete(`/api/v1/profiles/${id}`).then(() =>{}).catch((error) => {
+            axios.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
                 console.log(error);
             });
             this.loading = false;
@@ -49,10 +49,10 @@ export const useDetailStore = defineStore('detailStore',{
                     'primaryExpertise': edits.getPrimarySkill(),
                     'referenceText': edits.getReferences(),
                     'skills': edits.getTechnologies(),
-                    'phoneNumber': "12312312312", /*TODO how do we get phoneNumber and email from user*/
-                    'email': "test@test.com",
-                    'birthDate': edits.getBirthDate()
-                }).then(() =>{}).catch((error) => {
+                    'phoneNumber': edits.getPhoneNumber(),
+                    'email': edits.getEmail(),
+                    'birthDate': edits.getBirthDate(),
+                }).then().catch((error) => {
                 console.log(error);
             });
             this.loading = false;
@@ -68,10 +68,9 @@ export const useDetailStore = defineStore('detailStore',{
                 'primaryExpertise': edits.getPrimarySkill(),
                 'referenceText': edits.getReferences(),
                 'skills': edits.getTechnologies(),
-                'phoneNumber': "123123123123", /*TODO how do we get phoneNumber and email from user*/
-                'email': "test@test.com",
-                'birthDate': edits.getBirthDate()
-            }).then(() =>{}).catch((error) => {
+                'phoneNumber': edits.getPhoneNumber(),
+                'birthDate': edits.getBirthDate(),
+            }).then().catch((error) => {
                 console.log(error);
             });
             this.loading = false;

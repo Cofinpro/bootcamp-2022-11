@@ -150,20 +150,21 @@ export default {
       technologies: [],
       references: '',
       jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect', 'Senior Manager', 'Senior Architect', 'Director', 'Partner'],
-      primarys: ['Technologie', 'Fach', 'Management'],
-      givenTechnologies: ['Java', 'Vue', 'Angular', 'Spring Boot'], /*TODO get from backend*/
+      primarys: [],
+      givenTechnologies: [],
       newTechnologies: '',
       showAddTechnology: false,
     }
   },
   created() {
+    const detailStore = useDetailStore();
     if (this.update === 'true') {
       this.detail.getFirstName();
       this.firstName = this.detail.getFirstName();
       this.lastName = this.detail.getLastName();
       this.degree = this.detail.getDegree();
       this.birthdate = this.detail.getBirthDate();
-      //this.phoneNumber = this.detail.getPhoneNumber(); /*TODO include PhoneNumber in DetailModel*/
+      this.phoneNumber = this.detail.getPhoneNumber();
       this.jobTitle = this.detail.getJobTitle();
       this.primarySkill = this.detail.getPrimarySkill();
       this.technologies = this.detail.getTechnologies();
@@ -175,19 +176,19 @@ export default {
       const detailStore = useDetailStore();
       if (this.update === 'true') {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
-        /*detailStore.updateProfile(editDetails, this.detail.getId()); TODO server/backend problems*/
-        router.push('/test');
-        /*router.push( { name: userDetails, params: {this.detail.getId()}});*/
+        const id = this.detail.getId();
+        detailStore.updateProfile(editDetails, id);
+        router.push( { name: 'userDetails', params: {id}});
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
-        /*detailStore.createProfile(newDetails); TODO server/backend problems*/
+        detailStore.createProfile(newDetails);
         router.push('/');
       }
     },
     leave() {
       if (this.update === 'true') {
-        router.push('/test');
-        /*router.push( { name: userDetails, params: {this.detail.getId()}});*/
+        const id = this.detail.getId();
+        router.push( { name: 'userDetails', params: {id}});
       } else {
         router.push('/');
       }
@@ -207,7 +208,7 @@ export default {
       return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
     },
     checkPhoneFormat(number) {
-      return /[0-9]{11,13}/.test(number); /*TODO check format again*/
+      return /[0-9]{11,13}/.test(number);
     }
   },
 }

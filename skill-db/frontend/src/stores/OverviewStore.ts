@@ -8,9 +8,9 @@ export const useOverviewStore = defineStore('OverviewStore', {
         loading: Boolean(false),
     }),
     actions: {
-        loadOverview(): void {
+        async loadOverview(): void {
             this.loading = true;
-            axios.get('/api/v1/profiles').then((response) =>{
+            await axios.get('/api/v1/profiles').then((response) =>{
                 this.cards = [];
                 response.data.forEach((element: object) => {
                     this.cards.push(ConvertToOverviewCard.toOverviewCard(element))

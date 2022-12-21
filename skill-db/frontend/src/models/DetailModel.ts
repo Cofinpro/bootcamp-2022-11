@@ -9,6 +9,8 @@ export class DetailModel{
     private primarySkill: String;
     private technologies: String[];
     private references: String;
+    private phoneNumber: String;
+    private email: String;
     constructor() {
         this.id = 0;
         this.firstName = '';
@@ -20,6 +22,8 @@ export class DetailModel{
         this.primarySkill = '';
         this.technologies = [];
         this.references = '';
+        this.phoneNumber = '';
+        this.email = '';
     }
     public getDegree(): String{
         return this.degree;
@@ -99,20 +103,39 @@ export class DetailModel{
     public setReferences(value: String) {
         this.references = value;
     }
+
+    public getPhoneNumber(): String {
+        return this.phoneNumber;
+    }
+
+    public setPhoneNumber(value: String) {
+        this.phoneNumber = value;
+    }
+
+    public getEmail(): String {
+        return this.email;
+    }
+
+    public setEmail(value: String) {
+        this.email = value;
+    }
 }
 
 export class ConvertToDetailModel{
     public static toDetail(object: any): DetailModel{
         const detailModel = new DetailModel();
-        detailModel.setId(Number(object?.id));
+        detailModel.setId(Number(object?.outerId));
         detailModel.setFirstName(String(object?.firstName));
         detailModel.setLastName(String(object?.lastName));
-        detailModel.setBirthDate(this.convertDateFormatFromISO(object?.birthDate))
+        detailModel.setBirthDate(this.convertDateFormatFromISO(String(object?.birthDate)));
         detailModel.setDegree(String(object?.degree));
         detailModel.setJobTitle(String(object?.jobTitle));
-        detailModel.setPrimarySkill(String(object?.primarySkill));
-        detailModel.setTechnologies(object?.technologies);
+        detailModel.setPrimarySkill(String(object?.primaryExpertise));
+        detailModel.setTechnologies(object?.skills);
         detailModel.setReferences(object?.references);
+        detailModel.setPhoneNumber(object?.phoneNumber);
+        detailModel.setEmail(object?.email);
+        detailModel.setAge(object?.age);
         return detailModel;
     }
     private static convertDateFormatFromISO(date: String): String {
@@ -127,9 +150,11 @@ export class ConvertToDetailModelForOutput{
         detailModel.setBirthDate(this.convertDateToISO(object?.birthdate));
         detailModel.setDegree(String(object?.degree));
         detailModel.setJobTitle(String(object?.jobTitle));
-        detailModel.setPrimarySkill(String(object?.primarySkill));
-        detailModel.setTechnologies(object?.technologies);
+        detailModel.setPrimarySkill(String(object?.primaryExpertise));
+        detailModel.setTechnologies(object?.skills);
         detailModel.setReferences(object?.references);
+        detailModel.setPhoneNumber(String(object?.phoneNumber));
+        detailModel.setEmail(String(object?.email));
         return detailModel;
     }
     private static convertDateToISO(date: String): String {

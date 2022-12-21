@@ -1,10 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
 import DetailView from '../views/DetailView.vue'
 import NewView from '../views/NewView.vue'
 import EditView from '../views/EditView.vue'
-import axios from "axios";
-import {el} from "vuetify/locale";
 import LoginView from "@/views/LoginView.vue";
 import UserOverView from "@/views/UserOverView.vue"
 import {useAuthStore} from "@/stores/auth";
@@ -28,14 +26,14 @@ const router = createRouter({
           title: 'Profilübersicht'
       }
     },
-    {
+    /*{
       path: '/test',
       name: 'test',
       component: DetailView,
       meta: {
           title: 'Detail-Test'
       }
-    },
+    },*/
     {
         path: '/details/new',
         name: 'new',
@@ -58,15 +56,15 @@ const router = createRouter({
         title: 'Bearbeite dein Profil'
       }
     },
-    /*{
+    {
       path: '/detail/:id',
       name: 'userDetails',
-      component: UserDetails,
+      component: DetailView,
       props: true,
       meta: {
         title: 'Profil-Detailansicht'
       }
-    },*/
+    },
   ]
 })
 

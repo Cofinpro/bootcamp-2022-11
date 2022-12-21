@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <h2>Nutzerübersicht
-      <v-btn class="float-right">+</v-btn>
-    </h2>
+    <h2>Nutzerübersicht</h2>
     <h3>Übersicht aller vorhandenen Nutzer</h3>
     <v-table>
       <thead>
