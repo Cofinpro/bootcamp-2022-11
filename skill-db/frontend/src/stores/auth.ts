@@ -53,7 +53,7 @@ export const useAuthStore = defineStore('auth', {
                 })
         },
         isAdmin(): boolean{
-            return this.role === 'ROLE_ADMIN'
+            return localStorage.getItem('role') === 'ROLE_ADMIN'
         }
     }
 
