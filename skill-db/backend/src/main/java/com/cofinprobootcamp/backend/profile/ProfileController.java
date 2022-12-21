@@ -7,6 +7,7 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.user.UserService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import com.cofinprobootcamp.backend.user.User;
 
@@ -28,6 +29,7 @@ public class ProfileController {
      * @param profileInDTO creates profile in database if authorized (401.UNAUTHORIZED)
      */
     @PostMapping(path = "")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException {
         User user = userService.getUserByUsername(profileInDTO.email());
         Profile profile = profileService.createProfile(profileInDTO, user);
@@ -40,6 +42,7 @@ public class ProfileController {
      *                     updates profile by Id
      */
     @PatchMapping(path = "/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public void updateProfile(@PathVariable Long id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
             throws ProfileNotFoundException, JobTitleNotFoundException {
         profileService.updateProfile(profileInDTO, id);
@@ -49,6 +52,7 @@ public class ProfileController {
      * @param id delete profile by Id
      */
     @DeleteMapping(path = "/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public void deleteProfileById(@PathVariable Long id) throws ProfileNotFoundException {
         profileService.deleteProfileById(id);
     }
@@ -58,6 +62,7 @@ public class ProfileController {
      * @return profile detail view
      */
     @GetMapping(path = "/{id}")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ProfileDetailsOutDTO getProfile(@PathVariable Long id) throws ProfileNotFoundException {
         return profileService.getProfileById(id);
     }
@@ -66,6 +71,7 @@ public class ProfileController {
      * @return get all overview DTOs
      */
     @GetMapping(path = "")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public List<ProfileOverviewOutDTO> getAllProfileOverviews() {
         return profileService.getAllOverviewDTOs();
     }
@@ -76,6 +82,7 @@ public class ProfileController {
      * @return A list of unique {@code String}s representing the types of expertises
      */
     @GetMapping(path = "/expertises")
+    @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public List<String> getAllExpertises() { // makes more sense to have this as an endpoint under profiles, where content is actually stored
         return profileService.getAllExpertises();
     }

@@ -62,12 +62,8 @@ public class SecurityConfig {
                         .mvcMatchers("/api/v1/token/verify").permitAll()
                         .mvcMatchers("/api/v1/users").permitAll()
                         .mvcMatchers("/api/v1/users/*").permitAll()
-                        .mvcMatchers("/api/v1/roles").permitAll()
-                        .mvcMatchers("/api/v1/roles/*").permitAll()
-                        .mvcMatchers("/api/v1/profiles").permitAll()
-                        .mvcMatchers("/api/v1/profiles/*").permitAll()
-                        .mvcMatchers("/api/v1/job-titles/").permitAll()
-                        .mvcMatchers("/api/v1/skills").permitAll()
+                        .mvcMatchers("/api/v1/job-titles/").permitAll() // These may be kept for convenience
+                        .mvcMatchers("/api/v1/skills").permitAll() // These may be kept for convenience
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)

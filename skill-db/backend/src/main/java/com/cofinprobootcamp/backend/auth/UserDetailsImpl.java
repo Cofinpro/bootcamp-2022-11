@@ -10,6 +10,8 @@ import java.util.List;
 
 public class UserDetailsImpl implements UserDetails {
 
+    private static final String ROLE_PREFIX = "ROLE_";
+
     private final String username;
     private final String password;
     private final List<GrantedAuthority> rolesAndAuthorities;
@@ -18,7 +20,7 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.rolesAndAuthorities = List.of(new SimpleGrantedAuthority(user.getRole().getName()));
+        this.rolesAndAuthorities = List.of(new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole().getName()));
         this.isLocked = user.isLocked();
     }
 

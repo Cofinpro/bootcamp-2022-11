@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.role;
 
+import com.cofinprobootcamp.backend.enums.StandardRoles;
 import com.cofinprobootcamp.backend.enums.UserNamespaceRights;
 import com.cofinprobootcamp.backend.enums.UserOperationRights;
 import com.cofinprobootcamp.backend.enums.UserScopeRights;
@@ -100,5 +101,25 @@ public class RoleDirector {
             defaultMap.put(UserOperationRights.fromString(constant), UserScopeRights.NONE);
         }
         return defaultMap;
+    }
+
+    public static List<String> simplifiedUserRights(String roleConstantName) {
+        List<String> list = new LinkedList<>();
+        switch (StandardRoles.fromShortName(roleConstantName)) {
+            case ADMIN -> {
+                list.add("ANY_CREATE");
+                list.add("ANY_EDIT");
+                list.add("ANY_DELETE");
+                list.add("ANY_VIEW");
+            }
+            case USER -> {
+                list.add("SELF_CREATE");
+                list.add("SELF_EDIT");
+                list.add("SELF_DELETE");
+                list.add("SELF_VIEW");
+            }
+            default -> {}
+        }
+        return list;
     }
 }

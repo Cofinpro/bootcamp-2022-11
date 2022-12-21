@@ -4,6 +4,7 @@ import com.cofinprobootcamp.backend.exceptions.RoleAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
 import com.cofinprobootcamp.backend.role.dto.RoleCreateInDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleOutDTO;
+import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -57,6 +58,18 @@ public class RoleService {
     public List<RoleOutDTO> getAllRoleDTOs() {
         List<Role> roles = roleRepository.findAll();
         return roles.stream().map(RoleOutDTO::new).toList();
+    }
+
+    // Temporary class for sprint 1
+    public RoleOverviewOutDTO getSimplifiedRoleDTOByName(String name) {
+        Optional<Role> roleOptional = roleRepository.findRoleByName(name);
+        return new RoleOverviewOutDTO(roleOptional.orElseThrow(RoleNotFoundException::new));
+    }
+
+    // Temporary class for sprint 1
+    public List<RoleOverviewOutDTO> getAllSimplifiedRoleDTOs() {
+        List<Role> roles = roleRepository.findAll();
+        return roles.stream().map(RoleOverviewOutDTO::new).toList();
     }
 
     public Optional<Role> getRoleByName(String name) {
