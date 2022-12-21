@@ -100,21 +100,20 @@ import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
+import {useRoute} from "vue-router";
 
 export default {
   props: ['detail', 'update'],
   setup() {
     const detailStore = useDetailStore();
-    detailStore.loadDemoDetails();
-    /*detailStore.loadDetailsById(ID); TODO how are we getting the ID here?*/
-    const detail = detailStore.details;
+    const id = Number(useRoute().params.id);
+    detailStore.loadDetailsById(id);
 
     const locked = ref(false);
     const toDelete = ref(false);
 
     function enterEdit() {
-      router.push('/detail/edit/1');
-      /*router.push({ name: 'editView', params: { id: detail.getId()}});*/
+      router.push({ name: 'editView', params: { id: this.id}});
     }
 
     function toggleDelete() {
@@ -128,12 +127,12 @@ export default {
     }
 
     function deleteProfile() {
-      detailStore.deleteDetailsByID(detail.getId()); /*TODO server/backend problems*/
+      detailStore.deleteDetailsByID(this.id);
       router.push(`/`);
     }
 
     return {
-      detail, toDelete, locked,
+      toDelete, locked,
       enterEdit, toggleDelete,
       lockProfile, deleteProfile
     };
@@ -149,7 +148,7 @@ export default {
       primarySkill: '',
       technologies: [],
       references: '',
-      jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect', 'Senior Manager', 'Senior Architect', 'Director', 'Partner'],
+      jobs: [],
       primarys: [],
       givenTechnologies: [],
       newTechnologies: '',
@@ -158,6 +157,13 @@ export default {
   },
   created() {
     const detailStore = useDetailStore();
+    detailStore.getSkills();
+    detailStore.getJobs();
+    detailStore.getPrimarys();
+    this.givenTechnologies = detailStore.skills;
+    this.jobs = detailStore.jobs;
+    this.primarys = detailStore.primarys;
+
     if (this.update === 'true') {
       this.detail.getFirstName();
       this.firstName = this.detail.getFirstName();
