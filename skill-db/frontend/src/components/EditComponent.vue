@@ -192,6 +192,17 @@ export default {
         router.push('/');
       }
     },
+    addSkills() {
+      if (this.newTechnologies?.length > 0) {
+        let skills = this.newTechnologies.trim().split(',');
+
+        this.givenTechnologies = this.givenTechnologies.concat(skills);
+        this.technologies = this.technologies.concat(skills);
+      }
+
+      this.newTechnologies = '';
+      this.showAddTechnology = false;
+    },
     checkDateFormat(date) {
       return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
     },
