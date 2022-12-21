@@ -70,13 +70,13 @@
           </p>
         </div>
       </div>
-    </div>
-  </div>
-
-  <v-row class="lowerHalf pl-6 pr-6">
-    <v-col cols="12" lg="6" md="6" sm="12">
-        <div class="content_card d-flex">
-          <p class="block_title">Skills</p>
+    </v-col>
+  </v-row>
+  <v-row class="pl-6 pr-6">
+    <v-col cols="3">
+      <div>
+        <div class="content_card">
+          <div class="block_title">Skills</div>
           <div class="d-flex">
             <div v-for="skill in detail.getTechnologies()" class="pa-1 flex-wrap">
               <v-chip>{{ skill }}</v-chip>

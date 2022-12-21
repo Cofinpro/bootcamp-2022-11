@@ -1,5 +1,7 @@
 <template>
   <v-container>
+
+
     <EditComponent update=true :detail="detail"/>
   </v-container>
 </template>
