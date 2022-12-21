@@ -81,9 +81,45 @@
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
+import {ref} from "vue";
 
 export default {
   props: ['detail', 'update'],
+  setup() {
+    const detailStore = useDetailStore();
+    detailStore.loadDemoDetails();
+    /*detailStore.loadDetailsById(ID); TODO how are we getting the ID here?*/
+    const detail = detailStore.details;
+
+    const locked = ref(false);
+    const toDelete = ref(false);
+
+    function enterEdit() {
+      router.push('/detail/edit/1');
+      /*router.push({ name: 'editView', params: { id: detail.getId()}});*/
+    }
+
+    function toggleDelete() {
+      toDelete.value = !toDelete.value;
+    }
+
+    function lockProfile() {
+      locked.value = true;
+      console.log("This profile is now locked away.");
+      /*router.push(`/`);*/
+    }
+
+    function deleteProfile() {
+      detailStore.deleteDetailsByID(detail.getId()); /*TODO server/backend problems*/
+      router.push(`/`);
+    }
+
+    return {
+      detail, toDelete, locked,
+      enterEdit, toggleDelete,
+      lockProfile, deleteProfile
+    };
+  },
   data() {
     return {
       firstName: '',
