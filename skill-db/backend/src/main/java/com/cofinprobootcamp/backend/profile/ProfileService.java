@@ -34,8 +34,8 @@ public class ProfileService {
     }
 
     public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException {
-        Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
+        Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle);
         return profileRepository.saveAndFlush(profile);
     }
@@ -46,8 +46,8 @@ public class ProfileService {
             throws ProfileNotFoundException, JobTitleNotFoundException {
         // In theory: convert outerId to internal id
         Profile current = profileRepository.findById(outerId).orElseThrow(ProfileNotFoundException::new);
-        Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
+        Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet, jobTitle);
         profileRepository.saveAndFlush(profile);
     }

@@ -22,13 +22,23 @@ import java.util.List;
  *                         (The format is specified as "yyyy-MM-dd")
  * @param age              The user's age as calculated per {@code birthDate} (Integer value)
  */
-public record ProfileDetailsOutDTO(Long outerId, String jobTitle, String degree, String primaryExpertise,
-                                   String referenceText, List<String> skills, String firstName, String lastName,
+public record ProfileDetailsOutDTO(Long outerId,
+                                   String email,
+                                   String phoneNumber,
+                                   String jobTitle,
+                                   String degree,
+                                   String primaryExpertise,
+                                   String referenceText,
+                                   List<String> skills,
+                                   String firstName,
+                                   String lastName,
                                    String birthDate, Integer age) {
 
     public ProfileDetailsOutDTO(Profile profile) {
         this(
                 profile.getId(),
+                profile.getOwner().getUsername(),
+                profile.getPhoneNumber(),
                 profile.getJobTitle().getName(),
                 profile.getDegree(),
                 profile.getPrimaryExpertise().toFullNameString(),

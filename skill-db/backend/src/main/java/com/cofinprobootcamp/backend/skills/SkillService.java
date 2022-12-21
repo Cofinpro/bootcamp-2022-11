@@ -15,8 +15,13 @@ public class SkillService {
     public Set<Skill> findSkillIfExistsElseCreateSkill(List<String> skillInputs) {
         return skillInputs.stream()
                 .map(
-                        name -> skillRepository.findSkillByName(name)
-                                .orElse(skillRepository.save(new Skill(name))))
+                        name -> {
+                            System.out.println(skillRepository.findSkillByName(name));
+                            if (skillRepository.findSkillByName(name).isPresent()) {
+                                return skillRepository.findSkillByName(name).get();
+                            } else{
+                                return skillRepository.saveAndFlush(new Skill(name));
+                            }})
                 .collect(Collectors.toSet());
     }
 }
