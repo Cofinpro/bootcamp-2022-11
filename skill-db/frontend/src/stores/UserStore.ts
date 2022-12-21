@@ -1,33 +1,26 @@
 import {defineStore} from "pinia";
 import {ConvertToUserModel, UserModel} from "@/models/UserModel";
-// import axios from "@/axios";
+import axios from "@/axios";
 
-export const useUserStore = defineStore('userStore',{
+export const useUserStore = defineStore('userStore', {
     state: () => ({
         users: [] as UserModel[],
         loading: Boolean(false)
     }),
     actions: {
-        loadDummyUser() {
+        loadUsers(): void {
             this.loading = true;
-            this.users = [ConvertToUserModel.toUserModel(
-                {
-                    email: "Max.Mustermann@cofinpro.de",
-                    role: "Admin",
-                    rights: ["Lesen","Editieren","Löschen"],
-                    locked: false,
-                    emailConfirmed: false,
+            axios.get("/api/v1/users").then(response => {
+                if(this.users.length > 0) {
+                    // reloads the list of users every time the method gets called,
+                    // in case the list is not empty
+                    this.users = [];
                 }
-            ),
-            ConvertToUserModel.toUserModel(
-                {
-                    email: "Max.Mustermann2@cofinpro.de",
-                    role: "User",
-                    rights: ["Lesen"],
-                    locked: true,
-                    emailConfirmed: false,
-                }
-            )]
+                response.data.forEach((element: object) => {
+                    this.users.push(ConvertToUserModel.toUserModel(element));
+                })
+            })
         }
+
     }
 })
