@@ -73,8 +73,8 @@
     </div>
   </div>
 
-  <v-row class="pl-6 pr-6 mt-10 mt-md-15 mt-sm-5">
-    <v-col lg="6" md="6" sm="12" xs ="12">
+  <v-row class="lowerHalf pl-6 pr-6">
+    <v-col cols="12" lg="6" md="6" sm="12">
         <div class="content_card d-flex">
           <p class="block_title">Skills</p>
           <div class="d-flex">
@@ -90,7 +90,7 @@
           </div>
         </div>
     </v-col>
-    <v-col>
+    <v-col cols="12" lg="6" md="6" sm="12">
       <div class="references pl-6 pt-2">
         <div class="block_title">Referenzen</div>
         <div class="block_content">
@@ -180,6 +180,10 @@ img {
   width: 700px;
 }
 
+.lowerHalf {
+  margin-top: 5%;
+}
+
 .content_card {
   flex-direction: column;
   justify-content: flex-start;
@@ -214,17 +218,20 @@ img {
 
 @media screen and (max-width: 1050px) {
   .header {
-    height: 50%;
+    height: 480px;
     margin: auto;
     display: grid;
-    grid-template-rows: 1fr 0.5fr 0.5fr 0.5fr;;
+    grid-template-rows: 1fr 1fr 0.8fr;
+    grid-row: 2 / span 1;
   }
   img {
-    grid-row: 0;
+    display: grid;
+    grid-row: 1 / span 1;
     margin-left: 0;
   }
   .headline {
-    grid-row: 1;
+    display: grid;
+    grid-row: 2 / span 1;
     margin-left: 0;
     margin-top: 5%;
   }
@@ -232,9 +239,14 @@ img {
     display: grid;
     margin-left: 0;
     margin-top: 5%;
+    height: 150px;
+    width: 400px;
   }
   .infos2 {
     margin-top: 10px;
+  }
+  .lowerHalf {
+    margin-top: 40px;
   }
 }
 

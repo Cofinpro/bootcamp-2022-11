@@ -45,12 +45,12 @@
           <v-card class="mt-3 mb-10 d-flex justify-center" color="grey" width="200px" height="25px">Bild hochladen</v-card>
         </div>
         <v-row class="headline">
-          <v-col lg="6" md="6" sm="12" xs="12" >
+          <v-col cols="12" lg="6" md="6" sm="12">
             <v-text-field v-model="firstName" :rules="[v => v.length > 1 || 'Erforderlich!']" label="Vorname"/>
             <v-autocomplete v-model="jobTitle" :items="jobs" label="Jobprofil" :rules="[v => v.length > 1 || 'Erforderlich!']"></v-autocomplete>
             <v-text-field v-model="phoneNumber" label="Telefonnummer" :rules="[ number => checkPhoneFormat(number) || 'Date Format must be DD.MM.YYYY']"/>
           </v-col>
-          <v-col>
+          <v-col lg="6" md="6" sm="12">
             <v-text-field v-model="lastName" :rules="[v => v.length > 1 || 'Erforderlich']" label="Nachname"/>
             <v-autocomplete v-model="primarySkill" :items="primarys" label="Primärkompetenz" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
             <v-text-field v-model="birthdate" label="Geburtsdatum" :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"/>
@@ -71,9 +71,10 @@
           <v-text-field class="references" v-model="references" label="Referenzen" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
         </v-col>
       </v-row>
-
-      <v-btn class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
-      <v-btn class="mt-10 ml-5" @click="leave" elevation="0">Abbrechen</v-btn>
+      <div class="buttons d-flex justify-end">
+        <v-btn class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
+        <v-btn class="mt-10 ml-lg-5 ml-md-5" @click="leave" elevation="0">Abbrechen</v-btn>
+      </div>
     </v-form>
   </v-container>
 </template>
@@ -233,6 +234,10 @@ img {
   }
   .skillsAndDegree {
     margin-left: 0;
+  }
+  .buttons {
+    flex-direction: column;
+
   }
 }
 
