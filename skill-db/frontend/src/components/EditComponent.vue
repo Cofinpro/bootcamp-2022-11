@@ -61,16 +61,33 @@
       <v-row>
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete multiple auto-select-first label="Skills" v-model="technologies" :items="givenTechnologies" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
-            <v-btn class="mb-5" size="small" v-if="!showAddTechnology" @click="showAddTechnology = true" elevation="0">Technologie nicht gefunden?</v-btn>
-            <v-text-field v-if="showAddTechnology" v-model="newTechnologies"/>
+            <v-autocomplete
+                multiple
+                auto-select-first
+                label="Skills"
+                chips
+                closable-chips
+                v-model="technologies"
+                :items="givenTechnologies"
+            />
+
+            <v-btn class="mb-5" size="small" v-if="!showAddTechnology" @click="showAddTechnology=true"
+                   elevation="0">Technologie nicht gefunden?
+            </v-btn>
+            <v-text-field v-if="showAddTechnology" v-model="newTechnologies"
+                          placeholder="Füge mehrere Skills hinzu, indem du sie mit Kommata [','] separierst."
+                          @keydown.enter="addSkills"
+            />
+
             <v-text-field v-model="degree" label="Abschluss" :rules="[v => v.length > 1 || 'Erforderlich']"/>
           </div>
         </v-col>
         <v-col>
-          <v-text-field class="references" v-model="references" label="Referenzen" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
+          <v-text-field class="references" v-model="references" label="Referenzen"
+                        :rules="[v => v.length > 1 || 'Erforderlich!']"/>
         </v-col>
       </v-row>
+
       <div class="buttons d-flex justify-end">
         <v-btn class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
         <v-btn class="mt-10 ml-lg-5 ml-md-5" @click="leave" elevation="0">Abbrechen</v-btn>
