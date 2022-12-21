@@ -1,8 +1,5 @@
 <template>
-  <v-container>
-    <h1>{{ detail.getFirstName() }}'s Profil</h1>
-    <h2>Hier kannst du das Profil anschauen und bearbeiten!</h2>
-
+  <div class="d-flex justify-end">
     <v-menu :close-on-content-click="false">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props"
@@ -14,79 +11,243 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item link>
-          <v-list-item-title @click="toggleEdit"> Bearbeiten </v-list-item-title>
+        <v-list-item link @click="enterEdit">
+          <v-list-item-title> Bearbeiten</v-list-item-title>
         </v-list-item>
-        <v-list-item link>
-          <v-list-item-title @click="deleteProfile"> Löschen </v-list-item-title>
+        <v-list-item link @click.stop="toggleDelete">
+          <v-list-item-title> Löschen</v-list-item-title>
         </v-list-item>
-        <v-list-item link>
-          <v-list-item-title @click="lockProfile"> Sperren </v-list-item-title>
+        <v-list-item link @click="lockProfile">
+          <v-list-item-title> Sperren</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
 
+    <v-dialog v-model="toDelete" max-width="200">
+      <v-card>
+        <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="deleteProfile">
+            Ja
+          </v-btn>
+          <v-btn @click="toggleDelete" class="ml-2">
+            Nein
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-overlay v-model="locked" absolute/>
+  </div>
 
-    <h4>Name</h4>
-    <v-chip>{{ detail.getFirstName() }}</v-chip>
-    <h4>Alter</h4>
-    <v-chip>{{ detail.getAge() }}</v-chip>
-    <h4>Jobtitel</h4>
-    <v-chip>{{ detail.getJobTitle() }}</v-chip>
-    <h4>Primärkompetenz</h4>
-    <v-chip>{{ detail.getPrimarySkill() }}</v-chip>
-    <h4>Technologien</h4>
-    <ul>
-      <li v-for="technology in detail.getTechnologies()">
-        <v-chip>{{ technology }}</v-chip>
-      </li>
-    </ul>
-    <h4>Referenzen</h4>
-    <ul>
-      <li v-for="reference in detail.getReferences()">
-        <v-chip>{{ reference }}</v-chip>
-      </li>
-    </ul>
-  </v-container>
+  <div class="header">
+    <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">
+    <div class="header_content d-flex flex-column align-content-space-between">
+      <div class="headline">
+        <h1> {{ detail.getFirstName() }} {{ detail.getLastName() }}</h1>
+        <h3> {{ detail.getJobTitle() }}, {{ detail.getAge() }}</h3>
+      </div>
+
+      <div class="infos">
+        <div class="infos1 d-flex flex-column align-content-end">
+          <p>
+            <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-email</v-icon>
+            max.mustermann@cofinpro.de
+          </p>
+          <p class="mt-3">
+            <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-crown-outline</v-icon>
+            {{ detail.getPrimarySkill() }}
+          </p>
+        </div>
+        <div class="infos2 d-flex flex-column">
+          <p>
+            <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-phone</v-icon>
+            +49 176 65544 000
+          </p>
+          <p class="mt-3">
+            <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-cake-variant-outline</v-icon>
+            {{ detail.getBirthDate() }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <v-row class="lowerHalf pl-6 pr-6">
+    <v-col cols="12" lg="6" md="6" sm="12">
+      <div class="content_card d-flex">
+        <p class="block_title">Skills</p>
+        <div class="d-flex">
+          <div v-for="skill in detail.getTechnologies()" class="pa-1 flex-wrap">
+            <v-chip>{{ skill }}</v-chip>
+          </div>
+        </div>
+      </div>
+      <div class="content_card mt-5">
+        <div class="block_title">Abschluss</div>
+        <div class="block_content">
+          B.Sc. Wirtschaftinformatik
+        </div>
+      </div>
+    </v-col>
+    <v-col cols="12" lg="6" md="6" sm="12">
+      <div class="references pl-6 pt-2">
+        <div class="block_title">Referenzen</div>
+        <div class="block_content">
+          <ul class="pl-6">
+            <li v-for="reference in detail.getReferences().split(',')">
+              <p>{{ reference }}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
 import {useDetailStore} from "@/stores/DetailStore";
+import DetailComponent from "@/components/DetailComponent.vue";
+import {ref} from "vue";
+import router from "@/router";
 
 export default {
+  components: {DetailComponent},
   setup() {
     const detailStore = useDetailStore();
     detailStore.loadDemoDetails();
+    /*detailStore.loadDetailsById(ID); TODO how are we getting the ID here?*/
     const detail = detailStore.details;
 
-    let showSettings: boolean = false;
-    let editMode: boolean = false;
-    let locked: boolean = false;
+    const locked = ref(false);
+    const toDelete = ref(false);
+
+    function enterEdit(): void {
+      router.push('/detail/edit/1');
+      /*router.push({ name: 'editView', params: { id: detail.getId()}});*/
+    }
+
+    function toggleDelete(): void {
+      toDelete.value = !toDelete.value;
+    }
+
+    function lockProfile(): void {
+      locked.value = true;
+      console.log("This profile is now locked away.");
+      /*router.push(`/`);*/
+    }
+
+    function deleteProfile(): void {
+      /*detailStore.deleteDetailsByID(detail.getId()); TODO server/backend problems*/
+      router.push(`/`);
+    }
 
     return {
-      detail, showSettings,
-      editMode, locked
+      detail, toDelete, locked,
+      enterEdit, toggleDelete,
+      lockProfile, deleteProfile
     };
   },
-  methods: {
-    toggleEdit(): void {
-      this.editMode = !this.editMode;
-      console.log("Now you can edit.");
-    },
-    lockProfile(): void {
-      this.locked = !this.locked;
-      console.log("This profile is now locked away.");
-    },
-    deleteProfile(): void {
-      /*ask a second time, before delete*/
-      console.log("You want to delete this profile? OK.")
-    },
-  }
 }
 </script>
 
 <style scoped>
-.v-chip {
-  margin-bottom: 10px;
+
+.header {
+  width: 100%;
+  display: flex;
 }
+
+img {
+  height: 200px;
+}
+
+.headline {
+  height: 100px;
+  margin-left: 10%;
+}
+
+.infos {
+  display: flex;
+  justify-content: space-between;
+  height: 100px;
+  margin-left: 10%;
+  margin-top: 60px;
+}
+
+.header_content {
+  height: 200px;
+  width: 700px;
+}
+
+.lowerHalf {
+  margin-top: 5%;
+}
+
+.content_card {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 8px;
+  padding: 8px 12px;
+  border-color: rgba(217, 217, 217, 1);
+  border-width: 1px;
+  border-style: solid;
+  width: 300px;
+  margin-left: -30px;
+}
+.references {
+  margin-left: -42px;
+}
+
+.block_title {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 20px;
+  letter-spacing: 2px;
+  text-align: left;
+  font-family: "Poppins", sans-serif;
+}
+
+.block_content {
+  margin-top: 12px;
+  font-size: 16px;
+  text-align: left;
+  font-family: "Poppins", sans-serif;
+}
+
+@media screen and (max-width: 1050px) {
+  .header {
+    height: 480px;
+    margin: auto;
+    display: grid;
+    grid-template-rows: 1fr 1fr 0.8fr;
+    grid-row: 2 / span 1;
+  }
+  img {
+    display: grid;
+    grid-row: 1 / span 1;
+    margin-left: 0;
+  }
+  .headline {
+    display: grid;
+    grid-row: 2 / span 1;
+    margin-left: 0;
+    margin-top: 5%;
+  }
+  .infos {
+    display: grid;
+    margin-left: 0;
+    margin-top: 5%;
+    height: 150px;
+    width: 400px;
+  }
+  .infos2 {
+    margin-top: 10px;
+  }
+  .lowerHalf {
+    margin-top: 40px;
+  }
+}
+
 </style>

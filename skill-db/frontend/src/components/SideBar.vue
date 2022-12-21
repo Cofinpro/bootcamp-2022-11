@@ -1,14 +1,20 @@
 <template>
+  <v-app-bar
+      elevation="0"
+      order="0">
+    <v-app-bar-nav-icon @click="toggleDrawer()"></v-app-bar-nav-icon>
+  </v-app-bar>
   <v-navigation-drawer
       elevation="0"
-      permanent
-      expand-on-hover
-      app
+      v-model="drawer"
+      order="1"
+      :scrim="false"
+      :permanent="$vuetify.display.smAndUp"
   >
     <!-- <div class="wrapper"> -->
     <v-list nav dense>
-      <v-list-item id="logo">
-        <img src="@/assets/images/Logo.png" alt="Cofinpro logo">
+      <v-list-item class="logo d-flex justify-center">
+        <img src="@/assets/images/Skill_DB_Logo.svg" width="220" alt="Cofinpro logo">
       </v-list-item>
       <RouterLink to="/">
         <v-list-item link>
@@ -42,18 +48,18 @@
            </RouterLink>-->
     </v-list>
 
-    <template v-slot:append>
-      <div class="ma-10 pa-5">
-        <v-btn elevation="0" @click="logout">
-          LOGOUT
-          <v-icon class="ml-3">mdi-exit-to-app</v-icon>
-        </v-btn>
-      </div>
-    </template>
-  </v-navigation-drawer>
+      <template v-slot:append>
+        <div class="ma-10 pa-5">
+          <v-btn elevation="0" @click="logout">
+            LOGOUT
+            <v-icon class="ml-3">mdi-exit-to-app</v-icon>
+          </v-btn>
+        </div>
+      </template>
+    </v-navigation-drawer>
 </template>
 
-<script type="text/babel">
+<script>
 import {useAuthStore} from "@/stores/auth";
 
 export default {
@@ -63,16 +69,20 @@ export default {
     }
   },
   props: ['id'],
-  setup() {
+  data() {
     const store = useAuthStore();
     return {
-      store
+      store,
+      drawer: null,
     }
   },
   methods: {
     logout() {
       this.store.logout();
-    }
+    },
+    toggleDrawer() {
+      this.drawer = !this.drawer;
+    },
   }
 }
 

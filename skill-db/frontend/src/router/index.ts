@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import DetailView from '../views/DetailView.vue'
 import NewView from '../views/NewView.vue'
+import EditView from '../views/EditView.vue'
 import axios from "axios";
 import {el} from "vuetify/locale";
 import LoginView from "@/views/LoginView.vue";
@@ -48,13 +49,22 @@ const router = createRouter({
         name: 'userOverview',
         component: UserOverView,
     },
+    {
+      path: '/detail/edit/:id',
+      name: 'editView',
+      component: EditView,
+      props: true,
+      meta: {
+        title: 'Bearbeite dein Profil'
+      }
+    },
     /*{
-      path: '/details/:id',
+      path: '/detail/:id',
       name: 'userDetails',
       component: UserDetails,
       props: true,
       meta: {
-        title: Profil-Detailansicht
+        title: 'Profil-Detailansicht'
       }
     },*/
   ]
