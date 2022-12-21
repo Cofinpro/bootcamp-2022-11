@@ -21,15 +21,29 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
-    public void detachProfileFromUser(Long id) {
+    public User detachProfileFromUser(Long id) {
         User user = userRepository.findById(id).get();
         user.setProfile(null);
-        userRepository.saveAndFlush(user);
+        return userRepository.saveAndFlush(user);
     }
-    public void createUser(UserCreateInDTO inDTO, Role role) {
+    public User assignProfileToUser(User user, Profile profile) {
+        user.setProfile(profile);
+        return userRepository.saveAndFlush(user);
+    }
+
+    public User createUser(UserCreateInDTO inDTO, Role role) {
         String password = passwordEncoder.encode(inDTO.password());
         User user = UserDirector.CreateInDTOToEntity(inDTO, password, role);
-        userRepository.saveAndFlush(user);
+        return userRepository.saveAndFlush(user);
+    }
+
+    public void deleteUserById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     public UserOutDTO getUserById(Long id) {
@@ -45,20 +59,6 @@ public class UserService {
     public List<UserOutDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream().map(UserOutDTO::new).toList();
-    }
-
-    public User assignProfileToUser(User user, Profile profile) {
-        user.setProfile(profile);
-        return userRepository.saveAndFlush(user);
-    }
-
-    public void deleteUserById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            userRepository.deleteById(id);
-        } else {
-            throw new UserNotFoundException();
-        }
     }
 
     public List<String> getAllUserRoles() {

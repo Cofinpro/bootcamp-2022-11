@@ -88,7 +88,7 @@ class ProfileServiceTest {
     */
 
     @Test
-    void getProfileById() throws ProfileNotFoundException {
+    void given_Optional_of_Profile_when_profile_in_db_then_return_profile() throws ProfileNotFoundException {
         Mockito.when(profileRepository.findById(1L))
                 .thenReturn(Optional.of(profile));
 
@@ -97,7 +97,7 @@ class ProfileServiceTest {
     }
 
     @Test
-    void getAllOverviewDTOs() {
+    void given_List_of_profile_when_profile_in_db_then_return_profile_overview_dto() {
 
         Mockito.when(profileRepository.findAll())
                 .thenReturn(List.of(profile));

@@ -29,7 +29,7 @@ class ProfileDirectorTest {
                 LocalDate.parse("1997-10-10")
         );
         User user = new User();
-        user.setEmail("a@b.c");
+        user.setUsername("a@b.c");
         Set<Skill> skillSet= Set.of(new Skill());
 
         Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, new JobTitle("title"));

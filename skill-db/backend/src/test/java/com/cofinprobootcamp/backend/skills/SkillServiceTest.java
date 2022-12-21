@@ -26,19 +26,19 @@ class SkillServiceTest {
 
 
     @Test
-    void findSkillIfExists() {
+    void given_existing_skill_name_when_saving_skill_then_return_existing_object() {
         Skill driving = new Skill("Fahren");
         Mockito.when(skillRepository.findSkillByName("Fahren")).thenReturn(Optional.of(driving));
         assertThat(skillService.findSkillIfExistsElseCreateSkill(List.of(driving.getName())))
                 .isEqualTo(Set.of(driving));
     }
     @Test
-    void elseCreateSkill() {
+    void given_nonexistent_skill_name_when_saving_skill_then_return_new_object() {
         Skill nonExistent = new Skill("NonExistent");
         Mockito.when(skillRepository.findSkillByName(nonExistent.getName())).thenReturn(Optional.empty());
         ArgumentCaptor<Skill> argumentCaptor= ArgumentCaptor.forClass(Skill.class);
         skillService.findSkillIfExistsElseCreateSkill(List.of(nonExistent.getName()));
-        Mockito.verify(skillRepository,Mockito.times(1)).save(argumentCaptor.capture());
+        Mockito.verify(skillRepository,Mockito.times(1)).saveAndFlush(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getName()).isEqualTo(nonExistent.getName());
     }
 }
