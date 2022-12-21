@@ -59,7 +59,7 @@
       </div>
 
       <v-row>
-        <v-col lg="6" md="6" sm="12" xs="12">
+        <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
             <v-autocomplete multiple auto-select-first label="Skills" v-model="technologies" :items="givenTechnologies" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
             <v-btn class="mb-5" size="small" v-if="!showAddTechnology" @click="showAddTechnology = true" elevation="0">Technologie nicht gefunden?</v-btn>
