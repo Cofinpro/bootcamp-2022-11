@@ -46,7 +46,7 @@ public class Profile {
     private Set<Skill> skillSet;
     private LocalDate birthDate;
 
-    @OneToOne
+    @OneToOne//TODO: cascade types
     @JoinColumn(unique = true)
     private User owner;
 

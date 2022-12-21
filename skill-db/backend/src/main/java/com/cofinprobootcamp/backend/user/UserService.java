@@ -21,7 +21,11 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
-
+    public void detachProfileFromUser(Long id) {
+        User user = userRepository.findById(id).get();
+        user.setProfile(null);
+        userRepository.saveAndFlush(user);
+    }
     public void createUser(UserCreateInDTO inDTO, Role role) {
         String password = passwordEncoder.encode(inDTO.password());
         User user = UserDirector.CreateInDTOToEntity(inDTO, password, role);

@@ -92,7 +92,7 @@ class ProfileServiceTest {
         Mockito.when(profileRepository.findById(1L))
                 .thenReturn(Optional.of(profile));
 
-        assertThat(profileService.getProfileById(1L))
+        assertThat(profileService.getProfileDTOById(1L))
                 .isEqualTo(new ProfileDetailsOutDTO(profile));
     }
 

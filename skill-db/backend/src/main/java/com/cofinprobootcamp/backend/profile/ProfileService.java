@@ -57,7 +57,10 @@ public class ProfileService {
         profileRepository.deleteById(id);
     }
 
-    public ProfileDetailsOutDTO getProfileById(Long id) throws ProfileNotFoundException {
+    public Profile getProfileById(Long id) throws ProfileNotFoundException{
+        return profileRepository.findById(id).orElseThrow(ProfileNotFoundException::new);
+    }
+    public ProfileDetailsOutDTO getProfileDTOById(Long id) throws ProfileNotFoundException {
         Optional<Profile> profileOptional = profileRepository.findById(id);
         return new ProfileDetailsOutDTO(profileOptional.orElseThrow(ProfileNotFoundException::new));
     }

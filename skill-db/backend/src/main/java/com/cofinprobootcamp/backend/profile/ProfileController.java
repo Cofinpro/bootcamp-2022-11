@@ -54,6 +54,8 @@ public class ProfileController {
     @DeleteMapping(path = "/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public void deleteProfileById(@PathVariable Long id) throws ProfileNotFoundException {
+        Profile profile = profileService.getProfileById(id); //TODO
+        userService.detachProfileFromUser(profile.getOwner().getId());
         profileService.deleteProfileById(id);
     }
 
@@ -64,7 +66,7 @@ public class ProfileController {
     @GetMapping(path = "/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public ProfileDetailsOutDTO getProfile(@PathVariable Long id) throws ProfileNotFoundException {
-        return profileService.getProfileById(id);
+        return profileService.getProfileDTOById(id);
     }
 
     /**
