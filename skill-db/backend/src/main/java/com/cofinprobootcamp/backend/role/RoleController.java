@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.role;
 
-import com.cofinprobootcamp.backend.role.dto.RoleInOutDTO;
+import com.cofinprobootcamp.backend.role.dto.RoleCreateInDTO;
+import com.cofinprobootcamp.backend.role.dto.RoleOutDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,31 +9,30 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/api/v1/roles")
 public class RoleController {
-    private RoleService roleService;
+    private final RoleService roleService;
 
     public RoleController(RoleService roleService) {
         this.roleService = roleService;
     }
 
-
     @PostMapping(path = "")
-    public void createRole(@RequestBody Role role) {
-        roleService.createRole(role);
+    public void createRole(@RequestBody RoleCreateInDTO roleIn) {
+        roleService.createRole(roleIn);
     }
 
-    @DeleteMapping(path = "{id}")
-    public void deleteRoleById(@PathVariable Long id){
-        roleService.deleteRoleById(id);
+    @DeleteMapping(path = "{shortName}")
+    public void deleteRoleById(@PathVariable String shortName){
+        roleService.deleteRoleByName(shortName);
     }
 
-    @GetMapping(path = "{id}")
-    public RoleInOutDTO getRoleById(@PathVariable Long id) {
-        return roleService.getRoleById(id);
+    @GetMapping(path = "{shortName}")
+    public RoleOutDTO getRoleById(@PathVariable String shortName) {
+        return roleService.getRoleDTOByName(shortName);
     }
 
     @GetMapping(path = "")
-    public List<RoleInOutDTO> getAllRoles() {
-        return roleService.getAllRoles();
+    public List<RoleOutDTO> getAllRoles() {
+        return roleService.getAllRoleDTOs();
     }
 
 }

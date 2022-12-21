@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.role;
 
-import com.cofinprobootcamp.backend.enums.UserRights;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import lombok.*;
@@ -28,8 +27,8 @@ public class Role {
     @NotBlank
     private String descriptiveName;
 
-    @ElementCollection
-    private List<UserRights> userRights;
+    @ManyToMany
+    private List<UserRight> userRights;
 
 //    //TODO Set correct cascade type
 //    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)

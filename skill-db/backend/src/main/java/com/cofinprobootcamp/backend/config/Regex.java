@@ -37,6 +37,8 @@ public final class Regex {
 
     public static final int MINIMUM_PASSWORD_LENGTH = 8;
 
+    public static final String BASE_URL = "api/v1";
+
     // Private constructor to emulate a 'static class'
     private Regex() {
     }

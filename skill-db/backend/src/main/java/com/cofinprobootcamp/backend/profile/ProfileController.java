@@ -25,7 +25,7 @@ public class ProfileController {
     }
 
     /**
-     * @param profileInDTO creates profile in database if authorized
+     * @param profileInDTO creates profile in database if authorized (401.UNAUTHORIZED)
      */
     @PostMapping(path = "")
     public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException {

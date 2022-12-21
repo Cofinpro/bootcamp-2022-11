@@ -27,9 +27,11 @@ public class Profile {
 
     private String firstName;
     private String lastName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "jobtitle_id")
     private JobTitle jobTitle;
+
     private String phoneNumber;
     private String degree;
     private Expertises primaryExpertise;

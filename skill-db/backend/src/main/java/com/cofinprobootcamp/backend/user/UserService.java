@@ -6,10 +6,8 @@ import com.cofinprobootcamp.backend.enums.StandardRoles;
 import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +22,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void createUser(UserCreateInDTO inDTO) {
-        Role role = new Role(); // Hier die korrekte Rolle laden
+    public void createUser(UserCreateInDTO inDTO, Role role) {
         String password = passwordEncoder.encode(inDTO.password());
         User user = UserDirector.CreateInDTOToEntity(inDTO, password, role);
         userRepository.saveAndFlush(user);
@@ -33,7 +30,7 @@ public class UserService {
 
     public UserOutDTO getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
-        return new UserOutDTO(userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new UserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
     }
 
     public User getUserByUsername(String email) {
@@ -52,7 +49,12 @@ public class UserService {
     }
 
     public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     public List<String> getAllUserRoles() {

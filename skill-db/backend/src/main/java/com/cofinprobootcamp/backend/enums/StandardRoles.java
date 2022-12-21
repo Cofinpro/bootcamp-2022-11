@@ -4,7 +4,9 @@ import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.role.RoleDirector;
 
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public enum StandardRoles {
     /**
@@ -14,8 +16,15 @@ public enum StandardRoles {
      */
     ADMIN("Administrator") {
         @Override
-        public List<UserRights> getAllAssociatedUserRights() {
-            return List.of(UserRights.ANY_CREATE, UserRights.ANY_DELETE, UserRights.ANY_EDIT);
+        protected Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> overrideSpecificValues(
+                Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> userRights) {
+            for (var nameSpace : UserNamespaceRights.values()) {
+                userRights.get(nameSpace).put(UserOperationRights.CREATE, UserScopeRights.ANY);
+                userRights.get(nameSpace).put(UserOperationRights.VIEW, UserScopeRights.ANY);
+                userRights.get(nameSpace).put(UserOperationRights.EDIT, UserScopeRights.ANY);
+                userRights.get(nameSpace).put(UserOperationRights.DELETE, UserScopeRights.ANY);
+            }
+            return userRights;
         }
     },
 
@@ -26,8 +35,16 @@ public enum StandardRoles {
      */
     USER("Nutzer") {
         @Override
-        public List<UserRights> getAllAssociatedUserRights() {
-            return List.of(UserRights.SELF_CREATE, UserRights.SELF_DELETE, UserRights.SELF_EDIT);
+        protected Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> overrideSpecificValues(
+                Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> userRights) {
+            userRights.get(UserNamespaceRights.PROFILES).put(UserOperationRights.CREATE, UserScopeRights.SELF);
+            userRights.get(UserNamespaceRights.PROFILES).put(UserOperationRights.VIEW, UserScopeRights.SELF);
+            userRights.get(UserNamespaceRights.PROFILES).put(UserOperationRights.EDIT, UserScopeRights.SELF);
+            userRights.get(UserNamespaceRights.PROFILES).put(UserOperationRights.DELETE, UserScopeRights.SELF);
+            userRights.get(UserNamespaceRights.SKILLS).put(UserOperationRights.VIEW, UserScopeRights.ANY);
+            userRights.get(UserNamespaceRights.JOB_TITLES).put(UserOperationRights.VIEW, UserScopeRights.ANY);
+            userRights.get(UserNamespaceRights.ROLES).put(UserOperationRights.VIEW, UserScopeRights.ANY);
+            return userRights;
         }
     },
     /**
@@ -36,13 +53,15 @@ public enum StandardRoles {
      */
     UNDEFINED("undefined") {
         @Override
-        public List<UserRights> getAllAssociatedUserRights() {
-            return List.of(); // Zero-element list
+        protected Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> overrideSpecificValues(
+                Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> userRights) {
+            return userRights;
         }
     };
 
     /**
      * Creates a new {@code Role} entity depending on the implementing enum constant.
+     *
      * @return A {@code Role} object with set name and {@code UserRights}
      */
     public Role createNewRoleEntity() {
@@ -51,9 +70,19 @@ public enum StandardRoles {
 
     /**
      * Gets the list of associated user rights defined for this role constant.
+     *
      * @return A {@code List} of {@code UserRights} types
      */
-    public abstract List<UserRights> getAllAssociatedUserRights();
+    public Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> getAllAssociatedUserRights() {
+        Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> userRights = new EnumMap<>(UserNamespaceRights.class);
+        for (var nameSpace : UserNamespaceRights.values()) {
+            userRights.put(nameSpace, RoleDirector.generateDefaults());
+        }
+        return overrideSpecificValues(userRights);
+    }
+
+    protected abstract Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> overrideSpecificValues(
+            Map<UserNamespaceRights, Map<UserOperationRights, UserScopeRights>> userRights);
 
     /*
      * Zwischengespeichertes Array, da RolesEnum.values() in public Methoden benötigt wird
@@ -100,24 +129,19 @@ public enum StandardRoles {
      * @return An array of {@code String} values
      */
     public static List<String> getAllDefinedValuesAsString() {
-        return Arrays.stream(values)
-                .map(StandardRoles::toString)
-                .toList();
+        return Arrays.stream(values).map(StandardRoles::name).toList();
     }
 
     /**
      * Creates a suitable Expertises type from an input {@code String}.
      *
-     * @param displayName The full name as a {@code String}
-     * @return An {@code Expertises} type corresponding to {@code displayName} OR {@code Expertises.UNDEFINED}
+     * @param shortName The full name as a {@code String}
+     * @return An {@code Expertises} type corresponding to {@code shortName} OR {@code Expertises.UNDEFINED}
      */
-    public static StandardRoles fromDisplayName(String displayName) {
-        if (displayName == null || displayName.isBlank()) {
+    public static StandardRoles fromShortName(String shortName) {
+        if (shortName == null || shortName.isBlank()) {
             return StandardRoles.UNDEFINED;
         }
-        return Arrays.stream(values)
-                .filter(expertises -> expertises.toString().equals(displayName))
-                .findFirst()
-                .orElse(StandardRoles.UNDEFINED);
+        return Arrays.stream(values).filter(expertises -> expertises.name().equals(shortName)).findFirst().orElse(StandardRoles.UNDEFINED);
     }
 }

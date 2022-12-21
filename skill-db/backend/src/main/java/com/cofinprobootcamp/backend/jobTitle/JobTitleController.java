@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/jobTitles/")
+@RequestMapping("/api/v1/job-titles/")
 public class JobTitleController {
     private final JobTitleRepository jobTitleRepository;
     public JobTitleController(JobTitleRepository jobTitleRepository) {

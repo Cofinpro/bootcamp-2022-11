@@ -13,7 +13,7 @@ import javax.validation.constraints.Pattern;
  *
  * @param email    A {@code String} representation of the new user's email address (for identification).
  *                 Must not be blank and should match the valid email template
- * @param userRole A {@code String} representation of the new user's role (i.e., its display name)
+ * @param userRole A {@code String} representation of the new user's role (i.e., its short name)
  * @param password A {@code String} representing the user's password (it must have a minimum length of 8 characters)
  */
 public record UserCreateInDTO(@NotBlank @Pattern(regexp = Regex.VALID_MAIL_ADDRESS) String email,
