@@ -98,10 +98,10 @@
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
+import {ref} from "vue";
 
 export default {
   props: ['detail', 'update'],
-
   data() {
     return {
       firstName: '',
@@ -216,6 +216,25 @@ export default {
 .headline {
   margin-left: 20px;
 }
+@media screen and (max-width: 957px) {
+  .header {
+    display: grid;
+    grid-template-rows: 0.5fr 1fr;
+  }
+  img {
+    grid-row: 1;
+    margin-left: 0;
+  }
+  .headline {
+    grid-row: 2;
+    margin-left: -10px;
+    margin-bottom: 10px;
+  }
+  .skillsAndDegree {
+    margin-left: 0;
+  }
+  .buttons {
+    flex-direction: column;
 
 img {
   height: 200px;
