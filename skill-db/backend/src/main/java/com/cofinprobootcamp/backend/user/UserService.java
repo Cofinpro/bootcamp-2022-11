@@ -1,29 +1,59 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
+import com.cofinprobootcamp.backend.profile.Profile;
+import com.cofinprobootcamp.backend.enums.StandardRoles;
+import com.cofinprobootcamp.backend.role.Role;
+import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    UserService(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
+    public User detachProfileFromUser(Long id) {
+        User user = userRepository.findById(id).get();
+        user.setProfile(null);
+        return userRepository.saveAndFlush(user);
+    }
+    public User assignProfileToUser(User user, Profile profile) {
+        user.setProfile(profile);
+        return userRepository.saveAndFlush(user);
+    }
 
-    public void createUser(User user) {
-        userRepository.saveAndFlush(user);
+    public User createUser(UserCreateInDTO inDTO, Role role) {
+        String password = passwordEncoder.encode(inDTO.password());
+        User user = UserDirector.CreateInDTOToEntity(inDTO, password, role);
+        return userRepository.saveAndFlush(user);
+    }
+
+    public void deleteUserById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            userRepository.deleteById(id);
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     public UserOutDTO getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
-        return new UserOutDTO(userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new UserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
+    }
+
+    public User getUserByUsername(String email) {
+        Optional<User> userOptional = userRepository.findByUsername(email);
+        return userOptional.orElseThrow(UserNotFoundException::new);
     }
 
     public List<UserOutDTO> getAllUsers() {
@@ -31,11 +61,7 @@ public class UserService {
         return users.stream().map(UserOutDTO::new).toList();
     }
 
-    public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    public List<String> getAllExpertises() {
-        return Expertises.getAllDefinedValuesAsString();
+    public List<String> getAllUserRoles() {
+        return StandardRoles.getAllDefinedValuesAsString();
     }
 }

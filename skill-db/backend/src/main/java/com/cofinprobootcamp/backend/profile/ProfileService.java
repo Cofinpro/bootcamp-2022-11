@@ -1,67 +1,78 @@
 package com.cofinprobootcamp.backend.profile;
 
+import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
+import com.cofinprobootcamp.backend.jobTitle.JobTitle;
+import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
-import com.cofinprobootcamp.backend.user.UserRepository;
+import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
+import com.cofinprobootcamp.backend.skills.Skill;
+import com.cofinprobootcamp.backend.skills.SkillService;
 import com.cofinprobootcamp.backend.user.User;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ProfileService {
 
-    private ProfileRepository profileRepository;
-    private UserRepository userRepository;
+    private final ProfileRepository profileRepository;
+    private final SkillService skillService;
+    private final JobTitleService jobTitleService;
 
     public ProfileService(ProfileRepository profileRepository,
-    UserRepository userRepository) {
+                          SkillService skillService,
+                          JobTitleService jobTitleService) {
         this.profileRepository = profileRepository;
-        this.userRepository = userRepository;
+        this.skillService = skillService;
+        this.jobTitleService = jobTitleService;
     }
 
-    public void createProfileAndUpdateUser(ProfileCreateInDTO profileInDTO) {
-        //TODO: replace RuntimeException by custom exception!
-
-        User user = userRepository.findUserByEmail(profileInDTO.email())
-                .orElseThrow(RuntimeException::new);
-        Profile profile = ProfileDirector.DTOToEntity(profileInDTO,user);
-        profile.setOwner(user);
-        profile = profileRepository.saveAndFlush(profile);
-        user.setProfile(profile);
-        userRepository.saveAndFlush(user);
+    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException {
+        JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
+        Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
+        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle);
+        return profileRepository.saveAndFlush(profile);
     }
-    //changing email does not work since
-    // id of user is not given to frontend here!
-    public void updateProfileAndUpdateUser(ProfileCreateInDTO profileInDTO,
-                                           Long id) {
-        User user = userRepository.findUserByEmail(profileInDTO.email())
-                .orElseThrow(RuntimeException::new);
-        Profile profile = ProfileDirector.DTOToEntity(profileInDTO, user);
-        profile.setId(id);
+
+    // changing email does not work since outerId of user is not given to frontend here!
+    // --> should give back "outer outerId" of profile and update that way!
+    public void updateProfile(ProfileUpdateInDTO profileInDTO, Long outerId)
+            throws ProfileNotFoundException, JobTitleNotFoundException {
+        // In theory: convert outerId to internal id
+        Profile current = profileRepository.findById(outerId).orElseThrow(ProfileNotFoundException::new);
+        JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
+        Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
+        Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet, jobTitle);
         profileRepository.saveAndFlush(profile);
     }
 
-    public void deleteProfileById(Long id) {
+    public void deleteProfileById(Long id) throws ProfileNotFoundException {
+        profileRepository.findById(id).orElseThrow(ProfileNotFoundException::new);
         profileRepository.deleteById(id);
     }
 
-    public ProfileDetailsOutDTO getProfileById(Long id) {
-        Optional<Profile> profileOptional = profileRepository.findById(id);
-        return new ProfileDetailsOutDTO(profileOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+    public Profile getProfileById(Long id) throws ProfileNotFoundException{
+        return profileRepository.findById(id).orElseThrow(ProfileNotFoundException::new);
     }
-    //Not needed anymore(??)
-    public List<ProfileDetailsOutDTO> getAllProfiles() {
-        List<Profile> profiles = profileRepository.findAll();
-        return profiles.stream().map(ProfileDetailsOutDTO::new).toList();
+    public ProfileDetailsOutDTO getProfileDTOById(Long id) throws ProfileNotFoundException {
+        Optional<Profile> profileOptional = profileRepository.findById(id);
+        return new ProfileDetailsOutDTO(profileOptional.orElseThrow(ProfileNotFoundException::new));
     }
 
     public List<ProfileOverviewOutDTO> getAllOverviewDTOs() {
         List<Profile> profiles = profileRepository.findAll();
-        return profiles.stream().map(ProfileOverviewOutDTO::new).toList();
+        return profiles.stream()
+                .map(ProfileOverviewOutDTO::new)
+                .toList();
+    }
+
+    public List<String> getAllExpertises() {
+        return Expertises.getAllDefinedValuesAsString();
     }
 }

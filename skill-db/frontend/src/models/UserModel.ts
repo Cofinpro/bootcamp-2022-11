@@ -58,7 +58,7 @@ export class ConvertToUserModel{
         const userModel = new UserModel();
         userModel.setEmail(String(object?.email));
         userModel.setRole(String(object?.role));
-        userModel.setRights(object?.rights);
+        userModel.setRights(object?.userRights);
         userModel.setLocked(Boolean(object?.locked));
         userModel.setEmailConfirmed(Boolean(object?.emailConfirmed));
         return userModel;

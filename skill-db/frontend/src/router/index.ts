@@ -7,6 +7,7 @@ import axios from "axios";
 import {el} from "vuetify/locale";
 import LoginView from "@/views/LoginView.vue";
 import UserOverView from "@/views/UserOverView.vue"
+import {useAuthStore} from "@/stores/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,8 +45,8 @@ const router = createRouter({
         }
     },
     {
-        path: '/UserTest',
-        name: 'usertest',
+        path: '/admin/users',
+        name: 'userOverview',
         component: UserOverView,
     },
     {
@@ -75,25 +76,19 @@ const router = createRouter({
  * has to log in again.
  */
 router.beforeEach((to, from, next) => {
+    const authStore = useAuthStore();
     if (to.path !== '/login') {
-        const refreshToken = localStorage.getItem("refresh_token");
-        const username = localStorage.getItem("username");
-
-        const user = {
-            "refreshToken": refreshToken,
-            "username": username,
+        if (authStore.isLoggedIn()) {
+            if (authStore.isAdmin()) {
+                next();
+            } else if (! to.path.includes('/admin')) {
+                next();
+            } else {
+                next('/');
+            }
+        } else {
+            next('/login');
         }
-
-        axios.post("/api/v1/token/verify", user)
-            .then((result) => {
-                if (result.data) {
-                    next();
-                    return;
-                }
-                next('/login');
-            }).catch((error) => {
-            console.log(error.response)
-        })
     } else {
         next();
     }

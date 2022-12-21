@@ -1,15 +1,17 @@
 package com.cofinprobootcamp.backend.auth;
 
-import org.springframework.context.annotation.Bean;
+import com.cofinprobootcamp.backend.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/token")
@@ -26,7 +28,7 @@ public class AuthController {
     /**
      * Handles the login. In case the user credentials are valid, it returns an object containing
      * the username of the user, who tries to log in; an access token and refresh token
-     * @param userLogin
+     * @param userLogin A request body with user login information
      * @return username, access token and refresh token
      */
     @PostMapping
@@ -34,8 +36,7 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
         Map<String, String> tokens = tokenService.generateToken(authentication);
-        return ResponseEntity.ok().body(Map.of("tokens", tokens, "username", userLogin.username()));
-
+        return ResponseEntity.ok().body(Map.of("tokens", tokens, "username", userLogin.username(), "role", authentication.getAuthorities().stream().findFirst()));
     }
 
     /**
