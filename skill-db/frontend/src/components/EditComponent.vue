@@ -11,7 +11,12 @@
               <v-text-field v-model="firstName" :rules="[v => v.length > 1 || 'Erforderlich!']" label="Vorname"/>
               <v-text-field v-model="lastName" :rules="[v => v.length > 1 || 'Erforderlich']" label="Nachname"/>
 
-              <v-autocomplete v-model="jobTitle" :items="jobs" label="Jobprofil" :rules="[v => v.length > 1 || 'Erforderlich!']"></v-autocomplete>
+              <v-autocomplete
+                  label="Jobprofil"
+                  v-model="jobTitle"
+                  :items="jobs"
+                  :rules="[v => v.length > 1 || 'Erforderlich!']"
+              />
             </v-col>
             <v-col cols="1">
               <v-menu :close-on-content-click="false">
@@ -33,6 +38,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
+
               <v-dialog v-model="toDelete" max-width="200">
                 <v-card>
                   <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
@@ -57,14 +63,23 @@
                 <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-email</v-icon>
                 max.mustermann@cofinpro.de
               </p>
-              <v-autocomplete v-model="primarySkill" :items="primarys" label="Primärkompetenz" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
+              <v-autocomplete
+                  v-model="primarySkill"
+                  :items="primarys"
+                  label="Primärkompetenz"
+                  :rules="[v => v.length > 1 || 'Erforderlich!']"
+              />
             </div>
             <div class="d-flex flex-column">
               <p>
                 <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-phone</v-icon>
                 +49 176 65544 000
               </p>
-              <v-text-field v-model="birthdate" :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']" label="Geburtsdatum"/>
+              <v-text-field
+                  v-model="birthdate"
+                  :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"
+                  label="Geburtsdatum"
+              />
             </div>
           </div>
         </v-col>
@@ -74,9 +89,27 @@
           <div class="pt-2">
             <div class="block_title">Skills</div>
             <div class="block_content">
-              <v-autocomplete multiple auto-select-first label="Skills" v-model="technologies" :items="givenTechnologies"
-                              :rules="[v => v.length > 1 || 'Erforderlich!']"/>
-              <v-text-field v-model="degree" :rules="[v => v.length > 1 || 'Erforderlich']" label="Abschluss"/>
+              <v-autocomplete
+                  multiple
+                  clearable
+                  label="Skills"
+                  item-value="value"
+                  item-title="text"
+                  v-model="technologies"
+                  hide-no-data
+                  hide-selected
+                  chips
+                  placeholder="Start typing to search"
+                  :items="givenTechnologies"
+                  :rules="[v => v.length > 1 || 'mind. 1 Skill erforderlich!']"
+                  return-object
+              />
+
+              <v-text-field
+                  v-model="degree"
+                  :rules="[v => v.length > 1 || 'Erforderlich']"
+                  label="Abschluss"
+              />
             </div>
           </div>
         </v-col>
@@ -84,7 +117,11 @@
           <div class="pl-6 pt-2">
             <div class="block_title">Referenzen</div>
             <div class="block_content">
-              <v-text-field v-model="references" :rules="[v => v.length > 1 || 'Erforderlich!']" label="Referenzen"/>
+              <v-text-field
+                  label="Referenzen"
+                  v-model="references"
+                  :rules="[v => v.length > 1 || 'Erforderlich!']"
+              />
             </div>
           </div>
         </v-col>
@@ -94,13 +131,17 @@
     </v-form>
   </v-container>
 </template>
+
 <script>
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
+import SearchableMultiSelectDropdown from "@/components/SearchableMultiSelectDropdown.vue";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
+import {ref} from "vue";
 
 export default {
   props: ['detail', 'update'],
+  components: {"searchable-multi-select-dropdown": SearchableMultiSelectDropdown},
   data() {
     return {
       firstName: '',
@@ -111,12 +152,36 @@ export default {
       primarySkill: '',
       technologies: null,
       references: '',
-      jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect', 'Senior Manager', 'Senior Architect', 'Director', 'Partner'],
-      primarys: ['Technologie', 'Fach', 'Management'],
-      givenTechnologies: ['Java', 'Vue'], /*TODO get from backend*/
+      jobs: [
+        'Consultant',
+        'Expert Consultant',
+        'Senior Consultant',
+        'Manager',
+        'Architect',
+        'Senior Manager',
+        'Senior Architect',
+        'Director',
+        'Partner'
+      ],
+      primarys: [
+        'Technologie',
+        'Fach',
+        'Management'
+      ],
+      givenTechnologies: [
+        {value: 0, text: 'Java'},
+        {value: 1, text: 'Vue'},
+        {value: 2, text: 'Angular'},
+        {value: 3, text: 'Spring Boot'},
+        {value: 4, text: '.NET'},
+        {value: 5, text: 'C#'},
+      ], /*TODO get from backend*/
     }
   },
   mounted() {
+    // TODO: populate "givenTechnologies", "primaries" and "jobs" from db.
+    // this.givenTechnologies = ...
+
     if (this.update === 'true') {
       this.detail.getFirstName();
       this.firstName = this.detail.getFirstName();
@@ -125,7 +190,7 @@ export default {
       this.birthdate = this.detail.getBirthDate();
       this.jobTitle = this.detail.getJobTitle();
       this.primarySkill = this.detail.getPrimarySkill();
-      this.technologies = this.detail.getTechnologies().join(", ");
+      this.technologies = this.detail.getTechnologies().map((str, index) => ({value: index, text: str}));
       this.references = this.detail.getReferences();
     }
   },
@@ -154,6 +219,36 @@ export default {
     checkDateFormat(date) {
       return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
     },
+  },
+
+  setup() {
+    const detailStore = useDetailStore();
+    detailStore.loadDemoDetails();
+    /*detailStore.loadDetailsById();*/
+    const detail = detailStore.details;
+
+    const locked = ref(false);
+    const toDelete = ref(false);
+
+    function toggleDelete() {
+      toDelete.value = !toDelete.value;
+    }
+
+    function lockProfile() {
+      locked.value = true;
+      console.log("This profile is now locked away.");
+      /*router.push(`/`);*/
+    }
+
+    function deleteProfile() {
+      /*detailStore.deleteDetailsByID(detail.getId());*/
+      router.push(`/`);
+    }
+
+    return {
+      detail, toDelete, locked, toggleDelete,
+      lockProfile, deleteProfile
+    };
   },
 }
 </script>

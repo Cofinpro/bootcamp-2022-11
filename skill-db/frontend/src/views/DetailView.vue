@@ -79,7 +79,6 @@
       <div>
         <div class="content_card">
           <div class="block_title">Skills</div>
-          <SearchableMultiSelectDropdown :options="myOptions"/>
           <div class="d-flex">
             <p v-for="skill in detail.getTechnologies()" class="pa-1 flex-wrap">
               <v-chip>{{ skill }}</v-chip>
