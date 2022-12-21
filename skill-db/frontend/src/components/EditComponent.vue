@@ -60,9 +60,10 @@
 
       <v-row>
         <v-col lg="6" md="6" sm="12" xs="12">
-          <div class="skillsAndDegree">
+          <div class="skillsAndDegree d-flex flex-column">
             <v-autocomplete multiple auto-select-first label="Skills" v-model="technologies" :items="givenTechnologies" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
-            <v-text-field v-model="newTechnologies"/>
+            <v-btn class="mb-5" size="small" v-if="!showAddTechnology" @click="showAddTechnology = true" elevation="0">Technologie nicht gefunden?</v-btn>
+            <v-text-field v-if="showAddTechnology" v-model="newTechnologies"/>
             <v-text-field v-model="degree" label="Abschluss" :rules="[v => v.length > 1 || 'Erforderlich']"/>
           </div>
         </v-col>
@@ -71,7 +72,7 @@
         </v-col>
       </v-row>
 
-      <v-btn class="mt-10" @click="clicked()" elevation="0">Profil erstellen</v-btn>
+      <v-btn class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
       <v-btn class="mt-10 ml-5" @click="leave" elevation="0">Abbrechen</v-btn>
     </v-form>
   </v-container>
@@ -98,6 +99,7 @@ export default {
       primarys: ['Technologie', 'Fach', 'Management'],
       givenTechnologies: ['Java', 'Vue'], /*TODO get from backend*/
       newTechnologies: '',
+      showAddTechnology: false,
     }
   },
   mounted() {
@@ -110,12 +112,12 @@ export default {
       //this.phoneNumber = this.detail.getPhoneNumber(); /*TODO include PhoneNumber in DetailModel*/
       this.jobTitle = this.detail.getJobTitle();
       this.primarySkill = this.detail.getPrimarySkill();
-      this.technologies = this.detail.getTechnologies().join(", ");
+      this.technologies = this.detail.getTechnologies();
       this.references = this.detail.getReferences();
     }
   },
   methods: {
-    clicked() {
+    submitProfile() {
       const detailStore = useDetailStore();
       if (this.update === 'true') {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
