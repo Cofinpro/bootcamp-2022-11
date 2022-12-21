@@ -45,29 +45,29 @@
       <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">
       <div class="header_content d-flex flex-column align-content-space-between">
         <div class="headline">
-          <h1> {{ detail.getFirstName() }} {{ detail.getLastName() }}</h1>
-          <h3> {{ detail.getJobTitle() }}, {{ detail.getAge() }}</h3>
+          <h1> {{ detailStore.details.getFirstName() }} {{ detailStore.details.getLastName() }}</h1>
+          <h3> {{ detailStore.details.getJobTitle() }}, {{ detailStore.details.getAge() }}</h3>
         </div>
 
         <div class="infos">
           <div class="infos1 d-flex flex-column align-content-end">
             <p>
               <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-email</v-icon>
-              {{ detail.getEmail() }}
+              {{ detailStore.details.getEmail() }}
             </p>
             <p class="mt-3">
               <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-crown-outline</v-icon>
-              {{ detail.getPrimarySkill() }}
+              {{ detailStore.details.getPrimarySkill() }}
             </p>
           </div>
           <div class="infos2 d-flex flex-column">
             <p>
               <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-phone</v-icon>
-              {{ detail.getPhoneNumber() }}
+              {{ detailStore.details.getPhoneNumber() }}
             </p>
             <p class="mt-3">
               <v-icon size="small" color="#BDBDBD" class="mr-3">mdi-cake-variant-outline</v-icon>
-              {{ detail.getBirthDate() }}
+              {{ detailStore.details.getBirthDate() }}
             </p>
           </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="content_card d-flex">
           <p class="block_title">Skills</p>
           <div class="d-flex">
-            <div v-for="skill in detail.getTechnologies()" class="pa-1 flex-wrap">
+            <div v-for="skill in detailStore.details.getTechnologies()" class="pa-1 flex-wrap">
               <v-chip>{{ skill }}</v-chip>
             </div>
           </div>
@@ -87,7 +87,7 @@
         <div class="content_card mt-5">
           <div class="block_title">Abschluss</div>
           <div class="block_content">
-            {{ detail.getDegree() }}
+            {{ detailStore.details.getDegree() }}
           </div>
         </div>
       </v-col>
@@ -96,7 +96,7 @@
           <div class="block_title">Referenzen</div>
           <div class="block_content">
             <ul class="pl-6">
-              <li v-for="reference in detail.getReferences().split(',')">
+              <li v-for="reference in detailStore.details.getReferences().split(',')">
                 <p>{{ reference }}</p>
               </li>
             </ul>
