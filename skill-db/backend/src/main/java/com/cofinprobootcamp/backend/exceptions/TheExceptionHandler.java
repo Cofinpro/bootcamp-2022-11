@@ -15,6 +15,14 @@ public class TheExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ProfileAlreadyExistsException.class)
+    public ResponseEntity<CustomErrorMessage> handleProfileAlreadyExistsException(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "The profile already exists",
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(JobTitleNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleJobTitleNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
@@ -59,5 +67,6 @@ public class TheExceptionHandler {
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
+
 }
 

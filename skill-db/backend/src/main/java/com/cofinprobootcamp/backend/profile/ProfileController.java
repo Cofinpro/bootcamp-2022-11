@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
@@ -19,10 +20,13 @@ import java.util.List;
 public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
+    private final ProfileRepository profileRepository;
 
-    public ProfileController(ProfileService profileService, UserService userService) {
+    public ProfileController(ProfileService profileService, UserService userService,
+                             ProfileRepository profileRepository) {
         this.profileService = profileService;
         this.userService = userService;
+        this.profileRepository = profileRepository;
     }
 
     /**
@@ -30,8 +34,11 @@ public class ProfileController {
      */
     @PostMapping(path = "")
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
-    public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException {
+    public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
         User user = userService.getUserByUsername(profileInDTO.email());
+        if (profileRepository.findProfileByOwner(user).isPresent()) {
+            throw new ProfileAlreadyExistsException();
+        }
         Profile profile = profileService.createProfile(profileInDTO, user);
         userService.assignProfileToUser(user, profile);
     }
