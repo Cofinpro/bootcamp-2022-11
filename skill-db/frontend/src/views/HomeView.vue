@@ -24,7 +24,7 @@
 
     <v-container class="cards mt-2">
       <v-row>
-        <v-col v-for="card in cardList" :key="card.getId()" lg="3" md="4" sm="6" xs="12">
+        <v-col v-for="card in overviewStore.cards" :key="card.getId()" lg="3" md="4" sm="6" xs="12">
           <OverviewCard :id="card.getId()"
                         :name="card.getName()"
                         :job-title="card.getJobTitle()"
@@ -46,9 +46,8 @@ export default {
   setup() {
     const overviewStore = useOverviewStore();
     overviewStore.loadOverview();
-    const cardList = overviewStore.cards;
     return {
-      cardList, overviewStore
+      overviewStore
     };
   },
   methods: {

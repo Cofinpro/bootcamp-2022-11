@@ -3,10 +3,13 @@ import {ConvertToDetailModel, DetailModel} from "@/models/DetailModel";
 import axios from "@/axios";
 
 export const useDetailStore = defineStore('detailStore',{
-    state: () => ({
-        details: new DetailModel(),
-        loading: Boolean(false),
-    }),
+        state: () => ({
+            details: new DetailModel(),
+            loading: Boolean(false),
+            skills: [] as String[],
+            jobs: [] as String[],
+            primarys: [] as String[],
+        }),
     actions: {
         loadDemoDetails(){
             this.details = ConvertToDetailModel.toDetail({
@@ -71,6 +74,50 @@ export const useDetailStore = defineStore('detailStore',{
                 'phoneNumber': edits.getPhoneNumber(),
                 'birthDate': edits.getBirthDate(),
             }).then().catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        getSkills(){
+            this.loading = true;
+            axios.get(`/api/v1/skills`).then((response) =>{
+                response.data.forEach((element: object) => {
+                    this.skills.push(element.toString());
+                })
+            }).catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        getJobs(){
+            this.loading = true;
+            axios.get(`/api/v1/jobTitles/`).then((response) =>{
+                response.data.forEach((element: String) => {
+                    this.jobs.push(element)
+                })
+            }).catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        getPrimarys(){
+            this.loading = true;
+            axios.get(`/api/v1/profiles/expertises`).then((response) =>{
+                response.data.forEach((element: String) => {
+                    this.primarys.push(element)
+                })
+            }).catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        setJobs(id: number, name: String) {
+            this.loading = true;
+            axios.post(`/api/v1/jobTitles/`,
+                {
+                    'id': id,
+                    'name': name,
+                }).then(() =>{}).catch((error) => {
                 console.log(error);
             });
             this.loading = false;
