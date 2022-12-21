@@ -69,7 +69,7 @@
                 closable-chips
                 v-model="technologies"
                 :items="givenTechnologies"
-            />
+            /> <!--TODO already givenTechnologies aren't included in list technologies-->
 
             <v-btn class="mb-5" size="small" v-if="!showAddTechnology" @click="showAddTechnology=true"
                    elevation="0">Technologie nicht gefunden?
@@ -147,16 +147,16 @@ export default {
       phoneNumber: '',
       jobTitle: '',
       primarySkill: '',
-      technologies: null,
+      technologies: [],
       references: '',
       jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect', 'Senior Manager', 'Senior Architect', 'Director', 'Partner'],
       primarys: ['Technologie', 'Fach', 'Management'],
-      givenTechnologies: ['Java', 'Vue'], /*TODO get from backend*/
+      givenTechnologies: ['Java', 'Vue', 'Angular', 'Spring Boot'], /*TODO get from backend*/
       newTechnologies: '',
       showAddTechnology: false,
     }
   },
-  mounted() {
+  created() {
     if (this.update === 'true') {
       this.detail.getFirstName();
       this.firstName = this.detail.getFirstName();
