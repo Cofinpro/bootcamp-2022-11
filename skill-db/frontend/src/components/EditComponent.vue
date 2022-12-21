@@ -45,21 +45,21 @@
           <v-card class="mt-3 mb-10 d-flex justify-center" color="grey" width="200px" height="25px">Bild hochladen</v-card>
         </div>
         <v-row class="headline">
-          <v-col lg="6" md="6" sm="12" xs="12">
+          <v-col cols="12" lg="6" md="6" sm="12">
             <v-text-field v-model="firstName" :rules="[v => v.length > 1 || 'Erforderlich!']" label="Vorname"/>
             <v-autocomplete v-model="jobTitle" :items="jobs" label="Jobprofil" :rules="[v => v.length > 1 || 'Erforderlich!']"></v-autocomplete>
             <v-text-field v-model="phoneNumber" label="Telefonnummer" :rules="[ number => checkPhoneFormat(number) || 'Date Format must be DD.MM.YYYY']"/>
           </v-col>
-          <v-col>
+          <v-col lg="6" md="6" sm="12">
             <v-text-field v-model="lastName" :rules="[v => v.length > 1 || 'Erforderlich']" label="Nachname"/>
-            <v-autocomplete v-model="primarySkill" :items="primaries" label="Primärkompetenz" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
+            <v-autocomplete v-model="primarySkill" :items="primarys" label="Primärkompetenz" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
             <v-text-field v-model="birthdate" label="Geburtsdatum" :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"/>
           </v-col>
         </v-row>
       </div>
 
       <v-row>
-        <v-col lg="6" md="6" sm="12" xs="12">
+        <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
             <v-autocomplete
                 multiple
@@ -69,7 +69,7 @@
                 closable-chips
                 v-model="technologies"
                 :items="givenTechnologies"
-            />
+            /> <!--TODO already givenTechnologies aren't included in list technologies-->
 
             <v-btn class="mb-5" size="small" v-if="!showAddTechnology" @click="showAddTechnology=true"
                    elevation="0">Technologie nicht gefunden?
@@ -88,12 +88,13 @@
         </v-col>
       </v-row>
 
-      <v-btn class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
-      <v-btn class="mt-10 ml-5" @click="leave" elevation="0">Abbrechen</v-btn>
+      <div class="buttons d-flex justify-end">
+        <v-btn class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
+        <v-btn class="mt-10 ml-lg-5 ml-md-5" @click="leave" elevation="0">Abbrechen</v-btn>
+      </div>
     </v-form>
   </v-container>
 </template>
-
 <script>
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
@@ -102,6 +103,41 @@ import {ref} from "vue";
 
 export default {
   props: ['detail', 'update'],
+  setup() {
+    const detailStore = useDetailStore();
+    detailStore.loadDemoDetails();
+    /*detailStore.loadDetailsById(ID); TODO how are we getting the ID here?*/
+    const detail = detailStore.details;
+
+    const locked = ref(false);
+    const toDelete = ref(false);
+
+    function enterEdit() {
+      router.push('/detail/edit/1');
+      /*router.push({ name: 'editView', params: { id: detail.getId()}});*/
+    }
+
+    function toggleDelete() {
+      toDelete.value = !toDelete.value;
+    }
+
+    function lockProfile() {
+      locked.value = true;
+      console.log("This profile is now locked away.");
+      /*router.push(`/`);*/
+    }
+
+    function deleteProfile() {
+      detailStore.deleteDetailsByID(detail.getId()); /*TODO server/backend problems*/
+      router.push(`/`);
+    }
+
+    return {
+      detail, toDelete, locked,
+      enterEdit, toggleDelete,
+      lockProfile, deleteProfile
+    };
+  },
   data() {
     return {
       firstName: '',
@@ -113,39 +149,14 @@ export default {
       primarySkill: '',
       technologies: [],
       references: '',
+      jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect', 'Senior Manager', 'Senior Architect', 'Director', 'Partner'],
+      primarys: ['Technologie', 'Fach', 'Management'],
+      givenTechnologies: ['Java', 'Vue', 'Angular', 'Spring Boot'], /*TODO get from backend*/
       newTechnologies: '',
-      jobs: [
-        'Consultant',
-        'Expert Consultant',
-        'Senior Consultant',
-        'Manager',
-        'Architect',
-        'Senior Manager',
-        'Senior Architect',
-        'Director',
-        'Partner'
-      ],
-      primaries: [
-        'Technologie',
-        'Fach',
-        'Management'
-      ],
-      givenTechnologies: [
-        'Java',
-        'Vue',
-        'Angular',
-        'Spring Boot',
-        '.NET',
-        'C#',
-      ], /*TODO get from backend*/
       showAddTechnology: false,
     }
   },
-
   created() {
-    // TODO: populate "givenTechnologies", "primaries" and "jobs" from db.
-    // this.givenTechnologies = ...
-
     if (this.update === 'true') {
       this.detail.getFirstName();
       this.firstName = this.detail.getFirstName();
@@ -159,11 +170,9 @@ export default {
       this.references = this.detail.getReferences();
     }
   },
-
   methods: {
     submitProfile() {
       const detailStore = useDetailStore();
-
       if (this.update === 'true') {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         /*detailStore.updateProfile(editDetails, this.detail.getId()); TODO server/backend problems*/
@@ -175,7 +184,14 @@ export default {
         router.push('/');
       }
     },
-
+    leave() {
+      if (this.update === 'true') {
+        router.push('/test');
+        /*router.push( { name: userDetails, params: {this.detail.getId()}});*/
+      } else {
+        router.push('/');
+      }
+    },
     addSkills() {
       if (this.newTechnologies?.length > 0) {
         let skills = this.newTechnologies.trim().split(',');
@@ -186,15 +202,6 @@ export default {
 
       this.newTechnologies = '';
       this.showAddTechnology = false;
-    },
-
-    leave() {
-      if (this.update === 'true') {
-        router.push('/test');
-        /*router.push( { name: userDetails, params: {this.detail.getId()}});*/
-      } else {
-        router.push('/');
-      }
     },
     checkDateFormat(date) {
       return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
@@ -212,9 +219,32 @@ export default {
   width: 100%;
   display: flex;
 }
-
 .headline {
   margin-left: 20px;
+}
+img {
+  height: 200px;
+  width: 200px;
+}
+.skillsAndDegree {
+  margin-left: -10px;
+}
+
+@media screen and (max-width: 1050px) {
+  .header {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+  }
+  img {
+    grid-row: 1;
+    margin-left: 0;
+  }
+  .headline {
+    margin-left: -10px;
+  }
+  .skillsAndDegree {
+    margin-left: 0;
+  }
 }
 @media screen and (max-width: 957px) {
   .header {
@@ -236,54 +266,6 @@ export default {
   .buttons {
     flex-direction: column;
 
-img {
-  height: 200px;
-  width: 200px;
-}
-
-.skillsAndDegree {
-  margin-left: -10px;
-}
-
-@media screen and (max-width: 1050px) {
-  .header {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-  }
-
-  img {
-    grid-row: 1;
-    margin-left: 0;
-  }
-
-  .headline {
-    margin-left: -10px;
-  }
-
-  .skillsAndDegree {
-    margin-left: 0;
-  }
-}
-
-@media screen and (max-width: 957px) {
-  .header {
-    display: grid;
-    grid-template-rows: 0.5fr 1fr;
-  }
-
-  img {
-    grid-row: 1;
-    margin-left: 0;
-  }
-
-  .headline {
-    grid-row: 2;
-    margin-left: -10px;
-    margin-bottom: 10px;
-  }
-
-  .skillsAndDegree {
-    margin-left: 0;
   }
 }
 
