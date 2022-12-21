@@ -22,14 +22,14 @@
           Detailtest
         </v-list-item>
       </RouterLink>
-      <v-divider class="divider" v-if="this.store.role === 'ROLE_ADMIN'"></v-divider>
-      <RouterLink to="/admin/users" v-if="this.store.role === 'ROLE_ADMIN'">
+      <v-divider class="divider" v-if="isAdmin"></v-divider>
+      <RouterLink to="/admin/users" v-if="isAdmin">
         <v-list-item link>
           <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-outline</v-icon>
           Nutzerübersicht
         </v-list-item>
       </RouterLink>
-      <RouterLink to="/admin/users" v-if="this.store.role === 'ROLE_ADMIN'">
+      <RouterLink to="/admin/users" v-if="isAdmin">
         <v-list-item link>
           <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">mdi-account-box-outline</v-icon>
           Rollenübersicht
@@ -57,6 +57,11 @@
 import {useAuthStore} from "@/stores/auth";
 
 export default {
+  computed: {
+    isAdmin() {
+      return window.localStorage.getItem('role') === 'ROLE_ADMIN';
+    }
+  },
   props: ['id'],
   setup() {
     const store = useAuthStore();

@@ -55,6 +55,7 @@ const refreshTokenFn = async () => {
             localStorage.removeItem("refresh_token");
             localStorage.removeItem("access_token");
             localStorage.removeItem("username");
+            localStorage.removeItem("role")
             router.push("/login");
         }
 
@@ -65,6 +66,7 @@ const refreshTokenFn = async () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
         localStorage.removeItem("username");
+        localStorage.removeItem("role")
         router.push("/login");
     }
 };

@@ -25,11 +25,14 @@
           :key="user.getEmail()">
         <td>{{ user.getEmail() }}</td>
         <td>
-          <v-chip class="roleChip" :color="user.getRole() === 'ADMIN' ? 'primary' : 'green'">{{ user.getRole() }}</v-chip>
+          <v-chip class="roleChip" :color="user.getRole() === 'ADMIN' ? 'primary' : 'green'">{{
+              user.getRole()
+            }}
+          </v-chip>
         </td>
         <td>
-          <span v-for="right in user.getRights()">
-            {{ right + " " }}
+          <span>
+            {{createRightString(user.getRights())}}
           </span>
         </td>
         <td>
@@ -45,6 +48,13 @@
 <script>
 export default {
   props: ['users'],
+  methods: {
+    createRightString(rights) {
+      let rightString = "";
+      rights.forEach(right => rightString += right + ", ");
+      return rightString.slice(0, rightString.length - 2);
+    },
+  }
 }
 </script>
 

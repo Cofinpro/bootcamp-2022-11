@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('auth', {
                 localStorage.setItem("access_token", result.data.tokens["access_token"]);
                 localStorage.setItem("refresh_token", result.data.tokens["refresh_token"]);
                 localStorage.setItem("username", result.data.username);
+                localStorage.setItem("role", result.data.role.authority);
                 this.loggedIn = true;
                 this.username = result.data.username;
                 this.role = result.data.role.authority;
