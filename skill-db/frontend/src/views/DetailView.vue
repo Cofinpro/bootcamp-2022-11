@@ -78,8 +78,8 @@
       <v-col cols="12" lg="6" md="6" sm="12">
         <div class="content_card d-flex">
           <p class="block_title">Skills</p>
-          <div class="d-flex">
-            <div v-for="skill in detailStore.details.getTechnologies()" class="pa-1 flex-wrap">
+          <div class="d-flex flex-wrap">
+            <div v-for="skill in detailStore.details.getTechnologies()" class="pa-1">
               <v-chip>{{ skill }}</v-chip>
             </div>
           </div>
@@ -166,6 +166,10 @@ img {
 .headline {
   height: 100px;
   margin-left: 10%;
+}
+
+.skill_container {
+  flex-wrap: wrap;
 }
 
 .infos {
