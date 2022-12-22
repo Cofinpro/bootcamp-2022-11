@@ -22,9 +22,9 @@
       </div>
     </div>
 
-    <v-container class="cards mt-2">
+    <v-container class="cards mt-2 ml-0">
       <v-row>
-        <v-col v-for="card in overviewStore.cards" :key="card.getId()" lg="3" md="4" sm="6" xs="12">
+        <v-col v-for="card in overviewStore.cards" :key="card.getId()" cols="12" lg="3" md="4" sm="6">
           <OverviewCard :id="card.getId()"
                         :name="card.getName()"
                         :job-title="card.getJobTitle()"
@@ -70,7 +70,7 @@ export default {
 
 <style>
 body {
-  margin: 5%;
+  margin: 4%;
 }
 
 h4 {
@@ -84,4 +84,5 @@ h4 {
 .activeFilter {
   margin-top: 1%;
 }
+
 </style>
