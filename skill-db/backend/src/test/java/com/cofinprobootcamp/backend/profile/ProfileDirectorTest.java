@@ -3,6 +3,7 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
+import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
 import org.junit.jupiter.api.Test;
@@ -48,5 +49,15 @@ class ProfileDirectorTest {
 
     @Test
     void updateInDTOToEntity() {
+        ProfileUpdateInDTO inDTO = new ProfileUpdateInDTO(
+                "first",
+        "last",
+        "title",
+        "degree",
+        "technology",
+        "reference",
+        List.of("skill"),
+        "12345678901",
+        LocalDate.parse("2020-10-10"));
     }
 }
