@@ -150,13 +150,14 @@ export class ConvertToDetailModelForOutput{
         detailModel.setBirthDate(this.convertDateToISO(object?.birthdate));
         detailModel.setDegree(String(object?.degree));
         detailModel.setJobTitle(String(object?.jobTitle));
-        detailModel.setPrimarySkill(String(object?.primaryExpertise));
-        detailModel.setTechnologies(object?.skills);
+        detailModel.setPrimarySkill(String(object?.primarySkill));
+        detailModel.setTechnologies(object?.technologies);
         detailModel.setReferences(object?.references);
         detailModel.setPhoneNumber(String(object?.phoneNumber));
         detailModel.setEmail(String(object?.email));
         return detailModel;
     }
+
     private static convertDateToISO(date: String): String {
         return `${date.split(".")[2]}-${date.split(".")[1]}-${date.split(".")[0]}`;
     }

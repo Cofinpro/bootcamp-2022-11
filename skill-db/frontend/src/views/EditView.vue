@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="!detailStore.loading">
-    <EditComponent update=true :detail="detail"/>
+    <EditComponent update=true :detail="detailStore.details"/>
   </v-container>
 </template>
 
@@ -17,7 +17,6 @@ export default {
     const detailStore = useDetailStore();
     const id = Number(useRoute().params.id);
     detailStore.loadDetailsById(id);
-    const detail = detailStore.details;
 
     const locked = ref(false);
     const toDelete = ref(false);
@@ -38,8 +37,7 @@ export default {
     }
 
     return {
-      detail, detailStore,
-      toDelete, locked, toggleDelete,
+      detailStore, toDelete, locked, toggleDelete,
       lockProfile, deleteProfile
     };
   },

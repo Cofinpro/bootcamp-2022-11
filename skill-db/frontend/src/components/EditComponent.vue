@@ -52,7 +52,12 @@
           </v-col>
           <v-col lg="6" md="6" sm="12">
             <v-text-field v-model="lastName" :rules="[v => v.length > 1 || 'Erforderlich']" label="Nachname"/>
-            <v-autocomplete v-model="primarySkill" :items="primarys" label="Primärkompetenz" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
+            <v-autocomplete
+                v-model="primarySkill"
+                :items="primaries"
+                label="Primärkompetenz"
+                :rules="[v => v.length > 1 || 'Erforderlich!']"
+            />
             <v-text-field v-model="birthdate" label="Geburtsdatum" :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"/>
           </v-col>
         </v-row>
@@ -149,23 +154,24 @@ export default {
       technologies: [],
       references: '',
       jobs: [],
-      primarys: [],
+      primaries: [],
       givenTechnologies: [],
       newTechnologies: '',
       showAddTechnology: false,
     }
   },
+
   created() {
     const detailStore = useDetailStore();
     detailStore.getSkills();
     detailStore.getJobs();
     detailStore.getPrimarys();
+
     this.givenTechnologies = detailStore.skills;
     this.jobs = detailStore.jobs;
-    this.primarys = detailStore.primarys;
+    this.primaries = detailStore.primarys;
 
     if (this.update === 'true') {
-      this.detail.getFirstName();
       this.firstName = this.detail.getFirstName();
       this.lastName = this.detail.getLastName();
       this.degree = this.detail.getDegree();
