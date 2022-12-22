@@ -61,7 +61,7 @@ public class TokenService {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuedAt(now)
-                .expiresAt(now.plus(REFRESH_TOKEN_DURATION_HOURS, ChronoUnit.HOURS))
+                .expiresAt(now.plus(REFRESH_TOKEN_DURATION_SECONDS, ChronoUnit.SECONDS))
                 .subject(authentication.getName())
                 .build();
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
@@ -76,7 +76,7 @@ public class TokenService {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuedAt(now)
-                .expiresAt(now.plus(ACCESS_TOKEN_DURATION_MINUTES, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(ACCESS_TOKEN_DURATION_SECONDS, ChronoUnit.SECONDS))
                 .subject(username)
                 .build();
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

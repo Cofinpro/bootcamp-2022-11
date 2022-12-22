@@ -2,20 +2,21 @@ package com.cofinprobootcamp.backend.auth;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -25,16 +26,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Import({SecurityConfig.class, TokenService.class})
-@WebMvcTest({AuthController.class})
+//@Import({SecurityConfig.class, TokenService.class, UserDetailsServiceImpl.class})
+//@WebMvcTest({AuthController.class})
+@SpringBootTest
+@AutoConfigureMockMvc
 public class AuthControllerTest {
 
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
 
     public static Stream<Arguments> userCredentialsProvider() {
         return Stream.of(
-                Arguments.of("admin", "password", 200),
+                Arguments.of("test@test.de", "password1", 200),
                 Arguments.of("admin123", "password", 401),
                 Arguments.of("", "password", 401),
                 Arguments.of("admin", "", 401),
@@ -52,13 +55,6 @@ public class AuthControllerTest {
         );
     }
 
-    public static Stream<Arguments> refreshTokenSource() {
-        return Stream.of(
-                Arguments.of(1),
-                Arguments.of(12)
-        );
-    }
-
     @BeforeEach
     void setUp() {
     }
@@ -66,6 +62,7 @@ public class AuthControllerTest {
     /**
      * Tests if the status-codes of the login-route (where you get your tokens after a successful authentication)
      * are correct
+     *
      * @param username
      * @param password
      * @param expected
@@ -73,6 +70,7 @@ public class AuthControllerTest {
      */
     @ParameterizedTest
     @MethodSource("userCredentialsProvider")
+    @DisplayName("Tests the login with wrong- and correct user-credentials")
     void logInWithUser(String username, String password, Integer expected) throws Exception {
 
         MockHttpServletResponse mvcResult = mvc.perform(post("/api/v1/token")
@@ -81,11 +79,11 @@ public class AuthControllerTest {
                 .andReturn().getResponse();
 
         assertThat(mvcResult.getStatus()).isEqualTo(expected);
-
     }
 
     /**
      * Tests if the test-route for authentication works
+     *
      * @throws Exception
      */
     @Test
@@ -98,7 +96,10 @@ public class AuthControllerTest {
     }
 
     /**
-     * Tests the verify-token-route
+     * Tests the verify-token-route. For testing purposes, the valid-time of access- and refresh token has to be changed
+     * Access token: 2min
+     * Refresh token: 10s
+     *
      * @param sleepTime
      * @param expected
      * @throws Exception
@@ -124,47 +125,58 @@ public class AuthControllerTest {
 
     /**
      * Tests the refresh token-route
-     * @param sleepTime
+     *
      * @throws Exception
      */
-    @ParameterizedTest
-    @MethodSource("refreshTokenSource")
-    void refreshTokenTest(Integer sleepTime) throws Exception {
+    @Test
+    void refreshTokenTest() throws Exception {
         JSONObject jsonObject = login();
 
-        TimeUnit.SECONDS.sleep(sleepTime);
+        TimeUnit.SECONDS.sleep(1);
 
-        if(sleepTime == 1) {
-            mvc.perform(post("/api/v1/token/refresh")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content("{\"username\" : \"" + jsonObject.get("username") + "\" , \"refreshToken\" : \"" + jsonObject.getJSONObject("tokens").get("refresh_token") + "\"}"))
-                    .andExpect(status().isOk())
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.accessToken").isNotEmpty())
-                    .andReturn();
-        } else {
-            mvc.perform(post("/api/v1/token/refresh")
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content("{\"username\" : \"" + jsonObject.get("username") + "\" , \"refreshToken\" : \"" + jsonObject.getJSONObject("tokens").get("refresh_token") + "\"}"))
-                    .andExpect(status().isUnauthorized())
-                    .andExpect(MockMvcResultMatchers.content().string("This user is not logged in anymore!"))
-                    .andReturn();
-        }
+        mvc.perform(post("/api/v1/token/refresh")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\" : \"" + jsonObject.get("username") + "\" , \"refreshToken\" : \"" + jsonObject.getJSONObject("tokens").get("refresh_token") + "\"}"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.accessToken").isNotEmpty())
+                .andReturn();
+    }
+
+
+    /**
+     * Tests the refresh token-route
+     *
+     * @throws Exception
+     */
+    @Test
+    void whenRefreshTokenExpiredThenAnswerCodeUnauthorized() throws Exception {
+        JSONObject jsonObject = login();
+
+        TimeUnit.SECONDS.sleep(12);
+
+        mvc.perform(post("/api/v1/token/refresh")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\" : \"" + jsonObject.get("username") + "\" , \"refreshToken\" : \"" + jsonObject.getJSONObject("tokens").get("refresh_token") + "\"}"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(MockMvcResultMatchers.content().string("This user is not logged in anymore!"))
+                .andReturn();
 
     }
 
     /**
      * Calls the login-route and tries to authenticate with admin-user
+     *
      * @return JSON-object of the username, access- and refresh token
      * @throws Exception
      */
     private JSONObject login() throws Exception {
         MvcResult result = mvc.perform(post("/api/v1/token")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\": \"admin\", \"password\": \"password\" }"))
+                        .content("{\"username\": \"test@test.de\", \"password\": \"password1\" }"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tokens.access_token").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tokens.refresh_token").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("admin"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("test@test.de"))
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();

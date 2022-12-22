@@ -1,8 +1,6 @@
 <template>
-  <v-container>
-
-
-    <EditComponent update=true :detail="detail"/>
+  <v-container v-if="!detailStore.loading">
+    <EditComponent update=true :detail="detailStore.details"/>
   </v-container>
 </template>
 
@@ -11,14 +9,14 @@ import EditComponent from "@/components/EditComponent.vue";
 import {ref} from "vue";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
+import {useRoute} from "vue-router";
 
 export default {
   components: {EditComponent},
   setup() {
     const detailStore = useDetailStore();
-    detailStore.loadDemoDetails();
-    /*detailStore.loadDetailsById();*/
-    const detail = detailStore.details;
+    const id = Number(useRoute().params.id);
+    detailStore.loadDetailsById(id);
 
     const locked = ref(false);
     const toDelete = ref(false);
@@ -34,12 +32,12 @@ export default {
     }
 
     function deleteProfile(): void {
-      /*detailStore.deleteDetailsByID(detail.getId());*/
+      detailStore.deleteDetailsByID(id);
       router.push(`/`);
     }
 
     return {
-      detail, toDelete, locked, toggleDelete,
+      detailStore, toDelete, locked, toggleDelete,
       lockProfile, deleteProfile
     };
   },
