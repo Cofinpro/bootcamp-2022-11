@@ -26,14 +26,6 @@ const router = createRouter({
           title: 'Profilübersicht'
       }
     },
-    /*{
-      path: '/test',
-      name: 'test',
-      component: DetailView,
-      meta: {
-          title: 'Detail-Test'
-      }
-    },*/
     {
         path: '/details/new',
         name: 'new',

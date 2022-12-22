@@ -69,7 +69,7 @@
                 closable-chips
                 v-model="technologies"
                 :items="givenTechnologies"
-            /> <!--TODO already givenTechnologies aren't included in list technologies-->
+            />
 
             <v-btn class="mb-5" size="small" v-if="!showAddTechnology" @click="showAddTechnology=true"
                    elevation="0">Technologie nicht gefunden?

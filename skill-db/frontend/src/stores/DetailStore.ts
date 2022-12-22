@@ -62,7 +62,8 @@ export const useDetailStore = defineStore('detailStore',{
         },
         updateProfile(edits: DetailModel, id: number) {
             this.loading = true;
-            axios.post(`/api/v1/profiles/${id}`,
+            console.log(edits);
+            axios.patch(`/api/v1/profiles/${id}`,
                 {
                 'firstName': edits.getFirstName(),
                 'lastName': edits.getLastName(),
@@ -79,6 +80,7 @@ export const useDetailStore = defineStore('detailStore',{
             this.loading = false;
         },
         getSkills(){
+            this.skills = [];
             this.loading = true;
             axios.get(`/api/v1/skills`).then((response) =>{
                 response.data.forEach((element: object) => {
@@ -90,6 +92,7 @@ export const useDetailStore = defineStore('detailStore',{
             this.loading = false;
         },
         getJobs(){
+            this.jobs = [];
             this.loading = true;
             axios.get(`/api/v1/jobTitles/`).then((response) =>{
                 response.data.forEach((element: String) => {
@@ -101,6 +104,7 @@ export const useDetailStore = defineStore('detailStore',{
             this.loading = false;
         },
         getPrimarys(){
+            this.primarys = [];
             this.loading = true;
             axios.get(`/api/v1/profiles/expertises`).then((response) =>{
                 response.data.forEach((element: String) => {
