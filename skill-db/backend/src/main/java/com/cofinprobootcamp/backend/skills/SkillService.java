@@ -12,11 +12,12 @@ public class SkillService {
     public SkillService(SkillRepository skillRepository) {
         this.skillRepository = skillRepository;
     }
+
     public Set<Skill> findSkillIfExistsElseCreateSkill(List<String> skillInputs) {
         return skillInputs.stream()
                 .map(
                         name -> {
-                            System.out.println(skillRepository.findSkillByName(name));
+                            System.out.println(skillRepository.findSkillByName(name).orElse(new Skill(name)));
                             if (skillRepository.findSkillByName(name).isPresent()) {
                                 return skillRepository.findSkillByName(name).get();
                             } else{
