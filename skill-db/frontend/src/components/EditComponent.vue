@@ -214,7 +214,7 @@ export default {
       return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
     },
     checkPhoneFormat(number) {
-      return /[0-9]{11,13}/.test(number);
+      return /^[0-9]{11,13}$/.test(number);
     }
   },
 }
