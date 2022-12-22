@@ -33,7 +33,9 @@ import java.util.List;
  *                         (The format is specified as "yyyy-MM-dd"). Cannot be {@code null}
  */
 public record ProfileCreateInDTO(
-        @NotBlank(message = "Field can not be left blank!") @Pattern(regexp = Regex.VALID_MAIL_ADDRESS, message = "Enter a valid Email Address!") String email,
+        @NotBlank(message = "Field can not be left blank!")
+        @Pattern(regexp = Regex.VALID_MAIL_ADDRESS, message = "Enter a valid Email Address!")
+        String email,
         @NotBlank(message = "Field  first name can not be left blank!") String firstName,
         @NotBlank(message = "Field last name can not be left blank!") String lastName,
         @NotBlank(message = "Field job title can not be left blank!") String jobTitle,
