@@ -94,7 +94,7 @@ export const useDetailStore = defineStore('detailStore',{
         getJobs(){
             this.jobs = [];
             this.loading = true;
-            axios.get(`/api/v1/jobTitles/`).then((response) =>{
+            axios.get(`/api/v1/job-titles/`).then((response) =>{
                 response.data.forEach((element: String) => {
                     this.jobs.push(element)
                 })
