@@ -50,8 +50,9 @@
                     @click:append="visible = !visible"
                     :rules="[rules.required, rules.min]"
                     counter
+                    @keydown.enter="login"
                 ></v-text-field>
-                <v-btn @click="login()" class="mb-10 mt-10" block
+                <v-btn @click="login" class="mb-10 mt-10" block
                        :disabled="!valid" elevation="0">
                   Login
                 </v-btn>
@@ -59,8 +60,6 @@
             </v-card>
           </v-col>
         </v-row>
-
-
       </v-col>
 
       <v-col cols="6" class="d-none d-lg-block">
