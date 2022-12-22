@@ -68,5 +68,11 @@ public class TheExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(UserCreationFailedException.class)
+    public ResponseEntity<CustomErrorMessage> handleUserCreationFailed(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage("The user could not be persisted due to a data integrity error.",
+                wr.getDescription(false));
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
 

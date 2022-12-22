@@ -4,7 +4,6 @@ import com.cofinprobootcamp.backend.role.RoleDirector;
 import com.cofinprobootcamp.backend.user.User;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * A DTO that is used to pass detailed information about a user, their status and their role from the application
@@ -19,9 +18,10 @@ import java.util.Map;
  *                       if no profile was created for this user yet
  * @version 2.0
  */
-public record UserOutDTO(String email, boolean locked, String role, List<String> userRights, Long profileOuterId) {
+public record UserOutDTO(String outerId, String email, boolean locked, String role, List<String> userRights, Long profileOuterId) {
     public UserOutDTO(User user) {
         this(
+                user.getOuterId(),
                 user.getUsername(),
                 user.isLocked(),
                 user.getRole() != null ? user.getRole().getDescriptiveName() : null,

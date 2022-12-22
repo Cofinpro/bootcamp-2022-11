@@ -32,9 +32,11 @@ public class User {
     @GeneratedValue
     Long id;
 
+    @Column(unique = true)
+    String outerId;
+
+
     //TODO: Schönere exception werfen falls email schon in use
-
-
     /**
      * The User entity's username. Is always an email address.
      */

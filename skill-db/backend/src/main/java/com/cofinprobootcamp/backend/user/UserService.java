@@ -1,11 +1,14 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.config.Constants;
+import com.cofinprobootcamp.backend.exceptions.UserCreationFailedException;
 import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.enums.StandardRoles;
 import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
+import com.cofinprobootcamp.backend.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +37,18 @@ public class UserService {
     public User createUser(UserCreateInDTO inDTO, Role role) {
         String password = passwordEncoder.encode(inDTO.password());
         User user = UserDirector.CreateInDTOToEntity(inDTO, password, role);
-        return userRepository.saveAndFlush(user);
+        try {
+            userRepository.saveAndFlush(user);
+        } catch (Exception e) {
+            throw new UserCreationFailedException();
+        }
+        try {
+            user.setOuterId(RandomStringGenerator.nextOuterId(Constants.USER_OUTER_ID_LENGTH));
+            userRepository.saveAndFlush(user);
+        } catch (org.hibernate.exception.ConstraintViolationException constraintViolationException) {
+            System.out.println("Unlikely error");
+        }
+        return user;
     }
 
     public void deleteUserById(Long id) {
