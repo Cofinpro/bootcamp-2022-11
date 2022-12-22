@@ -7,6 +7,7 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -54,10 +55,40 @@ class ProfileDirectorTest {
         "last",
         "title",
         "degree",
-        "technology",
+        "Technologie",
         "reference",
         List.of("skill"),
         "12345678901",
         LocalDate.parse("2020-10-10"));
+        Profile oldProfile = new Profile().builder()
+                .id(1L)
+                .owner(new User(1L,"a","b",false,null,null))
+                .firstName("firstOld")
+                .lastName("lastOld")
+                .jobTitle(new JobTitle("jobOld"))
+                .phoneNumber("12345667761")
+                .primaryExpertise(Expertises.SPEC)
+                .referenceText("this is a ref")
+                .build();
+        Set<Skill> skillSet= Set.of(new Skill(inDTO.skills().get(0)));
+        JobTitle jobTitle = new JobTitle(inDTO.jobTitle());
+        Profile newProfile = ProfileDirector.UpdateInDTOToEntity(inDTO,oldProfile,
+                skillSet,jobTitle);
+        //owner does not change
+        assertThat(newProfile.getOwner().getUsername())
+                .isEqualTo(oldProfile.getOwner().getUsername());
+        assertThat(newProfile.getId()).isEqualTo(oldProfile.getId());
+
+        //thinsgs that do change
+        assertThat(newProfile.getLastName()).isEqualTo(inDTO.lastName());
+        assertThat(newProfile.getFirstName()).isEqualTo(inDTO.firstName());
+        assertThat(newProfile.getDegree()).isEqualTo(inDTO.degree());
+        assertThat(newProfile.getPhoneNumber()).isEqualTo(inDTO.phoneNumber());
+        assertThat(newProfile.getPrimaryExpertise())
+                .isEqualTo(Expertises.fromFullNameString(inDTO.primaryExpertise()));
+     //  assertThat(newProfile.getBirthDate()).isEqualTo(inDTO.birthDate());
+        assertThat(newProfile.getReferenceText()).isEqualTo(inDTO.referenceText());
+        assertThat(newProfile.getSkillSet()).isEqualTo(skillSet);
+        assertThat(newProfile.getJobTitle()).isEqualTo(jobTitle);
     }
 }
