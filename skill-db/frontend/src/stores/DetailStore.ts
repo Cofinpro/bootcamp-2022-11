@@ -43,6 +43,7 @@ export const useDetailStore = defineStore('detailStore',{
         },
         createProfile(edits: DetailModel) {
             this.loading = true;
+            console.log(edits)
             axios.post(`/api/v1/profiles/`,
                 {
                     'firstName': edits.getFirstName(),
@@ -53,7 +54,7 @@ export const useDetailStore = defineStore('detailStore',{
                     'referenceText': edits.getReferences(),
                     'skills': edits.getTechnologies(),
                     'phoneNumber': edits.getPhoneNumber(),
-                    'email': edits.getEmail(),
+                    'email': localStorage.getItem('username'),
                     'birthDate': edits.getBirthDate(),
                 }).then().catch((error) => {
                 console.log(error);
