@@ -48,7 +48,7 @@
           <v-col cols="12" lg="6" md="6" sm="12">
             <v-text-field v-model="firstName" :rules="[v => v.length > 1 || 'Erforderlich!']" label="Vorname"/>
             <v-autocomplete v-model="jobTitle" :items="jobs" label="Jobprofil" :rules="[v => v.length > 1 || 'Erforderlich!']"></v-autocomplete>
-            <v-text-field v-model="phoneNumber" label="Telefonnummer" :rules="[ number => checkPhoneFormat(number) || 'Date Format must be DD.MM.YYYY']"/>
+            <v-text-field v-model="phoneNumber" label="Telefonnummer" :rules="[ number => checkPhoneFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
           </v-col>
           <v-col lg="6" md="6" sm="12">
             <v-text-field v-model="lastName" :rules="[v => v.length > 1 || 'Erforderlich']" label="Nachname"/>
