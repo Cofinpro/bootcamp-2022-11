@@ -1,5 +1,4 @@
 <template>
-  <!--TODO card should shrink instead of overlapping -->
   <v-card height="165" max-width="255" min-width="255"
           @click="$router.push(`/detail/${id}`)"
           elevation="2" class="d-flex align-center justify-space-between"
