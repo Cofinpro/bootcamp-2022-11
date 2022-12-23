@@ -82,7 +82,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
+                                "    \"email\": \"test@test.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isNotFound());
@@ -124,7 +124,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
+                                "    \"email\": \"test@test.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isOk());
@@ -147,7 +147,7 @@ public class ProfileIntegrationTest {
                 .getContentAsString();
 
         assertThat(mvcResult).contains("\"outerId\":" + id);
-        assertThat(mvcResult).contains("\"email\":\"markus.kremer@cofinpro.de\"");
+        assertThat(mvcResult).contains("\"email\":\"test@test.de\"");
         assertThat(mvcResult).contains("\"phoneNumber\":\"12345678901\"");
         assertThat(mvcResult).contains("\"jobTitle\":\"Consultant\"");
         assertThat(mvcResult).contains("\"primaryExpertise\":\"Technologie\"");
@@ -174,7 +174,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
+                                "    \"email\": \"test@test.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isOk());
@@ -202,7 +202,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
+                                "    \"email\": \"test@test.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isOk());
@@ -234,7 +234,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
+                                "    \"email\": \"test@test.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isOk());
@@ -258,6 +258,5 @@ public class ProfileIntegrationTest {
                 .getResponse()
                 .getContentAsString();
         assertThat(mvcResult).isEqualTo("[]");
-        ;
     }
 }
