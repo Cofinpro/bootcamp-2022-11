@@ -1,6 +1,12 @@
 Definition of done
 
 UnitTests für so viel wie möglich (TextCoverage >50%)
+  wenn möglich IntegrationsTests
+Persistenz (nicht nur Mockdaten)
+Datenvalidierung + Error-Messages (Exception-Handling)
+Entspricht Wireframes oder ist leicht umwandelbar
+Responsive
+
 
 Detailansicht: Ein neues Profil anlegen
   Backend
