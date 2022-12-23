@@ -32,7 +32,7 @@ public class User {
     @GeneratedValue
     Long id;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     String outerId;
 
 

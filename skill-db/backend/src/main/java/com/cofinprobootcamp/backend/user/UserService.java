@@ -12,6 +12,7 @@ import com.cofinprobootcamp.backend.utils.RandomStringGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,10 +26,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
     public User detachProfileFromUser(Long id) {
-        User user = userRepository.findById(id).get();
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            System.out.println("User not found on deleting profile. This should logically not happen");
+            throw new UserNotFoundException();
+        }
+        User user = userOptional.get();
         user.setProfile(null);
         return userRepository.saveAndFlush(user);
     }
+
     public User assignProfileToUser(User user, Profile profile) {
         user.setProfile(profile);
         return userRepository.saveAndFlush(user);
@@ -38,30 +45,26 @@ public class UserService {
         String password = passwordEncoder.encode(inDTO.password());
         User user = UserDirector.CreateInDTOToEntity(inDTO, password, role);
         try {
+            tryToSetUniqueOuterId(user);
             userRepository.saveAndFlush(user);
         } catch (Exception e) {
             throw new UserCreationFailedException();
         }
-        try {
-            user.setOuterId(RandomStringGenerator.nextOuterId(Constants.USER_OUTER_ID_LENGTH));
-            userRepository.saveAndFlush(user);
-        } catch (org.hibernate.exception.ConstraintViolationException constraintViolationException) {
-            System.out.println("Unlikely error");
-        }
         return user;
     }
 
-    public void deleteUserById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
+    @Transactional
+    public void deleteUserByOuterId(String outerId) {
+        Optional<User> userOptional = userRepository.findFirstByOuterId(outerId);
         if (userOptional.isPresent()) {
-            userRepository.deleteById(id);
+            userRepository.deleteByOuterId(outerId);
         } else {
             throw new UserNotFoundException();
         }
     }
 
-    public UserOutDTO getUserById(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
+    public UserOutDTO getUserByOuterId(String outerId) {
+        Optional<User> userOptional = userRepository.findFirstByOuterId(outerId);
         return new UserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
     }
 
@@ -77,5 +80,16 @@ public class UserService {
 
     public List<String> getAllUserRoles() {
         return StandardRoles.getAllDefinedValuesAsString();
+    }
+
+    private void tryToSetUniqueOuterId(User user) {
+        String candidateId = RandomStringGenerator.nextOuterId(Constants.USER_OUTER_ID_LENGTH);
+        Optional<User> userOptional = userRepository.findFirstByOuterId(candidateId);
+        if (userOptional.isPresent()) {
+            System.out.println("Collision on id generation [User]! Must roll again.");
+            tryToSetUniqueOuterId(user);
+            return;
+        }
+        user.setOuterId(candidateId);
     }
 }
