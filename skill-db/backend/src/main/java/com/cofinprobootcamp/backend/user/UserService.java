@@ -57,7 +57,8 @@ public class UserService {
     public void deleteUserByOuterId(String outerId) {
         Optional<User> userOptional = userRepository.findFirstByOuterId(outerId);
         if (userOptional.isPresent()) {
-            userRepository.deleteByOuterId(outerId);
+            long deletedUsers = userRepository.deleteByOuterId(outerId);
+            if (deletedUsers != 1) System.out.println("There was a severe problem when deleting a user");
         } else {
             throw new UserNotFoundException();
         }

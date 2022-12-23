@@ -9,6 +9,7 @@ import java.util.List;
  * A DTO that is used to pass detailed information about a user, their status and their role from the application
  * to the outside. This also includes the set of user rights associated with their role.
  *
+ * @param outerId        A unique alphanumeric {@code String} to identify this user from the outside
  * @param email          A {@code String} representation of the profile owner's email address (for identification)
  * @param locked         A {@code boolean} flag indicating whether a user account has been locked
  * @param role           A {@code String} representation of the user's current role (i.e., its display name)
@@ -16,7 +17,7 @@ import java.util.List;
  *                       (These are {@code String} conversions of {@code UserRights} enum constants)
  * @param profileOuterId An outer ID for identifying the profile associated with this user. May be {@code null}
  *                       if no profile was created for this user yet
- * @version 2.0
+ * @version 3.0
  */
 public record UserOutDTO(String outerId, String email, boolean locked, String role, List<String> userRights, Long profileOuterId) {
     public UserOutDTO(User user) {
