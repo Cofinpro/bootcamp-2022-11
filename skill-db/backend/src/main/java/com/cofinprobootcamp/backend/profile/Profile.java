@@ -25,6 +25,9 @@ public class Profile {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true, nullable = false)
+    String outerId;
+
     private String firstName;
     private String lastName;
 
