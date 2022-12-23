@@ -5,7 +5,7 @@
 
       <v-col cols="12" class="d-lg-none">
         <v-img
-            src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80"
+            src="https://imgs.xkcd.com/comics/pando.png"
             alt="Comic Picture"
             width="100vw"
             max-height="250"
@@ -66,7 +66,7 @@
         <v-img
             cover
             max-height="100vh"
-            src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=436&q=80"
+            src="https://imgs.xkcd.com/comics/pando.png"
         ></v-img>
       </v-col>
 
