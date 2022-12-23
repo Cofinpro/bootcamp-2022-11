@@ -19,28 +19,6 @@ export const useOverviewStore = defineStore('OverviewStore', {
                 console.log(error);
             });
             this.loading = false;
-        },
-        loadDummyOverview() {
-            this.loading = true;
-            this.cards = [
-                ConvertToOverviewCard.toOverviewCard(
-                    {
-                        id: 0,
-                        name: "HI MAX",
-                        jobTitle: "Consultant",
-                        primarySkill: "Tech"
-                    }
-                ),
-                ConvertToOverviewCard.toOverviewCard(
-                    {
-                        id: 1,
-                        name: "HI MAX2",
-                        jobTitle: "Consultant",
-                        primarySkill: "Tech"
-                    }
-                )
-            ];
-            this.loading = false;
         }
     }
 })

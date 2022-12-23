@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.profile;
 
+import com.cofinprobootcamp.backend.auth.UserDetailsImpl;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
@@ -9,6 +10,10 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.user.UserService;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import com.cofinprobootcamp.backend.user.User;
 
@@ -21,19 +26,21 @@ public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
     private final ProfileRepository profileRepository;
+    private final AuthenticationManager authenticationManager;
 
     public ProfileController(ProfileService profileService, UserService userService,
-                             ProfileRepository profileRepository) {
+                             ProfileRepository profileRepository, AuthenticationManager authenticationManager) {
         this.profileService = profileService;
         this.userService = userService;
         this.profileRepository = profileRepository;
+        this.authenticationManager = authenticationManager;
     }
 
     /**
      * @param profileInDTO creates profile in database if authorized (401.UNAUTHORIZED)
      */
     @PostMapping(path = "")
-    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
     public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
         User user = userService.getUserByUsername(profileInDTO.email());
         if (profileRepository.findProfileByOwner(user).isPresent()) {
@@ -49,7 +56,7 @@ public class ProfileController {
      *                     updates profile by Id
      */
     @PatchMapping(path = "/{id}")
-    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
     public void updateProfile(@PathVariable Long id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
             throws ProfileNotFoundException, JobTitleNotFoundException {
         profileService.updateProfile(profileInDTO, id);
@@ -59,7 +66,7 @@ public class ProfileController {
      * @param id delete profile by Id
      */
     @DeleteMapping(path = "/{id}")
-    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
     public void deleteProfileById(@PathVariable Long id) throws ProfileNotFoundException {
         Profile profile = profileService.getProfileById(id); //TODO
         userService.detachProfileFromUser(profile.getOwner().getId());
@@ -71,7 +78,7 @@ public class ProfileController {
      * @return profile detail view
      */
     @GetMapping(path = "/{id}")
-    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
     public ProfileDetailsOutDTO getProfile(@PathVariable Long id) throws ProfileNotFoundException {
         return profileService.getProfileDTOById(id);
     }
@@ -80,7 +87,7 @@ public class ProfileController {
      * @return get all overview DTOs
      */
     @GetMapping(path = "")
-    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
     public List<ProfileOverviewOutDTO> getAllProfileOverviews() {
         return profileService.getAllOverviewDTOs();
     }
@@ -91,7 +98,7 @@ public class ProfileController {
      * @return A list of unique {@code String}s representing the types of expertises
      */
     @GetMapping(path = "/expertises")
-    @Secured({"ROLE_ADMIN", "ROLE_USER"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
     public List<String> getAllExpertises() { // makes more sense to have this as an endpoint under profiles, where content is actually stored
         return profileService.getAllExpertises();
     }

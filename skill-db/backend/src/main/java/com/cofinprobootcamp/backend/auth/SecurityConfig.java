@@ -60,9 +60,14 @@ public class SecurityConfig {
                         .mvcMatchers("/api/v1/token").permitAll()
                         .mvcMatchers("/api/v1/token/refresh").permitAll()
                         .mvcMatchers("/api/v1/token/verify").permitAll()
-                        .mvcMatchers("/api/v1/users").permitAll()
-                        .mvcMatchers("/api/v1/users/*").permitAll()
-                        .mvcMatchers("/api/v1/job-titles/").permitAll() // These may be kept for convenience
+                        .mvcMatchers("/api/v1/roles").hasRole("ADMIN")
+                        .mvcMatchers("/api/v1/roles/*").hasRole("ADMIN")
+                        .mvcMatchers("/api/v1/users").hasAnyRole("ADMIN", "HR")
+                        .mvcMatchers("/api/v1/users/*").hasAnyRole("ADMIN", "HR")
+                        .mvcMatchers("/api/v1/profiles").hasAnyRole("ADMIN", "USER", "HR")
+                        .mvcMatchers("/api/v1/profiles/expertises").permitAll()
+                        .mvcMatchers("/api/v1/profiles/*").hasAnyRole("ADMIN", "USER", "HR")
+                        .mvcMatchers("/api/v1/job-titles").permitAll() // These may be kept for convenience
                         .mvcMatchers("/api/v1/skills").permitAll() // These may be kept for convenience
                         .anyRequest().authenticated()
                 )
