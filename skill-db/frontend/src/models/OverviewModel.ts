@@ -1,5 +1,3 @@
-import OverviewCard from "@/components/OverviewCard.vue";
-
 export class OverviewModel{
     private id: number;
     private name: String;
@@ -49,10 +47,10 @@ export class OverviewModel{
 export class ConvertToOverviewCard{
     public static toOverviewCard(object: any): OverviewModel {
         const overviewCard = new OverviewModel();
-        overviewCard.setId(object?.id);
-        overviewCard.setName(object?.name);
-        overviewCard.setJobTitle(object?.jobTitle);
-        overviewCard.setPrimarySkill(object?.primarySkill);
+        overviewCard.setId(object?.outerId);
+        overviewCard.setName(String(object?.name));
+        overviewCard.setJobTitle(String(object?.jobTitle));
+        overviewCard.setPrimarySkill(String(object?.primaryExpertise));
         return overviewCard;
     }
 }

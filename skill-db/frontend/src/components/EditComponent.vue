@@ -48,11 +48,16 @@
           <v-col cols="12" lg="6" md="6" sm="12">
             <v-text-field v-model="firstName" :rules="[v => v.length > 1 || 'Erforderlich!']" label="Vorname"/>
             <v-autocomplete v-model="jobTitle" :items="jobs" label="Jobprofil" :rules="[v => v.length > 1 || 'Erforderlich!']"></v-autocomplete>
-            <v-text-field v-model="phoneNumber" label="Telefonnummer" :rules="[ number => checkPhoneFormat(number) || 'Date Format must be DD.MM.YYYY']"/>
+            <v-text-field v-model="phoneNumber" label="Telefonnummer" :rules="[ number => checkPhoneFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
           </v-col>
           <v-col lg="6" md="6" sm="12">
             <v-text-field v-model="lastName" :rules="[v => v.length > 1 || 'Erforderlich']" label="Nachname"/>
-            <v-autocomplete v-model="primarySkill" :items="primarys" label="Primärkompetenz" :rules="[v => v.length > 1 || 'Erforderlich!']"/>
+            <v-autocomplete
+                v-model="primarySkill"
+                :items="primaries"
+                label="Primärkompetenz"
+                :rules="[v => v.length > 1 || 'Erforderlich!']"
+            />
             <v-text-field v-model="birthdate" label="Geburtsdatum" :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"/>
           </v-col>
         </v-row>
@@ -69,7 +74,7 @@
                 closable-chips
                 v-model="technologies"
                 :items="givenTechnologies"
-            /> <!--TODO already givenTechnologies aren't included in list technologies-->
+            />
 
             <v-btn class="mb-5" size="small" v-if="!showAddTechnology" @click="showAddTechnology=true"
                    elevation="0">Technologie nicht gefunden?
@@ -100,21 +105,20 @@ import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
+import {useRoute} from "vue-router";
 
 export default {
   props: ['detail', 'update'],
   setup() {
     const detailStore = useDetailStore();
-    detailStore.loadDemoDetails();
-    /*detailStore.loadDetailsById(ID); TODO how are we getting the ID here?*/
-    const detail = detailStore.details;
+    const id = Number(useRoute().params.id);
+    detailStore.loadDetailsById(id);
 
     const locked = ref(false);
     const toDelete = ref(false);
 
     function enterEdit() {
-      router.push('/detail/edit/1');
-      /*router.push({ name: 'editView', params: { id: detail.getId()}});*/
+      router.push({ name: 'editView', params: { id: this.id}});
     }
 
     function toggleDelete() {
@@ -128,12 +132,12 @@ export default {
     }
 
     function deleteProfile() {
-      detailStore.deleteDetailsByID(detail.getId()); /*TODO server/backend problems*/
+      detailStore.deleteDetailsByID(this.id);
       router.push(`/`);
     }
 
     return {
-      detail, toDelete, locked,
+      toDelete, locked,
       enterEdit, toggleDelete,
       lockProfile, deleteProfile
     };
@@ -149,21 +153,30 @@ export default {
       primarySkill: '',
       technologies: [],
       references: '',
-      jobs: ['Consultant', 'Expert Consultant', 'Senior Consultant', 'Manager', 'Architect', 'Senior Manager', 'Senior Architect', 'Director', 'Partner'],
-      primarys: ['Technologie', 'Fach', 'Management'],
-      givenTechnologies: ['Java', 'Vue', 'Angular', 'Spring Boot'], /*TODO get from backend*/
+      jobs: [],
+      primaries: [],
+      givenTechnologies: [],
       newTechnologies: '',
       showAddTechnology: false,
     }
   },
+
   created() {
+    const detailStore = useDetailStore();
+    detailStore.getSkills();
+    detailStore.getJobs();
+    detailStore.getPrimarys();
+
+    this.givenTechnologies = detailStore.skills;
+    this.jobs = detailStore.jobs;
+    this.primaries = detailStore.primarys;
+
     if (this.update === 'true') {
-      this.detail.getFirstName();
       this.firstName = this.detail.getFirstName();
       this.lastName = this.detail.getLastName();
       this.degree = this.detail.getDegree();
       this.birthdate = this.detail.getBirthDate();
-      //this.phoneNumber = this.detail.getPhoneNumber(); /*TODO include PhoneNumber in DetailModel*/
+      this.phoneNumber = this.detail.getPhoneNumber();
       this.jobTitle = this.detail.getJobTitle();
       this.primarySkill = this.detail.getPrimarySkill();
       this.technologies = this.detail.getTechnologies();
@@ -175,19 +188,19 @@ export default {
       const detailStore = useDetailStore();
       if (this.update === 'true') {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
-        /*detailStore.updateProfile(editDetails, this.detail.getId()); TODO server/backend problems*/
-        router.push('/test');
-        /*router.push( { name: userDetails, params: {this.detail.getId()}});*/
+        const id = this.detail.getId();
+        detailStore.updateProfile(editDetails, id);
+        router.push( { name: 'userDetails', params: {id}});
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
-        /*detailStore.createProfile(newDetails); TODO server/backend problems*/
+        detailStore.createProfile(newDetails);
         router.push('/');
       }
     },
     leave() {
       if (this.update === 'true') {
-        router.push('/test');
-        /*router.push( { name: userDetails, params: {this.detail.getId()}});*/
+        const id = this.detail.getId();
+        router.push( { name: 'userDetails', params: {id}});
       } else {
         router.push('/');
       }
@@ -207,7 +220,7 @@ export default {
       return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
     },
     checkPhoneFormat(number) {
-      return /[0-9]{11,13}/.test(number); /*TODO check format again*/
+      return /^[0-9]{11,13}$/.test(number);
     }
   },
 }

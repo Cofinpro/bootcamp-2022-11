@@ -5,6 +5,7 @@ import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,9 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@Order(3)
 public class UserSetup {
     private final UserService userService;
     private final RoleService roleService;
+
 
     @Autowired
     public UserSetup(UserService userService, RoleService roleService) {

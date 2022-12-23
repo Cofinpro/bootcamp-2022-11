@@ -3,10 +3,13 @@ import {ConvertToDetailModel, DetailModel} from "@/models/DetailModel";
 import axios from "@/axios";
 
 export const useDetailStore = defineStore('detailStore',{
-    state: () => ({
-        details: new DetailModel(),
-        loading: Boolean(false),
-    }),
+        state: () => ({
+            details: new DetailModel(),
+            loading: Boolean(false),
+            skills: [] as String[],
+            jobs: [] as String[],
+            primarys: [] as String[],
+        }),
     actions: {
         loadDemoDetails(){
             this.details = ConvertToDetailModel.toDetail({
@@ -25,7 +28,7 @@ export const useDetailStore = defineStore('detailStore',{
         loadDetailsById(id: number){
             this.loading = true;
             axios.get(`/api/v1/profiles/${id}`).then((response) =>{
-                this.details = ConvertToDetailModel.toDetail(response);
+                this.details = ConvertToDetailModel.toDetail(response.data);
             }).catch((error) => {
                 console.log(error);
             });
@@ -33,13 +36,14 @@ export const useDetailStore = defineStore('detailStore',{
         },
         deleteDetailsByID(id: number) {
             this.loading = true;
-            axios.delete(`/api/v1/profiles/${id}`).then(() =>{}).catch((error) => {
+            axios.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
                 console.log(error);
             });
             this.loading = false;
         },
         createProfile(edits: DetailModel) {
             this.loading = true;
+            console.log(edits)
             axios.post(`/api/v1/profiles/`,
                 {
                     'firstName': edits.getFirstName(),
@@ -49,17 +53,18 @@ export const useDetailStore = defineStore('detailStore',{
                     'primaryExpertise': edits.getPrimarySkill(),
                     'referenceText': edits.getReferences(),
                     'skills': edits.getTechnologies(),
-                    'phoneNumber': "12312312312", /*TODO how do we get phoneNumber and email from user*/
-                    'email': "test@test.com",
-                    'birthDate': edits.getBirthDate()
-                }).then(() =>{}).catch((error) => {
+                    'phoneNumber': edits.getPhoneNumber(),
+                    'email': localStorage.getItem('username'),
+                    'birthDate': edits.getBirthDate(),
+                }).then().catch((error) => {
                 console.log(error);
             });
             this.loading = false;
         },
         updateProfile(edits: DetailModel, id: number) {
             this.loading = true;
-            axios.post(`/api/v1/profiles/${id}`,
+            console.log(edits);
+            axios.patch(`/api/v1/profiles/${id}`,
                 {
                 'firstName': edits.getFirstName(),
                 'lastName': edits.getLastName(),
@@ -68,10 +73,56 @@ export const useDetailStore = defineStore('detailStore',{
                 'primaryExpertise': edits.getPrimarySkill(),
                 'referenceText': edits.getReferences(),
                 'skills': edits.getTechnologies(),
-                'phoneNumber': "123123123123", /*TODO how do we get phoneNumber and email from user*/
-                'email': "test@test.com",
-                'birthDate': edits.getBirthDate()
-            }).then(() =>{}).catch((error) => {
+                'phoneNumber': edits.getPhoneNumber(),
+                'birthDate': edits.getBirthDate(),
+            }).then().catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        getSkills(){
+            this.skills = [];
+            this.loading = true;
+            axios.get(`/api/v1/skills`).then((response) =>{
+                response.data.forEach((element: object) => {
+                    this.skills.push(element.toString());
+                })
+            }).catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        getJobs(){
+            this.jobs = [];
+            this.loading = true;
+            axios.get(`/api/v1/job-titles/`).then((response) =>{
+                response.data.forEach((element: String) => {
+                    this.jobs.push(element)
+                })
+            }).catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        getPrimarys(){
+            this.primarys = [];
+            this.loading = true;
+            axios.get(`/api/v1/profiles/expertises`).then((response) =>{
+                response.data.forEach((element: String) => {
+                    this.primarys.push(element)
+                })
+            }).catch((error) => {
+                console.log(error);
+            });
+            this.loading = false;
+        },
+        setJobs(id: number, name: String) {
+            this.loading = true;
+            axios.post(`/api/v1/jobTitles/`,
+                {
+                    'id': id,
+                    'name': name,
+                }).then(() =>{}).catch((error) => {
                 console.log(error);
             });
             this.loading = false;

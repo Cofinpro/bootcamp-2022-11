@@ -34,7 +34,8 @@ import java.util.List;
  */
 public record ProfileCreateInDTO(
         @NotBlank(message = "Field can not be left blank!")
-        @Pattern(regexp = Regex.VALID_MAIL_ADDRESS, message = "Enter a valid Email Address!") String email,
+        @Pattern(regexp = Regex.VALID_MAIL_ADDRESS, message = "Enter a valid Email Address!")
+        String email,
         @NotBlank(message = "Field  first name can not be left blank!")
         String firstName,
         @NotBlank(message = "Field last name can not be left blank!")
