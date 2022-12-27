@@ -1,7 +1,7 @@
 <template>
   <v-snackbar
   v-model="errorStore.hasError"
-  multi-line="true"
+  multi-line
   color="red"
   timeout="10000"
   >

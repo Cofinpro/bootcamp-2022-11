@@ -34,7 +34,7 @@ public record ProfileUpdateInDTO(
         String firstName,
         @NotBlank(message = "Nachname darf nicht Leer sein!")
         String lastName,
-        @NotBlank(message = "JobProfil darf nicht leer sein!")
+        @NotBlank(message = "Job Profil darf nicht leer sein!")
         String jobTitle,
         @NotBlank(message = "Abschluss darf nicht leer sein!")
         String degree,
@@ -45,5 +45,7 @@ public record ProfileUpdateInDTO(
         List<@NotBlank(message = "Skills dürfen nicht leer sein!") String> skills,
         @NotBlank(message = "Telefonnummer darf nicht leer sein!")
         @Pattern(regexp = Regex.VALID_PHONE_NUMBER, message = "Telefonnummer muss korrektes Format haben!") String phoneNumber,
-        @NotNull(message = "Geburtsdatum muss angegeben werden!") @JsonFormat(pattern = Regex.DATE_FORMAT) LocalDate birthDate) {
+        @NotNull(message = "Geburtsdatum muss angegeben werden!")
+        @Pattern(regexp = Regex.DATE_FORMAT)
+        String birthDate) {
 }

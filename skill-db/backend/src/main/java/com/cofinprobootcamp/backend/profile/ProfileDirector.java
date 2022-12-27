@@ -7,6 +7,7 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public class ProfileDirector {
@@ -23,7 +24,7 @@ public class ProfileDirector {
                 .primaryExpertise(convertFromStringOrThrow(profileInDTO.primaryExpertise()))
                 .referenceText(profileInDTO.referenceText())
                 .skillSet(skillSet)
-                .birthDate(profileInDTO.birthDate())
+                .birthDate(LocalDate.parse(profileInDTO.birthDate()))
                 .owner(user)
                 .build();
     }

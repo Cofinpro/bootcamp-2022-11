@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 import {ConvertToDetailModel, DetailModel} from "@/models/DetailModel";
 import axios from "@/axios";
-import {AxiosError} from "axios";
 import {useErrorStore} from "@/stores/ErrorStore";
 
 export const useDetailStore = defineStore('detailStore', {
@@ -67,7 +66,7 @@ export const useDetailStore = defineStore('detailStore', {
                 })
                     .catch((error) => {
                         console.log(error);
-                        errorStore.catchError(error);
+                        errorStore.catchPostPatchError(error);
                     });
                 this.loading = false;
             },
@@ -91,7 +90,7 @@ export const useDetailStore = defineStore('detailStore', {
                         errorStore.toggleHasError();
                 }).catch((error) => {
                     console.log(error);
-                    errorStore.catchError(error);
+                    errorStore.catchPostPatchError(error);
                 });
                 this.loading = false;
             },
@@ -99,11 +98,13 @@ export const useDetailStore = defineStore('detailStore', {
             getSkills() {
                 this.skills = [];
                 this.loading = true;
+                const errorStore = useErrorStore();
                 axios.get(`/api/v1/skills`).then((response) => {
                     response.data.forEach((element: object) => {
                         this.skills.push(element.toString());
                     })
                 }).catch((error) => {
+                    errorStore.catchPostPatchError(error, 'skills')
                     console.log(error);
                 });
                 this.loading = false;
@@ -112,11 +113,13 @@ export const useDetailStore = defineStore('detailStore', {
             getJobs() {
                 this.jobs = [];
                 this.loading = true;
+                const errorStore = useErrorStore();
                 axios.get(`/api/v1/job-titles/`).then((response) => {
                     response.data.forEach((element: String) => {
                         this.jobs.push(element)
                     })
                 }).catch((error) => {
+                    errorStore.catchPostPatchError(error, 'Jobtitel')
                     console.log(error);
                 });
                 this.loading = false;
@@ -125,11 +128,13 @@ export const useDetailStore = defineStore('detailStore', {
             getPrimarys() {
                 this.primarys = [];
                 this.loading = true;
+                const errorStore = useErrorStore();
                 axios.get(`/api/v1/profiles/expertises`).then((response) => {
                     response.data.forEach((element: String) => {
                         this.primarys.push(element)
                     })
                 }).catch((error) => {
+                    errorStore.catchPostPatchError(error, 'Primärkompetenz')
                     console.log(error);
                 });
                 this.loading = false;
