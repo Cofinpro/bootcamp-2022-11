@@ -1,14 +1,30 @@
 import {defineStore} from "pinia";
-import {AxiosError} from "axios";
+import type {AxiosError} from "axios";
 
 export const useErrorStore = defineStore(
     'ErrorStore',
     {state: () =>({
             hasError: Boolean(false),
-            errorText: String(),
+            errorText: '',
         }),
         actions: {
-            catchPostPatchError(error: AxiosError){
+
+            catchOverviewError(error: AxiosError) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText ="Unknown error";
+                } else {
+                    if (error.response.status === 401) {
+                        this.errorText = 'Unauthorized!';
+                    } else if (error.response.status === 500) {
+                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren sie Ihren Administrator, falls der Fehler anhält!';
+                    } else {
+                        this.errorText = 'Unknown Error'
+                    }
+                }
+            },
+
+            catchPostPatchError(error: AxiosError) {
                 this.hasError=true;
                 if (error.response == undefined) {
                     this.errorText ="Unknown error";
@@ -26,12 +42,14 @@ export const useErrorStore = defineStore(
                     }
                 }
             },
+
             toggleHasError() {
                 this.hasError = false;
                 this.errorText= '';
             },
+
             handle400(error: AxiosError) {
-                const message: String = String(error.response.data.message);
+                const message: string = error.response.data.message.toString();
                 if (message.includes('Cannot deserialize value of type `java.time.LocalDate`')) {
                     this.errorText= "Unbekanntes Format des Datums!";
                 } else if (message === 'Der zurzeit eingelogte Nutzer hat bereits ein Profil!') {
@@ -44,7 +62,8 @@ export const useErrorStore = defineStore(
                     this.errorText = "Unbekannter Fehler!";
                 }
             },
-            catchSkillsJobsPrimaries(error: AxiosError, name: String) {
+
+            catchSkillsJobsPrimariesError(error: AxiosError, name: String) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText ="Unknown error";
@@ -52,6 +71,7 @@ export const useErrorStore = defineStore(
                     this.errorText += `${name} wurde nicht korrekt vom server erhalten!`
                 }
             },
+
             catchGetError(error: AxiosError, id: number) {
                 this.hasError = true;
                 if (error.response == undefined) {
@@ -68,6 +88,7 @@ export const useErrorStore = defineStore(
                     }
                 }
             },
+
             catchDeleteError(error: AxiosError, id: number) {
                 this.hasError = true;
                 if (error.response == undefined) {

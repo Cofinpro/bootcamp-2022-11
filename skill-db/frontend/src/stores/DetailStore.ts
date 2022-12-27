@@ -107,7 +107,7 @@ export const useDetailStore = defineStore('detailStore', {
                         this.skills.push(element.toString());
                     })
                 }).catch((error) => {
-                    errorStore.catchPostPatchError(error, 'skills')
+                    errorStore.catchSkillsJobsPrimariesError(error, 'skills')
                     console.log(error);
                 });
                 this.loading = false;
@@ -122,7 +122,7 @@ export const useDetailStore = defineStore('detailStore', {
                         this.jobs.push(element)
                     })
                 }).catch((error) => {
-                    errorStore.catchPostPatchError(error, 'Jobtitel')
+                    errorStore.catchSkillsJobsPrimariesError(error, 'Jobtitel')
                     console.log(error);
                 });
                 this.loading = false;
@@ -137,7 +137,7 @@ export const useDetailStore = defineStore('detailStore', {
                         this.primarys.push(element)
                     })
                 }).catch((error) => {
-                    errorStore.catchPostPatchError(error, 'Primärkompetenz')
+                    errorStore.catchSkillsJobsPrimariesError(error, 'Primärkompetenz')
                     console.log(error);
                 });
                 this.loading = false;

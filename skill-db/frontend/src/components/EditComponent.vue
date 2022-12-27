@@ -200,7 +200,6 @@ export default {
         await detailStore.createProfile(newDetails);
         if (! errorStore.hasError){
           await router.push('/');
-          console.log("hi")
         }
       }
     },
