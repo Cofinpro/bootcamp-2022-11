@@ -2,6 +2,7 @@
   <v-container v-if="!detailStore.loading">
     <EditComponent update=true :detail="detailStore.details"/>
   </v-container>
+  <ErrorSnackbar></ErrorSnackbar>
 </template>
 
 <script lang="ts">
@@ -10,9 +11,10 @@ import {ref} from "vue";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useRoute} from "vue-router";
+import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
 
 export default {
-  components: {EditComponent},
+  components: {ErrorSnackbar, EditComponent},
   setup() {
     const detailStore = useDetailStore();
     const id = Number(useRoute().params.id);

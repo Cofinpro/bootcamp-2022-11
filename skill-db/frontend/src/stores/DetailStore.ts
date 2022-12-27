@@ -30,12 +30,11 @@ export const useDetailStore = defineStore('detailStore', {
             },
 
             loadDetailsById(id: number) {
+                console.log(this.hasError);
                 this.loading = true;
                 axios.get(`/api/v1/profiles/${id}`).then((response) => {
                     this.details = ConvertToDetailModel.toDetail(response.data);
-                    this.hasError = false;
                 }).catch((error) => {
-                    this.hasError = true;
                     if (error.status === 401) {
                         this.errorText = 'Unauthorized'
                     } else if (error.status === 500) {
@@ -44,6 +43,7 @@ export const useDetailStore = defineStore('detailStore', {
                     console.log(this.errorText);
                 });
                 this.loading = false;
+                console.log(this.hasError);
             },
 
             deleteDetailsByID(id: number) {
@@ -54,10 +54,10 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            createProfile(edits: DetailModel) {
+            async createProfile(edits: DetailModel) {
                 this.loading = true;
                 console.log(edits)
-                axios.post(`/api/v1/profiles/`,
+                await axios.post(`/api/v1/profiles/`,
                     {
                         'firstName': edits.getFirstName(),
                         'lastName': edits.getLastName(),
@@ -100,6 +100,7 @@ export const useDetailStore = defineStore('detailStore', {
                 }).catch((error) => {
                     this.hasError = true;
                     this.errorText = this.catchError(error);
+                    console.log(this.errorText);
                 });
                 this.loading = false;
             },

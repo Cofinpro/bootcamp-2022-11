@@ -193,13 +193,13 @@ export default {
         const id = this.detail.getId();
         await detailStore.updateProfile(editDetails, id);
         if (! detailStore.hasError) {
-          router.push({name: 'userDetails', params: {id}});
+          await router.push({name: 'userDetails', params: {id}});
         }
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
         await detailStore.createProfile(newDetails);
         if (! detailStore.hasError){
-          router.push('/');
+          await router.push('/');
           console.log("hi")
         }
       }
