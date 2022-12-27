@@ -105,6 +105,7 @@
       </v-col>
     </v-row>
   </div>
+  <ErrorSnackbar></ErrorSnackbar>
 </template>
 
 <script lang="ts">
@@ -112,8 +113,10 @@ import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
 import router from "@/router";
 import {useRoute} from "vue-router";
+import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
 
 export default {
+  components: {ErrorSnackbar},
   setup() {
     const detailStore = useDetailStore();
     const id = Number(useRoute().params.id);

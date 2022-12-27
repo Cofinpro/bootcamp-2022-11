@@ -29,18 +29,21 @@ export const useDetailStore = defineStore('detailStore', {
 
             loadDetailsById(id: number) {
                 this.loading = true;
+                const errorStore = useErrorStore();
                 axios.get(`/api/v1/profiles/${id}`).then((response) => {
                     this.details = ConvertToDetailModel.toDetail(response.data);
                 }).catch((error) => {
-                    console.log(error);
+                    errorStore.catchGetError(error, id);
+                    console.log(error)
                 });
                 this.loading = false;
             },
 
             deleteDetailsByID(id: number) {
                 this.loading = true;
+                const errorStore = useErrorStore();
                 axios.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
-                    console.log(error);
+                    errorStore.catchDeleteError(error,id);
                 });
                 this.loading = false;
             },

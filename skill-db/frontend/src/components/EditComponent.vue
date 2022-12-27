@@ -105,17 +105,13 @@ import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
-import {useRoute} from "vue-router";
-import {de} from "vuetify/locale";
 import {useErrorStore} from "@/stores/ErrorStore";
 
 export default {
   props: ['detail', 'update'],
   setup() {
     const detailStore = useDetailStore();
-    const id = Number(useRoute().params.id);
-    detailStore.loadDetailsById(id);
-
+    const errorStore = useErrorStore();
     const locked = ref(false);
     const toDelete = ref(false);
 
@@ -133,9 +129,12 @@ export default {
       /*router.push(`/`);*/
     }
 
-    function deleteProfile() {
-      detailStore.deleteDetailsByID(this.id);
-      router.push(`/`);
+    async function deleteProfile() {
+      await detailStore.deleteDetailsByID(this.id);
+      if (!errorStore.hasError) {
+        console.log(errorStore.hasError);
+        await router.push(`/`);
+      }
     }
 
     return {

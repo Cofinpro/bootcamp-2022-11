@@ -52,6 +52,38 @@ export const useErrorStore = defineStore(
                     this.errorText += `${name} wurde nicht korrekt vom server erhalten!`
                 }
             },
+            catchGetError(error: AxiosError, id: number) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = "Unknown error";
+                } else {
+                    if (error.response.status === 404) {
+                        this.errorText = `Profile ${id} existiert nicht!`;
+                    } else if (error.response.status === 401) {
+                        this.errorText = 'Unauthorized';
+                    } else if (error.response.status === 500) {
+                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren sie Ihren Administrator, falls der Fehler anhält!';
+                    } else if (error.response.status === 400) {
+                        this.errorText = 'Profile Id konnte nicht aufgelöst werden!'
+                    }
+                }
+            },
+            catchDeleteError(error: AxiosError, id: number) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = "Unknown error";
+                } else {
+                    if (error.response.status === 404) {
+                        this.errorText = `Profile ${id} existiert nicht!`;
+                    } else if (error.response.status === 401) {
+                        this.errorText = 'Recht zum Löschen dieses Profils nicht vorhanden!';
+                    } else if (error.response.status === 500) {
+                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren sie Ihren Administrator, falls der Fehler anhält!';
+                    } else if (error.response.status === 400) {
+                        this.errorText = 'Profile Id konnte nicht aufgelöst werden!'
+                    }
+                }
+            },
         }
     }
 )

@@ -46,6 +46,6 @@ public record ProfileUpdateInDTO(
         @NotBlank(message = "Telefonnummer darf nicht leer sein!")
         @Pattern(regexp = Regex.VALID_PHONE_NUMBER, message = "Telefonnummer muss korrektes Format haben!") String phoneNumber,
         @NotNull(message = "Geburtsdatum muss angegeben werden!")
-        @Pattern(regexp = Regex.DATE_REGEX)
+        @Pattern(regexp = Regex.DATE_REGEX, message = "Geburtsdatum muss im Format DD.MM.YYYY angegeben werden!")
         String birthDate) {
 }

@@ -3,7 +3,7 @@
   v-model="errorStore.hasError"
   multi-line
   color="red"
-  timeout="10000"
+  timeout="7500"
   >
     <div v-if="errorStore.errorText !== ''">
       {{errorStore.errorText}}
