@@ -106,6 +106,7 @@ import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
 import {useRoute} from "vue-router";
+import {de} from "vuetify/locale";
 
 export default {
   props: ['detail', 'update'],
@@ -184,17 +185,23 @@ export default {
     }
   },
   methods: {
-    submitProfile() {
+
+    async submitProfile() {
       const detailStore = useDetailStore();
       if (this.update === 'true') {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
-        detailStore.updateProfile(editDetails, id);
-        router.push( { name: 'userDetails', params: {id}});
+        await detailStore.updateProfile(editDetails, id);
+        if (! detailStore.hasError) {
+          router.push({name: 'userDetails', params: {id}});
+        }
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
-        detailStore.createProfile(newDetails);
-        router.push('/');
+        await detailStore.createProfile(newDetails);
+        if (! detailStore.hasError){
+          router.push('/');
+          console.log("hi")
+        }
       }
     },
     leave() {
