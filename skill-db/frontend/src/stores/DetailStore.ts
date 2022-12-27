@@ -2,13 +2,12 @@ import {defineStore} from "pinia";
 import {ConvertToDetailModel, DetailModel} from "@/models/DetailModel";
 import axios from "@/axios";
 import {AxiosError} from "axios";
+import {useErrorStore} from "@/stores/ErrorStore";
 
 export const useDetailStore = defineStore('detailStore', {
         state: () => ({
             details: new DetailModel(),
             loading: Boolean(false),
-            hasError: Boolean(false),
-            errorText: new String,
             skills: [] as String[],
             jobs: [] as String[],
             primarys: [] as String[],
@@ -30,20 +29,13 @@ export const useDetailStore = defineStore('detailStore', {
             },
 
             loadDetailsById(id: number) {
-                console.log(this.hasError);
                 this.loading = true;
                 axios.get(`/api/v1/profiles/${id}`).then((response) => {
                     this.details = ConvertToDetailModel.toDetail(response.data);
                 }).catch((error) => {
-                    if (error.status === 401) {
-                        this.errorText = 'Unauthorized'
-                    } else if (error.status === 500) {
-                        this.errorText = 'Unknown error occured. Please contact your administrator!'
-                    }
-                    console.log(this.errorText);
+                    console.log(error);
                 });
                 this.loading = false;
-                console.log(this.hasError);
             },
 
             deleteDetailsByID(id: number) {
@@ -56,7 +48,8 @@ export const useDetailStore = defineStore('detailStore', {
 
             async createProfile(edits: DetailModel) {
                 this.loading = true;
-                console.log(edits)
+                console.log(edits);
+                const errorStore = useErrorStore();
                 await axios.post(`/api/v1/profiles/`,
                     {
                         'firstName': edits.getFirstName(),
@@ -70,13 +63,11 @@ export const useDetailStore = defineStore('detailStore', {
                         'email': localStorage.getItem('username'),
                         'birthDate': edits.getBirthDate(),
                     }).then(() => {
-                    this.hasError = false;
+                    errorStore.toggleHasError();
                 })
                     .catch((error) => {
                         console.log(error);
-                        this.hasError = true;
-                        this.errorText = this.catchError(error);
-                        console.log(this.errorText);
+                        errorStore.catchError(error);
                     });
                 this.loading = false;
             },
@@ -84,6 +75,7 @@ export const useDetailStore = defineStore('detailStore', {
             async updateProfile(edits: DetailModel, id: number) {
                 this.loading = true;
                 console.log(edits);
+                const errorStore = useErrorStore()
                 await axios.patch(`/api/v1/profiles/${id}`,
                     {
                         'firstName': edits.getFirstName(),
@@ -96,31 +88,12 @@ export const useDetailStore = defineStore('detailStore', {
                         'phoneNumber': edits.getPhoneNumber(),
                         'birthDate': edits.getBirthDate(),
                     }).then(() =>{
-                        this.hasError = false;
+                        errorStore.toggleHasError();
                 }).catch((error) => {
-                    this.hasError = true;
-                    this.errorText = this.catchError(error);
-                    console.log(this.errorText);
+                    console.log(error);
+                    errorStore.catchError(error);
                 });
                 this.loading = false;
-            },
-
-            catchError(error: AxiosError): String {
-                let errorText: String;
-                if (error.response == undefined) {
-                    return "Unknown error";
-                } else {
-                    if (error.response.status === 400) {
-                        errorText = "Profile content not filled correctly! Profile not saved!"
-                    } else if (error.response.status === 401) {
-                        errorText = 'Unauthorized'
-                    } else if (error.response.status === 500) {
-                        errorText = 'Unknown error occurred. Please contact your administrator!'
-                    } else {
-                        errorText = 'Unknown error'
-                    }
-                }
-                return errorText;
             },
 
             getSkills() {

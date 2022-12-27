@@ -1,11 +1,9 @@
 <template>
   <v-app id="inspire">
     <SideBar v-if="$route.path !== '/login'"></SideBar>
-
     <v-main>
       <router-view/>
     </v-main>
-
   </v-app>
 </template>
 

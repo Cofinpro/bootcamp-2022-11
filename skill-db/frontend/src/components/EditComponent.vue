@@ -107,6 +107,7 @@ import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
 import {useRoute} from "vue-router";
 import {de} from "vuetify/locale";
+import {useErrorStore} from "@/stores/ErrorStore";
 
 export default {
   props: ['detail', 'update'],
@@ -167,7 +168,6 @@ export default {
     detailStore.getSkills();
     detailStore.getJobs();
     detailStore.getPrimarys();
-
     this.givenTechnologies = detailStore.skills;
     this.jobs = detailStore.jobs;
     this.primaries = detailStore.primarys;
@@ -188,17 +188,18 @@ export default {
 
     async submitProfile() {
       const detailStore = useDetailStore();
+      const errorStore = useErrorStore();
       if (this.update === 'true') {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
         await detailStore.updateProfile(editDetails, id);
-        if (! detailStore.hasError) {
+        if (! errorStore.hasError) {
           await router.push({name: 'userDetails', params: {id}});
         }
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
         await detailStore.createProfile(newDetails);
-        if (! detailStore.hasError){
+        if (! errorStore.hasError){
           await router.push('/');
           console.log("hi")
         }

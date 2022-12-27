@@ -1,11 +1,12 @@
 <template>
   <v-snackbar
-  v-model="detailStore.hasError"
+  v-model="errorStore.hasError"
+  multi-line="true"
   color="red"
-  timeout="5000"
+  timeout="10000"
   >
-    <div v-if="detailStore.errorText !== ''">
-      {{detailStore.errorText}}
+    <div v-if="errorStore.errorText !== ''">
+      {{errorStore.errorText}}
     </div>
     <div v-else>
       Unknown Error
@@ -14,12 +15,12 @@
 </template>
 
 <script>
-import {useDetailStore} from "@/stores/DetailStore";
+import {useErrorStore} from "@/stores/ErrorStore";
 
 export default {
 
   data: () => ({
-    detailStore: useDetailStore(),
+    errorStore: useErrorStore(),
   })
 }
 </script>
