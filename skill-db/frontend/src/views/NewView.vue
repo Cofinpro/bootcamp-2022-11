@@ -5,8 +5,6 @@
 
     <EditComponent update=false />
   </v-container>
-  <ErrorSnackbar></ErrorSnackbar>
-
 </template>
 
 <script lang="ts">
