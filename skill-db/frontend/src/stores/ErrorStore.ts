@@ -55,7 +55,7 @@ export const useErrorStore = defineStore(
                 } else if (message === 'Der zurzeit eingelogte Nutzer hat bereits ein Profil!') {
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
-                    let innerMessage = message.split(/(\[|])/)[2];
+                    let innerMessage = message.split(/(\[])/)[2];
                     innerMessage = innerMessage.replaceAll(',', ' ');
                     this.errorText = innerMessage;
                 } else if (message === 'Datum nicht in passendem Format!') {
@@ -70,7 +70,7 @@ export const useErrorStore = defineStore(
                 if (error.response == undefined) {
                     this.errorText ="Unknown error";
                 } else {
-                    this.errorText += `${name} wurde nicht korrekt vom server erhalten!`
+                    this.errorText += ` ${name} wurde nicht korrekt vom server erhalten!`
                 }
             },
 
