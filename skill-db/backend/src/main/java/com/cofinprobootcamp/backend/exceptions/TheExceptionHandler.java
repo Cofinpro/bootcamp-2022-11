@@ -7,8 +7,21 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.time.DateTimeException;
+
 @ControllerAdvice
 public class TheExceptionHandler {
+
+    @ExceptionHandler(DateTimeException.class)
+    public ResponseEntity<CustomErrorMessage> handleDateTimeException(
+            DateTimeException e, WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Datum nicht in passendem Format!",
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<CustomErrorMessage> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException e, WebRequest wr
