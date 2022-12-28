@@ -62,7 +62,8 @@
       </v-row>
 
       <div class="buttons d-flex justify-end">
-        <v-btn class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
+        <v-btn v-if="update === 'false'" class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
+        <v-btn v-if="update === 'true'" class="mt-10" @click="submitProfile()" elevation="0">Änderungen speichern</v-btn>
         <v-btn class="mt-10 ml-lg-5 ml-md-5" @click="leave" elevation="0">Abbrechen</v-btn>
       </div>
     </v-form>
