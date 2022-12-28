@@ -11,6 +11,6 @@
 import EditComponent from "@/components/EditComponent.vue";
 
 export default {
-  components: {EditComponent},
+  components: { EditComponent },
 }
 </script>
