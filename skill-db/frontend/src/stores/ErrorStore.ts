@@ -58,6 +58,8 @@ export const useErrorStore = defineStore(
                     let innerMessage = message.split(/(\[|])/)[2];
                     innerMessage = innerMessage.replaceAll(',', ' ');
                     this.errorText = innerMessage;
+                } else if (message === 'Datum nicht in passendem Format!') {
+                    this.errorText = message;
                 } else {
                     this.errorText = "Unbekannter Fehler!";
                 }
