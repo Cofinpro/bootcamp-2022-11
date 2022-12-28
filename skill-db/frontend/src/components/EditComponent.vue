@@ -46,19 +46,30 @@
         </div>
         <v-row class="headline">
           <v-col cols="12" lg="6" md="6" sm="12">
-            <v-text-field v-model="firstName" :rules="[v => v.length > 1 || 'Erforderlich!']" label="Vorname"/>
-            <v-autocomplete v-model="jobTitle" :items="jobs" label="Jobprofil" :rules="[v => v.length > 1 || 'Erforderlich!']"></v-autocomplete>
-            <v-text-field v-model="phoneNumber" label="Telefonnummer" :rules="[ number => checkPhoneFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
+            <v-text-field v-model="firstName"
+                          :rules="[v => v.length > 1 || 'Erforderlich!']"
+                          label="Vorname" />
+            <v-autocomplete v-model="jobTitle"
+                            :items="jobs"
+                            label="Jobprofil"
+                            :rules="[v => v.length > 1 || 'Erforderlich!']"></v-autocomplete>
+            <v-text-field
+                v-model="phoneNumber" label="Telefonnummer"
+                :rules="[ number => checkPhoneFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
           </v-col>
           <v-col lg="6" md="6" sm="12">
-            <v-text-field v-model="lastName" :rules="[v => v.length > 1 || 'Erforderlich']" label="Nachname"/>
+            <v-text-field v-model="lastName"
+                          :rules="[v => v.length > 1 || 'Erforderlich']"
+                          label="Nachname"/>
             <v-autocomplete
                 v-model="primarySkill"
                 :items="primaries"
                 label="Primärkompetenz"
                 :rules="[v => v.length > 1 || 'Erforderlich!']"
             />
-            <v-text-field v-model="birthdate" label="Geburtsdatum" :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"/>
+            <v-text-field v-model="birthdate"
+                          label="Geburtsdatum"
+                          :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"/>
           </v-col>
         </v-row>
       </div>
@@ -84,18 +95,31 @@
                           @keydown.enter="addSkills"
             />
 
-            <v-text-field v-model="degree" label="Abschluss" :rules="[v => v.length > 1 || 'Erforderlich']"/>
+            <v-text-field v-model="degree"
+                          label="Abschluss"
+                          :rules="[v => v.length > 1 || 'Erforderlich']"/>
           </div>
         </v-col>
         <v-col>
-          <v-text-field class="references" v-model="references" label="Referenzen"
+          <v-text-field class="references"
+                        v-model="references"
+                        label="Referenzen"
                         :rules="[v => v.length > 1 || 'Erforderlich!']"/>
         </v-col>
       </v-row>
 
       <div class="buttons d-flex justify-end">
-        <v-btn class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
-        <v-btn class="mt-10 ml-lg-5 ml-md-5" @click="leave" elevation="0">Abbrechen</v-btn>
+        <v-btn class="mt-10"
+               :style="!isFilled ? {
+                  color: '#fff !important',
+                  backgroundColor: `#AAAAAA !important`
+                } : ''"
+               @click="submitProfile()"
+               elevation="0"
+               :disabled="!isFilled">Profil erstellen</v-btn>
+        <v-btn class="mt-10 ml-lg-5 ml-md-5"
+               @click="leave"
+               elevation="0">Abbrechen</v-btn>
       </div>
     </v-form>
   </v-container>
@@ -188,6 +212,7 @@ export default {
     async submitProfile() {
       const detailStore = useDetailStore();
       const errorStore = useErrorStore();
+      console.log(this.isFilled);
       if (this.update === 'true') {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
@@ -229,6 +254,18 @@ export default {
       return /^[0-9]{11,13}$/.test(number);
     }
   },
+  computed: {
+    isFilled() {
+      return (this.checkDateFormat(this.birthdate) &&
+      this.checkPhoneFormat(this.phoneNumber) &&
+      this.references.length > 0 &&
+      this.jobTitle.length > 0 &&
+      this.primarySkill.length > 0 &&
+      this.lastName.length > 0 &&
+      this.firstName.length > 0 &&
+      this.degree.length > 0 )
+    },
+  }
 }
 </script>
 
