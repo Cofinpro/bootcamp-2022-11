@@ -11,11 +11,10 @@ import {ref} from "vue";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useRoute} from "vue-router";
-import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
 import {useErrorStore} from "@/stores/ErrorStore";
 
 export default {
-  components: {ErrorSnackbar, EditComponent},
+  components: {EditComponent},
   setup() {
     const detailStore = useDetailStore();
     const id = Number(useRoute().params.id);

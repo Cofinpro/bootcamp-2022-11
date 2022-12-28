@@ -10,10 +10,9 @@
 <script lang="ts">
 import EditComponent from "@/components/EditComponent.vue";
 import {useDetailStore} from "@/stores/DetailStore";
-import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
 
 export default {
-  components: {ErrorSnackbar, EditComponent},
+  components: {EditComponent},
   setup() {
     const detailStore = useDetailStore();
     return {
