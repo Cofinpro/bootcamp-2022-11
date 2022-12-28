@@ -36,6 +36,7 @@ public class ProfileDirector {
         current.setFirstName(profileInDTO.firstName());
         current.setLastName(profileInDTO.lastName());
         current.setJobTitle(jobTitle);
+        current.setBirthDate(LocalDate.parse(profileInDTO.birthDate()));
         current.setDegree(profileInDTO.degree());
         current.setPrimaryExpertise(convertFromStringOrThrow(profileInDTO.primaryExpertise()));
         current.setReferenceText(profileInDTO.referenceText());
