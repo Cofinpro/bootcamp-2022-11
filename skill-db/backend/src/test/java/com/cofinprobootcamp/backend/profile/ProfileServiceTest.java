@@ -105,4 +105,19 @@ class ProfileServiceTest {
         assertThat(profileService.getAllOverviewDTOs())
                 .isEqualTo(List.of(new ProfileOverviewOutDTO(profile)));
     }
+
+    @Test
+    void deleteProfileById() throws ProfileNotFoundException {
+        Mockito.when(profileRepository.findById(1L)).thenReturn(Optional.of(profile));
+        profileService.deleteProfileById(1L);
+        Mockito.verify(profileRepository, Mockito.times(1)).deleteById(1L);
+    }
+
+    @Test
+    void getAllOverviewDTOs() {
+        List<Profile> profileList =List.of(profile);
+        Mockito.when(profileRepository.findAll()).thenReturn(profileList);
+        assertThat(profileService.getAllOverviewDTOs().get(0).name())
+                .isEqualTo(profile.getFirstName() + " " + profile.getLastName());
+    }
 }
