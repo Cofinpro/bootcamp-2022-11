@@ -69,6 +69,11 @@ public class UserService {
         return new UserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
     }
 
+    public UserOutDTO getUserById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        return new UserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
+    }
+
     public User getUserByUsername(String email) {
         Optional<User> userOptional = userRepository.findByUsername(email);
         return userOptional.orElseThrow(UserNotFoundException::new);

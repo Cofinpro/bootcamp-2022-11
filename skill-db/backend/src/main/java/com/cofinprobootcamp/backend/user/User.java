@@ -61,5 +61,5 @@ public class User {
     @OneToOne
     @JoinColumn(unique = true)
     @Builder.Default
-    private Profile profile = null;
+    private Profile profile = null; // Default value
 }

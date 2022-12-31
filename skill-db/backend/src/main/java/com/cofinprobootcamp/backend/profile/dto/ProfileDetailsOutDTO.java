@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A DTO that can be used to pass detailed information about a User to the outside.
  *
- * @param outerId          An outer ID for identification purposes (is a unique alphanumeric {@code String})
+ * @param id               An outer ID for identification purposes (is a unique alphanumeric {@code String})
  * @param jobTitle         A {@code String} representation of the user's current job title (as of this profile)
  * @param degree           A {@code String} representation of the user's academic degree or their highest level of education
  *                         (as of this profile)
@@ -22,7 +22,7 @@ import java.util.List;
  *                         (The format is specified as "yyyy-MM-dd")
  * @param age              The user's age as calculated per {@code birthDate} (Integer value)
  */
-public record ProfileDetailsOutDTO(String outerId,
+public record ProfileDetailsOutDTO(String id,
                                    String email,
                                    String phoneNumber,
                                    String jobTitle,
@@ -32,7 +32,8 @@ public record ProfileDetailsOutDTO(String outerId,
                                    List<String> skills,
                                    String firstName,
                                    String lastName,
-                                   String birthDate, Integer age) {
+                                   String birthDate,
+                                   Integer age) {
 
     public ProfileDetailsOutDTO(Profile profile) {
         this(

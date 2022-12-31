@@ -7,7 +7,6 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -62,7 +61,7 @@ class ProfileDirectorTest {
         LocalDate.parse("2020-10-10"));
         Profile oldProfile = new Profile().builder()
                 .id(1L)
-                .owner(new User(1L,"a","b",false,null,null))
+                .owner(new User(1L, "00000","a","b",false,null,null))
                 .firstName("firstOld")
                 .lastName("lastOld")
                 .jobTitle(new JobTitle("jobOld"))
@@ -79,7 +78,7 @@ class ProfileDirectorTest {
                 .isEqualTo(oldProfile.getOwner().getUsername());
         assertThat(newProfile.getId()).isEqualTo(oldProfile.getId());
 
-        //thinsgs that do change
+        //things that do change
         assertThat(newProfile.getLastName()).isEqualTo(inDTO.lastName());
         assertThat(newProfile.getFirstName()).isEqualTo(inDTO.firstName());
         assertThat(newProfile.getDegree()).isEqualTo(inDTO.degree());

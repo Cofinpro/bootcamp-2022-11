@@ -56,12 +56,12 @@ public class ProfileController {
     }
 
     /**
-     * @param id delete profile by Id
+     * @param id delete profile by ID (This expects an outerId)
      */
     @DeleteMapping(path = "/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public void deleteProfileById(@PathVariable String id) throws ProfileNotFoundException {
-        Profile profile = profileService.getProfileByOuterId(id); //TODO
+        Profile profile = profileService.getProfileByOuterId(id); // Find profile by its outerId
         userService.detachProfileFromUser(profile.getOwner().getId());
         profileService.deleteProfileByOuterId(id);
     }

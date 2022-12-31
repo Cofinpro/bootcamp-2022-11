@@ -50,11 +50,11 @@ public class ProfileService {
         return profile;
     }
 
-    // changing email does not work since outerId of user is not given to frontend here!
-    // --> should give back "outer outerId" of profile and update that way!
+    // changing email does not work since id of user is not given to frontend here!
+    // --> should give back "outer id" of profile and update that way!
     public Profile updateProfile(ProfileUpdateInDTO profileInDTO, String outerId)
             throws ProfileNotFoundException, JobTitleNotFoundException {
-        // In theory: convert outerId to internal id
+        // In theory: convert id to internal id
         Profile current = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new);
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
