@@ -1,6 +1,7 @@
 <template>
   <v-container v-if="!detailStore.loading">
-    <EditComponent update=true :detail="detailStore.details"/>
+    <EditComponent update=true
+                   :detail="detailStore.details"/>
   </v-container>
 </template>
 
@@ -12,7 +13,8 @@ import {useDetailStore} from "@/stores/DetailStore";
 import {useRoute} from "vue-router";
 
 export default {
-  components: {EditComponent},
+  name: "EditView",
+  components: { EditComponent },
   setup() {
     const detailStore = useDetailStore();
     const id = Number(useRoute().params.id);
@@ -45,5 +47,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -6,11 +6,21 @@
     </div>
 
     <div class="searchAndButtons d-flex justify-end align-center">
-      <v-card v-if="false" class="searchbar d-flex justify-center" color="grey" width="45%" height="20%">Searchbar</v-card>
+      <v-card v-if="false" class="searchbar d-flex justify-center"
+              color="grey" width="45%" height="20%">
+        Searchbar
+      </v-card>
       <div class="d-flex justify-space-between">
-        <ButtonWithTooltip tooltip="Liste exportieren" icon="mdi-file-export" @clicked="exportProfiles"/>
-        <ButtonWithTooltip tooltip="Neues Profil erstellen" icon="mdi-plus-thick" @clicked="createProfile"/>
-        <ButtonWithTooltip v-if="false" tooltip="Filter" icon="mdi-filter" @clicked="filterProfiles"/>
+        <ButtonWithTooltip tooltip="Liste exportieren"
+                           icon="mdi-file-export"
+                           @clicked="exportProfiles"/>
+        <ButtonWithTooltip tooltip="Neues Profil erstellen"
+                           icon="mdi-plus-thick"
+                           @clicked="createProfile"/>
+        <ButtonWithTooltip v-if="false"
+                           tooltip="Filter"
+                           icon="mdi-filter"
+                           @clicked="filterProfiles"/>
       </div>
     </div>
 
@@ -24,7 +34,8 @@
 
     <v-container class="cards mt-2 ml-0">
       <v-row>
-        <v-col v-for="card in overviewStore.cards" :key="card.getId()" cols="12" lg="3" md="4" sm="6">
+        <v-col v-for="card in overviewStore.cards" :key="card.getId()"
+               cols="12" lg="3" md="4" sm="6">
           <OverviewCard :id="card.getId()"
                         :name="card.getName()"
                         :job-title="card.getJobTitle()"
@@ -42,7 +53,8 @@ import {useOverviewStore} from "@/stores/OverviewStore";
 import router from "@/router";
 
 export default {
-  components: {OverviewCard, ButtonWithTooltip},
+  name: "HomeView",
+  components: { OverviewCard, ButtonWithTooltip },
   setup() {
     const overviewStore = useOverviewStore();
     overviewStore.loadOverview();
@@ -61,14 +73,12 @@ export default {
     filterProfiles() {
       console.log("Start filtering.");
     }
-  },
-  metaInfo: {
-    title: "Overview",
   }
 }
 </script>
 
 <style>
+
 body {
   margin: 4%;
 }

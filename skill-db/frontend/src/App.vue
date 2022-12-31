@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <SideBar v-if="$route.path !== '/login'"></SideBar>
+    <SideBar v-if="$route.path !== '/login'"/>
 
     <v-main>
       <router-view/>
@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import SideBar from './components/SideBar.vue'
-import router from "@/router";
 export default {
   components: {SideBar},
   watch: {
@@ -23,5 +22,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

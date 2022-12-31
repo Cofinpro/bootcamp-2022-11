@@ -3,28 +3,33 @@
 
   <v-container>
     <v-form @submit.prevent>
+
       <div class="header">
         <div class="d-flex flex-column align-items-center">
           <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">
-          <v-card class="mt-3 mb-10 d-flex justify-center" color="grey" width="200px" height="25px">Bild hochladen
+          <v-card class="mt-3 mb-10 d-flex justify-center"
+                  color="grey" width="200px" height="25px">
+            Bild hochladen
           </v-card>
         </div>
+
         <v-row class="headline">
           <v-col cols="12" lg="6" md="6" sm="12">
-            <v-text-field v-model="firstName" :rules="[v => v.length > 1 || 'Erforderlich!']" label="Vorname"/>
-            <v-autocomplete v-model="jobTitle" :items="jobs" label="Jobprofil"
-                            :rules="[v => v.length > 1 || 'Erforderlich!']"></v-autocomplete>
+            <v-text-field v-model="firstName" label="Vorname"
+                          :rules="[v => v.length > 1 || 'Erforderlich!']"/>
+            <v-autocomplete v-model="jobTitle" label="Jobprofil"
+                            :rules="[v => v.length > 1 || 'Erforderlich!']"
+                            :items="jobs"/>
             <v-text-field v-model="phoneNumber" label="Telefonnummer"
                           :rules="[ number => checkPhoneFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
           </v-col>
+
           <v-col lg="6" md="6" sm="12">
-            <v-text-field v-model="lastName" :rules="[v => v.length > 1 || 'Erforderlich']" label="Nachname"/>
-            <v-autocomplete
-                v-model="primarySkill"
-                :items="primaries"
-                label="Primärkompetenz"
-                :rules="[v => v.length > 1 || 'Erforderlich!']"
-            />
+            <v-text-field v-model="lastName" label="Nachname"
+                          :rules="[v => v.length > 1 || 'Erforderlich']"/>
+            <v-autocomplete v-model="primarySkill" label="Primärkompetenz"
+                            :rules="[v => v.length > 1 || 'Erforderlich!']"
+                            :items="primaries"/>
             <v-text-field v-model="birthdate" label="Geburtsdatum"
                           :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"/>
           </v-col>
@@ -34,27 +39,24 @@
       <v-row>
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete
-                multiple
-                auto-select-first
-                label="Skills"
-                chips
-                closable-chips
-                v-model="technologies"
-                :items="givenTechnologies"
-            />
+            <v-autocomplete v-model="technologies" label="Skills"
+                            :items="givenTechnologies"
+                            multiple auto-select-first
+                            chips closable-chips/>
 
-            <v-btn class="mb-5" size="small" v-if="!showAddTechnology" @click="showAddTechnology=true"
-                   elevation="0">Technologie nicht gefunden?
+            <v-btn class="mb-5" size="small" elevation="0"
+                   v-if="!showAddTechnology" @click="showAddTechnology=true">
+              Technologie nicht gefunden?
             </v-btn>
             <v-text-field v-if="showAddTechnology" v-model="newTechnologies"
                           placeholder="Füge mehrere Skills hinzu, indem du sie mit Kommata [','] separierst."
-                          @keydown.enter="addSkills"
-            />
+                          @keydown.enter="addSkills"/>
 
-            <v-text-field v-model="degree" label="Abschluss" :rules="[v => v.length > 1 || 'Erforderlich']"/>
+            <v-text-field v-model="degree" label="Abschluss"
+                          :rules="[v => v.length > 1 || 'Erforderlich']"/>
           </div>
         </v-col>
+
         <v-col>
           <v-text-field class="references" v-model="references" label="Referenzen"
                         :rules="[v => v.length > 1 || 'Erforderlich!']"/>
@@ -62,9 +64,18 @@
       </v-row>
 
       <div class="buttons d-flex justify-end">
-        <v-btn v-if="update === 'false'" class="mt-10" @click="submitProfile()" elevation="0">Profil erstellen</v-btn>
-        <v-btn v-if="update === 'true'" class="mt-10" @click="submitProfile()" elevation="0">Änderungen speichern</v-btn>
-        <v-btn class="mt-10 ml-lg-5 ml-md-5" @click="leave" elevation="0">Abbrechen</v-btn>
+        <v-btn v-if="update === 'false'" class="mt-10"
+               @click="submitProfile()" elevation="0">
+          Profil erstellen
+        </v-btn>
+        <v-btn v-if="update === 'true'" class="mt-10"
+               @click="submitProfile()" elevation="0">
+          Änderungen speichern
+        </v-btn>
+        <v-btn class="mt-10 ml-lg-5 ml-md-5"
+               @click="leave" elevation="0">
+          Abbrechen
+        </v-btn>
       </div>
     </v-form>
   </v-container>
@@ -78,6 +89,7 @@ import {useRoute} from "vue-router";
 import SettingsButton from "@/components/SettingsButton.vue";
 
 export default {
+  name: "EditComponent",
   props: ['detail', 'update'],
   components: { SettingsButton },
   setup() {
@@ -238,5 +250,4 @@ img {
 
   }
 }
-
 </style>

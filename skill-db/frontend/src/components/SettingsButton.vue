@@ -1,31 +1,47 @@
 <template>
   <div class="d-flex justify-end">
+
     <v-menu :close-on-content-click="false">
       <template v-slot:activator="{ props }">
-        <v-btn v-bind="props"
-               min-width="40px" width="40px" height="35px"
-               class="pa-0" elevation="0">
+
+        <v-btn v-bind="props" class="pa-0" elevation="0"
+               min-width="40px" width="40px" height="35px">
           <v-icon size="large">
             mdi-cog
           </v-icon>
         </v-btn>
+
       </template>
+
       <v-list>
-        <v-list-item v-if="!edit" link @click="enterEdit(id)">
-          <v-list-item-title> Bearbeiten</v-list-item-title>
+        <v-list-item v-if="!edit" link
+                     @click="enterEdit(id)">
+          <v-list-item-title>
+            Bearbeiten
+          </v-list-item-title>
         </v-list-item>
-        <v-list-item link @click.stop="toggleDelete">
-          <v-list-item-title> Löschen</v-list-item-title>
+        <v-list-item link
+                     @click.stop="toggleDelete">
+          <v-list-item-title>
+            Löschen
+          </v-list-item-title>
         </v-list-item>
-        <v-list-item link @click="lockProfile">
-          <v-list-item-title> Sperren</v-list-item-title>
+        <v-list-item link
+                     @click="lockProfile">
+          <v-list-item-title>
+            Sperren
+          </v-list-item-title>
         </v-list-item>
       </v-list>
+
     </v-menu>
 
     <v-dialog v-model="toDelete" max-width="200">
+
       <v-card>
-        <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
+        <v-card-text>
+          Willst du dieses Profil wirklich löschen?
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn @click="deleteProfile(id)">
@@ -36,6 +52,7 @@
           </v-btn>
         </v-card-actions>
       </v-card>
+
     </v-dialog>
     <v-overlay v-model="locked" absolute/>
   </div>
@@ -85,5 +102,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

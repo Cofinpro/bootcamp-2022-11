@@ -11,6 +11,10 @@
 import EditComponent from "@/components/EditComponent.vue";
 
 export default {
+  name: "NewView",
   components: { EditComponent },
 }
 </script>
+
+<style scoped>
+</style>
