@@ -41,8 +41,9 @@
     <v-form @submit.prevent>
       <div class="header">
         <div class="d-flex flex-column align-items-center">
-          <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">
-          <v-card class="mt-3 mb-10 d-flex justify-center" color="grey" width="200px" height="25px">Bild hochladen</v-card>
+          <!--          <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">-->
+          <!--          <v-card class="mt-3 mb-10 d-flex justify-center" color="grey" width="200px" height="25px">Bild hochladen</v-card>-->
+          <upload-image-button/>
         </div>
         <v-row class="headline">
           <v-col cols="12" lg="6" md="6" sm="12">
@@ -106,9 +107,11 @@ import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
 import {useRoute} from "vue-router";
+import UploadImageButton from "@/components/UploadImageButton.vue";
 
 export default {
   props: ['detail', 'update'],
+  components: {UploadImageButton},
   setup() {
     const detailStore = useDetailStore();
     const id = Number(useRoute().params.id);
@@ -118,7 +121,7 @@ export default {
     const toDelete = ref(false);
 
     function enterEdit() {
-      router.push({ name: 'editView', params: { id: this.id}});
+      router.push({name: 'editView', params: {id: this.id}});
     }
 
     function toggleDelete() {
@@ -190,7 +193,7 @@ export default {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
         detailStore.updateProfile(editDetails, id);
-        router.push( { name: 'userDetails', params: {id}});
+        router.push({name: 'userDetails', params: {id}});
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
         detailStore.createProfile(newDetails);
@@ -200,7 +203,7 @@ export default {
     leave() {
       if (this.update === 'true') {
         const id = this.detail.getId();
-        router.push( { name: 'userDetails', params: {id}});
+        router.push({name: 'userDetails', params: {id}});
       } else {
         router.push('/');
       }
@@ -232,13 +235,16 @@ export default {
   width: 100%;
   display: flex;
 }
+
 .headline {
   margin-left: 20px;
 }
+
 img {
   height: 200px;
   width: 200px;
 }
+
 .skillsAndDegree {
   margin-left: -10px;
 }
@@ -248,34 +254,42 @@ img {
     display: grid;
     grid-template-rows: 1fr 1fr;
   }
+
   img {
     grid-row: 1;
     margin-left: 0;
   }
+
   .headline {
     margin-left: -10px;
   }
+
   .skillsAndDegree {
     margin-left: 0;
   }
 }
+
 @media screen and (max-width: 957px) {
   .header {
     display: grid;
     grid-template-rows: 0.5fr 1fr;
   }
+
   img {
     grid-row: 1;
     margin-left: 0;
   }
+
   .headline {
     grid-row: 2;
     margin-left: -10px;
     margin-bottom: 10px;
   }
+
   .skillsAndDegree {
     margin-left: 0;
   }
+
   .buttons {
     flex-direction: column;
 
