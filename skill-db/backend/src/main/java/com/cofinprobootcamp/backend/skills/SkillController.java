@@ -13,7 +13,7 @@ public class SkillController {
         this.skillRepository = skillRepository;
     }
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public List<String> getSkills() {
         return skillRepository
                 .findAll()

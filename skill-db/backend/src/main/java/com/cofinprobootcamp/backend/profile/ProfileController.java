@@ -40,7 +40,7 @@ public class ProfileController {
      * @param profileInDTO creates profile in database if authorized (401.UNAUTHORIZED)
      */
     @PostMapping(path = "")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
         User user = userService.getUserByUsername(profileInDTO.email());
         if (profileRepository.findProfileByOwner(user).isPresent()) {
@@ -56,7 +56,7 @@ public class ProfileController {
      *                     updates profile by Id
      */
     @PatchMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public void updateProfile(@PathVariable Long id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
             throws ProfileNotFoundException, JobTitleNotFoundException {
         profileService.updateProfile(profileInDTO, id);
@@ -66,7 +66,7 @@ public class ProfileController {
      * @param id delete profile by Id
      */
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public void deleteProfileById(@PathVariable Long id) throws ProfileNotFoundException {
         Profile profile = profileService.getProfileById(id); //TODO
         userService.detachProfileFromUser(profile.getOwner().getId());
@@ -78,7 +78,7 @@ public class ProfileController {
      * @return profile detail view
      */
     @GetMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public ProfileDetailsOutDTO getProfile(@PathVariable Long id) throws ProfileNotFoundException {
         return profileService.getProfileDTOById(id);
     }
@@ -87,7 +87,7 @@ public class ProfileController {
      * @return get all overview DTOs
      */
     @GetMapping(path = "")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public List<ProfileOverviewOutDTO> getAllProfileOverviews() {
         return profileService.getAllOverviewDTOs();
     }
@@ -98,7 +98,7 @@ public class ProfileController {
      * @return A list of unique {@code String}s representing the types of expertises
      */
     @GetMapping(path = "/expertises")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public List<String> getAllExpertises() { // makes more sense to have this as an endpoint under profiles, where content is actually stored
         return profileService.getAllExpertises();
     }

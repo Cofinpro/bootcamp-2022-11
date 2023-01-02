@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.auth.UserDetailsImpl;
 import com.cofinprobootcamp.backend.enums.StandardRoles;
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
 import com.cofinprobootcamp.backend.role.Role;
@@ -7,6 +8,9 @@ import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping(path = "")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public void createUser(@RequestBody @Valid UserCreateInDTO userIn) {
         if (userIn.userRole() == null) {
             userService.createUser(userIn, StandardRoles.USER.createNewRoleEntity());
@@ -46,25 +50,27 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public void deleteUserById(@PathVariable Long id) {
         userService.deleteUserById(id);
     }
 
     @GetMapping(path = "/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public UserOutDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @GetMapping(path = "")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public List<UserOutDTO> getAllUsers() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getAuthorities());
         return userService.getAllUsers();
     }
 
     @GetMapping(path = "/roles")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public List<String> getAllUserRoles() {
         return userService.getAllUserRoles();
     }

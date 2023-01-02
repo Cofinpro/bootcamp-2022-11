@@ -13,7 +13,7 @@ public class JobTitleController {
         this.jobTitleRepository = jobTitleRepository;
     }
     @GetMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public List<String> getJobTitles() {
         return jobTitleRepository
                 .findAll()
@@ -25,7 +25,7 @@ public class JobTitleController {
     // Für addJobTitle sollte noch ein DTO angelegt werden oder die Entity darf nicht zwangsläufig eine ID
     // require → sonst muss das FrontEnd eine ID für neue Titel spezifizieren, das sollte das BE tun!
     @PostMapping("")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public void addJobTitle(@RequestBody JobTitle jobTitle) {
         jobTitleRepository.save(jobTitle);
     }
