@@ -116,7 +116,7 @@ import {useRoute} from "vue-router";
 export default {
   setup() {
     const detailStore = useDetailStore();
-    const id = Number(useRoute().params.id);
+    const id = String(useRoute().params.id);
     detailStore.loadDetailsById(id);
     const detail = detailStore.details;
 

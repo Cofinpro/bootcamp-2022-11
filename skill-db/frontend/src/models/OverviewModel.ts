@@ -1,21 +1,21 @@
 export class OverviewModel{
-    private id: number;
+    private id: String;
     private name: String;
     private jobTitle: String;
     private primarySkill: String;
 
     constructor() {
-        this.id = 0;
+        this.id = '';
         this.name = '';
         this.jobTitle = '';
         this.primarySkill = '';
     }
 
-    public getId(): number {
+    public getId(): String {
         return this.id;
     }
 
-    public setId(value: number) {
+    public setId(value: String) {
         this.id = value;
     }
 
@@ -47,7 +47,7 @@ export class OverviewModel{
 export class ConvertToOverviewCard{
     public static toOverviewCard(object: any): OverviewModel {
         const overviewCard = new OverviewModel();
-        overviewCard.setId(object?.outerId);
+        overviewCard.setId(String(object?.outerId));
         overviewCard.setName(String(object?.name));
         overviewCard.setJobTitle(String(object?.jobTitle));
         overviewCard.setPrimarySkill(String(object?.primaryExpertise));

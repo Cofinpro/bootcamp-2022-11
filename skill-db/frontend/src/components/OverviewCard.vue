@@ -19,7 +19,7 @@
 <script lang="ts">
 export default {
   props: {
-    id: Number,
+    id: String,
     name: String,
     jobTitle: String,
     primarySkill: String,
@@ -32,5 +32,4 @@ export default {
 #jobTitle {
   color: var(--primary-blue);
 }
-
 </style>

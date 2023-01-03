@@ -111,14 +111,13 @@ export default {
   props: ['detail', 'update'],
   setup() {
     const detailStore = useDetailStore();
-    const id = Number(useRoute().params.id);
-    detailStore.loadDetailsById(id);
+    const id = String(useRoute().params.id);
 
     const locked = ref(false);
     const toDelete = ref(false);
 
     function enterEdit() {
-      router.push({ name: 'editView', params: { id: this.id}});
+      router.push({ name: 'editView', params: { id: id}});
     }
 
     function toggleDelete() {

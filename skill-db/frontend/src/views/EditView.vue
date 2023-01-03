@@ -15,7 +15,7 @@ export default {
   components: {EditComponent},
   setup() {
     const detailStore = useDetailStore();
-    const id = Number(useRoute().params.id);
+    const id = String(useRoute().params.id);
     detailStore.loadDetailsById(id);
 
     const locked = ref(false);
