@@ -47,7 +47,7 @@
   </div>
 
   <v-row class="lowerHalf pl-6 pr-6">
-    <v-col cols="12" lg="6" md="6" sm="12">
+    <v-col cols="12" lg="4" md="4" sm="12">
       <div class="content_card d-flex">
         <p class="block_title">
           Skills
@@ -67,7 +67,7 @@
         </div>
       </div>
     </v-col>
-    <v-col cols="12" lg="6" md="6" sm="12">
+    <v-col cols="12" lg="8" md="8" sm="12">
       <div class="references pl-6 pt-2">
         <div class="block_title">
           Referenzen
