@@ -1,39 +1,7 @@
 <template>
   <div class="d-flex justify-end">
-    <v-menu :close-on-content-click="false">
-      <template v-slot:activator="{ props }">
-        <v-btn v-bind="props"
-               min-width="40px" width="40px" height="35px"
-               class="pa-0" elevation="0">
-          <v-icon size="large">
-            mdi-cog
-          </v-icon>
-        </v-btn>
-      </template>
-      <v-list>
-        <v-list-item link @click.stop="toggleDelete">
-          <v-list-item-title> Löschen</v-list-item-title>
-        </v-list-item>
-        <v-list-item link @click="lockProfile">
-          <v-list-item-title> Sperren</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-
-    <v-dialog v-model="toDelete" max-width="200">
-      <v-card>
-        <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="deleteProfile">
-            Ja
-          </v-btn>
-          <v-btn @click="toggleDelete" class="ml-2">
-            Nein
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <dropdown-button v-if="update==='true'" :functions="dropdownFunctions"/>
+    <delete-profile-dialog v-model="toDelete" :functions="dialogFunctions"/>
     <v-overlay v-model="locked" absolute/>
   </div>
 
@@ -59,7 +27,8 @@
                 label="Primärkompetenz"
                 :rules="[v => v.length > 1 || 'Erforderlich!']"
             />
-            <v-text-field v-model="birthdate" label="Geburtsdatum" :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"/>
+            <v-text-field v-model="birthdate" label="Geburtsdatum" :rules="[
+                date => checkDateFormat(date) || 'Datum sollte im Format DD.MM.YYYY geschrieben sein.']"/>
           </v-col>
         </v-row>
       </div>
@@ -101,6 +70,7 @@
     </v-form>
   </v-container>
 </template>
+
 <script>
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
@@ -108,10 +78,12 @@ import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
 import {useRoute} from "vue-router";
 import UploadImageButton from "@/components/UploadImageButton.vue";
+import DropdownButton from "@/components/DropdownButton.vue";
+import DeleteProfileDialog from "@/components/DeleteProfileDialog.vue";
 
 export default {
   props: ['detail', 'update'],
-  components: {UploadImageButton},
+  components: {UploadImageButton, DropdownButton, DeleteProfileDialog},
   setup() {
     const detailStore = useDetailStore();
     const id = Number(useRoute().params.id);
@@ -135,11 +107,20 @@ export default {
     }
 
     function deleteProfile() {
-      detailStore.deleteDetailsByID(this.id);
+      detailStore.deleteDetailsByID(id);
       router.push(`/`);
     }
 
     return {
+      dropdownFunctions: [
+        {name: 'Löschen', method: deleteProfile},
+        {name: 'Sperren', method: lockProfile},
+      ],
+      dialogFunctions: [
+        {name: 'Ja', method: deleteProfile},
+        {name: 'Nein', method: toggleDelete}
+      ],
+
       toDelete, locked,
       enterEdit, toggleDelete,
       lockProfile, deleteProfile
@@ -186,6 +167,7 @@ export default {
       this.references = this.detail.getReferences();
     }
   },
+
   methods: {
     submitProfile() {
       const detailStore = useDetailStore();

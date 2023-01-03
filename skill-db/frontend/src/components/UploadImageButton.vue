@@ -5,6 +5,7 @@
     <img v-else alt="Profilbild" src="@/assets/images/dummy_profilePicture.png" class="image"/>
     <div class="upload-text">Profilbild ändern</div>
   </div>
+  <v-btn class="mt-3 mb-10 d-flex justify-center elevation-0" size="small" @click="openFileDialog">Bild hochladen</v-btn>
 </template>
 
 <script>

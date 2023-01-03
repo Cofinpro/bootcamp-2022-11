@@ -78,7 +78,7 @@ import {ref} from "vue";
 import router from "@/router";
 import {useRoute} from "vue-router";
 import DropdownButton from "@/components/DropdownButton.vue";
-import DeleteProfileDialog from "@/views/DeleteProfileDialog.vue";
+import DeleteProfileDialog from "@/components/DeleteProfileDialog.vue";
 
 export default {
   components: {DeleteProfileDialog, DropdownButton},
