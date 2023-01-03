@@ -1,19 +1,14 @@
 <template>
-  <SettingsButton v-if="update === 'true'" :id="this.id" :edit="true"/>
-
   <v-container>
     <v-form @submit.prevent>
 
       <div class="header">
         <div class="d-flex flex-column align-items-center">
-          <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">
-          <v-card class="mt-3 mb-10 d-flex justify-center"
-                  color="grey" width="200px" height="25px">
-            Bild hochladen
-          </v-card>
-          <!--          <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">-->
-          <!--          <v-card class="mt-3 mb-10 d-flex justify-center" color="grey" width="200px" height="25px">Bild hochladen</v-card>-->
           <upload-image-button/>
+          <v-btn class="uploadBtn mt-3 mb-10 d-flex justify-center"
+                  elevation="0" size="small">
+            Bild hochladen
+          </v-btn>
         </div>
 
         <v-row class="headline">
@@ -84,11 +79,10 @@
   </v-container>
 </template>
 
-<script lang="js"> /*TODO should be TypeScript*/
+<script> /*TODO should be TypeScript*/
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
-import {ref} from "vue";
 import {useRoute} from "vue-router";
 import UploadImageButton from "@/components/UploadImageButton.vue";
 
@@ -101,32 +95,7 @@ export default {
     const id = Number(useRoute().params.id);
     detailStore.loadDetailsById(id);
 
-    const locked = ref(false);
-    const toDelete = ref(false);
-
-    function enterEdit() {
-      router.push({name: 'editView', params: {id: this.id}});
-    }
-
-    function toggleDelete() {
-      toDelete.value = !toDelete.value;
-    }
-
-    function lockProfile() {
-      locked.value = true;
-      console.log("This profile is now locked away.");
-      /*router.push(`/`);*/
-    }
-
-    function deleteProfile() {
-      detailStore.deleteDetailsByID(this.id);
-      router.push(`/`);
-    }
-
     return {
-      toDelete, locked,
-      enterEdit, toggleDelete,
-      lockProfile, deleteProfile
     };
   },
   data() {
@@ -218,6 +187,10 @@ export default {
 .header {
   width: 100%;
   display: flex;
+}
+
+.uploadBtn {
+  width: 200px;
 }
 
 .headline {

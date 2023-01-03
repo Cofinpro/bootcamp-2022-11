@@ -62,7 +62,7 @@
   </v-navigation-drawer>
 </template>
 
-<script lang="js"> /*TODO should be TypeScript*/
+<script> /*TODO should be TypeScript*/
 import {useAuthStore} from "@/stores/auth";
 
 export default {

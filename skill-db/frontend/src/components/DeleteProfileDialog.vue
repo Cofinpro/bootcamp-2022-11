@@ -12,7 +12,7 @@
   </v-dialog>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'DeleteProfileDialog',
   props: {
@@ -23,6 +23,7 @@ export default {
   },
 }
 </script>
+
 <style scoped>
 
 img {
@@ -30,13 +31,10 @@ img {
 }
 
 @media screen and (max-width: 1050px) {
-
   img {
     display: grid;
     grid-row: 1 / span 1;
     margin-left: 0;
   }
-
 }
-
 </style>

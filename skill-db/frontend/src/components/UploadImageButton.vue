@@ -7,8 +7,9 @@
   </div>
 </template>
 
-<script>
+<script> /*TODO should be TypeScript*/
 export default {
+  name:"UploadImageButton",
   data() {
     return {
       imageDataUri: null,
@@ -43,7 +44,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 .image-upload {
   position: relative;
 }
@@ -61,7 +63,6 @@ export default {
   transform: translate(-50%, -50%);
   color: #999;
 }
-
 
 .image {
   width: 200px;
