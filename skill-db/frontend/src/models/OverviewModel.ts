@@ -47,7 +47,7 @@ export class OverviewModel{
 export class ConvertToOverviewCard{
     public static toOverviewCard(object: any): OverviewModel {
         const overviewCard = new OverviewModel();
-        overviewCard.setId(String(object?.outerId));
+        overviewCard.setId(String(object?.id));
         overviewCard.setName(String(object?.name));
         overviewCard.setJobTitle(String(object?.jobTitle));
         overviewCard.setPrimarySkill(String(object?.primaryExpertise));
