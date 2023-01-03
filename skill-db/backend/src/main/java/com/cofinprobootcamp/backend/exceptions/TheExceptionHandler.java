@@ -46,7 +46,7 @@ public class TheExceptionHandler {
     @ExceptionHandler(ProfileAlreadyExistsException.class)
     public ResponseEntity<CustomErrorMessage> handleProfileAlreadyExistsException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "Der zurzeit eingelogte Nutzer hat bereits ein Profil!",
+                "Der zurzeit eingeloggte Nutzer hat bereits ein Profil!",
                 wr.getDescription(false)
         );
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
@@ -61,7 +61,7 @@ public class TheExceptionHandler {
 
     @ExceptionHandler(ExpertiseNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleExpertiseNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("Unbekannte primärkompetenz!",
+        CustomErrorMessage body = new CustomErrorMessage("Unbekannte Primärkompetenz!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
@@ -69,7 +69,7 @@ public class TheExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleUserNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "Die email ist keinem Nutzer zugewiesen!",
+                "Die E-Mail ist keinem Nutzer zugewiesen!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
