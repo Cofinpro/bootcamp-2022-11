@@ -1,9 +1,14 @@
 <template>
-  <div class="image-upload" v-on:click="openFileDialog">
+  <div class="image-upload">
     <input type="file" ref="imageInput" class="hidden"/>
-    <img v-if="imageDataUri" alt="Profilbild" v-bind:src="imageDataUri" class="image"/>
-    <img v-else alt="Profilbild" src="@/assets/images/dummy_profilePicture.png" class="image"/>
-    <div class="upload-text">Profilbild ändern</div>
+    <img class="image" v-if="imageDataUri" alt="Profilbild" v-bind:src="imageDataUri"/>
+    <img class="image" v-else alt="Profilbild" src="@/assets/images/dummy_profilePicture.png"/>
+    <div class="upload-text">
+      <v-btn elevation="0" size="small"
+             @click="openFileDialog">
+        Profilbild ändern
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -48,6 +53,7 @@ export default {
 
 .image-upload {
   position: relative;
+  width: 200px;
 }
 
 .image-upload:hover .upload-text {
@@ -61,7 +67,9 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #999;
+  /*color: #9bc3ee;
+  background-color: #ffffff;
+  border-radius: 5px;*/
 }
 
 .image {

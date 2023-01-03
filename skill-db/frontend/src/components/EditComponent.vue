@@ -5,10 +5,10 @@
       <div class="header">
         <div class="d-flex flex-column align-items-center">
           <upload-image-button/>
-          <v-btn class="uploadBtn mt-3 mb-10 d-flex justify-center"
+<!--          <v-btn class="uploadBtn mt-3 mb-10 d-flex justify-center"
                   elevation="0" size="small">
             Bild hochladen
-          </v-btn>
+          </v-btn>-->
         </div>
 
         <v-row class="headline">
@@ -212,11 +212,6 @@ img {
     grid-template-rows: 1fr 1fr;
   }
 
-  img {
-    grid-row: 1;
-    margin-left: 0;
-  }
-
   .headline {
     margin-left: -10px;
   }
@@ -230,11 +225,6 @@ img {
   .header {
     display: grid;
     grid-template-rows: 0.5fr 1fr;
-  }
-
-  img {
-    grid-row: 1;
-    margin-left: 0;
   }
 
   .headline {
