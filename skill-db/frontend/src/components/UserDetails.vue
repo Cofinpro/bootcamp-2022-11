@@ -23,7 +23,7 @@
           :key="user.getEmail()">
         <td>{{ user.getEmail() }}</td>
         <td>
-          <v-chip class="roleChip" :color="user.getRole() === 'ADMIN' ? 'primary' : 'green'">{{
+          <v-chip class="roleChip" :color="user.getRole() === 'Administrator' ? 'primary' : 'green'">{{
               user.getRole()
             }}
           </v-chip>

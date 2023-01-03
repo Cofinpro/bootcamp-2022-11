@@ -25,7 +25,7 @@ export const useDetailStore = defineStore('detailStore',{
                 references: "No references,really none"
             })
         },
-        loadDetailsById(id: number){
+        loadDetailsById(id: string){
             this.loading = true;
             axios.get(`/api/v1/profiles/${id}`).then((response) =>{
                 this.details = ConvertToDetailModel.toDetail(response.data);
