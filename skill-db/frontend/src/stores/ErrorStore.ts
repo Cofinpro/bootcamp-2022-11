@@ -12,12 +12,12 @@ export const useErrorStore = defineStore(
             catchOverviewError(error: AxiosError) {
                 this.hasError = true;
                 if (error.response == undefined) {
-                    this.errorText ="Unbekannter Fehler!";
+                    this.errorText = 'Unbekannter Fehler!';
                 } else {
                     if (error.response.status === 401) {
                         this.errorText = 'Unauthorized!';
                     } else if (error.response.status === 500) {
-                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren sie Ihren Administrator, falls der Fehler anhält!';
+                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else {
                         this.errorText = 'Unbekannter Fehler!'
                     }
@@ -27,14 +27,14 @@ export const useErrorStore = defineStore(
             catchPostPatchError(error: AxiosError) {
                 this.hasError=true;
                 if (error.response == undefined) {
-                    this.errorText ="Unbekannter Fehler!";
+                    this.errorText = 'Unbekannter Fehler!';
                 } else {
                     if (error.response.status === 400) {
                         this.handle400forProfile(error);
                     } else if (error.response.status === 401) {
                         this.errorText = 'Unauthorized';
                     } else if (error.response.status === 500) {
-                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren sie Ihren Administrator, falls der Fehler anhält!';
+                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else if (error.response.status === 404) {
                         this.errorText = `404: ${error.response.data.message}`;
                     } else {
@@ -50,7 +50,7 @@ export const useErrorStore = defineStore(
 
             handle400forProfile(error: AxiosError) {
                 const message: string = error.response.data.message.toString();
-                if (message === 'Der zurzeit eingelogte Nutzer hat bereits ein Profil!') {
+                if (message === 'Der zurzeit eingeloggte Nutzer hat bereits ein Profil!') {
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
                     let innerMessage = message.split(/(\[])/)[2];
@@ -59,30 +59,30 @@ export const useErrorStore = defineStore(
                 } else if (message === 'Datum nicht in passendem Format!') {
                     this.errorText = message;
                 } else {
-                    this.errorText = "Unbekannter Fehler!";
+                    this.errorText = 'Unbekannter Fehler!';
                 }
             },
 
             catchSkillsJobsPrimariesError(error: AxiosError, name: String) {
                 this.hasError = true;
                 if (error.response == undefined) {
-                    this.errorText ="Unbekannter Fehler!";
+                    this.errorText = 'Unbekannter Fehler!';
                 } else {
-                    this.errorText += ` ${name} wurde nicht korrekt vom server erhalten!`
+                    this.errorText += ` ${name} wurde nicht korrekt vom Server erhalten!`
                 }
             },
 
             catchGetError(error: AxiosError, id: number) {
                 this.hasError = true;
                 if (error.response == undefined) {
-                    this.errorText = "Unbekannter Fehler!";
+                    this.errorText = 'Unbekannter Fehler!';
                 } else {
                     if (error.response.status === 404) {
                         this.errorText = `Profil ${id} existiert nicht!`;
                     } else if (error.response.status === 401) {
                         this.errorText = 'Unauthorized';
                     } else if (error.response.status === 500) {
-                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren sie Ihren Administrator, falls der Fehler anhält!';
+                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else if (error.response.status === 400) {
                         this.errorText = 'Profil Id konnte nicht aufgelöst werden!'
                     }
@@ -92,14 +92,14 @@ export const useErrorStore = defineStore(
             catchDeleteError(error: AxiosError, id: number) {
                 this.hasError = true;
                 if (error.response == undefined) {
-                    this.errorText = "Unknown error";
+                    this.errorText = 'Unbekannter Fehler!';
                 } else {
                     if (error.response.status === 404) {
                         this.errorText = `Profil ${id} existiert nicht!`;
                     } else if (error.response.status === 401) {
                         this.errorText = 'Recht zum Löschen dieses Profils nicht vorhanden!';
                     } else if (error.response.status === 500) {
-                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren sie Ihren Administrator, falls der Fehler anhält!';
+                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else if (error.response.status === 400) {
                         this.errorText = 'Profil Id konnte nicht aufgelöst werden!'
                     }

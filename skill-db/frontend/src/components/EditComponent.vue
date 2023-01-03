@@ -111,7 +111,8 @@
       <div class="buttons d-flex justify-end">
         <v-btn class="mt-10"
                :style="!isFilled ? {
-                  color: '#BBBBBB !important',
+                  color: '#BDBDBD !important',
+                  border: '1px dashed #BBBBBB !important',
                 } : ''"
                @click="submitProfile()"
                elevation="0"
