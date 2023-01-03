@@ -12,25 +12,42 @@
 export default {
   data() {
     return {
+      maxUploadSize: 20000000, // Angabe in bytes, entspricht 20 MB
       imageDataUri: null,
     }
   },
   methods: {
+    isPermissibleSize(file) {
+      return file.size <= this.maxUploadSize;
+    },
+    isInPortraitMode(image) {
+      return image.height > image.width;
+    },
     async openFileDialog() {
       this.$refs.imageInput.click();
     },
     async uploadImage() {
-      const fileInput = this.$refs.imageInput
+      const fileInput = this.$refs.imageInput;
 
       if (fileInput && fileInput.value) {
-        const file = fileInput.files[0]
+        const file = fileInput.files[0];
 
-        if (file instanceof Blob) {
-          const reader = new FileReader()
-          reader.onload = event => {
-            this.imageDataUri = event.target.result
-          }
-          reader.readAsDataURL(file)
+        if (file instanceof Blob && this.isPermissibleSize(file)) {
+          const image = new Image();
+          image.onload = () => {
+            if (this.isInPortraitMode(image)) {
+              const reader = new FileReader();
+              reader.onload = event => {
+                this.imageDataUri = event.target.result;
+              }
+              reader.readAsDataURL(file);
+            } else {
+              console.error('Das Bild muss im Hochformat vorliegen!')
+            }
+          };
+          image.src = URL.createObjectURL(file);
+        } else {
+          console.error('Die Datei muss kleiner als 20 MB sein!');
         }
       }
     }
