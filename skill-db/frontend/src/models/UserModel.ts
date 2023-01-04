@@ -1,14 +1,14 @@
+import {ConvertToRoleModel, RoleModel} from "@/models/RoleModel";
+
 export class UserModel {
     private email: String;
-    private role: String;
-    private rights: String[];
+    private role: RoleModel;
     private locked: boolean;
     private emailConfirmed: boolean;
 
     constructor() {
         this.email = '';
-        this.role = '';
-        this.rights=[];
+        this.role = new RoleModel();
         this.locked = false;
         this.emailConfirmed = false;
     }
@@ -21,21 +21,14 @@ export class UserModel {
         this.email = value;
     }
 
-    getRole(): String {
+    getRole(): RoleModel {
         return this.role;
     }
 
-    setRole(value: String) {
+    setRole(value: RoleModel) {
         this.role = value;
     }
 
-    getRights(): String[] {
-        return this.rights;
-    }
-
-    setRights(value: String[]) {
-        this.rights = value;
-    }
     getLocked(): boolean {
         return this.locked;
     }
@@ -56,9 +49,9 @@ export class UserModel {
 export class ConvertToUserModel{
     public static toUserModel(object: any): UserModel {
         const userModel = new UserModel();
+
         userModel.setEmail(String(object?.email));
-        userModel.setRole(String(object?.role));
-        userModel.setRights(object?.userRights);
+        userModel.setRole(ConvertToRoleModel.toRole(object?.role));
         userModel.setLocked(Boolean(object?.locked));
         userModel.setEmailConfirmed(Boolean(object?.emailConfirmed));
         return userModel;

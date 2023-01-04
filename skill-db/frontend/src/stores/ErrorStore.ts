@@ -9,7 +9,7 @@ export const useErrorStore = defineStore(
         }),
         actions: {
 
-            catchOverviewError(error: AxiosError) {
+            catchGetAllError(error: AxiosError) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = 'Unbekannter Fehler!';
@@ -105,6 +105,24 @@ export const useErrorStore = defineStore(
                     }
                 }
             },
+
+            catchGetRoleError(error: AxiosError, id: String) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = 'Unbekannter Fehler!';
+                } else {
+                    if (error.response.status === 404) {
+                        this.errorText = `Rolle ${id} existiert nicht!`;
+                    } else if (error.response.status === 401) {
+                        this.errorText = 'Nicht autorisiert!';
+                    } else if (error.response.status === 500) {
+                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
+                    } else if (error.response.status === 400) {
+                        this.errorText = 'Rollen Id konnte nicht aufgelöst werden!'
+                    }
+                }
+            },
+            
         }
     }
 )

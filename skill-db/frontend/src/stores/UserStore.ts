@@ -22,9 +22,24 @@ export const useUserStore = defineStore('userStore', {
                     this.users.push(ConvertToUserModel.toUserModel(element));
                 })
             }).catch((error) => {
-                errorStore.catchOverviewError(error);
+                errorStore.catchGetAllError(error);
             })
-        }
+        },
+
+        async changeRole(newRole: String, id: String) {
+            this.loading = true;
+            const errorStore = useErrorStore()
+            await axios.patch(`/api/v1/users/${id}/role`,
+                {
+                    'shortName': newRole,
+                }).then(() =>{
+                errorStore.toggleHasError();
+            }).catch((error) => {
+                console.log(error);
+                errorStore.catchPostPatchError(error);
+            });
+            this.loading = false;
+        },
 
     }
 })

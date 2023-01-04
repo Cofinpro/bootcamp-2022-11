@@ -21,16 +21,17 @@
       </thead>
       <tr v-for="user in users"
           :key="user.getEmail()">
-        <td>{{ user.getEmail() }}</td>
         <td>
-          <v-chip class="roleChip" :color="user.getRole() === 'ADMIN' ? 'primary' : 'green'">{{
-              user.getRole()
-            }}
+          {{ user.getEmail() }}
+        </td>
+        <td>
+          <v-chip class="roleChip" :color="roleColor(user.getRole().getIdentifier())">
+            {{ user.getRole().getDisplayName() }}
           </v-chip>
         </td>
         <td>
           <span>
-            {{createRightString(user.getRights())}}
+            {{ user.getRole().getDescription() }}
           </span>
         </td>
         <td>
@@ -43,20 +44,27 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   props: ['users'],
   methods: {
-    createRightString(rights) {
-      let rightString = "";
-      rights.forEach(right => rightString += right + ", ");
-      return rightString.slice(0, rightString.length - 2);
-    },
+    roleColor(roleShortName: String): String {
+      if(roleShortName === 'ADMIN') {
+        return '--primary-orange';
+      } else if(roleShortName === 'HR') {
+        return '--primary-blue';
+      } else if(roleShortName === 'USER'){
+        return 'green';
+      } else {
+        return 'red';
+      }
+    }
   }
 }
 </script>
 
 <style scoped>
+
 .roleChip {
   margin: 3px;
 }
