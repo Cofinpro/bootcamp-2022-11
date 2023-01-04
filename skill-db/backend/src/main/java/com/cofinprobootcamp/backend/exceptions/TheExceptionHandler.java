@@ -2,12 +2,40 @@ package com.cofinprobootcamp.backend.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import java.time.DateTimeException;
+
 @ControllerAdvice
 public class TheExceptionHandler {
+
+    @ExceptionHandler(DateTimeException.class)
+    public ResponseEntity<CustomErrorMessage> handleDateTimeException(
+            DateTimeException e, WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Datum nicht in passendem Format!",
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<CustomErrorMessage> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException e, WebRequest wr
+    ) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "VALIDATION: " +
+                e.getBindingResult().getFieldErrors()
+                        .stream()
+                        .map((fieldError -> fieldError.getDefaultMessage()))
+                        .toList(),
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(ProfileNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleProfileNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage("The Profile was not found!",
@@ -18,7 +46,7 @@ public class TheExceptionHandler {
     @ExceptionHandler(ProfileAlreadyExistsException.class)
     public ResponseEntity<CustomErrorMessage> handleProfileAlreadyExistsException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "The profile already exists",
+                "Der zurzeit eingeloggte Nutzer hat bereits ein Profil!",
                 wr.getDescription(false)
         );
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
@@ -26,14 +54,14 @@ public class TheExceptionHandler {
     @ExceptionHandler(JobTitleNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleJobTitleNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "The jobtitle was not found. This error should never occur if front and backend are synced",
+                "Unbekannter Jobtitel!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ExpertiseNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleExpertiseNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("The Expertise was not found.",
+        CustomErrorMessage body = new CustomErrorMessage("Unbekannte Primärkompetenz!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
@@ -41,7 +69,7 @@ public class TheExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleUserNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "No user with the given username (i.e., email address) exists!",
+                "Die E-Mail ist keinem Nutzer zugewiesen!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }

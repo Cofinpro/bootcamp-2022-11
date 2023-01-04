@@ -27,7 +27,7 @@ class ProfileDirectorTest {
                 "references",
                 List.of("skill"),
                 "12345678901",
-                LocalDate.parse("1997-10-10")
+                "1997-10-10"
         );
         User user = new User();
         user.setUsername("a@b.c");
@@ -58,7 +58,7 @@ class ProfileDirectorTest {
         "reference",
         List.of("skill"),
         "12345678901",
-        LocalDate.parse("2020-10-10"));
+        "2020-10-10");
         Profile oldProfile = new Profile().builder()
                 .id(1L)
                 .owner(new User(1L, "00000","a","b",false,null,null))

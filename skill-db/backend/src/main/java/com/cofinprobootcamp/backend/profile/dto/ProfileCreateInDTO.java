@@ -33,26 +33,26 @@ import java.util.List;
  *                         (The format is specified as "yyyy-MM-dd"). Cannot be {@code null}
  */
 public record ProfileCreateInDTO(
-        @NotBlank(message = "Field can not be left blank!")
-        @Pattern(regexp = Regex.VALID_MAIL_ADDRESS, message = "Enter a valid Email Address!")
+        @NotBlank(message = "Email adresse darf nicht Leer sein")
+        @Pattern(regexp = Regex.VALID_MAIL_ADDRESS, message = "Email adresse muss formatvorgaben entsprechen.")
         String email,
-        @NotBlank(message = "Field  first name can not be left blank!")
+        @NotBlank(message = "Vorname darf nicht Leer sein!")
         String firstName,
-        @NotBlank(message = "Field last name can not be left blank!")
+        @NotBlank(message = "Nachname darf nicht Leer sein!")
         String lastName,
-        @NotBlank(message = "Field job title can not be left blank!")
+        @NotBlank(message = "Job Profil darf nicht leer sein!")
         String jobTitle,
-        @NotBlank(message = "Field degree can not be left blank!")
+        @NotBlank(message = "Abschluss darf nicht leer sein!")
         String degree,
-        @NotNull(message = "Field Expertise can not be left blank!")
+        @NotNull(message = "Primärkompetenz darf nicht leer sein!")
         String primaryExpertise,
-        @NotNull(message = "Reference text can not be left blank!")
+        @NotNull(message = "Referenzen dürfen nicht leer sein!")
         String referenceText,
-        @NotEmpty(message = "Skill List can not be left blank")
-        List<@NotBlank(message = "Entry in skill list can not be blank") String> skills,
-        @NotBlank(message = "Phone number can not be left blank")
-        @Pattern(regexp = Regex.VALID_PHONE_NUMBER, message = "Phone number has to be in a valid format")
+        List<@NotBlank(message = "Skills dürfen nicht leer sein!") String> skills,
+        @NotBlank(message = "Telefonnummer darf nicht leer sein!")
+        @Pattern(regexp = Regex.VALID_PHONE_NUMBER, message = "Telefonnummer muss korrektes Format haben!")
         String phoneNumber,
-        @NotNull(message = "Date can not be null") @JsonFormat(pattern = Regex.DATE_FORMAT)
-        LocalDate birthDate) {
+        @NotNull(message = "Geburtsdatum muss angegeben werden!")
+        @Pattern(regexp = Regex.DATE_REGEX, message = "Geburtsdatum muss im Format DD.MM.YYYY angegeben werden!")
+        String birthDate) {
 }
