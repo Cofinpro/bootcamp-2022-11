@@ -10,7 +10,7 @@ export const useComicStore = defineStore('ComicStore', {
     actions: {
         loadComicOfTheDay(): void {
             //axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
-            axios.get("https://xkcd.com/info.0.json")
+            axios.get("/comic/info.0.json")
                 .then(res => res.data)
                 .then(data => {
                     console.log("imgsource: ", data.img);

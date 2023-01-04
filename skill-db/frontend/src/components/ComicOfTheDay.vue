@@ -4,7 +4,7 @@
       max-height="100vh"
       :src="source"
       :alt="description"
-  ></v-img>
+   />
 </template>
 
 <script>
