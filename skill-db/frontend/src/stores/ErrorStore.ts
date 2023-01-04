@@ -54,7 +54,7 @@ export const useErrorStore = defineStore(
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
                     let innerMessage = message.split(/(\[])/)[2];
-                    innerMessage = innerMessage.replaceAll(',', ' ');
+                    /*innerMessage = innerMessage.replaceAll(',', ' ');*/
                     this.errorText = innerMessage;
                 } else if (message === 'Datum nicht in passendem Format!') {
                     this.errorText = message;
@@ -72,7 +72,7 @@ export const useErrorStore = defineStore(
                 }
             },
 
-            catchGetError(error: AxiosError, id: number) {
+            catchGetError(error: AxiosError, id: String) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = 'Unbekannter Fehler!';
@@ -89,7 +89,7 @@ export const useErrorStore = defineStore(
                 }
             },
 
-            catchDeleteError(error: AxiosError, id: number) {
+            catchDeleteError(error: AxiosError, id: String) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = 'Unbekannter Fehler!';
