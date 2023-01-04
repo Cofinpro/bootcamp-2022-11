@@ -1,7 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.enums.StandardRoles;
-import com.cofinprobootcamp.backend.role.Role;
+import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +56,7 @@ public class UserSetup {
         if (roleOptional.isPresent()) {
             userService.createUser(inDTO, roleOptional.get());
         } else {
-            Role role = StandardRoles.fromShortName(inDTO.userRole()).createNewRoleEntity();
+            Role role = StandardRoles.fromIdentifier(inDTO.userRole()).createNewRoleEntity();
             roleService.saveRole(role);
             userService.createUser(inDTO, role);
         }

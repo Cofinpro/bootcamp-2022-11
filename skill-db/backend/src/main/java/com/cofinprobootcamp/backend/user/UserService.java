@@ -4,8 +4,7 @@ import com.cofinprobootcamp.backend.config.Constants;
 import com.cofinprobootcamp.backend.exceptions.UserCreationFailedException;
 import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
 import com.cofinprobootcamp.backend.profile.Profile;
-import com.cofinprobootcamp.backend.enums.StandardRoles;
-import com.cofinprobootcamp.backend.role.Role;
+import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import com.cofinprobootcamp.backend.utils.RandomStringGenerator;
@@ -85,7 +84,7 @@ public class UserService {
     }
 
     public List<String> getAllUserRoles() {
-        return StandardRoles.getAllDefinedValuesAsString();
+        return StandardRoles.getAllDefinedValuesAsShortName();
     }
 
     private void tryToSetUniqueOuterId(User user) {

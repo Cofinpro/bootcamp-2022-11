@@ -83,8 +83,8 @@ public class TheExceptionHandler {
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
-    public ResponseEntity<CustomErrorMessage> handleRoleNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("Es existiert keine Rolle mit diesem Namen!",
+    public ResponseEntity<CustomErrorMessage> handleRoleNotFoundException(RoleNotFoundException rnfe, WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(rnfe.getRoleErrorMessage(),
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }

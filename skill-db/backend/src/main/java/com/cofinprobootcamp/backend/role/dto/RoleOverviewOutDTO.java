@@ -1,16 +1,11 @@
 package com.cofinprobootcamp.backend.role.dto;
 
-import com.cofinprobootcamp.backend.role.Role;
-import com.cofinprobootcamp.backend.role.RoleDirector;
-
 import java.util.List;
 
-public record RoleOverviewOutDTO(String shortName, String descriptiveName, List<String> userRights) {
-    public RoleOverviewOutDTO(Role role) {
-        this(
-                role.getName(),
-                role.getDescriptiveName(),
-                RoleDirector.simplifiedUserRights(role.getName())
-        );
-    }
+/**
+ * A DTO that is used to pass overview information about all user roles to the application.
+ *
+ * @param allRoles A {@code List} of {@code RoleDetailsOutDTO} records
+ */
+public record RoleOverviewOutDTO(List<RoleDetailsOutDTO> allRoles) {
 }

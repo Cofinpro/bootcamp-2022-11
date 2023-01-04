@@ -1,8 +1,7 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.enums.StandardRoles;
+import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
-import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/v1/users")
@@ -34,9 +32,9 @@ public class UserController {
             userService.createUser(userIn, roleOptional.get());
             return;
         }
-        StandardRoles standardRoleType = StandardRoles.fromShortName(userIn.userRole());
+        StandardRoles standardRoleType = StandardRoles.fromIdentifier(userIn.userRole());
         if (StandardRoles.UNDEFINED.equals(standardRoleType)) {
-            throw new RoleNotFoundException();
+            throw new RoleNotFoundException(userIn.userRole());
         }
         Role role = standardRoleType.createNewRoleEntity();
         roleService.saveRole(role);

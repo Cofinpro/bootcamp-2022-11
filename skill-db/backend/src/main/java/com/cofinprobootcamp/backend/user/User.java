@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.config.Regex;
 import javax.persistence.*;

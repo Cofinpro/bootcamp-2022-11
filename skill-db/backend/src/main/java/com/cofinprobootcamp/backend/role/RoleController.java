@@ -1,12 +1,8 @@
 package com.cofinprobootcamp.backend.role;
 
-import com.cofinprobootcamp.backend.role.dto.RoleCreateInDTO;
-import com.cofinprobootcamp.backend.role.dto.RoleOutDTO;
+import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1/roles")
@@ -17,28 +13,25 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-    @PostMapping(path = "")
-    @Secured("ROLE_ADMIN")
-    public void createRole(@RequestBody RoleCreateInDTO roleIn) {
-        roleService.createRole(roleIn);
+    /**
+     * Endpoint to search for a specific role by its identifier.
+     *
+     * @param identifier The unique short name of the role for internal identification
+     * @return A {@code RoleDetailsOutDTO} containing any relevant information about the role, if it exists
+     */
+    @GetMapping(path = "{identifier}")
+    public RoleDetailsOutDTO getRoleById(@PathVariable String identifier) {
+        return roleService.getRoleByIdentifier(identifier);
     }
 
-    @DeleteMapping(path = "{shortName}")
-    @Secured("ROLE_ADMIN")
-    public void deleteRoleById(@PathVariable String shortName){
-        roleService.deleteRoleByName(shortName);
-    }
-
-    @GetMapping(path = "{shortName}")
-    @Secured("ROLE_ADMIN")
-    public RoleOverviewOutDTO getRoleById(@PathVariable String shortName) {
-        return roleService.getSimplifiedRoleDTOByName(shortName);
-    }
-
+    /**
+     * Endpoint to find all available roles.
+     *
+     * @return A {@code RoleOverviewOutDTO} containing any relevant information about all roles
+     */
     @GetMapping(path = "")
-    @Secured("ROLE_ADMIN")
-    public List<RoleOverviewOutDTO> getAllRoles() {
-        return roleService.getAllSimplifiedRoleDTOs();
+    public RoleOverviewOutDTO getAllRoles() {
+        return roleService.getAllRoles();
     }
 
 }
