@@ -15,7 +15,7 @@ export const useErrorStore = defineStore(
                     this.errorText = 'Unbekannter Fehler!';
                 } else {
                     if (error.response.status === 401) {
-                        this.errorText = 'Unauthorized!';
+                        this.errorText = 'Nicht autorisiert!';
                     } else if (error.response.status === 500) {
                         this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else {
@@ -32,7 +32,7 @@ export const useErrorStore = defineStore(
                     if (error.response.status === 400) {
                         this.handle400forProfile(error);
                     } else if (error.response.status === 401) {
-                        this.errorText = 'Unauthorized';
+                        this.errorText = 'Nicht autorisiert!';
                     } else if (error.response.status === 500) {
                         this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else if (error.response.status === 404) {
@@ -80,7 +80,7 @@ export const useErrorStore = defineStore(
                     if (error.response.status === 404) {
                         this.errorText = `Profil ${id} existiert nicht!`;
                     } else if (error.response.status === 401) {
-                        this.errorText = 'Unauthorized';
+                        this.errorText = 'Nicht autorisiert!';
                     } else if (error.response.status === 500) {
                         this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else if (error.response.status === 400) {
