@@ -1,14 +1,10 @@
 package com.cofinprobootcamp.backend.auth;
 
-import com.cofinprobootcamp.backend.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -50,7 +46,7 @@ public class AuthController {
 
     /**
      * Delivers a new access token, in case the refresh token is not expired
-     * @param refreshToken
+     * @param refreshToken The user's refresh token
      * @return access token
      */
     @PostMapping("/refresh")
@@ -69,7 +65,7 @@ public class AuthController {
 
     /**
      * Verifies if the refresh token is expired
-     * @param refreshToken
+     * @param refreshToken The user's refresh token
      * @return true, in case the token is not expired. Otherwise false
      */
     @PostMapping("/verify")
