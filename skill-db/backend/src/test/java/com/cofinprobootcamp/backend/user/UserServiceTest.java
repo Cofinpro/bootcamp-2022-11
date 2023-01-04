@@ -35,7 +35,7 @@ class UserServiceTest {
     }
     @Test
     void detachProfileFromUser() {
-        User user = new User(1L, "a","b",true,null,new Profile());
+        User user = new User(1L,"00000", "a","b",true,null,new Profile());
         Mockito.when(userRepository.findById(1L))
                 .thenReturn(Optional.of(user));
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -46,7 +46,7 @@ class UserServiceTest {
 
     @Test
     void assignProfileToUser() {
-        User user = new User(1L, "a","b",true,null,null);
+        User user = new User(1L,"00000", "a","b",true,null,null);
         Profile profile = new Profile();
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
         userService.assignProfileToUser(user,profile);
@@ -73,15 +73,15 @@ class UserServiceTest {
     }
 
     @Test
-    void deleteUserById() {
+    void deleteUserByOuterId() {
         User user = User.builder().username("").build();
-        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        userService.deleteUserById(1L);
-        Mockito.verify(userRepository, Mockito.times(1)).deleteById(1L);
+        Mockito.when(userRepository.findFirstByOuterId("00000")).thenReturn(Optional.of(user));
+        userService.deleteUserByOuterId("00000");
+        Mockito.verify(userRepository, Mockito.times(1)).deleteByOuterId("00000");
 
-        Mockito.when(userRepository.findById(2L)).thenReturn(Optional.empty());
+        Mockito.when(userRepository.findFirstByOuterId("22222")).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class,() -> {userService.deleteUserById(2L);});
+        assertThrows(UserNotFoundException.class,() -> userService.deleteUserByOuterId("22222"));
     }
 
     @Test
@@ -92,7 +92,18 @@ class UserServiceTest {
 
         Mockito.when(userRepository.findById(2L)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundException.class,() -> {userService.getUserById(2L);});
+        assertThrows(UserNotFoundException.class,() -> userService.getUserById(2L));
+    }
+
+    @Test
+    void getUserByOuterId() {
+        User user = User.builder().username("bbbbb").build();
+
+        Mockito.when(userRepository.findFirstByOuterId("bbbbb")).thenReturn(Optional.of(user));
+        assertThat(userService.getUserByOuterId("bbbbb").email()).isEqualTo(user.getUsername());
+
+        Mockito.when(userRepository.findFirstByOuterId("ccccc")).thenReturn(Optional.empty());
+        assertThrows(UserNotFoundException.class, () -> userService.getUserByOuterId("ccccc"));
     }
 
     @Test

@@ -21,7 +21,7 @@
 export default {
   name: "OverviewCard",
   props: {
-    id: Number,
+    id: String,
     name: String,
     jobTitle: String,
     primarySkill: String,

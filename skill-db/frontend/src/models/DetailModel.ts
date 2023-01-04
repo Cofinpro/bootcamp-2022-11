@@ -1,5 +1,5 @@
 export class DetailModel {
-    private id: number;
+    private id: String;
     private firstName: String;
     private lastName: String;
     private age: number;
@@ -13,7 +13,7 @@ export class DetailModel {
     private email: String;
 
     constructor() {
-        this.id = 0;
+        this.id = '';
         this.firstName = '';
         this.lastName = '';
         this.age = 0;
@@ -35,11 +35,11 @@ export class DetailModel {
         this.degree = value;
     }
 
-    public getId(): number {
+    public getId(): String {
         return this.id;
     }
 
-    public setId(value: number) {
+    public setId(value: String) {
         this.id = value;
     }
 
@@ -127,7 +127,7 @@ export class DetailModel {
 export class ConvertToDetailModel {
     public static toDetail(object: any): DetailModel {
         const detailModel = new DetailModel();
-        detailModel.setId(Number(object?.outerId));
+        detailModel.setId(String(object?.id));
         detailModel.setFirstName(String(object?.firstName));
         detailModel.setLastName(String(object?.lastName));
         detailModel.setBirthDate(this.convertDateFormatFromISO(String(object?.birthDate)));

@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import {ConvertToOverviewCard, OverviewModel} from "@/models/OverviewModel";
 import axios from "@/axios";
+import {useErrorStore} from "@/stores/ErrorStore";
 
 export const useOverviewStore = defineStore('OverviewStore', {
     state: () => ({
@@ -10,13 +11,14 @@ export const useOverviewStore = defineStore('OverviewStore', {
     actions: {
         loadOverview(): void {
             this.loading = true;
+            const errorStore = useErrorStore();
             axios.get('/api/v1/profiles').then((response) =>{
                 this.cards = [];
                 response.data.forEach((element: object) => {
                     this.cards.push(ConvertToOverviewCard.toOverviewCard(element))
                 });
             }).catch((error) =>{
-                console.log(error);
+                errorStore.catchOverviewError(error);
             });
             this.loading = false;
         },
@@ -25,7 +27,7 @@ export const useOverviewStore = defineStore('OverviewStore', {
             this.cards = [
                 ConvertToOverviewCard.toOverviewCard(
                     {
-                        id: 0,
+                        id: '0',
                         name: "HI MAX",
                         jobTitle: "Consultant",
                         primarySkill: "Tech"
@@ -33,7 +35,7 @@ export const useOverviewStore = defineStore('OverviewStore', {
                 ),
                 ConvertToOverviewCard.toOverviewCard(
                     {
-                        id: 1,
+                        id: '1',
                         name: "HI MAX2",
                         jobTitle: "Consultant",
                         primarySkill: "Tech"

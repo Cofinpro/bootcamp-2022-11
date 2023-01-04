@@ -63,6 +63,11 @@
 
       <div class="buttons d-flex justify-end">
         <v-btn v-if="update === 'false'" class="mt-10"
+               :style="!isFilled ? {
+                  color: '#BDBDBD !important',
+                  border: '1px dashed #BBBBBB !important',
+                } : ''"
+               :disabled="!isFilled"
                @click="submitProfile()" elevation="0">
           Profil erstellen
         </v-btn>
@@ -84,6 +89,7 @@ import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useRoute} from "vue-router";
+import {useErrorStore} from "@/stores/ErrorStore";
 import UploadImageButton from "@/components/UploadImageButton.vue";
 
 export default {
@@ -92,8 +98,8 @@ export default {
   components: { UploadImageButton },
   setup() {
     const detailStore = useDetailStore();
-    const id = Number(useRoute().params.id);
-    detailStore.loadDetailsById(id);
+    const errorStore = useErrorStore();
+    const id = String(useRoute().params.id);
 
     return {
     };
@@ -140,17 +146,23 @@ export default {
     }
   },
   methods: {
-    submitProfile() {
+    async submitProfile() {
       const detailStore = useDetailStore();
+      const errorStore = useErrorStore();
+      console.log(this.isFilled);
       if (this.update === 'true') {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
-        detailStore.updateProfile(editDetails, id);
-        router.push({name: 'userDetails', params: {id}});
+        await detailStore.updateProfile(editDetails, id);
+        if (! errorStore.hasError) {
+          await router.push({name: 'userDetails', params: {id}});
+        }
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
-        detailStore.createProfile(newDetails);
-        router.push('/');
+        await detailStore.createProfile(newDetails);
+        if (! errorStore.hasError){
+          await router.push('/');
+        }
       }
     },
     leave() {
@@ -179,6 +191,18 @@ export default {
       return /^[0-9]{11,13}$/.test(number);
     }
   },
+  computed: {
+    isFilled() {
+      return (this.checkDateFormat(this.birthdate) &&
+      this.checkPhoneFormat(this.phoneNumber) &&
+      this.references.length > 0 &&
+      this.jobTitle.length > 0 &&
+      this.primarySkill.length > 0 &&
+      this.lastName.length > 0 &&
+      this.firstName.length > 0 &&
+      this.degree.length > 0 )
+    },
+  }
 }
 </script>
 

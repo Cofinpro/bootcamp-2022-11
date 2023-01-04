@@ -4,6 +4,7 @@
 
     <v-main>
       <router-view/>
+      <ErrorSnackbar v-if="$route.path !== '/login'"></ErrorSnackbar>
     </v-main>
 
   </v-app>
@@ -11,8 +12,9 @@
 
 <script lang="ts">
 import SideBar from './components/SideBar.vue'
+import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
 export default {
-  components: {SideBar},
+  components: { ErrorSnackbar, SideBar },
   watch: {
     '$route' (to, from) {
       document.title = to.meta.title || 'Website'
