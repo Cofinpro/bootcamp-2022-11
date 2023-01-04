@@ -127,7 +127,7 @@ export class DetailModel {
 export class ConvertToDetailModel {
     public static toDetail(object: any): DetailModel {
         const detailModel = new DetailModel();
-        detailModel.setId(String(object?.outerId));
+        detailModel.setId(String(object?.id));
         detailModel.setFirstName(String(object?.firstName));
         detailModel.setLastName(String(object?.lastName));
         detailModel.setBirthDate(this.convertDateFormatFromISO(String(object?.birthDate)));
