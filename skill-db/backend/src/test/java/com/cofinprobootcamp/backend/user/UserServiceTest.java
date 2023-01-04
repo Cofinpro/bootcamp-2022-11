@@ -9,6 +9,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -111,7 +112,7 @@ class UserServiceTest {
         assertThat(userService.getUserByUsername(user.getUsername()).getUsername()).isEqualTo(user.getUsername());
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.empty());
-        assertThrows(UserNotFoundException.class, () -> {
+        assertThrows(UsernameNotFoundException.class, () -> {
             userService.getUserByUsername("a");
         });
     }

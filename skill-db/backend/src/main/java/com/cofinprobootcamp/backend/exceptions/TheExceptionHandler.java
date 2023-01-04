@@ -2,6 +2,7 @@ package com.cofinprobootcamp.backend.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -65,10 +66,21 @@ public class TheExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<CustomErrorMessage> handleUsernameNotFoundException(
+            UsernameNotFoundException unfe,
+            WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                unfe.getMessage(),
+                wr.getDescription(false),
+                unfe);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleUserNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "E-Mail ist keinem Nutzer zugewiesen!",
+                "Der angefragte Nutzer konnte nicht gefunden werden!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }

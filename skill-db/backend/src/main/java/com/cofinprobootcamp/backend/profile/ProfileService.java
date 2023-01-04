@@ -45,7 +45,8 @@ public class ProfileService {
             tryToSetUniqueOuterId(profile);
             profileRepository.saveAndFlush(profile);
         } catch (Exception e) {
-            throw new InternalOperationFailedException();
+            String msg = "Das Profil konnte nicht gespeichert werden. Ursache könnte möglicherweise eine Race Condition sein. Bitte erneut versuchen!";
+            throw new InternalOperationFailedException(msg, e);
         }
         return profile;
     }
@@ -54,7 +55,6 @@ public class ProfileService {
     // --> should give back "outer id" of profile and update that way!
     public Profile updateProfile(ProfileUpdateInDTO profileInDTO, String outerId)
             throws ProfileNotFoundException, JobTitleNotFoundException {
-        // In theory: convert id to internal id
         Profile current = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new);
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());

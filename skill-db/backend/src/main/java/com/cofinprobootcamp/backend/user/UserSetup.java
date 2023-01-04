@@ -2,7 +2,6 @@ package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
 import com.cofinprobootcamp.backend.role.StandardRoles;
-import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
@@ -16,13 +15,11 @@ import java.util.List;
 @Order(3)
 public class UserSetup {
     private final UserService userService;
-    private final RoleService roleService;
 
 
     @Autowired
-    public UserSetup(UserService userService, RoleService roleService) {
+    public UserSetup(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @PostConstruct

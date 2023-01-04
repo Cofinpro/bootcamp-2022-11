@@ -20,7 +20,9 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.rolesAndAuthorities = List.of(new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole().getName()));
+        this.rolesAndAuthorities = List.of(
+                new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole().name())
+        );
         this.isLocked = user.isLocked();
     }
 

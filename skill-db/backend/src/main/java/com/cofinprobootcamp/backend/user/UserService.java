@@ -9,6 +9,7 @@ import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import com.cofinprobootcamp.backend.utils.RandomStringGenerator;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -85,7 +86,7 @@ public class UserService {
 
     public User getUserByUsername(String email) {
         Optional<User> userOptional = userRepository.findByUsername(email);
-        return userOptional.orElseThrow(UserNotFoundException::new);
+        return userOptional.orElseThrow(() -> new UsernameNotFoundException("Die E-Mail " + email + " ist keinem Nutzer zugewiesen!"));
     }
 
     public List<UserOutDTO> getAllUsers() {
