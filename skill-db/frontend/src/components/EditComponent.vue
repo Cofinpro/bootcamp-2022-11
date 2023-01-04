@@ -9,22 +9,20 @@
     <v-form @submit.prevent>
       <div class="header">
         <div class="d-flex flex-column align-items-center">
-          <!--          <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">-->
-          <!--          <v-card class="mt-3 mb-10 d-flex justify-center" color="grey" width="200px" height="25px">Bild hochladen</v-card>-->
           <upload-image-button/>
         </div>
         <v-row class="headline">
           <v-col cols="12" lg="6" md="6" sm="12">
             <v-text-field v-model="firstName"
                           :rules="[v => v.length > 0 || 'Erforderlich!']"
-                          label="Vorname" />
+                          label="Vorname"/>
             <v-autocomplete v-model="jobTitle"
                             :items="jobs"
                             label="Jobprofil"
                             :rules="[v => v.length > 0 || 'Erforderlich!']"></v-autocomplete>
             <v-text-field
                 v-model="phoneNumber" label="Telefonnummer"
-                :rules="[ number => checkPhoneFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
+                :rules="[ number => checkPhoneNumber(number) || 'Falsches Format: (DIN 5008)']"/>
           </v-col>
           <v-col lg="6" md="6" sm="12">
             <v-text-field v-model="lastName"
@@ -38,7 +36,7 @@
             />
             <v-text-field v-model="birthdate"
                           label="Geburtsdatum"
-                          :rules="[ date => checkDateFormat(date) || 'Datum sollte im Format DD.MM.YYYY geschrieben sein.']"/>
+                          :rules="[ date => checkDateFormat(date) || 'Falsches Format: (DD.MM.YYYY)']"/>
           </v-col>
         </v-row>
       </div>
@@ -85,10 +83,12 @@
                 } : ''"
                @click="submitProfile()"
                elevation="0"
-               :disabled="!isFilled">Profil erstellen</v-btn>
+               :disabled="!isFilled">Profil erstellen
+        </v-btn>
         <v-btn class="mt-10 ml-lg-5 ml-md-5"
                @click="leave"
-               elevation="0">Abbrechen</v-btn>
+               elevation="0">Abbrechen
+        </v-btn>
       </div>
     </v-form>
   </v-container>
@@ -100,7 +100,6 @@ import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
 import {useErrorStore} from "@/stores/ErrorStore";
-import {useRoute} from "vue-router";
 import UploadImageButton from "@/components/UploadImageButton.vue";
 import DropdownButton from "@/components/DropdownButton.vue";
 import DeleteProfileDialog from "@/components/DeleteProfileDialog.vue";
@@ -113,10 +112,6 @@ export default {
     const errorStore = useErrorStore();
     const locked = ref(false);
     const toDelete = ref(false);
-
-    function enterEdit() {
-      router.push({name: 'editView', params: {id: this.id}});
-    }
 
     function toggleDelete() {
       toDelete.value = !toDelete.value;
@@ -146,9 +141,7 @@ export default {
         {name: 'Nein', method: toggleDelete}
       ],
 
-      toDelete, locked,
-      enterEdit, toggleDelete,
-      lockProfile, deleteProfile
+      toDelete, locked, toggleDelete, lockProfile, deleteProfile
     };
   },
   data() {
@@ -194,7 +187,7 @@ export default {
   },
 
   methods: {
-    submitProfile() {
+    async submitProfile() {
       const detailStore = useDetailStore();
       const errorStore = useErrorStore();
       console.log(this.isFilled);
@@ -202,13 +195,13 @@ export default {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
         await detailStore.updateProfile(editDetails, id);
-        if (! errorStore.hasError) {
+        if (!errorStore.hasError) {
           await router.push({name: 'userDetails', params: {id}});
         }
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
         await detailStore.createProfile(newDetails);
-        if (! errorStore.hasError){
+        if (!errorStore.hasError) {
           await router.push('/');
         }
       }
@@ -233,22 +226,30 @@ export default {
       this.showAddTechnology = false;
     },
     checkDateFormat(date) {
-      return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
+      const regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/;
+      if (!regex.test(date)) return false;
+
+      const currentDate = new Date();
+      const [day, month, year] = date.split('.');
+      const inputDate = new Date(Date.UTC(year, month - 1, day));
+
+      return inputDate <= currentDate;
     },
-    checkPhoneFormat(number) {
-      return /^[0-9]{11,13}$/.test(number);
-    }
+    checkPhoneNumber(number) {
+      const regex = /[0-9]*\/*(\+49)* *(\([0-9]+\))*( *([-–])* *[0-9]+)*/g;
+      return regex.test(number);
+    },
   },
   computed: {
     isFilled() {
       return (this.checkDateFormat(this.birthdate) &&
-      this.checkPhoneFormat(this.phoneNumber) &&
-      this.references.length > 0 &&
-      this.jobTitle.length > 0 &&
-      this.primarySkill.length > 0 &&
-      this.lastName.length > 0 &&
-      this.firstName.length > 0 &&
-      this.degree.length > 0 )
+          this.checkPhoneNumber(this.phoneNumber) &&
+          this.references.length > 0 &&
+          this.jobTitle.length > 0 &&
+          this.primarySkill.length > 0 &&
+          this.lastName.length > 0 &&
+          this.firstName.length > 0 &&
+          this.degree.length > 0)
     },
   }
 }

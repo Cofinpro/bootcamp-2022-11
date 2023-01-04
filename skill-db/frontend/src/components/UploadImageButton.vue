@@ -64,6 +64,9 @@ export default {
 <style>
 .image-upload {
   position: relative;
+  border: 2px solid black;
+  width: 200px;
+  height: 200px;
 }
 
 .image-upload:hover .upload-text {
@@ -82,8 +85,8 @@ export default {
 
 
 .image {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
