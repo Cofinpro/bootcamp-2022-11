@@ -38,7 +38,7 @@ public class TheExceptionHandler {
     }
     @ExceptionHandler(ProfileNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleProfileNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("The Profile was not found!",
+        CustomErrorMessage body = new CustomErrorMessage("Profil konnte nicht gefunden werden!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
@@ -69,7 +69,7 @@ public class TheExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleUserNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "Die E-Mail ist keinem Nutzer zugewiesen!",
+                "E-Mail ist keinem Nutzer zugewiesen!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
@@ -77,24 +77,30 @@ public class TheExceptionHandler {
     @ExceptionHandler(EndPointNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleEndPointNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "No rights can be granted for one of the specified endpoints, because it does not exist. ",
+                "Einer der angegebenen Endpunkte existiert nicht!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleRoleNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("No role with the given short name exists.",
+        CustomErrorMessage body = new CustomErrorMessage("Es existiert keine Rolle mit diesem Namen!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RoleAlreadyExistsException.class)
     public ResponseEntity<CustomErrorMessage> handleRoleAlreadyExists(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("A role with the given short name already exists.",
+        CustomErrorMessage body = new CustomErrorMessage("Rolle mit diesem Namen existiert bereits!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(UserCreationFailedException.class)
+    public ResponseEntity<CustomErrorMessage> handleUserCreationFailed(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage("Nutzer konnte nicht gespeichert werden!",
+                wr.getDescription(false));
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
 

@@ -129,6 +129,7 @@ import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
+import {useRoute} from "vue-router";
 import {useErrorStore} from "@/stores/ErrorStore";
 
 export default {
@@ -136,11 +137,13 @@ export default {
   setup() {
     const detailStore = useDetailStore();
     const errorStore = useErrorStore();
+    const id = String(useRoute().params.id);
+
     const locked = ref(false);
     const toDelete = ref(false);
 
     function enterEdit() {
-      router.push({ name: 'editView', params: { id: this.id}});
+      router.push({ name: 'editView', params: { id: id}});
     }
 
     function toggleDelete() {
@@ -191,6 +194,7 @@ export default {
     detailStore.getSkills();
     detailStore.getJobs();
     detailStore.getPrimarys();
+
     this.givenTechnologies = detailStore.skills;
     this.jobs = detailStore.jobs;
     this.primaries = detailStore.primarys;
@@ -208,7 +212,6 @@ export default {
     }
   },
   methods: {
-
     async submitProfile() {
       const detailStore = useDetailStore();
       const errorStore = useErrorStore();

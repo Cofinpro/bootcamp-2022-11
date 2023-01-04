@@ -14,7 +14,7 @@ export const useDetailStore = defineStore('detailStore', {
         actions: {
             loadDemoDetails() {
                 this.details = ConvertToDetailModel.toDetail({
-                    id: 0,
+                    id: '0',
                     age: 20,
                     firstName: "Max",
                     birthDate: "2022-12-10",
@@ -27,7 +27,7 @@ export const useDetailStore = defineStore('detailStore', {
                 })
             },
 
-            loadDetailsById(id: number) {
+            loadDetailsById(id: String) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axios.get(`/api/v1/profiles/${id}`).then((response) => {
@@ -39,7 +39,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            deleteDetailsByID(id: number) {
+            deleteDetailsByID(id: String) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axios.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
@@ -74,7 +74,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async updateProfile(edits: DetailModel, id: number) {
+            async updateProfile(edits: DetailModel, id: String) {
                 this.loading = true;
                 console.log(edits);
                 const errorStore = useErrorStore()

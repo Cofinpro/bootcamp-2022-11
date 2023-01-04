@@ -50,20 +50,20 @@ public class ProfileController {
      */
     @PatchMapping(path = "/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
-    public void updateProfile(@PathVariable Long id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
+    public void updateProfile(@PathVariable String id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
             throws ProfileNotFoundException, JobTitleNotFoundException {
         profileService.updateProfile(profileInDTO, id);
     }
 
     /**
-     * @param id delete profile by Id
+     * @param id delete profile by ID (This expects an outerId)
      */
     @DeleteMapping(path = "/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
-    public void deleteProfileById(@PathVariable Long id) throws ProfileNotFoundException {
-        Profile profile = profileService.getProfileById(id); //TODO
+    public void deleteProfileById(@PathVariable String id) throws ProfileNotFoundException {
+        Profile profile = profileService.getProfileByOuterId(id); // Find profile by its outerId
         userService.detachProfileFromUser(profile.getOwner().getId());
-        profileService.deleteProfileById(id);
+        profileService.deleteProfileByOuterId(id);
     }
 
     /**
@@ -72,7 +72,7 @@ public class ProfileController {
      */
     @GetMapping(path = "/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
-    public ProfileDetailsOutDTO getProfile(@PathVariable Long id) throws ProfileNotFoundException {
+    public ProfileDetailsOutDTO getProfile(@PathVariable String id) throws ProfileNotFoundException {
         return profileService.getProfileDTOById(id);
     }
 

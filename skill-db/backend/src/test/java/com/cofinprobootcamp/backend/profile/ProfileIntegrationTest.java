@@ -138,15 +138,15 @@ public class ProfileIntegrationTest {
         assertThat(mvcResult).contains("\"name\":\"Markus Kremer\"");
         assertThat(mvcResult).contains("\"jobTitle\":\"Consultant\"");
         assertThat(mvcResult).contains("\"primaryExpertise\":\"Technologie\"");
-        Long id = Long.parseLong(mvcResult.split("[:,]")[1]);
-        mvcResult = mvc.perform(get("/api/v1/profiles/" + id).header("authorization",
+        String outerId = extractOuterIdFromMvcResult(mvcResult);
+        mvcResult = mvc.perform(get("/api/v1/profiles/" + outerId).header("authorization",
                 "Bearer " + loginData.getJSONObject("tokens").get("access_token")))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
 
-        assertThat(mvcResult).contains("\"outerId\":" + id);
+        assertThat(mvcResult).contains("\"id\":\"" + outerId + "\"");
         assertThat(mvcResult).contains("\"email\":\"test@test.de\"");
         assertThat(mvcResult).contains("\"phoneNumber\":\"12345678901\"");
         assertThat(mvcResult).contains("\"jobTitle\":\"Consultant\"");
@@ -158,6 +158,7 @@ public class ProfileIntegrationTest {
         assertThat(mvcResult).contains("\"lastName\":\"Kremer\"");
         assertThat(mvcResult).contains("\"birthDate\":\"2020-10-10\"");
     }
+
     @Test
     @DisplayName("Test Profile PATCH with Everything entered correctly! Also tests GET of overviews!")
     void testPatchHappyPath() throws Exception {
@@ -188,8 +189,8 @@ public class ProfileIntegrationTest {
         assertThat(mvcResult).contains("\"name\":\"Markus Kremer\"");
         assertThat(mvcResult).contains("\"jobTitle\":\"Consultant\"");
         assertThat(mvcResult).contains("\"primaryExpertise\":\"Technologie\"");
-        Long id = Long.parseLong(mvcResult.split("[:,]")[1]);
-        mvc.perform(patch("/api/v1/profiles/" + id)
+        String outerId = extractOuterIdFromMvcResult(mvcResult);
+        mvc.perform(patch("/api/v1/profiles/" + outerId)
                         .header("authorization",
                                 "Bearer " + loginData.getJSONObject("tokens").get("access_token"))
                         .contentType(MediaType.APPLICATION_JSON)
@@ -245,8 +246,8 @@ public class ProfileIntegrationTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        Long id = Long.parseLong(mvcResult.split("[:,]")[1]);
-        mvc.perform(delete("/api/v1/profiles/" + id)
+        String outerId = extractOuterIdFromMvcResult(mvcResult);
+        mvc.perform(delete("/api/v1/profiles/" + outerId)
                 .header("authorization",
                         "Bearer " + loginData.getJSONObject("tokens").get("access_token")))
                 .andExpect(status().isOk());
@@ -258,5 +259,13 @@ public class ProfileIntegrationTest {
                 .getResponse()
                 .getContentAsString();
         assertThat(mvcResult).isEqualTo("[]");
+    }
+
+    private String extractOuterIdFromMvcResult(String mvcResult) {
+        String tmp = mvcResult.split("[:,]")[1];
+        StringBuilder builder = new StringBuilder(tmp);
+        builder.deleteCharAt(0);
+        builder.deleteCharAt(builder.length() - 1);
+        return builder.toString();
     }
 }

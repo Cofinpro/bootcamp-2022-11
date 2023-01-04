@@ -15,7 +15,7 @@ export const useErrorStore = defineStore(
                     this.errorText = 'Unbekannter Fehler!';
                 } else {
                     if (error.response.status === 401) {
-                        this.errorText = 'Unauthorized!';
+                        this.errorText = 'Nicht autorisiert!';
                     } else if (error.response.status === 500) {
                         this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else {
@@ -32,7 +32,7 @@ export const useErrorStore = defineStore(
                     if (error.response.status === 400) {
                         this.handle400forProfile(error);
                     } else if (error.response.status === 401) {
-                        this.errorText = 'Unauthorized';
+                        this.errorText = 'Nicht autorisiert!';
                     } else if (error.response.status === 500) {
                         this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else if (error.response.status === 404) {
@@ -54,7 +54,7 @@ export const useErrorStore = defineStore(
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
                     let innerMessage = message.split(/(\[])/)[2];
-                    innerMessage = innerMessage.replaceAll(',', ' ');
+                    /*innerMessage = innerMessage.replaceAll(',', ' ');*/
                     this.errorText = innerMessage;
                 } else if (message === 'Datum nicht in passendem Format!') {
                     this.errorText = message;
@@ -72,7 +72,7 @@ export const useErrorStore = defineStore(
                 }
             },
 
-            catchGetError(error: AxiosError, id: number) {
+            catchGetError(error: AxiosError, id: String) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = 'Unbekannter Fehler!';
@@ -80,7 +80,7 @@ export const useErrorStore = defineStore(
                     if (error.response.status === 404) {
                         this.errorText = `Profil ${id} existiert nicht!`;
                     } else if (error.response.status === 401) {
-                        this.errorText = 'Unauthorized';
+                        this.errorText = 'Nicht autorisiert!';
                     } else if (error.response.status === 500) {
                         this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else if (error.response.status === 400) {
@@ -89,7 +89,7 @@ export const useErrorStore = defineStore(
                 }
             },
 
-            catchDeleteError(error: AxiosError, id: number) {
+            catchDeleteError(error: AxiosError, id: String) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = 'Unbekannter Fehler!';

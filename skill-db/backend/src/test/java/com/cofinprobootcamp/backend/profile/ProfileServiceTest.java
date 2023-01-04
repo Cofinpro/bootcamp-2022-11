@@ -89,10 +89,10 @@ class ProfileServiceTest {
 
     @Test
     void given_Optional_of_Profile_when_profile_in_db_then_return_profile() throws ProfileNotFoundException {
-        Mockito.when(profileRepository.findById(1L))
+        Mockito.when(profileRepository.findFirstByOuterId("000000"))
                 .thenReturn(Optional.of(profile));
 
-        assertThat(profileService.getProfileDTOById(1L))
+        assertThat(profileService.getProfileDTOById("000000"))
                 .isEqualTo(new ProfileDetailsOutDTO(profile));
     }
 
@@ -107,10 +107,10 @@ class ProfileServiceTest {
     }
 
     @Test
-    void deleteProfileById() throws ProfileNotFoundException {
-        Mockito.when(profileRepository.findById(1L)).thenReturn(Optional.of(profile));
-        profileService.deleteProfileById(1L);
-        Mockito.verify(profileRepository, Mockito.times(1)).deleteById(1L);
+    void deleteProfileByOuterId() throws ProfileNotFoundException {
+        Mockito.when(profileRepository.findFirstByOuterId("000000")).thenReturn(Optional.of(profile));
+        profileService.deleteProfileByOuterId("000000");
+        Mockito.verify(profileRepository, Mockito.times(1)).deleteByOuterId("000000");
     }
 
     @Test
