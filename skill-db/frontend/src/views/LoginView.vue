@@ -4,7 +4,7 @@
     <v-row>
 
       <v-col cols="12" class="d-lg-none">
-        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" />
+        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" :mobile="true" />
       </v-col>
 
       <v-col cols="12" lg="6" class="text-center mt-10">
@@ -57,7 +57,7 @@
       </v-col>
 
       <v-col cols="6" class="d-none d-lg-block">
-        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" />
+        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" :mobile="false" />
       </v-col>
 
     </v-row>
