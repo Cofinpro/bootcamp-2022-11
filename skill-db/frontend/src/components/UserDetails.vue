@@ -5,16 +5,13 @@
     <v-table>
       <thead>
       <tr>
-        <th>
+        <th class="text-left">
           Email
         </th>
-        <th class="text-left">
+        <th class="text-center">
           Rolle
         </th>
-        <th class="text-left">
-          Rechte
-        </th>
-        <th class="text-left">
+        <th class="text-center">
           Aktionen
         </th>
       </tr>
@@ -24,15 +21,11 @@
         <td>
           {{ user.getEmail() }}
         </td>
-        <td>
-          <v-chip class="roleChip" :color="roleColor(user.getRole().getIdentifier())">
-            {{ user.getRole().getDisplayName() }}
-          </v-chip>
-        </td>
-        <td>
-          <span>
-            {{ user.getRole().getDescription() }}
-          </span>
+
+        <td class="d-flex justify-center ma-1">
+          <ChipWithTooltip :tooltip="user.getRole().getDescription()"
+                           :content="user.getRole().getDisplayName()"
+                           :color="roleColor(user.getRole().getIdentifier())"/>
         </td>
         <td>
           <v-icon :class="{ locked: user.locked, notLocked: !user.locked}">
@@ -45,16 +38,24 @@
 </template>
 
 <script lang="ts">
+import ChipWithTooltip from "@/components/ChipWithTooltip.vue";
 export default {
+  name: "UserDetails",
+  components: { ChipWithTooltip },
   props: ['users'],
+  data() {
+    return {
+      alert: false
+    }
+  },
   methods: {
     roleColor(roleShortName: String): String {
       if(roleShortName === 'ADMIN') {
-        return '--primary-orange';
+        return '#ec7b1a';
       } else if(roleShortName === 'HR') {
-        return '--primary-blue';
+        return '#9bc3ee';
       } else if(roleShortName === 'USER'){
-        return 'green';
+        return '#3a3a3a';
       } else {
         return 'red';
       }
@@ -65,10 +66,9 @@ export default {
 
 <style scoped>
 
-.roleChip {
-  margin: 3px;
+.v-icon {
+  margin-left: 40%;
 }
-
 .locked {
   color: lightgray;
 }
