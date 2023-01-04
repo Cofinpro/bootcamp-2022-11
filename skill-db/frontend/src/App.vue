@@ -1,19 +1,18 @@
 <template>
   <v-app id="inspire">
     <SideBar v-if="$route.path !== '/login'"></SideBar>
-
     <v-main>
       <router-view/>
+      <ErrorSnackbar v-if="$route.path !== '/login'"></ErrorSnackbar>
     </v-main>
-
   </v-app>
 </template>
 
 <script lang="ts">
 import SideBar from './components/SideBar.vue'
-import router from "@/router";
+import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
 export default {
-  components: {SideBar},
+  components: {ErrorSnackbar, SideBar},
   watch: {
     '$route' (to, from) {
       document.title = to.meta.title || 'Website'
