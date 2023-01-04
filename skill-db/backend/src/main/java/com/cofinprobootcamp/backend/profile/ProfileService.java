@@ -4,7 +4,7 @@ import com.cofinprobootcamp.backend.config.Constants;
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
-import com.cofinprobootcamp.backend.exceptions.UserCreationFailedException;
+import com.cofinprobootcamp.backend.exceptions.InternalOperationFailedException;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
@@ -45,7 +45,7 @@ public class ProfileService {
             tryToSetUniqueOuterId(profile);
             profileRepository.saveAndFlush(profile);
         } catch (Exception e) {
-            throw new UserCreationFailedException();
+            throw new InternalOperationFailedException();
         }
         return profile;
     }

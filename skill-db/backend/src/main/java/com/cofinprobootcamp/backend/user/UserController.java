@@ -1,7 +1,5 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.role.StandardRoles;
-import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
 import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
@@ -23,22 +21,7 @@ public class UserController {
 
     @PostMapping(path = "")
     public void createUser(@RequestBody @Valid UserCreateInDTO userIn) {
-        if (userIn.userRole() == null) {
-            userService.createUser(userIn, StandardRoles.USER.createNewRoleEntity());
-            return;
-        }
-        Optional<Role> roleOptional = roleService.getRoleByName(userIn.userRole());
-        if (roleOptional.isPresent()) {
-            userService.createUser(userIn, roleOptional.get());
-            return;
-        }
-        StandardRoles standardRoleType = StandardRoles.fromIdentifier(userIn.userRole());
-        if (StandardRoles.UNDEFINED.equals(standardRoleType)) {
-            throw new RoleNotFoundException(userIn.userRole());
-        }
-        Role role = standardRoleType.createNewRoleEntity();
-        roleService.saveRole(role);
-        userService.createUser(userIn, role);
+        userService.createUser(userIn);
     }
 
     @DeleteMapping(path = "/{id}")

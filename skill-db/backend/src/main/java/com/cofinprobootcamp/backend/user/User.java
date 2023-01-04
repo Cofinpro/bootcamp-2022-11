@@ -5,6 +5,8 @@ import com.cofinprobootcamp.backend.config.Regex;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+
+import com.cofinprobootcamp.backend.role.StandardRoles;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
@@ -54,8 +56,12 @@ public class User {
     @Builder.Default
     private boolean locked = false; // Default value
 
-    @ManyToOne
-    private Role role;
+    /**
+     * The user's platform role which determines the accessible resources.
+     */
+    @Column(nullable = false)
+    @Builder.Default
+    private StandardRoles role = StandardRoles.USER; // Default value
 
     @OneToOne
     @JoinColumn(unique = true)

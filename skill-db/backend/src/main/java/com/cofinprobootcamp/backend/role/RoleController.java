@@ -4,6 +4,11 @@ import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Roles endpoint.
+ *
+ * @version 2.0
+ */
 @RestController
 @RequestMapping(path = "/api/v1/roles")
 public class RoleController {

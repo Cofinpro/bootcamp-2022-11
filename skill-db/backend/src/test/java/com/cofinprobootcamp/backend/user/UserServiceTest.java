@@ -64,8 +64,7 @@ class UserServiceTest {
         Mockito.when(passwordEncoder.encode("password"))
                 .thenReturn(encodedPassword);
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
-        Role role = Role.builder().name(inDTO.userRole()).build();
-        userService.createUser(inDTO, role);
+        userService.createUser(inDTO);
         Mockito.verify(userRepository, Mockito.times(1)).saveAndFlush(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getUsername()).isEqualTo(inDTO.email());
         assertThat(argumentCaptor.getValue().getPassword()).isEqualTo(encodedPassword);

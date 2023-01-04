@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
 import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @Order(3)
@@ -52,13 +52,16 @@ public class UserSetup {
     }
 
     private void createOneTestUser(UserCreateInDTO inDTO) {
-        Optional<Role> roleOptional = roleService.getRoleByName(inDTO.userRole());
-        if (roleOptional.isPresent()) {
-            userService.createUser(inDTO, roleOptional.get());
-        } else {
-            Role role = StandardRoles.fromIdentifier(inDTO.userRole()).createNewRoleEntity();
-            roleService.saveRole(role);
-            userService.createUser(inDTO, role);
+        try {
+            userService.createUser(inDTO);
+        } catch (RoleNotFoundException e) {
+            userService.createUser(
+                    new UserCreateInDTO(
+                            inDTO.email(),
+                            inDTO.password(),
+                            StandardRoles.USER.toString()
+                    )
+            );
         }
     }
 

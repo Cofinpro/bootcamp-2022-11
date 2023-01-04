@@ -5,6 +5,11 @@ import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 import org.springframework.stereotype.Service;
 
+/**
+ * Role service.
+ *
+ * @version 2.0
+ */
 @Service
 public class RoleService {
     public RoleDetailsOutDTO getRoleByIdentifier(String identifier) throws RoleNotFoundException {
