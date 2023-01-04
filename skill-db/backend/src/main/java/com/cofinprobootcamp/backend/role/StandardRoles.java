@@ -18,22 +18,23 @@ public enum StandardRoles {
      * <br>
      * This role allows to create, update, delete and view profiles for any user.
      */
-    ADMIN("Administrator", "Diese Rolle darf..."), //TODO: Add description text
+    ADMIN("Administrator", "Mit dieser Rolle dürfen alle Profile angesehen, bearbeitet und gelöscht werden. Außerdem alle Rollen vergeben und entzogen werden."), //TODO: Add description text
 
     /**
      * User role
      * <br>
      * This role allows to create, update, delete and view profiles for the user themselves.
      */
-    USER("Nutzer", "Diese Rolle darf..."), //TODO: Add description text
+    USER("Nutzer", "Mit dieser Rolle dürfen alle Profile angesehen, aber nur das eigene Profil bearbeitet und gelöscht werden. Der Zugriff auf Rollen ist nicht möglich."), //TODO: Add description text
 
     /**
+     *
      * HR role
      * <br>
      * This role allows to create new users, provide basic profiles, view and change any existing profiles,
      * but is excluded from internal administration rights.
      */
-    HR("Personalabteilung/Human Resources", "Diese Rolle darf..."), //TODO: Add description text
+    HR("Personalabteilung/Human Resources", "Mit dieser Rolle dürfen alle Profile angesehen, bearbeitet und gelöscht werden. Der Zugriff auf Rollen ist nicht möglich."), //TODO: Add description text
 
     /**
      * Fallback constant in case of unsuitable input string.
