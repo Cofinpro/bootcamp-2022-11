@@ -61,6 +61,11 @@ class UserIntegrationTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        assertThat(mvcResult).contains("\"email\":\"test@test.de\",\"locked\":false,\"role\":\"Administrator\"");
+        assertThat(mvcResult).contains(
+                "\"email\":\"test@test.de\"",
+                "\"locked\":false",
+                "\"identifier\":\"ADMIN\"",
+                "\"displayName\":\"Administrator\""
+        );
     }
 }

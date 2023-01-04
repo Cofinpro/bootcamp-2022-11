@@ -75,6 +75,7 @@ class UserServiceTest {
     void deleteUserByOuterId() {
         User user = User.builder().username("").build();
         Mockito.when(userRepository.findFirstByOuterId("00000")).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.deleteByOuterId("00000")).thenReturn(1L);
         userService.deleteUserByOuterId("00000");
         Mockito.verify(userRepository, Mockito.times(1)).deleteByOuterId("00000");
 

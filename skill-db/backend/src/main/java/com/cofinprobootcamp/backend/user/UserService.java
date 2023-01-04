@@ -64,7 +64,7 @@ public class UserService {
         Optional<User> userOptional = userRepository.findFirstByOuterId(outerId);
         if (userOptional.isPresent()) {
             long deletedUsers = userRepository.deleteByOuterId(outerId);
-            if (deletedUsers != 1) {
+            if (deletedUsers != 1L) {
                 String msg = "Beim Löschen eines Nutzers trat ein schwerwiegendes Problem auf!";
                 throw new InternalOperationFailedException(msg,
                         new Exception("The number of deleted users following delete operation on repository was not equal to 1"));
