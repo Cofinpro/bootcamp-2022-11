@@ -47,14 +47,14 @@ public class UserController {
 
     @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
-    public void deleteUserById(@PathVariable Long id) {
-        userService.deleteUserById(id);
+    public void deleteUserById(@PathVariable String id) {
+        userService.deleteUserByOuterId(id);
     }
 
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
-    public UserOutDTO getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    public UserOutDTO getUserById(@PathVariable String id) {
+        return userService.getUserByOuterId(id);
     }
 
     @GetMapping(path = "")

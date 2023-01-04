@@ -38,6 +38,9 @@ const router = createRouter({
         path: '/admin/users',
         name: 'userOverview',
         component: UserOverView,
+        meta: {
+            title: 'Nutzerübersicht'
+        }
     },
     {
       path: '/detail/edit/:id',

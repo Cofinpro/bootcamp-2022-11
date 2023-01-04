@@ -25,6 +25,9 @@ public class Profile {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true, nullable = false)
+    String outerId;
+
     private String firstName;
     private String lastName;
 
@@ -46,11 +49,16 @@ public class Profile {
     private Set<Skill> skillSet;
     private LocalDate birthDate;
 
-    @OneToOne//TODO: cascade types
+    @OneToOne //TODO: cascade types
     @JoinColumn(unique = true)
-    private User owner;
+    @Builder.Default
+    private User owner = null; // Default value
 
     public int getAge() {
-        return Period.between(birthDate, LocalDate.now()).getYears();
+        return Period.between(this.birthDate, LocalDate.now()).getYears();
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
     }
 }

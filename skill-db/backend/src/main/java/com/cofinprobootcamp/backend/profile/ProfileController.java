@@ -63,14 +63,14 @@ public class ProfileController {
     }
 
     /**
-     * @param id delete profile by Id
+     * @param id delete profile by ID (This expects an outerId)
      */
     @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
-    public void deleteProfileById(@PathVariable Long id) throws ProfileNotFoundException {
-        Profile profile = profileService.getProfileById(id); //TODO
+    public void deleteProfileById(@PathVariable String id) throws ProfileNotFoundException {
+        Profile profile = profileService.getProfileByOuterId(id); // Find profile by its outerId
         userService.detachProfileFromUser(profile.getOwner().getId());
-        profileService.deleteProfileById(id);
+        profileService.deleteProfileByOuterId(id);
     }
 
     /**
@@ -79,7 +79,7 @@ public class ProfileController {
      */
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
-    public ProfileDetailsOutDTO getProfile(@PathVariable Long id) throws ProfileNotFoundException {
+    public ProfileDetailsOutDTO getProfile(@PathVariable String id) throws ProfileNotFoundException {
         return profileService.getProfileDTOById(id);
     }
 

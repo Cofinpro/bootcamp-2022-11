@@ -46,7 +46,7 @@ public class AuthController {
 
     /**
      * Delivers a new access token, in case the refresh token is not expired
-     * @param refreshToken
+     * @param refreshToken The user's refresh token
      * @return access token
      */
     @PostMapping("/refresh")
@@ -65,7 +65,7 @@ public class AuthController {
 
     /**
      * Verifies if the refresh token is expired
-     * @param refreshToken
+     * @param refreshToken The user's refresh token
      * @return true, in case the token is not expired. Otherwise false
      */
     @PostMapping("/verify")

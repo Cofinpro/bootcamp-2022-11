@@ -7,7 +7,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 class ExpertisesTest {
 
@@ -26,6 +25,5 @@ class ExpertisesTest {
     @MethodSource("fromFullNameStringSource")
     void fromFullNameString(String fullName, Expertises expertises) {
         assertThat(Expertises.fromFullNameString(fullName)).isEqualTo(expertises);
-
     }
 }

@@ -1,13 +1,13 @@
 <template>
-  <UserDetails :users="users"></UserDetails>
+  <UserDetails :users="users"/>
 </template>
 
-<script>
+<script lang="ts">
 import UserDetails from "@/components/UserDetails.vue";
 import {useUserStore} from "@/stores/UserStore";
 export default {
-  name: "UserIOverView",
-  components: {UserDetails},
+  name: "UserOverView",
+  components: { UserDetails },
   setup() {
     const userStore = useUserStore();
     userStore.loadUsers();
@@ -20,5 +20,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
