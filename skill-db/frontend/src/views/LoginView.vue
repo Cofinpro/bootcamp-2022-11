@@ -63,11 +63,7 @@
       </v-col>
 
       <v-col cols="6" class="d-none d-lg-block">
-        <v-img
-            cover
-            max-height="100vh"
-            src="https://imgs.xkcd.com/comics/pando.png"
-        ></v-img>
+        <ComicOfTheDay />
       </v-col>
 
     </v-row>
@@ -78,9 +74,11 @@
 <script>
 import {useAuthStore} from "@/stores/auth";
 import {LoginRequest} from "@/models/LoginRequest";
+import ComicOfTheDay from "@/components/ComicOfTheDay.vue";
 
 export default {
   name: "LoginView",
+  components: {ComicOfTheDay},
   setup() {
     const store = useAuthStore();
     return {
