@@ -22,7 +22,7 @@ public class ExcelGenerator {
         sheet = workbook.createSheet("Profile");
     }
 
-    public Workbook writeHeader(OutputStream outputStream) throws IOException {
+    public Workbook writeHeader() {
         Row row = sheet.createRow(0);
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
@@ -43,8 +43,6 @@ public class ExcelGenerator {
             createCell(row, col, fieldName, style);
             col += 1;
         }
-        System.out.println(col);
-        workbook.write(outputStream);
         return workbook;
     }
     private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style) {
@@ -60,7 +58,7 @@ public class ExcelGenerator {
             cell.setCellValue((Boolean) valueOfCell);
         }
     }
-    public void writeContent() throws IllegalAccessException {
+    public Workbook writeContent() throws IllegalAccessException {
         int rowCount = 1;
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
@@ -73,8 +71,9 @@ public class ExcelGenerator {
             Field[] profileFields = ProfileDetailsOutDTO.class.getDeclaredFields();
             for (Field field : profileFields) {
                 field.setAccessible(true);
-                System.out.println(field.get(profile));
+                createCell();
             }
         }
+        return workbook;
     }
 }
