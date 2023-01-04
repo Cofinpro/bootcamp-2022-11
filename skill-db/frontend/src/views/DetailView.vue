@@ -168,10 +168,6 @@ img {
   margin-left: 10%;
 }
 
-.skill_container {
-  flex-wrap: wrap;
-}
-
 .infos {
   display: flex;
   justify-content: space-between;

@@ -44,11 +44,14 @@ export const useAuthStore = defineStore('auth', {
             return await axios.post("/api/v1/token/verify", user)
                 .then((result) => {
                     if (result.data) {
+                        this.loggedIn = true;
                         return true;
                     }
+                    this.loggedIn = false;
                     return false;
                 }).catch((error) => {
                     console.log(error.response)
+                    this.loggedIn = false;
                     return false;
                 })
         },
