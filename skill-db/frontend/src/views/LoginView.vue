@@ -4,6 +4,7 @@
     <v-row>
 
       <v-col cols="12" class="d-lg-none">
+        <!--TODO daily changing img-->
         <v-img
             src="https://imgs.xkcd.com/comics/pando.png"
             alt="Comic Picture"
@@ -75,7 +76,7 @@
 
 </template>
 
-<script>
+<script lang="ts">
 import {useAuthStore} from "@/stores/auth";
 import {LoginRequest} from "@/models/LoginRequest";
 
@@ -107,5 +108,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

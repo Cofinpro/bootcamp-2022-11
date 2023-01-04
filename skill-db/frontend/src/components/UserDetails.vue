@@ -2,6 +2,7 @@
   <v-container>
     <h2>Nutzerübersicht</h2>
     <h3>Übersicht aller vorhandenen Nutzer</h3>
+
     <v-table>
       <thead>
       <tr>
@@ -23,14 +24,14 @@
           :key="user.getEmail()">
         <td>{{ user.getEmail() }}</td>
         <td>
-          <v-chip class="roleChip" :color="user.getRole() === 'ADMIN' ? 'primary' : 'green'">{{
-              user.getRole()
-            }}
+          <v-chip class="roleChip"
+                  :color="user.getRole() === 'ADMIN' ? 'primary' : 'green'">
+            {{ user.getRole() }}
           </v-chip>
         </td>
         <td>
           <span>
-            {{createRightString(user.getRights())}}
+            {{ createRightString(user.getRights()) }}
           </span>
         </td>
         <td>
@@ -43,11 +44,12 @@
   </v-container>
 </template>
 
-<script>
+<script lang="ts">
 export default {
+  name: "UserDetails",
   props: ['users'],
   methods: {
-    createRightString(rights) {
+    createRightString(rights: String[]): String {
       let rightString = "";
       rights.forEach(right => rightString += right + ", ");
       return rightString.slice(0, rightString.length - 2);
@@ -57,6 +59,7 @@ export default {
 </script>
 
 <style scoped>
+
 .roleChip {
   margin: 3px;
 }
