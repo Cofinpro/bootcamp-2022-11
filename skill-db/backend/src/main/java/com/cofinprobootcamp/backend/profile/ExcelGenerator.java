@@ -4,10 +4,12 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.apache.poi.ss.util.CellUtil.createCell;
 
 public class ExcelGenerator {
     private List<ProfileDetailsOutDTO> profileList;
@@ -20,7 +22,7 @@ public class ExcelGenerator {
         sheet = workbook.createSheet("Profile");
     }
 
-    private void writeHeader() {
+    public Workbook writeHeader(OutputStream outputStream) throws IOException {
         Row row = sheet.createRow(0);
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
@@ -29,13 +31,50 @@ public class ExcelGenerator {
         style.setFont(font);
         List<String> fieldNames = Arrays.stream(
                         ProfileDetailsOutDTO.class
-                                .getFields()
+                                .getDeclaredFields()
                 )
-                .map(field -> field.getName())
+                .map(field -> {
+                    field.setAccessible(true);
+                    return field.getName();
+                })
                 .toList();
         int col = 0;
         for (String fieldName : fieldNames) {
             createCell(row, col, fieldName, style);
+            col += 1;
+        }
+        System.out.println(col);
+        workbook.write(outputStream);
+        return workbook;
+    }
+    private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style) {
+        sheet.autoSizeColumn(columnCount);
+        if (valueOfCell instanceof Integer) {
+            Cell cell = row.createCell(columnCount, CellType.NUMERIC);
+            cell.setCellValue((Integer) valueOfCell);
+        } else if (valueOfCell instanceof String) {
+            Cell cell = row.createCell(columnCount, CellType.STRING);
+            cell.setCellValue((String) valueOfCell);
+        } else if (valueOfCell instanceof Boolean) {
+            Cell cell = row.createCell(columnCount, CellType.BOOLEAN);
+            cell.setCellValue((Boolean) valueOfCell);
+        }
+    }
+    public void writeContent() throws IllegalAccessException {
+        int rowCount = 1;
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setFontHeight((short) 14);
+        style.setFont(font);
+        for (ProfileDetailsOutDTO profile : profileList) {
+            Row row = sheet.createRow(rowCount);
+            rowCount += 1;
+            int colCount = 0;
+            Field[] profileFields = ProfileDetailsOutDTO.class.getDeclaredFields();
+            for (Field field : profileFields) {
+                field.setAccessible(true);
+                System.out.println(field.get(profile));
+            }
         }
     }
 }
