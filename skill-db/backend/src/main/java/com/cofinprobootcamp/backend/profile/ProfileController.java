@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.profile;
 
-import com.cofinprobootcamp.backend.auth.UserDetailsImpl;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
@@ -9,11 +8,7 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.user.UserService;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import com.cofinprobootcamp.backend.user.User;
 
@@ -26,14 +21,12 @@ public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
     private final ProfileRepository profileRepository;
-    private final AuthenticationManager authenticationManager;
 
     public ProfileController(ProfileService profileService, UserService userService,
-                             ProfileRepository profileRepository, AuthenticationManager authenticationManager) {
+                             ProfileRepository profileRepository) {
         this.profileService = profileService;
         this.userService = userService;
         this.profileRepository = profileRepository;
-        this.authenticationManager = authenticationManager;
     }
 
     /**
@@ -57,7 +50,7 @@ public class ProfileController {
      */
     @PatchMapping(path = "/{id}")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
-    public void updateProfile(@PathVariable Long id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
+    public void updateProfile(@PathVariable String id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
             throws ProfileNotFoundException, JobTitleNotFoundException {
         profileService.updateProfile(profileInDTO, id);
     }
