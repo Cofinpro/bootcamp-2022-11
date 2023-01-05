@@ -21,12 +21,19 @@ public class ExcelGenerator {
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
 
+    /**
+     * @param profileList profiles to be exportet to excel
+     */
     public ExcelGenerator(List<ProfileDetailsOutDTO> profileList) {
         this.profileList = profileList;
         workbook = new XSSFWorkbook();
         sheet = workbook.createSheet("Profile");
     }
 
+    /**
+     * writes header of excel workbook from ProfiledetailsOutDTO Class
+     * @return workbook for testing purposes
+     */
     public Workbook writeHeader() {
         XSSFRow row = sheet.createRow(0);
         CellStyle style = workbook.createCellStyle();
@@ -53,6 +60,11 @@ public class ExcelGenerator {
         return workbook;
     }
 
+    /**
+     * Writes data into excel workbook from ProfileDetailsOutDTO List
+     * @return Workbook for testing purposes
+     * @throws IllegalAccessException should never be thrown!
+     */
     public Workbook writeContent() throws IllegalAccessException {
         int rowCount = 1;
         CellStyle style = workbook.createCellStyle();
@@ -77,8 +89,19 @@ public class ExcelGenerator {
         return workbook;
     }
 
+    /**
+     * Helper function for creation of cells with a fitting celltype.
+     * might have to be expanded if new data types are added
+     * @param row Row object
+     * @param columnCount integer describing col to write in
+     * @param valueOfCell value to write
+     * @param style style of the cell
+     */
     private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style) {
         if (valueOfCell instanceof Integer) {
+            //if Over 25000 profiles exists, they will not be displayed correctly because every
+            // int cell style will be interpreted as seperate style!
+            // (and excel can only handle 25000 styles)
             Cell cell = row.createCell(columnCount, CellType.NUMERIC);
             cell.setCellStyle(style);
             cell.setCellValue((Integer) valueOfCell);
@@ -89,14 +112,19 @@ public class ExcelGenerator {
             cell.setCellStyle(style);
             cell.setCellValue((Boolean) valueOfCell);
         } else if (valueOfCell instanceof List<?>) {
-            Cell cell = row.createCell(columnCount,CellType.STRING);
-            cell.setCellStyle(style);
-            cell.setCellValue(((List<?>) valueOfCell).stream()
+            CellUtil.createCell(row,columnCount,
+                    ((List<?>) valueOfCell).stream()
                     .map(n -> String.valueOf(n))
-                    .collect(Collectors.joining(",")));
+                    .collect(Collectors.joining(",")),
+                    style);
         }
     }
 
+    /**
+     * @param outputStream outputstream to which excel should be written
+     * @throws IllegalAccessException should never actually be thrown!
+     * @throws IOException if something goes wrong with outputstream!
+     */
     public void createExcel(OutputStream outputStream)
             throws IllegalAccessException, IOException {
         writeHeader();

@@ -101,6 +101,13 @@ public class ProfileController {
     public List<String> getAllExpertises() { // makes more sense to have this as an endpoint under profiles, where content is actually stored
         return profileService.getAllExpertises();
     }
+
+    /**
+     * generates excel and writes excel to responses outputstream
+     * @param response to get request
+     * @throws IOException if response is not writable
+     * @throws IllegalAccessException should never be thrown!
+     */
     @GetMapping("/export")
     public void exportAllToExcel(HttpServletResponse response)
             throws IOException, IllegalAccessException {
