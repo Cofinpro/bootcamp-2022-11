@@ -51,6 +51,7 @@ import OverviewCard from "@/components/OverviewCard.vue";
 import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
 import {useOverviewStore} from "@/stores/OverviewStore";
 import router from "@/router";
+import {useBlobStore} from "@/stores/BlobStore";
 
 export default {
   name: "HomeView",
@@ -67,8 +68,10 @@ export default {
       console.log("Now you can create a new profile.");
       router.push(`/details/new`);
     },
-    exportProfiles() {
-      console.log("Here you can export the shown profile to xlsx");
+    async exportProfiles() {
+      const blobStore = useBlobStore();
+      await blobStore.getExcel();
+      console.log(blobStore.blob);
     },
     filterProfiles() {
       console.log("Start filtering.");
