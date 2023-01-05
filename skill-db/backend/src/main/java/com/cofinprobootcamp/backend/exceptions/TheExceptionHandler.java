@@ -113,12 +113,12 @@ public class TheExceptionHandler {
 
     @ExceptionHandler(InternalOperationFailedException.class)
     public ResponseEntity<CustomErrorMessage> handleUserCreationFailed(
-            InternalOperationFailedException ucfe,
+            InternalOperationFailedException iofe,
             WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                ucfe.getMessage(),
+                iofe.getMessage(),
                 wr.getDescription(false),
-                ucfe.getCause());
+                iofe.getCause());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
