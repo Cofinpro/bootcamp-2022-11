@@ -3,8 +3,6 @@ package com.cofinprobootcamp.backend.auth;
 import com.cofinprobootcamp.backend.user.User;
 import com.cofinprobootcamp.backend.user.UserRepository;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +10,10 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import static com.cofinprobootcamp.backend.config.ProfileConfiguration.*;
+import static com.cofinprobootcamp.backend.config.Constants.ROLE_PREFIX;
 
 @Service
 public class TokenService {
@@ -70,10 +69,10 @@ public class TokenService {
 
         // getting the role of the user, because he is an anonymousUser right now
         // (when trying to access the userDetails with Authentication)
-        String role = "ROLE_";
+        String role = ROLE_PREFIX;
         Optional<User> user = userRepository.findByUsername(username);
         if(user.isPresent()) {
-            role += user.get().getRole().getName();
+            role += user.get().getRole().name();
         }
 
         JwtClaimsSet claims = JwtClaimsSet.builder()

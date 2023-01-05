@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.auth;
 
-import com.cofinprobootcamp.backend.enums.StandardRoles;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;

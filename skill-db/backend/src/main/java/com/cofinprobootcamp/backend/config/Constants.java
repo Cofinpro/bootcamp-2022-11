@@ -12,6 +12,11 @@ public final class Constants {
     public static final int USER_OUTER_ID_LENGTH = 5;
     public static final int PROFILE_OUTER_ID_LENGTH = 6;
 
+    /**
+     * The prefix to be used to identify roles internally while handling access.
+     */
+    public static final String ROLE_PREFIX = "ROLE_";
+
     private Constants() {
     }
 }
