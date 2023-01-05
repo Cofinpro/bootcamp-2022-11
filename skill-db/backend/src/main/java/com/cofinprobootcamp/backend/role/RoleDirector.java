@@ -20,11 +20,11 @@ public class RoleDirector {
         );
     }
 
-    public static RoleOverviewOutDTO roleOverviewFromEnum() {
+    public static List<RoleDetailsOutDTO> roleOverviewFromEnum() {
         List<RoleDetailsOutDTO> allRoles = new LinkedList<>();
         for (var role : StandardRoles.values()) {
             allRoles.add(roleDetailsViewFromEnumType(role));
         }
-        return new RoleOverviewOutDTO(allRoles);
+        return allRoles;
     }
 }

@@ -1,9 +1,13 @@
 package com.cofinprobootcamp.backend.role;
 
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
+import com.cofinprobootcamp.backend.profile.Profile;
+import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Role service.
@@ -20,7 +24,7 @@ public class RoleService {
         return RoleDirector.roleDetailsViewFromEnumType(role);
     }
 
-    public RoleOverviewOutDTO getAllRoles() {
+    public List<RoleDetailsOutDTO> getAllRoles() {
         return RoleDirector.roleOverviewFromEnum();
     }
 }

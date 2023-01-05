@@ -6,6 +6,8 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Roles endpoint.
  *
@@ -37,7 +39,7 @@ public class RoleController {
      * @return A {@code RoleOverviewOutDTO} containing any relevant information about all roles
      */
     @GetMapping(path = "")
-    public RoleOverviewOutDTO getAllRoles() {
+    public List<RoleDetailsOutDTO> getAllRoles() {
         return roleService.getAllRoles();
     }
 
