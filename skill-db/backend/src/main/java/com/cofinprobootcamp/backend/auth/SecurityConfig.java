@@ -8,22 +8,20 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.jwt.*;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
@@ -31,15 +29,16 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Collection;
 import java.util.List;
 
+import static com.cofinprobootcamp.backend.config.Constants.ROLE_PREFIX;
 import static com.cofinprobootcamp.backend.config.ProfileConfiguration.FRONTEND_URL;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true) // with this annotation, @PreAuthorize works with the roles
 public class SecurityConfig {
 
 
@@ -62,19 +61,12 @@ public class SecurityConfig {
                         .mvcMatchers("/api/v1/token").permitAll()
                         .mvcMatchers("/api/v1/token/refresh").permitAll()
                         .mvcMatchers("/api/v1/token/verify").permitAll()
-                        // using hasAuthority(), because role is named "SCOPE_ROLE_ROLENAME" --> therefore hasRole would not work, because of the "SCOPE"-prefix
-                        .mvcMatchers("/api/v1/roles").hasAuthority("SCOPE_ROLE_ADMIN")
-                        .mvcMatchers("/api/v1/roles/*").hasAuthority("SCOPE_ROLE_ADMIN")
-                        .mvcMatchers("/api/v1/users").hasAnyAuthority("SCOPE_ROLE_ADMIN", "SCOPE_ROLE_HR")
-                        .mvcMatchers("/api/v1/users/*").hasAnyAuthority("SCOPE_ROLE_ADMIN", "SCOPE_ROLE_HR")
-                        .mvcMatchers("/api/v1/profiles").hasAnyAuthority("SCOPE_ROLE_ADMIN", "SCOPE_ROLE_USER", "SCOPE_ROLE_HR")
-                        .mvcMatchers("/api/v1/profiles/expertises").permitAll()
-                        .mvcMatchers("/api/v1/profiles/*").hasAnyAuthority("SCOPE_ROLE_ADMIN", "SCOPE_ROLE_USER", "SCOPE_ROLE_HR")
-                        .mvcMatchers("/api/v1/job-titles").permitAll() // These may be kept for convenience
-                        .mvcMatchers("/api/v1/skills").permitAll() // These may be kept for convenience
                         .anyRequest().authenticated() // check, if all other requests should rather be denied?!
                 )
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .oauth2ResourceServer(
+                        oauth2 -> oauth2.jwt()
+                                .jwtAuthenticationConverter(customJwtAuthenticationConverter())
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling((ex) -> ex
                         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
@@ -90,6 +82,29 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
+    }
+
+    @Bean
+    public CustomJwtAuthenticationConverter customJwtAuthenticationConverter() {
+        CustomJwtAuthenticationConverter converter = new CustomJwtAuthenticationConverter();
+        converter.setUserDetailsService(userDetailsService);
+        converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter());
+        return converter;
+    }
+
+    @Bean
+    public Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter() {
+        JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+        converter.setAuthorityPrefix(jwtGrantedAuthoritiesPrefix());
+        return converter;
+    }
+
+    /*
+     * This method is necessary s.t. role prefix can be used in annotation queries
+     */
+    @Bean
+    public String jwtGrantedAuthoritiesPrefix() {
+        return ROLE_PREFIX;
     }
 
     @Bean

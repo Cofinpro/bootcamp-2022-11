@@ -15,7 +15,14 @@ public final class Constants {
     /**
      * The prefix to be used to identify roles internally while handling access.
      */
-    public static final String ROLE_PREFIX = "ROLE_";
+    public static final String ROLE_PREFIX = "PRIVILEGE_";
+
+    /**
+     * {@code scp} - the Scope claim identifies the privileges associated with the JWT
+     */
+    public static final String JWT_CLAIM_SCP = "scp";
+
+    public static final String JWT_ISSUER_NAME = "Cofinpro Bootcamp 2022";
 
     private Constants() {
     }
