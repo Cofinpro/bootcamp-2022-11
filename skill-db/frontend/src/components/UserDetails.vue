@@ -12,12 +12,13 @@
           Rolle
         </th>
         <th class="text-center">
-          Aktionen
+          Sperrstatus
         </th>
       </tr>
       </thead>
       <tr v-for="user in users"
-          :key="user.getEmail()">
+          :key="user.getEmail()"
+          :class="{ locked: user.locked, notLocked: !user.locked}">
         <td>
           {{ user.getEmail() }}
         </td>
@@ -28,8 +29,9 @@
                            :color="roleColor(user.getRole().getIdentifier())"/>
         </td>
         <td>
-          <v-icon :class="{ locked: user.locked, notLocked: !user.locked}">
-            mdi-lock
+          <v-icon @click="user.locked = !user.locked"
+                  :class="{ locked: user.locked, notLocked: !user.locked}">
+            {{ user.locked ? 'mdi-lock' : 'mdi-lock-open' }}
           </v-icon>
         </td>
       </tr>
@@ -71,10 +73,5 @@ export default {
 }
 .locked {
   color: lightgray;
-}
-
-.notLocked {
-  cursor: pointer;
-  color: gray;
 }
 </style>
