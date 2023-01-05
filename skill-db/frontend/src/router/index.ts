@@ -38,6 +38,9 @@ const router = createRouter({
         path: '/admin/users',
         name: 'userOverview',
         component: UserOverView,
+        meta: {
+            title: 'Nutzerübersicht'
+        }
     },
     {
       path: '/detail/edit/:id',
@@ -65,13 +68,13 @@ const router = createRouter({
  * In case the token is not valid anymore, the user will be redirected to the login page and
  * has to log in again.
  */
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
     if (to.path !== '/login') {
-        if (authStore.isLoggedIn()) {
+        if (await authStore.isLoggedIn()) {
             if (authStore.isAdmin()) {
                 next();
-            } else if (! to.path.includes('/admin')) {
+            } else if (!to.path.includes('/admin')) {
                 next();
             } else {
                 next('/');

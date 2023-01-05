@@ -17,6 +17,14 @@ export default defineConfig({
         target: 'http://localhost:8080/',
         changeOrigin: true,
       },
+      '/comic': {
+        target: 'https://xkcd.com/',
+        changeOrigin: true,
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        },
+        rewrite: (path) => path.replace(/^\/comic/, '')
+      },
     }
   }
 })

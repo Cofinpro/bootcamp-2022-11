@@ -4,13 +4,7 @@
     <v-row>
 
       <v-col cols="12" class="d-lg-none">
-        <v-img
-            src="https://imgs.xkcd.com/comics/pando.png"
-            alt="Comic Picture"
-            width="100vw"
-            max-height="250"
-            contain
-        ></v-img>
+        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" :mobile="true" />
       </v-col>
 
       <v-col cols="12" lg="6" class="text-center mt-10">
@@ -63,11 +57,7 @@
       </v-col>
 
       <v-col cols="6" class="d-none d-lg-block">
-        <v-img
-            cover
-            max-height="100vh"
-            src="https://imgs.xkcd.com/comics/pando.png"
-        ></v-img>
+        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" :mobile="false" />
       </v-col>
 
     </v-row>
@@ -78,13 +68,18 @@
 <script>
 import {useAuthStore} from "@/stores/auth";
 import {LoginRequest} from "@/models/LoginRequest";
+import ComicOfTheDay from "@/components/ComicOfTheDay.vue";
+import {useComicStore} from "@/stores/ComicStore";
 
 export default {
   name: "LoginView",
+  components: {ComicOfTheDay},
   setup() {
     const store = useAuthStore();
+    const comicStore = useComicStore();
+    comicStore.loadComicOfTheDay();
     return {
-      store
+      store, comicStore
     }
   },
   data() {
@@ -107,5 +102,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

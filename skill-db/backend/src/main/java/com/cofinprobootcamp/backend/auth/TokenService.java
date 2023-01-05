@@ -1,7 +1,10 @@
 package com.cofinprobootcamp.backend.auth;
 
+import com.cofinprobootcamp.backend.user.User;
+import com.cofinprobootcamp.backend.user.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +20,13 @@ import static com.cofinprobootcamp.backend.config.ProfileConfiguration.*;
 public class TokenService {
 
     private final JwtEncoder encoder;
-
     private final JwtDecoder jwtDecoder;
+    private final UserRepository userRepository;
 
-    public TokenService(JwtEncoder encoder, JwtDecoder jwtDecoder) {
+    public TokenService(JwtEncoder encoder, JwtDecoder jwtDecoder, UserRepository userRepository) {
         this.encoder = encoder;
         this.jwtDecoder = jwtDecoder;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -31,18 +35,7 @@ public class TokenService {
      * @return Map, consisting of access token and refresh token
      */
     public Map<String, String> generateToken(Authentication authentication) {
-        Instant now = Instant.now();
-        String scope = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(" "));
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("Cofinpro Bootcamp")
-                .issuedAt(now)
-                .expiresAt(now.plus(2, ChronoUnit.MINUTES))
-                .subject(authentication.getName())
-                .claim("scope", scope)
-                .build();
-        String accessToken = encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        String accessToken = generateNewAccessToken(authentication.getName());
         String refreshToken = generateRefreshToken(authentication);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);
@@ -59,6 +52,7 @@ public class TokenService {
     public String generateRefreshToken(Authentication authentication) {
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("Cofinpro Bootcamp")
                 .issuedAt(now)
                 .expiresAt(now.plus(REFRESH_TOKEN_DURATION_SECONDS, ChronoUnit.SECONDS))
                 .subject(authentication.getName())
@@ -73,10 +67,21 @@ public class TokenService {
      */
     public String generateNewAccessToken(String username) {
         Instant now = Instant.now();
+
+        // getting the role of the user, because he is an anonymousUser right now
+        // (when trying to access the userDetails with Authentication)
+        String role = "ROLE_";
+        Optional<User> user = userRepository.findByUsername(username);
+        if(user.isPresent()) {
+            role += user.get().getRole().getName();
+        }
+
         JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("Cofinpro Bootcamp")
                 .issuedAt(now)
                 .expiresAt(now.plus(ACCESS_TOKEN_DURATION_SECONDS, ChronoUnit.SECONDS))
                 .subject(username)
+                .claim("scope", role)
                 .build();
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
