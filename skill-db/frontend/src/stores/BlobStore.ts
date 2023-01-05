@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import axiosInstance from "@/axios";
+import {useErrorStore} from "@/stores/ErrorStore";
 
 export const useBlobStore = defineStore('blobStore',{
     state: () => ({
@@ -14,6 +15,8 @@ export const useBlobStore = defineStore('blobStore',{
             }).then((response) => {
                 this.blob = response.data;
                 console.log(response.data);
+            }).catch((error) => {
+                const errorStore = useErrorStore();
             })
         }
     }

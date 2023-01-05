@@ -109,6 +109,7 @@ public class ProfileController {
      * @throws IllegalAccessException should never be thrown!
      */
     @GetMapping("/export")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public void exportAllToExcel(HttpServletResponse response)
             throws IOException, IllegalAccessException {
         response.setContentType("application/octet-stream");

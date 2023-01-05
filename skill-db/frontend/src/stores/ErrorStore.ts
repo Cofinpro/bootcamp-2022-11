@@ -9,6 +9,11 @@ export const useErrorStore = defineStore(
         }),
         actions: {
 
+            toggleHasError() {
+                this.hasError = false;
+                this.errorText= '';
+            },
+
             catchOverviewError(error: AxiosError) {
                 this.hasError = true;
                 if (error.response == undefined) {
@@ -41,11 +46,6 @@ export const useErrorStore = defineStore(
                         this.errorText = 'Unbekannter Fehler!';
                     }
                 }
-            },
-
-            toggleHasError() {
-                this.hasError = false;
-                this.errorText= '';
             },
 
             handle400forProfile(error: AxiosError) {
