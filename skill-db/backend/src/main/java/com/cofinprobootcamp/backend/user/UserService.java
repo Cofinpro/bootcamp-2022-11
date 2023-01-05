@@ -10,7 +10,6 @@ import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import com.cofinprobootcamp.backend.utils.RandomStringGenerator;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
