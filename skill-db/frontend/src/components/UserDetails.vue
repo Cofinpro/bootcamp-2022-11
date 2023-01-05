@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <h2>Nutzerübersicht</h2>
-    <h3>Übersicht aller vorhandenen Nutzer</h3>
+    <h3>Übersicht über alle vorhandenen Nutzer</h3>
     <v-table>
       <thead>
       <tr>
@@ -24,7 +24,7 @@
         </td>
 
         <td class="d-flex justify-center ma-1">
-          <ChipWithTooltip :tooltip="user.getRole().getDescription()"
+          <ChipWithInfotext :tooltip="user.getRole().getDescription()"
                            :content="user.getRole().getDisplayName()"
                            :color="roleColor(user.getRole().getIdentifier())"/>
         </td>
@@ -40,10 +40,10 @@
 </template>
 
 <script lang="ts">
-import ChipWithTooltip from "@/components/ChipWithTooltip.vue";
+import ChipWithInfotext from "@/components/ChipWithInfotext.vue";
 export default {
   name: "UserDetails",
-  components: { ChipWithTooltip },
+  components: { ChipWithInfotext },
   props: ['users'],
   data() {
     return {

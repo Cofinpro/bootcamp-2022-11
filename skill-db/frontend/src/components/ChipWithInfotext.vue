@@ -39,8 +39,9 @@ export default {
 
 <style scoped>
 .v-card {
-  margin-top: 25%;
-  margin-left: 25%;
+  max-width: 400px;
+  margin-top: 15vh;
+  margin-left: 50vw;
   border-top: 5px solid;
 }
 </style>

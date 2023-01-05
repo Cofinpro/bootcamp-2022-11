@@ -1,9 +1,9 @@
 import {defineStore} from "pinia";
 import {ConvertToRoleModel, RoleModel} from "@/models/RoleModel";
-import axios from "@/axios";
 import {useErrorStore} from "@/stores/ErrorStore";
+import axiosInstance from "@/axios";
 
-export const useDetailStore = defineStore('detailStore', {
+export const useRoleStore = defineStore('roleStore', {
     state: () => ({
         details: new RoleModel(),
         allRoles: [] as RoleModel[],
@@ -13,7 +13,7 @@ export const useDetailStore = defineStore('detailStore', {
         loadRolesById(id: String) {
             this.loading = true;
             const errorStore = useErrorStore();
-            axios.get(`/api/v1/roles/${id}`).then((response) => {
+            axiosInstance.get(`/api/v1/roles/${id}`).then((response) => {
                 this.details = ConvertToRoleModel.toRole(response.data);
             }).catch((error) => {
                 errorStore.catchGetRoleError(error, id);
@@ -25,8 +25,12 @@ export const useDetailStore = defineStore('detailStore', {
         loadAllRoles() {
             this.loading = true;
             const errorStore = useErrorStore();
-            axios.get(`/api/v1/roles`).then((response) => {
-                this.allRoles = [];
+            axiosInstance.get(`/api/v1/roles`).then((response) => {
+                if(this.allRoles.length > 0) {
+                    // reloads the list of users every time the method gets called,
+                    // in case the list is not empty
+                    this.allRoles = [];
+                }
                 response.data.forEach((element: object) => {
                     this.allRoles.push(ConvertToRoleModel.toRole(element))
                 });
