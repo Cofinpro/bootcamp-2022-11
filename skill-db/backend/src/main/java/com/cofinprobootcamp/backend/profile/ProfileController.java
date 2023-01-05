@@ -12,7 +12,13 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import com.cofinprobootcamp.backend.user.User;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -94,5 +100,17 @@ public class ProfileController {
     @Secured({"ROLE_ADMIN", "ROLE_USER"})
     public List<String> getAllExpertises() { // makes more sense to have this as an endpoint under profiles, where content is actually stored
         return profileService.getAllExpertises();
+    }
+    @GetMapping("/export")
+    public void exportAllToExcel(HttpServletResponse response)
+            throws IOException, IllegalAccessException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+        ExcelGenerator excelGenerator = new ExcelGenerator(profileService.getAllDetailDTOs());
+        excelGenerator.createExcel(response.getOutputStream());
     }
 }

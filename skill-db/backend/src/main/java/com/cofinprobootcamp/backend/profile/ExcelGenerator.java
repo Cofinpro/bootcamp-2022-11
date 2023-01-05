@@ -2,6 +2,10 @@ package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellUtil;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
@@ -14,8 +18,8 @@ import java.util.stream.Collectors;
 
 public class ExcelGenerator {
     private List<ProfileDetailsOutDTO> profileList;
-    private Workbook workbook;
-    private Sheet sheet;
+    private XSSFWorkbook workbook;
+    private XSSFSheet sheet;
 
     public ExcelGenerator(List<ProfileDetailsOutDTO> profileList) {
         this.profileList = profileList;
@@ -24,11 +28,13 @@ public class ExcelGenerator {
     }
 
     public Workbook writeHeader() {
-        Row row = sheet.createRow(0);
+        XSSFRow row = sheet.createRow(0);
         CellStyle style = workbook.createCellStyle();
-        Font font = workbook.createFont();
+        style.setBorderRight(BorderStyle.DASHED);
+        style.setBorderLeft(BorderStyle.DASHED);
+        style.setBorderBottom(BorderStyle.MEDIUM);
+        XSSFFont font = workbook.createFont();
         font.setBold(true);
-        font.setFontHeight((short) 20);
         style.setFont(font);
         List<String> fieldNames = Arrays.stream(
                         ProfileDetailsOutDTO.class
@@ -50,9 +56,9 @@ public class ExcelGenerator {
     public Workbook writeContent() throws IllegalAccessException {
         int rowCount = 1;
         CellStyle style = workbook.createCellStyle();
-        Font font = workbook.createFont();
-        font.setFontHeight((short) 14);
-        style.setFont(font);
+        style.setBorderRight(BorderStyle.DASHED);
+        style.setBorderLeft(BorderStyle.DASHED);
+        style.setBorderBottom(BorderStyle.DASHED);
         int colCount = 0;
         for (ProfileDetailsOutDTO profile : profileList) {
             Row row = sheet.createRow(rowCount);
@@ -74,19 +80,29 @@ public class ExcelGenerator {
     private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style) {
         if (valueOfCell instanceof Integer) {
             Cell cell = row.createCell(columnCount, CellType.NUMERIC);
+            cell.setCellStyle(style);
             cell.setCellValue((Integer) valueOfCell);
         } else if (valueOfCell instanceof String) {
-            Cell cell = row.createCell(columnCount, CellType.STRING);
-            cell.setCellValue((String) valueOfCell);
+            CellUtil.createCell(row,columnCount,(String) valueOfCell, style);
         } else if (valueOfCell instanceof Boolean) {
             Cell cell = row.createCell(columnCount, CellType.BOOLEAN);
+            cell.setCellStyle(style);
             cell.setCellValue((Boolean) valueOfCell);
         } else if (valueOfCell instanceof List<?>) {
             Cell cell = row.createCell(columnCount,CellType.STRING);
+            cell.setCellStyle(style);
             cell.setCellValue(((List<?>) valueOfCell).stream()
                     .map(n -> String.valueOf(n))
                     .collect(Collectors.joining(",")));
         }
     }
 
+    public void createExcel(OutputStream outputStream)
+            throws IllegalAccessException, IOException {
+        writeHeader();
+        writeContent();
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
+    }
 }
