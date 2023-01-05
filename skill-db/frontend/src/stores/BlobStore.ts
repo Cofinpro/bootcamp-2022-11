@@ -17,6 +17,7 @@ export const useBlobStore = defineStore('blobStore',{
                 console.log(response.data);
             }).catch((error) => {
                 const errorStore = useErrorStore();
+                errorStore.catchExportError(error);
             })
         }
     }

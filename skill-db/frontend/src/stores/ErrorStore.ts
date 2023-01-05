@@ -54,7 +54,6 @@ export const useErrorStore = defineStore(
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
                     let innerMessage = message.split(/(\[])/)[2];
-                    /*innerMessage = innerMessage.replaceAll(',', ' ');*/
                     this.errorText = innerMessage;
                 } else if (message === 'Datum nicht in passendem Format!') {
                     this.errorText = message;
@@ -102,6 +101,20 @@ export const useErrorStore = defineStore(
                         this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
                     } else if (error.response.status === 400) {
                         this.errorText = 'Profil Id konnte nicht aufgelöst werden!'
+                    }
+                }
+            },
+            catchExportError(error: AxiosError) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = 'Unbekannter Fehler!';
+                } else {
+                    if (error.response.status === 403) {
+                        this.errorText = `Keine Autorisierung für diese Funktion!`
+                    } else if (error.response.status === 500 ){
+                        this.errorText = 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!';
+                    } else {
+                        this.errorText = 'Unbekannter Fehler!'
                     }
                 }
             },
