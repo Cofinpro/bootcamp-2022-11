@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ExcelGenerator {
@@ -56,6 +57,12 @@ public class ExcelGenerator {
         } else if (valueOfCell instanceof Boolean) {
             Cell cell = row.createCell(columnCount, CellType.BOOLEAN);
             cell.setCellValue((Boolean) valueOfCell);
+        } else if (valueOfCell instanceof List<?>) {
+            Cell cell = row.createCell(columnCount,CellType.STRING);
+            cell.setCellValue(((List<?>) valueOfCell).stream()
+                    .map(n -> String.valueOf(n))
+                    .collect(
+                            Collectors.joining(",")));
         }
     }
     public Workbook writeContent() throws IllegalAccessException {
@@ -71,7 +78,8 @@ public class ExcelGenerator {
             Field[] profileFields = ProfileDetailsOutDTO.class.getDeclaredFields();
             for (Field field : profileFields) {
                 field.setAccessible(true);
-                createCell();
+                createCell(row, colCount, field.get(profile), style);
+                colCount++;
             }
         }
         return workbook;
