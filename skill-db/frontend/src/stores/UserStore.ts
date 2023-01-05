@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {ConvertToUserModel, UserModel} from "@/models/UserModel";
-import axios from "@/axios";
 import {useErrorStore} from "@/stores/ErrorStore";
+import axiosInstance from "@/axios";
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
@@ -12,7 +12,7 @@ export const useUserStore = defineStore('userStore', {
         loadUsers(): void {
             this.loading = true;
             const errorStore = useErrorStore();
-            axios.get("/api/v1/users").then(response => {
+            axiosInstance.get("/api/v1/users").then(response => {
                 if(this.users.length > 0) {
                     // reloads the list of users every time the method gets called,
                     // in case the list is not empty

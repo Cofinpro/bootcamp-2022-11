@@ -6,6 +6,7 @@ import com.cofinprobootcamp.backend.role.Role;
 import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,6 +25,7 @@ public class UserController {
     }
 
     @PostMapping(path = "")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public void createUser(@RequestBody @Valid UserCreateInDTO userIn) {
         if (userIn.userRole() == null) {
             userService.createUser(userIn, StandardRoles.USER.createNewRoleEntity());
@@ -44,21 +46,25 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public void deleteUserById(@PathVariable String id) {
         userService.deleteUserByOuterId(id);
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public UserOutDTO getUserById(@PathVariable String id) {
         return userService.getUserByOuterId(id);
     }
 
     @GetMapping(path = "")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public List<UserOutDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping(path = "/roles")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public List<String> getAllUserRoles() {
         return userService.getAllUserRoles();
     }
