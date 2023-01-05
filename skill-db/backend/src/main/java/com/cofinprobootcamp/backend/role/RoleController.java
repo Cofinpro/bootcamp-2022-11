@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Roles endpoint.
  *
@@ -41,7 +43,7 @@ public class RoleController {
      */
     @GetMapping(path = "")
     @PreAuthorize("hasAnyAuthority(@jwtGrantedAuthoritiesPrefix + 'ADMIN', @jwtGrantedAuthoritiesPrefix + 'HR')")
-    public RoleOverviewOutDTO getAllRoles() {
+    public List<RoleDetailsOutDTO> getAllRoles() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
         return roleService.getAllRoles();
