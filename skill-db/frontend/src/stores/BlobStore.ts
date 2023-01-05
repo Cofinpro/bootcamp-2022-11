@@ -7,11 +7,14 @@ export const useBlobStore = defineStore('blobStore',{
     }),
     actions: {
         async getExcel() {
-            await axiosInstance
-                .get('/api/v1/profiles/export')
-                .then((response) => {
-                    this.blob=response.data;
-                })
+            await axiosInstance({
+                url: '/api/v1/profiles/export',
+                method: 'get',
+                responseType: 'blob',
+            }).then((response) => {
+                this.blob = response.data;
+                console.log(response.data);
+            })
         }
     }
     },
