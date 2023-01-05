@@ -43,7 +43,7 @@ public class UserSetup {
                 "USER"));
         testUsers.add(dtoFromMinimalInfo(
                 "theresa.riesterer",
-                "USER"));
+                "HR"));
 
         testUsers.forEach(this::createOneTestUser);
     }
