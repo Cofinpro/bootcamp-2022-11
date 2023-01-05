@@ -46,8 +46,32 @@ public class ExcelGenerator {
         }
         return workbook;
     }
+
+    public Workbook writeContent() throws IllegalAccessException {
+        int rowCount = 1;
+        CellStyle style = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setFontHeight((short) 14);
+        style.setFont(font);
+        int colCount = 0;
+        for (ProfileDetailsOutDTO profile : profileList) {
+            Row row = sheet.createRow(rowCount);
+            rowCount += 1;
+            colCount = 0;
+            Field[] profileFields = ProfileDetailsOutDTO.class.getDeclaredFields();
+            for (Field field : profileFields) {
+                field.setAccessible(true);
+                createCell(row, colCount, field.get(profile), style);
+                colCount++;
+            }
+        }
+        for (int i = 0; i < colCount; i++) {
+            sheet.autoSizeColumn(i);
+        }
+        return workbook;
+    }
+
     private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style) {
-        sheet.autoSizeColumn(columnCount);
         if (valueOfCell instanceof Integer) {
             Cell cell = row.createCell(columnCount, CellType.NUMERIC);
             cell.setCellValue((Integer) valueOfCell);
@@ -61,27 +85,8 @@ public class ExcelGenerator {
             Cell cell = row.createCell(columnCount,CellType.STRING);
             cell.setCellValue(((List<?>) valueOfCell).stream()
                     .map(n -> String.valueOf(n))
-                    .collect(
-                            Collectors.joining(",")));
+                    .collect(Collectors.joining(",")));
         }
     }
-    public Workbook writeContent() throws IllegalAccessException {
-        int rowCount = 1;
-        CellStyle style = workbook.createCellStyle();
-        Font font = workbook.createFont();
-        font.setFontHeight((short) 14);
-        style.setFont(font);
-        for (ProfileDetailsOutDTO profile : profileList) {
-            Row row = sheet.createRow(rowCount);
-            rowCount += 1;
-            int colCount = 0;
-            Field[] profileFields = ProfileDetailsOutDTO.class.getDeclaredFields();
-            for (Field field : profileFields) {
-                field.setAccessible(true);
-                createCell(row, colCount, field.get(profile), style);
-                colCount++;
-            }
-        }
-        return workbook;
-    }
+
 }
