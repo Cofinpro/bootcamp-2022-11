@@ -5,10 +5,6 @@
       <div class="header">
         <div class="d-flex flex-column align-items-center">
           <upload-image-button/>
-<!--          <v-btn class="uploadBtn mt-3 mb-10 d-flex justify-center"
-                  elevation="0" size="small">
-            Bild hochladen
-          </v-btn>-->
         </div>
 
         <v-row class="headline">
@@ -145,6 +141,7 @@ export default {
       this.references = this.detail.getReferences();
     }
   },
+
   methods: {
     async submitProfile() {
       const detailStore = useDetailStore();
@@ -154,13 +151,13 @@ export default {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
         await detailStore.updateProfile(editDetails, id);
-        if (! errorStore.hasError) {
+        if (!errorStore.hasError) {
           await router.push({name: 'userDetails', params: {id}});
         }
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
         await detailStore.createProfile(newDetails);
-        if (! errorStore.hasError){
+        if (!errorStore.hasError) {
           await router.push('/');
         }
       }
@@ -185,22 +182,30 @@ export default {
       this.showAddTechnology = false;
     },
     checkDateFormat(date) {
-      return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
+      const regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/;
+      if (!regex.test(date)) return false;
+
+      const currentDate = new Date();
+      const [day, month, year] = date.split('.');
+      const inputDate = new Date(Date.UTC(year, month - 1, day));
+
+      return inputDate <= currentDate;
     },
-    checkPhoneFormat(number) {
-      return /^[0-9]{11,13}$/.test(number);
-    }
+    checkPhoneNumber(number) {
+      const regex = /[0-9]*\/*(\+49)* *(\([0-9]+\))*( *([-–])* *[0-9]+)*/g;
+      return regex.test(number);
+    },
   },
   computed: {
     isFilled() {
       return (this.checkDateFormat(this.birthdate) &&
-      this.checkPhoneFormat(this.phoneNumber) &&
-      this.references.length > 0 &&
-      this.jobTitle.length > 0 &&
-      this.primarySkill.length > 0 &&
-      this.lastName.length > 0 &&
-      this.firstName.length > 0 &&
-      this.degree.length > 0 )
+          this.checkPhoneNumber(this.phoneNumber) &&
+          this.references.length > 0 &&
+          this.jobTitle.length > 0 &&
+          this.primarySkill.length > 0 &&
+          this.lastName.length > 0 &&
+          this.firstName.length > 0 &&
+          this.degree.length > 0)
     },
   }
 }
