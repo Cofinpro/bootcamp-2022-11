@@ -2,7 +2,6 @@
   <v-container>
     <h2>Nutzerübersicht</h2>
     <h3>Übersicht aller vorhandenen Nutzer</h3>
-
     <v-table>
       <thead>
       <tr>
@@ -25,7 +24,7 @@
         <td>{{ user.getEmail() }}</td>
         <td>
           <v-chip class="roleChip"
-                  :color="user.getRole() === 'ADMIN' ? 'primary' : 'green'">
+                  :color="user.getRole() === 'Administrator' ? 'primary' : 'green'">
             {{ user.getRole() }}
           </v-chip>
         </td>
