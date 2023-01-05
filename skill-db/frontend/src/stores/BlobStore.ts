@@ -11,7 +11,6 @@ export const useBlobStore = defineStore('blobStore',{
                 .get('/api/v1/profiles/export')
                 .then((response) => {
                     this.blob=response.data;
-                    console.log("sucess")
                 })
         }
     }
