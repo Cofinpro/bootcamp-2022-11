@@ -1,8 +1,8 @@
 <template>
   <v-card height="165" max-width="255" min-width="255"
           @click="$router.push(`/detail/${id}`)"
-          elevation="2" class="d-flex align-center justify-space-between"
-  >
+          elevation="2" class="d-flex align-center justify-space-between">
+
     <v-avatar size="60" class="ma-5">
       <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">
     </v-avatar>
@@ -13,11 +13,13 @@
         <p>{{ primarySkill }}</p>
       </v-card-text>
     </div>
+
   </v-card>
 </template>
 
 <script lang="ts">
 export default {
+  name: "OverviewCard",
   props: {
     id: String,
     name: String,

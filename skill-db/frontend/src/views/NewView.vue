@@ -12,7 +12,8 @@ import EditComponent from "@/components/EditComponent.vue";
 import {useDetailStore} from "@/stores/DetailStore";
 
 export default {
-  components: {EditComponent},
+  name: "NewView",
+  components: { EditComponent },
   setup() {
     const detailStore = useDetailStore();
     return {
@@ -21,3 +22,6 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+</style>
