@@ -13,10 +13,13 @@
 </template>
 
 <script>
+import {useErrorStore} from "@/stores/ErrorStore";
+
 export default {
-  name:"UploadImageButton",
+  name: "UploadImageButton",
   data() {
     return {
+      errorStore: useErrorStore(),
       maxUploadSize: 20000000, // Angabe in bytes, entspricht 20 MB
       imageDataUri: null,
     }
@@ -37,23 +40,26 @@ export default {
       if (fileInput && fileInput.value) {
         const file = fileInput.files[0];
 
-        if (file instanceof Blob && this.isPermissibleSize(file)) {
-          const image = new Image();
-          image.onload = () => {
-            if (this.isInPortraitMode(image)) {
-              const reader = new FileReader();
-              reader.onload = event => {
-                this.imageDataUri = event.target.result;
-              }
-              reader.readAsDataURL(file);
-            } else {
-              console.error('Das Bild muss im Hochformat vorliegen!')
-            }
-          };
-          image.src = URL.createObjectURL(file);
-        } else {
-          console.error('Die Datei muss kleiner als 20 MB sein!');
+        if (!(file instanceof Blob) || !this.isPermissibleSize(file)) {
+          this.errorStore.catchUploadImageError(new Error('Falsche Größe: max. 20 MB zulässig!'));
+          return;
         }
+
+        const image = new Image();
+        image.onload = () => {
+          if (!this.isInPortraitMode(image)) {
+            this.errorStore.catchUploadImageError(new Error('Falsches Format: Nur Hochformat zulässig!'));
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = event => {
+            this.imageDataUri = event.target.result;
+          }
+          reader.readAsDataURL(file);
+        };
+
+        image.src = URL.createObjectURL(file);
       }
     }
   },

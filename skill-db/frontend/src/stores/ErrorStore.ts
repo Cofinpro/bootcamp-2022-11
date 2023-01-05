@@ -72,6 +72,11 @@ export const useErrorStore = defineStore(
                 }
             },
 
+            catchUploadImageError(error: Error) {
+                this.hasError = true;
+                this.errorText = error == undefined ? 'Unbekannter Fehler!' : error.message;
+            },
+
             catchGetError(error: AxiosError, id: String) {
                 this.hasError = true;
                 if (error.response == undefined) {

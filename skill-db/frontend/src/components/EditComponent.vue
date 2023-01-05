@@ -191,7 +191,7 @@ export default {
 
       return inputDate <= currentDate;
     },
-    checkPhoneNumber(number) {
+    checkPhoneNumberFormat(number) {
       const regex = /[0-9]*\/*(\+49)* *(\([0-9]+\))*( *([-–])* *[0-9]+)*/g;
       return regex.test(number);
     },
@@ -199,7 +199,7 @@ export default {
   computed: {
     isFilled() {
       return (this.checkDateFormat(this.birthdate) &&
-          this.checkPhoneNumber(this.phoneNumber) &&
+          this.checkPhoneNumberFormat(this.phoneNumber) &&
           this.references.length > 0 &&
           this.jobTitle.length > 0 &&
           this.primarySkill.length > 0 &&
@@ -216,10 +216,6 @@ export default {
 .header {
   width: 100%;
   display: flex;
-}
-
-.uploadBtn {
-  width: 200px;
 }
 
 .headline {
