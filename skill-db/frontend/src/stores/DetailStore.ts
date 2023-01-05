@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {ConvertToDetailModel, DetailModel} from "@/models/DetailModel";
-import axios from "@/axios";
 import {useErrorStore} from "@/stores/ErrorStore";
+import axiosInstance from "@/axios";
 
 export const useDetailStore = defineStore('detailStore', {
         state: () => ({
@@ -30,7 +30,7 @@ export const useDetailStore = defineStore('detailStore', {
             loadDetailsById(id: String) {
                 this.loading = true;
                 const errorStore = useErrorStore();
-                axios.get(`/api/v1/profiles/${id}`).then((response) => {
+                axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
                     this.details = ConvertToDetailModel.toDetail(response.data);
                 }).catch((error) => {
                     errorStore.catchGetError(error, id);
@@ -42,7 +42,7 @@ export const useDetailStore = defineStore('detailStore', {
             deleteDetailsByID(id: String) {
                 this.loading = true;
                 const errorStore = useErrorStore();
-                axios.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
+                axiosInstance.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
                     errorStore.catchDeleteError(error,id);
                 });
                 this.loading = false;
@@ -52,7 +52,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = true;
                 console.log(edits);
                 const errorStore = useErrorStore();
-                await axios.post(`/api/v1/profiles/`,
+                await axiosInstance.post(`/api/v1/profiles/`,
                     {
                         'firstName': edits.getFirstName(),
                         'lastName': edits.getLastName(),
@@ -78,7 +78,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = true;
                 console.log(edits);
                 const errorStore = useErrorStore()
-                await axios.patch(`/api/v1/profiles/${id}`,
+                await axiosInstance.patch(`/api/v1/profiles/${id}`,
                     {
                         'firstName': edits.getFirstName(),
                         'lastName': edits.getLastName(),
@@ -102,7 +102,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.skills = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
-                axios.get(`/api/v1/skills`).then((response) => {
+                axiosInstance.get(`/api/v1/skills`).then((response) => {
                     response.data.forEach((element: object) => {
                         this.skills.push(element.toString());
                     })
@@ -117,7 +117,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.jobs = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
-                axios.get(`/api/v1/job-titles/`).then((response) => {
+                axiosInstance.get(`/api/v1/job-titles/`).then((response) => {
                     response.data.forEach((element: String) => {
                         this.jobs.push(element)
                     })
@@ -132,7 +132,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.primarys = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
-                axios.get(`/api/v1/profiles/expertises`).then((response) => {
+                axiosInstance.get(`/api/v1/profiles/expertises`).then((response) => {
                     response.data.forEach((element: String) => {
                         this.primarys.push(element)
                     })
@@ -145,7 +145,7 @@ export const useDetailStore = defineStore('detailStore', {
 
             setJobs(id: number, name: String) {
                 this.loading = true;
-                axios.post(`/api/v1/jobTitles/`,
+                axiosInstance.post(`/api/v1/jobTitles/`,
                     {
                         'id': id,
                         'name': name,
