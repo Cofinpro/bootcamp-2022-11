@@ -14,7 +14,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080/',
+        target: 'http://skilldbbackend-env.eba-aqy7m5zk.eu-central-1.elasticbeanstalk.com/',
         changeOrigin: true,
       },
       '/comic': {
