@@ -14,21 +14,25 @@ public class UserDetailsImpl implements UserDetails {
 
     private final String username;
     private final String password;
-    private final List<GrantedAuthority> rolesAndAuthorities;
+    private final String roleName;
+    private final List<GrantedAuthority> authorities;
     private final boolean isLocked;
+    private final String profileId;
 
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.rolesAndAuthorities = List.of(
+        this.roleName = user.getRole().name();
+        this.authorities = List.of(
                 new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole().name())
         );
         this.isLocked = user.isLocked();
+        this.profileId = user.getProfile() != null ? user.getProfile().getOuterId() : null;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return rolesAndAuthorities;
+        return authorities;
     }
 
     @Override
@@ -59,5 +63,13 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public String getProfileId() {
+        return this.profileId;
     }
 }
