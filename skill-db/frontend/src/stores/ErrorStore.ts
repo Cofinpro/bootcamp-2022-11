@@ -36,6 +36,24 @@ export const useErrorStore = defineStore(
                 }
             },
 
+            catchImportError(error: AxiosError) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = this.errorMessages.unknownError;
+                } else {
+                    if (error.response.status === 400) {
+                        this.handle400forProfile(error);
+                    } else if (error.response.status === 401) {
+                        this.errorText = this.errorMessages.unauthorized;
+                    } else if (error.response.status === 500) {
+                        this.errorText = this.errorMessages.internalServerError;
+                    } else if (error.response.status === 403) {
+                        this.errorText = this.errorMessages.notAllowed;
+                    } else {
+                        this.errorText = this.errorMessages.unknownError;
+                    }
+                }
+                },
             catchPostPatchError(error: AxiosError) {
                 this.hasError=true;
                 if (error.response == undefined) {
