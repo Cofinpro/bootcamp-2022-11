@@ -2,12 +2,18 @@
    <ButtonWithTooltip v-if="isAdminOrHR"
                       tooltip="Profil von csv importieren"
                      icon="mdi-file-import"
-                     @clicked="$refs.file.click()"/>
-  <input type="file" ref="file" style="display: none" />
+                     @clicked="$refs.fileInput.click()"/>
+  <input type="file"
+         v-if="isAdminOrHR"
+         ref="fileInput"
+         style="display: none"
+         @change="uploadCSV"
+         accept="text/csv"/>
 </template>
 
 <script type="ts">
 import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
+import {useBlobStore} from "@/stores/BlobStore";
 
 export default {
   name: "ImportButton",
@@ -19,8 +25,11 @@ export default {
     }
   },
   methods: {
-
-  }
+    uploadCSV(event) {
+      let blobStore = useBlobStore();
+      blobStore.postCSV(this.$refs.fileInput.files[0]);
+    },
+  },
 }
 </script>
 

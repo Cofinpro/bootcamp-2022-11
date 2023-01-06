@@ -11,6 +11,7 @@ import com.cofinprobootcamp.backend.user.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.cofinprobootcamp.backend.user.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -104,8 +105,9 @@ public class ProfileController {
 
     /**
      * generates excel and writes excel to responses outputstream
+     *
      * @param response to get request
-     * @throws IOException if response is not writable
+     * @throws IOException            if response is not writable
      * @throws IllegalAccessException should never be thrown!
      */
     @GetMapping("/export")
@@ -120,5 +122,11 @@ public class ProfileController {
         response.setHeader(headerKey, headerValue);
         ExcelGenerator excelGenerator = new ExcelGenerator(profileService.getAllDetailDTOs());
         excelGenerator.createExcel(response.getOutputStream());
+    }
+
+    @PostMapping("/import")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
+    public void importFromCSV(@RequestBody String csvFile) {
+        System.out.println(csvFile.getName());
     }
 }
