@@ -13,7 +13,7 @@ public class JobTitleController {
         this.jobTitleRepository = jobTitleRepository;
     }
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_USER', 'ROLE_HR')")
     public List<String> getJobTitles() {
         return jobTitleRepository
                 .findAll()

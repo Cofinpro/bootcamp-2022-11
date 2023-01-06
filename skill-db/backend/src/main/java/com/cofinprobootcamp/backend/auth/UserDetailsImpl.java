@@ -1,21 +1,21 @@
 package com.cofinprobootcamp.backend.auth;
 
+import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.user.User;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.List;
 
-import static com.cofinprobootcamp.backend.config.Constants.ROLE_PREFIX;
+import static com.cofinprobootcamp.backend.config.Constants.AUTHORITY_PREFIX;
+import static com.cofinprobootcamp.backend.config.Constants.JWT_ROLE_PREFIX;
 
 public class UserDetailsImpl implements UserDetails {
 
     private final String username;
     private final String password;
     private final String roleName;
-    private final List<GrantedAuthority> authorities;
+    private final List<SimpleGrantedAuthority> authorities;
     private final boolean isLocked;
     private final String profileId;
 
@@ -23,15 +23,13 @@ public class UserDetailsImpl implements UserDetails {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.roleName = user.getRole().name();
-        this.authorities = List.of(
-                new SimpleGrantedAuthority(ROLE_PREFIX + user.getRole().name())
-        );
+        this.authorities = createGrantedAuthoritiesFromRole(user.getRole());
         this.isLocked = user.isLocked();
         this.profileId = user.getProfile() != null ? user.getProfile().getOuterId() : null;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public List<SimpleGrantedAuthority> getAuthorities() {
         return authorities;
     }
 
@@ -71,5 +69,9 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getProfileId() {
         return this.profileId;
+    }
+
+    private List<SimpleGrantedAuthority> createGrantedAuthoritiesFromRole(StandardRoles role) {
+        return List.of(new SimpleGrantedAuthority(JWT_ROLE_PREFIX + role.name())); //TODO Implement
     }
 }

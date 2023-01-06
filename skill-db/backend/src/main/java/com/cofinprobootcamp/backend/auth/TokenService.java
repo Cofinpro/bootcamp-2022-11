@@ -69,10 +69,13 @@ public class TokenService {
 
         // getting the role of the user, because he is an anonymousUser right now
         // (when trying to access the userDetails with Authentication)
-        String role = "";
-        Optional<User> user = userRepository.findByUsername(username);
-        if(user.isPresent()) {
-            role += user.get().getRole().name();
+        String role = JWT_ROLE_PREFIX;
+        String outerId = "";
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if(userOptional.isPresent()) {
+            User user = userOptional.get();
+            role += user.getRole().name(); // Null check omitted (potentially dangerous)
+            outerId += user.getOuterId();
         }
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
@@ -80,6 +83,7 @@ public class TokenService {
                 .issuedAt(now)
                 .expiresAt(now.plus(ACCESS_TOKEN_DURATION_SECONDS, ChronoUnit.SECONDS))
                 .subject(username)
+                .claim(JWT_CLAIM_OID, outerId)
                 .claim(JWT_CLAIM_SCP, role)
                 .build();
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

@@ -44,8 +44,8 @@ public class UserService {
 
     public User createUser(UserCreateInDTO inDTO) {
         String password = passwordEncoder.encode(inDTO.password());
-        StandardRoles role = StandardRoles.fromIdentifier(inDTO.userRole());
-        if (role.equals(StandardRoles.UNDEFINED)) {
+        StandardRoles role = (inDTO.userRole() != null) ? StandardRoles.fromIdentifier(inDTO.userRole()) : null;
+        if (StandardRoles.UNDEFINED.equals(role)) {
             throw new RoleNotFoundException(inDTO.userRole());
         }
         User user = UserDirector.CreateInDTOToEntity(inDTO, password, role);
@@ -94,10 +94,6 @@ public class UserService {
         return users.stream()
                 .map(UserDirector::EntityToUserOutDTO)
                 .toList();
-    }
-
-    public List<String> getAllUserRoles() {
-        return StandardRoles.getAllDefinedValuesAsShortName();
     }
 
     private void tryToSetUniqueOuterId(User user) {

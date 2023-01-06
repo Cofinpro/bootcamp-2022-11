@@ -10,7 +10,7 @@ public class UserDirector {
         return User.builder()
                 .username(userInDTO.email())
                 .password(encodedPassword)
-                .role(role)
+                .role(role != null ? role : StandardRoles.USER)
                 .build();
     }
 

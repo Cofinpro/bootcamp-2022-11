@@ -121,5 +121,16 @@ public class TheExceptionHandler {
                 iofe.getCause());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(AuthTokenInfoOutOfSyncWithPersistenceException.class)
+    public ResponseEntity<CustomErrorMessage> handleAuthValidationOutOfSync(
+            AuthTokenInfoOutOfSyncWithPersistenceException atiooswpe,
+            WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Die Informationen aus dem Access Token stimmen nicht mit der Datenbank überein!",
+                wr.getDescription(false),
+                atiooswpe.getCause());
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
 }
 
