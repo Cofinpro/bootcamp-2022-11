@@ -14,13 +14,11 @@ public class EmailSendService {
     }
 
     public void sendSimpleMessage(String to, String subject, String text) {
-        System.out.println("mail wird erstellt: to: " + to + " subject: " + subject + " text: " + text);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("mails.skilldb.cofinpro@gmail.com");
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
         emailSender.send(message);
-        System.out.println("mail wurde versendet");
     }
 }
