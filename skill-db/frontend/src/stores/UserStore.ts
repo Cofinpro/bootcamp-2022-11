@@ -22,7 +22,7 @@ export const useUserStore = defineStore('userStore', {
                     this.users.push(ConvertToUserModel.toUserModel(element));
                 })
             }).catch((error) => {
-                errorStore.catchOverviewError(error);
+                errorStore.catchUserOverviewError(error);
             })
         }
 
