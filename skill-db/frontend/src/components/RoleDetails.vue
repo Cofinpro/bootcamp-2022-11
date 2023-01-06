@@ -33,30 +33,35 @@
             mdi-pencil
           </v-icon>
 
-          <v-overlay v-model="edit" absolute>
-            <v-card class="d-flex justify-space-between" elevation="2">
-              <!--            <v-autocomplete v-if="edit" v-model="selectedUsers" label="Wähle Anwender"
-                                          :items="getUserNames()"
-                                          multiple auto-select-first/>-->
-              <v-select v-if="edit" v-model="selectedUsers"
-                        :items="users" label="Wähle Anwender"
-                        multiple class="ml-5 mt-5">
-                <template v-slot:selection="{ item, index }">
-                  <v-chip v-if="index <= 1">
-                    <span>{{ item.title }}</span>
-                  </v-chip>
-                  <span v-if="index === 2"
-                        class="grey--text text-caption">
-                    (+{{ selectedUsers.length - 2 }} others)
-                  </span>
-                </template>
-              </v-select>
-
+          <v-overlay v-model="edit">
+            <v-card elevation="2">
+              <div class="d-flex justify-space-between">
+              <v-card-title>
+                {{ roleHere.getIdentifier() }}
+              </v-card-title>
               <v-card-actions>
-                <v-icon class="mr-2 ml-2" @click="edit = false">
-                  mdi-close-circle-outline
-                </v-icon>
+                <v-btn class="mr-2 mt-2" @click="submit(roleHere)"
+                       elevation="0" size="small">
+                  Bestätigen
+                </v-btn>
               </v-card-actions>
+              </div>
+
+              <v-card-item class="d-flex flex-column justify-space-between">
+                <v-select v-if="edit" v-model="selectedUsers"
+                          :items="users" label="Wähle Nutzer"
+                          multiple class="ml-5 mr-5" hide-details>
+                  <template v-slot:selection="{ item, index }">
+                    <v-chip v-if="index <= 0">
+                      <span>{{ item.title }}</span>
+                    </v-chip>
+                    <span v-if="index === 1"
+                          class="grey--text text-caption">
+                    (+{{ selectedUsers.length - 1 }} others)
+                  </span>
+                  </template>
+                </v-select>
+              </v-card-item>
             </v-card>
           </v-overlay>
 
@@ -66,32 +71,21 @@
   </v-container>
 </template>
 
-<script >
+<script> /*TODO should be TypeScript*/
 import {useRoleStore} from "@/stores/RoleStore";
 import {RoleModel} from "@/models/RoleModel.ts";
+import {useUserStore} from "@/stores/UserStore";
 
 export default {
   name: "RoleDetails",
   props: ['roles', 'users'],
-  setup() {
-    /*const roleStore = useRoleStore();
-    roleStore.loadAllRoles();
-    const roles = roleStore.allRoles;
-
-    const roleNames = [] as String[];
-
-    roles.forEach(role => {
-      if(role.getIdentifier() !== 'UNDEFINED') {
-        roleNames.push(role.getIdentifier());
-        roleStore.loadUsersById(role.getIdentifier());
-      }
-    })*/
-  },
   data() {
     return {
       edit: false,
+      roleHere: new RoleModel(),
       selectedUsers: [],
       roleStore: useRoleStore(),
+      userStore: useUserStore(),
     }
   },
   methods: {
@@ -108,12 +102,20 @@ export default {
     },
     async prepareSelect(role) {
       this.selectedUsers = [];
-      if(role.getIdentifier() !== 'UNDEFINED') {
+      if (role.getIdentifier() !== 'UNDEFINED') {
         await this.roleStore.loadUsersById(role.getIdentifier());
         this.selectedUsers = this.roleStore.user;
       }
+      this.roleHere = role;
       this.edit = true;
-    }
+    },
+    async submit(role) {
+      for (const user of this.selectedUsers) {
+        await this.userStore.changeRole(role.getIdentifier(), user);
+        console.log(`User: ${user}, Role: ${role.getIdentifier()}`);
+      }
+      this.edit = false;
+    },
   },
 }
 </script>
@@ -127,7 +129,11 @@ export default {
 .v-card {
   margin-top: 20vh;
   margin-left: 20vw;
-  max-width: 600px;
+  max-width: 500px;
   min-width: 400px;
+}
+
+.v-select {
+  min-width: 340px;
 }
 </style>
