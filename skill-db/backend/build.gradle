@@ -39,10 +39,10 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
-	implementation 'com.microsoft.azure:azure-active-directory-b2c-spring-boot-starter:2.3.5'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.0.1'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.1.RELEASE'
-	implementation 'com.azure.spring:spring-cloud-azure-starter:4.5.0'
+	// implementation 'com.microsoft.azure:azure-active-directory-b2c-spring-boot-starter:2.3.5'
+	// implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:3.0.1'
+	// implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.1.RELEASE'
+	// implementation 'com.azure.spring:spring-cloud-azure-starter:4.5.0'
 }
 /*
 dependencyManagement {

@@ -1,12 +1,12 @@
 package com.cofinprobootcamp.backend.auth;
 
-import com.azure.core.annotation.Get;
+// import com.azure.core.annotation.Get;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+// import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class AuthController {
         this.tokenService = tokenService;
         this.authenticationManager = authenticationManager;
 }
-
+/*
 private void initializeModel(Model model, OAuth2AuthenticationToken token) {
         if(token != null) {
             final OAuth2User user = token.getPrincipal();
@@ -40,6 +40,8 @@ public String index(Model model, OAuth2AuthenticationToken token) {
 
         return "MS Login works";
 }
+
+ */
 
     /**
      * Handles the login. In case the user credentials are valid, it returns an object containing

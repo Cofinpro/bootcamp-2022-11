@@ -1,6 +1,6 @@
 package com.cofinprobootcamp.backend.auth;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer;
+//import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer;
 import com.cofinprobootcamp.backend.enums.StandardRoles;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -47,12 +47,12 @@ public class SecurityConfig {
 
     private final RsaKeyProperties rsaKeys;
     private final UserDetailsServiceImpl userDetailsService;
-    private final AadB2cOidcLoginConfigurer configurer;
+    // private final AadB2cOidcLoginConfigurer configurer;
 
-    public SecurityConfig(RsaKeyProperties rsaKeys, UserDetailsServiceImpl userDetailsService, AadB2cOidcLoginConfigurer configurer) {
+    public SecurityConfig(RsaKeyProperties rsaKeys, UserDetailsServiceImpl userDetailsService/*, AadB2cOidcLoginConfigurer configurer*/) {
         this.rsaKeys = rsaKeys;
         this.userDetailsService = userDetailsService;
-        this.configurer = configurer;
+       // this.configurer = configurer;
     }
 
     @Bean
@@ -86,8 +86,8 @@ public class SecurityConfig {
                         .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
                 )
                 .httpBasic(withDefaults())
-                .apply(configurer)
-                .and()
+               // .apply(configurer)
+               // .and()
                 .build();
     }
 
