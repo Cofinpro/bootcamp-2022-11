@@ -62,7 +62,7 @@ export const useErrorStore = defineStore(
                 if (message === 'Der zurzeit eingeloggte Nutzer hat bereits ein Profil!') {
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
-                    let innerMessage = message.split(/(\[])/)[2];
+                    let innerMessage = message.split(/(\[|\])/)[2];
                     this.errorText = innerMessage;
                 } else if (message === 'Datum nicht in passendem Format!') {
                     this.errorText = message;
