@@ -2,7 +2,8 @@
    <ButtonWithTooltip v-if="isAdminOrHR"
                       tooltip="Profil von csv importieren"
                      icon="mdi-file-import"
-                     @clicked="showFileInput"/>
+                     @clicked="$refs.file.click()"/>
+  <input type="file" ref="file" style="display: none" />
 </template>
 
 <script type="ts">
