@@ -12,6 +12,7 @@
       </v-card>
       <div class="d-flex justify-space-between">
         <ExportButton></ExportButton>
+        <ImportButton></ImportButton>
         <ButtonWithTooltip tooltip="Neues Profil erstellen"
                            icon="mdi-plus-thick"
                            @clicked="createProfile"/>
@@ -50,10 +51,11 @@ import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
 import {useOverviewStore} from "@/stores/OverviewStore";
 import router from "@/router";
 import ExportButton from "@/components/ExportButton.vue";
+import ImportButton from "@/components/ImportButton.vue";
 
 export default {
   name: "HomeView",
-  components: {ExportButton, OverviewCard, ButtonWithTooltip },
+  components: {ExportButton, ImportButton, OverviewCard, ButtonWithTooltip },
   setup() {
     const overviewStore = useOverviewStore();
     overviewStore.loadOverview();

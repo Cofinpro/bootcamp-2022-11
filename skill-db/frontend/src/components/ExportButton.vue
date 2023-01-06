@@ -1,9 +1,8 @@
 <template>
-  <div v-if="isAdminOrHR">
    <ButtonWithTooltip tooltip="Liste exportieren"
-                     icon="mdi-file-export"
+                      v-if="isAdminOrHR"
+                      icon="mdi-file-export"
                      @clicked="exportProfiles"/>
-  </div>
 </template>
 
 <script type="ts">
