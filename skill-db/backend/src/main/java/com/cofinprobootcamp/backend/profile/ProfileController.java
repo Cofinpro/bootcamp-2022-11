@@ -124,9 +124,10 @@ public class ProfileController {
         excelGenerator.createExcel(response.getOutputStream());
     }
 
-    @PostMapping("/import")
+    @PostMapping(path="/import",  consumes="multipart/form-data")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
-    public void importFromCSV(@RequestBody String csvFile) {
-        System.out.println(csvFile);
+    public void importFromCSV(@RequestParam("file") MultipartFile file) throws IOException {
+        CSVReader reader = new CSVReader(file);
+        reader.readProfileFromFile();
     }
 }

@@ -21,14 +21,18 @@ export const useBlobStore = defineStore('blobStore',{
             })
         },
         postCSV(file: File) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            axiosInstance.post('/api/v1/profiles/import',reader.result).then(response => {
-                console.log('sucess');
+            const formData = new FormData();
+            formData.append('file', file);
+            axiosInstance({
+                url: '/api/v1/profiles/import',
+                method: 'post',
+                data: formData,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(response =>{
+              console.log(response);
             }).catch(error => {
                 console.log(error);
-                }
-            )
+            })
         },
     }
     },
