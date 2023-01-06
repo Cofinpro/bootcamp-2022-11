@@ -11,7 +11,7 @@ export const useErrorStore = defineStore(
                 unauthorized: 'Nicht autorisiert!',
                 internalServerError: 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!',
                 idNotFound: 'Profil Id konnte nicht aufgelöst werden!',
-                notAllowed: 'Keine Berechtigung, diese Funktion aufzurufen. Dieser Vorfall wird an die Administratoren weitergeleitet.'
+                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Dieser Vorfall wird an die Administratoren weitergeleitet.'
             }
         }),
         actions: {
@@ -21,13 +21,15 @@ export const useErrorStore = defineStore(
                 this.errorText= '';
             },
 
-            catchOverviewError(error: AxiosError) {
+            catchUserOverviewError(error: AxiosError) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = this.errorMessages.unknownError;
                 } else {
                     if (error.response.status === 401) {
                         this.errorText = this.errorMessages.unauthorized;
+                    } else if (error.response.status === 403) {
+                        this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
                     } else {
@@ -115,13 +117,14 @@ export const useErrorStore = defineStore(
                     }
                 }
             },
+
             catchExportError(error: AxiosError) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = this.errorMessages.unknownError;
                 } else {
                     if (error.response.status === 403) {
-                        this.errorText = this.errorMessages.unauthorized;
+                        this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 500 ){
                         this.errorText = this.errorMessages.internalServerError;
                     } else {
