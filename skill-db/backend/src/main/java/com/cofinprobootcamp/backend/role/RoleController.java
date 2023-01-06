@@ -43,4 +43,15 @@ public class RoleController {
         return roleService.getAllRoles();
     }
 
+    /**
+     * Endpoint to find all users with a specific role by its identifier.
+     *
+     * @param identifier The unique short name of the role for internal identification
+     * @return A list of usernames of all users with this role
+     */
+    @GetMapping(path = "{identifier}/user")
+    public List<String> getAllUsersForRoleById(@PathVariable String identifier) {
+        return roleService.getUsersByRole(identifier);
+    }
+
 }
