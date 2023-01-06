@@ -11,9 +11,7 @@
         Searchbar
       </v-card>
       <div class="d-flex justify-space-between">
-        <ButtonWithTooltip tooltip="Liste exportieren"
-                           icon="mdi-file-export"
-                           @clicked="exportProfiles"/>
+        <ExportButton></ExportButton>
         <ButtonWithTooltip tooltip="Neues Profil erstellen"
                            icon="mdi-plus-thick"
                            @clicked="createProfile"/>
@@ -51,10 +49,11 @@ import OverviewCard from "@/components/OverviewCard.vue";
 import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
 import {useOverviewStore} from "@/stores/OverviewStore";
 import router from "@/router";
+import ExportButton from "@/components/ExportButton.vue";
 
 export default {
   name: "HomeView",
-  components: { OverviewCard, ButtonWithTooltip },
+  components: {ExportButton, OverviewCard, ButtonWithTooltip },
   setup() {
     const overviewStore = useOverviewStore();
     overviewStore.loadOverview();
@@ -66,9 +65,6 @@ export default {
     createProfile() {
       console.log("Now you can create a new profile.");
       router.push(`/details/new`);
-    },
-    exportProfiles() {
-      console.log("Here you can export the shown profile to xlsx");
     },
     filterProfiles() {
       console.log("Start filtering.");
