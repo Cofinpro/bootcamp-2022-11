@@ -42,10 +42,10 @@ export const useRoleStore = defineStore('roleStore', {
             this.loading = false;
         },
 
-        loadAllRoles() {
+        async loadAllRoles() {
             this.loading = true;
             const errorStore = useErrorStore();
-            axiosInstance.get(`/api/v1/roles`).then((response) => {
+            await axiosInstance.get(`/api/v1/roles`).then((response) => {
                 if(this.allRoles.length > 0) {
                     // reloads the list of users every time the method gets called,
                     // in case the list is not empty

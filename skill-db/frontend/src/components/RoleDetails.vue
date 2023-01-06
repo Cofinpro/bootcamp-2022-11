@@ -13,22 +13,22 @@
           Beschreibung
         </th>
         <th class="text-center">
-          Aktionen
+          Rolle vergeben
         </th>
       </tr>
       </thead>
 
       <tr v-for="role in roles"
           :key="role.getIdentifier()">
-        <td class="d-flex justify-center ma-1" v-if="role.getIdentifier() !== 'UNDEFINED'">
+        <td class="d-flex justify-center pa-2 pt-3" v-if="isDefined(role)">
           <v-chip :color="roleColor(role.getIdentifier())">
             {{ role.getDisplayName() }}
           </v-chip>
         </td>
-        <td class="description" v-if="role.getIdentifier() !== 'UNDEFINED'">
+        <td class="description pa-2" v-if="isDefined(role)">
           {{ role.getDescription() }}
         </td>
-        <td class="d-flex justify-center" v-if="role.getIdentifier() !== 'UNDEFINED'">
+        <td class="d-flex justify-center" v-if="isDefined(role)">
           <v-icon color="#BDBDBD" @click="prepareSelect(role)">
             mdi-pencil
           </v-icon>
@@ -37,7 +37,7 @@
             <v-card elevation="2">
               <div class="d-flex justify-space-between">
               <v-card-title>
-                {{ roleHere.getIdentifier() }}
+                {{ roleHere.getDisplayName() }}
               </v-card-title>
               <v-card-actions>
                 <v-btn class="mr-2 mt-2" @click="submit(roleHere)"
@@ -57,7 +57,7 @@
                     </v-chip>
                     <span v-if="index === 1"
                           class="grey--text text-caption">
-                    (+{{ selectedUsers.length - 1 }} others)
+                    (+{{ selectedUsers.length - 1 }} mehr)
                   </span>
                   </template>
                 </v-select>
@@ -100,6 +100,9 @@ export default {
         return 'red';
       }
     },
+    isDefined(role) {
+      return role.getIdentifier() !== 'UNDEFINED';
+    },
     async prepareSelect(role) {
       this.selectedUsers = [];
       if (role.getIdentifier() !== 'UNDEFINED') {
@@ -112,7 +115,6 @@ export default {
     async submit(role) {
       for (const user of this.selectedUsers) {
         await this.userStore.changeRole(role.getIdentifier(), user);
-        console.log(`User: ${user}, Role: ${role.getIdentifier()}`);
       }
       this.edit = false;
     },
