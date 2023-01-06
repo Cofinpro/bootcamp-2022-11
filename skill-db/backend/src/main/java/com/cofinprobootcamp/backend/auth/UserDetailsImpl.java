@@ -5,15 +5,17 @@ import com.cofinprobootcamp.backend.user.User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.cofinprobootcamp.backend.config.Constants.AUTHORITY_PREFIX;
-import static com.cofinprobootcamp.backend.config.Constants.JWT_ROLE_PREFIX;
 
 public class UserDetailsImpl implements UserDetails {
 
     private final String username;
     private final String password;
+
+    private final String outerId;
     private final String roleName;
     private final List<SimpleGrantedAuthority> authorities;
     private final boolean isLocked;
@@ -22,6 +24,7 @@ public class UserDetailsImpl implements UserDetails {
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.outerId = user.getOuterId();
         this.roleName = user.getRole().name();
         this.authorities = createGrantedAuthoritiesFromRole(user.getRole());
         this.isLocked = user.isLocked();
@@ -63,6 +66,10 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
+    public String getOuterId() {
+        return outerId;
+    }
+
     public String getRoleName() {
         return roleName;
     }
@@ -72,6 +79,11 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     private List<SimpleGrantedAuthority> createGrantedAuthoritiesFromRole(StandardRoles role) {
-        return List.of(new SimpleGrantedAuthority(JWT_ROLE_PREFIX + role.name())); //TODO Implement
+        List<SimpleGrantedAuthority> authorityList = new LinkedList<>();
+        for (var privilege : role.getAssociatedPrivileges())
+            authorityList.add(
+                    new SimpleGrantedAuthority(AUTHORITY_PREFIX + privilege.name())
+            );
+        return authorityList;
     }
 }

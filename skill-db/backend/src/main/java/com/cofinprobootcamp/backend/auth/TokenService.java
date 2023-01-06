@@ -1,7 +1,5 @@
 package com.cofinprobootcamp.backend.auth;
 
-import com.cofinprobootcamp.backend.user.User;
-import com.cofinprobootcamp.backend.user.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
@@ -10,7 +8,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.cofinprobootcamp.backend.config.Constants.*;
 import static com.cofinprobootcamp.backend.config.ProfileConfiguration.*;
@@ -20,12 +17,12 @@ public class TokenService {
 
     private final JwtEncoder encoder;
     private final JwtDecoder jwtDecoder;
-    private final UserRepository userRepository;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    public TokenService(JwtEncoder encoder, JwtDecoder jwtDecoder, UserRepository userRepository) {
+    public TokenService(JwtEncoder encoder, JwtDecoder jwtDecoder, UserDetailsServiceImpl userDetailsService) {
         this.encoder = encoder;
         this.jwtDecoder = jwtDecoder;
-        this.userRepository = userRepository;
+        this.userDetailsService = userDetailsService;
     }
 
     /**
@@ -69,22 +66,15 @@ public class TokenService {
 
         // getting the role of the user, because he is an anonymousUser right now
         // (when trying to access the userDetails with Authentication)
-        String role = JWT_ROLE_PREFIX;
-        String outerId = "";
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if(userOptional.isPresent()) {
-            User user = userOptional.get();
-            role += user.getRole().name(); // Null check omitted (potentially dangerous)
-            outerId += user.getOuterId();
-        }
+        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(username);
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(JWT_ISSUER_NAME)
                 .issuedAt(now)
                 .expiresAt(now.plus(ACCESS_TOKEN_DURATION_SECONDS, ChronoUnit.SECONDS))
                 .subject(username)
-                .claim(JWT_CLAIM_OID, outerId)
-                .claim(JWT_CLAIM_SCP, role)
+                .claim(JWT_CLAIM_OID, userDetails.getOuterId())
+                .claim(JWT_CLAIM_SCP, JWT_ROLE_PREFIX + userDetails.getRoleName())
                 .build();
         return encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }

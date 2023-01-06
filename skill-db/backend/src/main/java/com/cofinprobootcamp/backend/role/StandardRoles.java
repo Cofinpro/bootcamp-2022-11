@@ -2,6 +2,7 @@ package com.cofinprobootcamp.backend.role;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * An {@code Enum} defining the different user roles that govern access rights on the SkillDB platform.
@@ -18,14 +19,40 @@ public enum StandardRoles {
      * <br>
      * This role allows to create, update, delete and view profiles for any user.
      */
-    ADMIN("Administrator", "Mit dieser Rolle dürfen alle Profile angesehen, bearbeitet und gelöscht werden. Außerdem alle Rollen vergeben und entzogen werden."), //TODO: Add description text
+    ADMIN(
+            "Administrator",
+            "Mit dieser Rolle dürfen alle Profile angesehen, bearbeitet und gelöscht werden. Außerdem alle Rollen vergeben und entzogen werden."
+    ) {
+        @Override
+        public Set<UserPrivileges> getAssociatedPrivileges() {
+            return UserPrivileges.getAllValidUserPrivileges(); // ADMIN has any available privilege
+        }
+    },
 
     /**
      * User role
      * <br>
      * This role allows to create, update, delete and view profiles for the user themselves.
      */
-    USER("Nutzer", "Mit dieser Rolle dürfen alle Profile angesehen, aber nur das eigene Profil bearbeitet und gelöscht werden. Der Zugriff auf Rollen ist nicht möglich."), //TODO: Add description text
+    USER(
+            "Nutzer",
+            "Mit dieser Rolle dürfen alle Profile angesehen, aber nur das eigene Profil bearbeitet und gelöscht werden. Der Zugriff auf Rollen ist nicht möglich."
+    ) {
+        @Override
+        public Set<UserPrivileges> getAssociatedPrivileges() {
+            return Set.of(
+                    UserPrivileges.ROLES_GET_BY_ID_SELF,
+                    UserPrivileges.PROFILES_POST_NEW_SELF,
+                    UserPrivileges.PROFILES_PATCH_BY_ID_SELF,
+                    UserPrivileges.PROFILES_DELETE_BY_ID_SELF,
+                    UserPrivileges.PROFILES_GET_BY_ID_ANY,
+                    UserPrivileges.PROFILES_GET_ALL,
+                    UserPrivileges.PROFILES_EXPERTISES_GET_ALL,
+                    UserPrivileges.SKILLS_GET_ALL,
+                    UserPrivileges.JOB_TITLES_GET_ALL
+            );
+        }
+    },
 
     /**
      *
@@ -34,13 +61,46 @@ public enum StandardRoles {
      * This role allows to create new users, provide basic profiles, view and change any existing profiles,
      * but is excluded from internal administration rights.
      */
-    HR("Personalabteilung/Human Resources", "Mit dieser Rolle dürfen alle Profile angesehen, bearbeitet und gelöscht werden. Der Zugriff auf Rollen ist nicht möglich."), //TODO: Add description text
+    HR(
+            "Personalabteilung/Human Resources",
+            "Mit dieser Rolle dürfen alle Profile angesehen, bearbeitet und gelöscht werden. Der Zugriff auf die Bearbeitung von Rollen ist nicht möglich."
+    ) {
+        @Override
+        public Set<UserPrivileges> getAssociatedPrivileges() {
+            return Set.of(
+                    UserPrivileges.ROLES_GET_BY_ID_ANY,
+                    UserPrivileges.ROLES_GET_ALL,
+                    UserPrivileges.PROFILES_POST_NEW_ANY,
+                    UserPrivileges.PROFILES_PATCH_BY_ID_ANY,
+                    UserPrivileges.PROFILES_DELETE_BY_ID_ANY,
+                    UserPrivileges.PROFILES_GET_BY_ID_ANY,
+                    UserPrivileges.PROFILES_GET_ALL,
+                    UserPrivileges.PROFILES_EXPERTISES_GET_ALL,
+                    UserPrivileges.SKILLS_GET_ALL,
+                    UserPrivileges.JOB_TITLES_GET_ALL,
+                    UserPrivileges.JOB_TITLES_POST_NEW,
+                    UserPrivileges.USERS_POST_NEW,
+                    UserPrivileges.USERS_GET_BY_ID,
+                    UserPrivileges.USERS_GET_ALL
+            );
+        }
+    },
 
     /**
      * Fallback constant in case of unsuitable input string.
      * Must always be the last defined constant!
      */
-    UNDEFINED("undefined", "Rolle nicht vorhanden.");
+    UNDEFINED(
+            "undefined",
+            "Rolle nicht vorhanden."
+    ) {
+        @Override
+        public Set<UserPrivileges> getAssociatedPrivileges() {
+            return Set.of(); // empty set
+        }
+    };
+
+    public abstract Set<UserPrivileges> getAssociatedPrivileges();
 
     /*
      * Zwischengespeichertes Array, da RolesEnum.values() in public Methoden benötigt wird
