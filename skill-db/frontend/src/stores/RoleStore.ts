@@ -8,6 +8,7 @@ export const useRoleStore = defineStore('roleStore', {
         details: new RoleModel(),
         allRoles: [] as RoleModel[],
         loading: Boolean(false),
+        user: [] as String[],
     }),
     actions: {
         loadRolesById(id: String) {
@@ -15,6 +16,25 @@ export const useRoleStore = defineStore('roleStore', {
             const errorStore = useErrorStore();
             axiosInstance.get(`/api/v1/roles/${id}`).then((response) => {
                 this.details = ConvertToRoleModel.toRole(response.data);
+            }).catch((error) => {
+                errorStore.catchGetRoleError(error, id);
+                console.log(error)
+            });
+            this.loading = false;
+        },
+
+        async loadUsersById(id: String) {
+            this.loading = true;
+            const errorStore = useErrorStore();
+            await axiosInstance.get(`/api/v1/roles/${id}/user`).then((response) => {
+                if(this.user.length > 0) {
+                    // reloads the list of users every time the method gets called,
+                    // in case the list is not empty
+                    this.user = [];
+                }
+                response.data.forEach((element: object) => {
+                    this.user.push(element.toString())
+                });
             }).catch((error) => {
                 errorStore.catchGetRoleError(error, id);
                 console.log(error)

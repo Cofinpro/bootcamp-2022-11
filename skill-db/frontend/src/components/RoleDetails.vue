@@ -20,16 +20,16 @@
 
       <tr v-for="role in roles"
           :key="role.getIdentifier()">
-        <td class="d-flex justify-center ma-1">
+        <td class="d-flex justify-center ma-1" v-if="role.getIdentifier() !== 'UNDEFINED'">
           <v-chip :color="roleColor(role.getIdentifier())">
             {{ role.getDisplayName() }}
           </v-chip>
         </td>
-        <td class="description">
+        <td class="description" v-if="role.getIdentifier() !== 'UNDEFINED'">
           {{ role.getDescription() }}
         </td>
-        <td class="d-flex justify-center">
-          <v-icon color="#BDBDBD" @click="edit = true">
+        <td class="d-flex justify-center" v-if="role.getIdentifier() !== 'UNDEFINED'">
+          <v-icon color="#BDBDBD" @click="prepareSelect(role)">
             mdi-pencil
           </v-icon>
 
@@ -66,18 +66,36 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script >
+import {useRoleStore} from "@/stores/RoleStore";
+import {RoleModel} from "@/models/RoleModel.ts";
+
 export default {
   name: "RoleDetails",
   props: ['roles', 'users'],
+  setup() {
+    /*const roleStore = useRoleStore();
+    roleStore.loadAllRoles();
+    const roles = roleStore.allRoles;
+
+    const roleNames = [] as String[];
+
+    roles.forEach(role => {
+      if(role.getIdentifier() !== 'UNDEFINED') {
+        roleNames.push(role.getIdentifier());
+        roleStore.loadUsersById(role.getIdentifier());
+      }
+    })*/
+  },
   data() {
     return {
       edit: false,
-      selectedUsers: [] as String[],
+      selectedUsers: [],
+      roleStore: useRoleStore(),
     }
   },
   methods: {
-    roleColor(roleShortName: String): String {
+    roleColor(roleShortName) {
       if (roleShortName === 'ADMIN') {
         return '#ec7b1a';
       } else if (roleShortName === 'HR') {
@@ -87,8 +105,16 @@ export default {
       } else {
         return 'red';
       }
+    },
+    async prepareSelect(role) {
+      this.selectedUsers = [];
+      if(role.getIdentifier() !== 'UNDEFINED') {
+        await this.roleStore.loadUsersById(role.getIdentifier());
+        this.selectedUsers = this.roleStore.user;
+      }
+      this.edit = true;
     }
-  }
+  },
 }
 </script>
 

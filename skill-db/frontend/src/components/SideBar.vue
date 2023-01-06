@@ -67,6 +67,8 @@ import {useAuthStore} from "@/stores/auth";
 
 export default {
   name: "SideBar",
+  components: {},
+
   props: {
     id: Number,
   },
