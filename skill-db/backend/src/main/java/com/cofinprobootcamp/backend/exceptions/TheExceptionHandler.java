@@ -41,8 +41,9 @@ public class TheExceptionHandler {
     public ResponseEntity<CustomErrorMessage> handleCSVArgumentNotValidException(
             CSVArgumentNotValidException e, WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "VALIDATION: At row number "  + e.getRowNumber() + ": " +
-                        e.getViolations(),
+                "VALIDATION:" +
+                        e.getViolations()+
+                        "  (At row number "  + e.getRowNumber() + ")",
                 wr.getDescription(false)
         );
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);

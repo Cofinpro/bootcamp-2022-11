@@ -45,6 +45,8 @@ export const useErrorStore = defineStore(
                 } else {
                     if (error.response.status === 400) {
                         this.handle400forProfile(error);
+                        this.errorText = this.errorText +
+                            error.response.data.message.toString().split(/(\[|\])/)[4]
                     } else if (error.response.status === 401) {
                         this.errorText = this.errorMessages.unauthorized;
                     } else if (error.response.status === 500) {
