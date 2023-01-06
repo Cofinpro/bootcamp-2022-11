@@ -37,7 +37,7 @@ public class AuthControllerTest {
 
     public static Stream<Arguments> userCredentialsProvider() {
         return Stream.of(
-                Arguments.of("test@test.de", "password1", 200),
+                Arguments.of("luis.geyer@cofinpro.de", "mega_gutes_passwort1", 200),
                 Arguments.of("admin123", "password", 401),
                 Arguments.of("", "password", 401),
                 Arguments.of("admin", "", 401),
@@ -106,6 +106,7 @@ public class AuthControllerTest {
      */
     @ParameterizedTest
     @MethodSource("verifySource")
+    @DisplayName("Tests the verify-endpoint for the refresh-token. Fails, in case the REFRESH_TOKEN_DURATION_SECONDS is not set to 10 seconds")
     void verifyRefreshToken(Integer sleepTime, String expected) throws Exception {
         JSONObject jsonObject = login();
 
@@ -145,10 +146,12 @@ public class AuthControllerTest {
 
     /**
      * Tests the refresh token-route
+     * For testing, the REFRESH_TOKEN_DURATION_SECONDS in class ProfileConfiguration have to be set to > 12 seconds (otherwise the test fails)
      *
      * @throws Exception
      */
     @Test
+    @DisplayName("For testing, the REFRESH_TOKEN_DURATION_SECONDS in class ProfileConfiguration have to be set to > 12 seconds (otherwise the test fails)")
     void whenRefreshTokenExpiredThenAnswerCodeUnauthorized() throws Exception {
         JSONObject jsonObject = login();
 
@@ -172,17 +175,16 @@ public class AuthControllerTest {
     private JSONObject login() throws Exception {
         MvcResult result = mvc.perform(post("/api/v1/token")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\": \"test@test.de\", \"password\": \"password1\" }"))
+                        .content("{\"username\": \"luis.geyer@cofinpro.de\", \"password\": \"mega_gutes_passwort1\" }"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tokens.access_token").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tokens.refresh_token").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("test@test.de"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("luis.geyer@cofinpro.de"))
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();
-        JSONObject jsonObject = new JSONObject(content);
 
-        return jsonObject;
+        return new JSONObject(content);
     }
 
 }

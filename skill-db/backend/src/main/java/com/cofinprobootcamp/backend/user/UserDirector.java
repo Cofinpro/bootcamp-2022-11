@@ -8,6 +8,7 @@ public class UserDirector {
         return User.builder()
                 .username(userInDTO.email())
                 .password(encodedPassword)
-                .role(role).build();
+                .role(role)
+                .build();
     }
 }

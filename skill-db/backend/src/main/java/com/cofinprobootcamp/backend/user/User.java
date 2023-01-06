@@ -32,9 +32,11 @@ public class User {
     @GeneratedValue
     Long id;
 
+    @Column(unique = true, nullable = false)
+    String outerId;
+
+
     //TODO: Schönere exception werfen falls email schon in use
-
-
     /**
      * The User entity's username. Is always an email address.
      */
@@ -59,5 +61,5 @@ public class User {
     @OneToOne
     @JoinColumn(unique = true)
     @Builder.Default
-    private Profile profile = null;
+    private Profile profile = null; // Default value
 }

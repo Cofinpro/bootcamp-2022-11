@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.auth;
 
+import com.cofinprobootcamp.backend.enums.StandardRoles;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
@@ -38,6 +40,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true) // with this annotation, @PreAuthorize works with the roles
 public class SecurityConfig {
 
 
@@ -60,11 +63,17 @@ public class SecurityConfig {
                         .mvcMatchers("/api/v1/token").permitAll()
                         .mvcMatchers("/api/v1/token/refresh").permitAll()
                         .mvcMatchers("/api/v1/token/verify").permitAll()
-                        .mvcMatchers("/api/v1/users").permitAll()
-                        .mvcMatchers("/api/v1/users/*").permitAll()
-                        .mvcMatchers("/api/v1/job-titles/").permitAll() // These may be kept for convenience
+                        // using hasAuthority(), because role is named "SCOPE_ROLE_ROLENAME" --> therefore hasRole would not work, because of the "SCOPE"-prefix
+                        .mvcMatchers("/api/v1/roles").hasAuthority("SCOPE_ROLE_ADMIN")
+                        .mvcMatchers("/api/v1/roles/*").hasAuthority("SCOPE_ROLE_ADMIN")
+                        .mvcMatchers("/api/v1/users").hasAnyAuthority("SCOPE_ROLE_ADMIN", "SCOPE_ROLE_HR")
+                        .mvcMatchers("/api/v1/users/*").hasAnyAuthority("SCOPE_ROLE_ADMIN", "SCOPE_ROLE_HR")
+                        .mvcMatchers("/api/v1/profiles").hasAnyAuthority("SCOPE_ROLE_ADMIN", "SCOPE_ROLE_USER", "SCOPE_ROLE_HR")
+                        .mvcMatchers("/api/v1/profiles/expertises").permitAll()
+                        .mvcMatchers("/api/v1/profiles/*").hasAnyAuthority("SCOPE_ROLE_ADMIN", "SCOPE_ROLE_USER", "SCOPE_ROLE_HR")
+                        .mvcMatchers("/api/v1/job-titles").permitAll() // These may be kept for convenience
                         .mvcMatchers("/api/v1/skills").permitAll() // These may be kept for convenience
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated() // check, if all other requests should rather be denied?!
                 )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -82,7 +91,6 @@ public class SecurityConfig {
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
-
     }
 
     @Bean

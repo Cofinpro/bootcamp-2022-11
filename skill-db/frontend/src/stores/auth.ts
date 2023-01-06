@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia'
-import axios from "axios";
 import type {LoginRequest} from "@/models/LoginRequest";
 import router from "@/router";
+import axiosInstance from "@/axios";
 
 export const useAuthStore = defineStore('auth', {
     state: () =>({
@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
         login(user: LoginRequest): void{
-            axios.post("/api/v1/token", user).then((result) => {
+            axiosInstance.post("/api/v1/token", user).then((result) => {
                 localStorage.setItem("access_token", result.data.tokens["access_token"]);
                 localStorage.setItem("refresh_token", result.data.tokens["refresh_token"]);
                 localStorage.setItem("username", result.data.username);
@@ -32,7 +32,7 @@ export const useAuthStore = defineStore('auth', {
            this.role = "";
            router.push("/login");
         },
-        async isLoggedIn(): boolean {
+        async isLoggedIn(): Promise<boolean> {
             const refreshToken = localStorage.getItem("refresh_token");
             const username = localStorage.getItem("username");
 
@@ -41,14 +41,17 @@ export const useAuthStore = defineStore('auth', {
                 "username": username,
             }
 
-            return await axios.post("/api/v1/token/verify", user)
+            return await axiosInstance.post("/api/v1/token/verify", user)
                 .then((result) => {
                     if (result.data) {
+                        this.loggedIn = true;
                         return true;
                     }
+                    this.loggedIn = false;
                     return false;
                 }).catch((error) => {
                     console.log(error.response)
+                    this.loggedIn = false;
                     return false;
                 })
         },
