@@ -127,6 +127,6 @@ public class ProfileController {
     @PostMapping("/import")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public void importFromCSV(@RequestBody String csvFile) {
-        System.out.println(csvFile.getName());
+        System.out.println(csvFile);
     }
 }
