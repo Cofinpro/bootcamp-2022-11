@@ -29,6 +29,7 @@ public class RoleController {
      * @return A {@code RoleDetailsOutDTO} containing any relevant information about the role, if it exists
      */
     @GetMapping(path = "{identifier}")
+    @PreAuthorize("hasAnyAuthority(@jwtGrantedAuthoritiesPrefix + 'ADMIN', @jwtGrantedAuthoritiesPrefix + 'HR')")
     public RoleDetailsOutDTO getRoleById(@PathVariable String identifier) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
@@ -55,6 +56,7 @@ public class RoleController {
      * @return A list of usernames of all users with this role
      */
     @GetMapping(path = "{identifier}/user")
+    @PreAuthorize("hasAnyAuthority(@jwtGrantedAuthoritiesPrefix + 'ADMIN')")
     public List<String> getAllUsersForRoleById(@PathVariable String identifier) {
         return roleService.getUsersByRole(identifier);
     }

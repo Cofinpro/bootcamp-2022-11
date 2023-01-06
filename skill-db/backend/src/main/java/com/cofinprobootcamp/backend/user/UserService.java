@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.config.Constants;
+import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.InternalOperationFailedException;
 import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
@@ -94,6 +95,13 @@ public class UserService {
         return users.stream()
                 .map(UserDirector::EntityToUserOutDTO)
                 .toList();
+    }
+
+    public User changeRole(String id, String roleIdentifier) throws UserNotFoundException {
+        StandardRoles role = StandardRoles.fromIdentifier(roleIdentifier);
+        User user = userRepository.findByUsername(id).orElseThrow(UserNotFoundException::new);
+        user.setRole(role);
+        return userRepository.saveAndFlush(user);
     }
 
     private void tryToSetUniqueOuterId(User user) {

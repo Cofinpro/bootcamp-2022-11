@@ -1,5 +1,10 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
+import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,9 +17,11 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/users")
 public class UserController {
     private final UserService userService;
+    private final RoleService roleService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @PostMapping(path = "")
@@ -39,5 +46,11 @@ public class UserController {
     @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public List<UserOutDTO> getAllUsers() {
         return userService.getAllUsers();
+    }
+
+    @PatchMapping(path = "/{id}/{roleId}")
+    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+    public void changeRole(@PathVariable String id, @PathVariable String roleId){
+        userService.changeRole(id, roleId);
     }
 }
