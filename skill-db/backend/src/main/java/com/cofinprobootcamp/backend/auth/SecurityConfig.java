@@ -8,7 +8,6 @@ import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,11 +16,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.*;
-import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,10 +26,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collection;
 import java.util.List;
 
-import static com.cofinprobootcamp.backend.config.Constants.ROLE_PREFIX;
+import static com.cofinprobootcamp.backend.config.Constants.AUTHORITY_PREFIX;
 import static com.cofinprobootcamp.backend.config.ProfileConfiguration.FRONTEND_URL;
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -61,6 +57,7 @@ public class SecurityConfig {
                         .mvcMatchers("/api/v1/token").permitAll()
                         .mvcMatchers("/api/v1/token/refresh").permitAll()
                         .mvcMatchers("/api/v1/token/verify").permitAll()
+                        .mvcMatchers("/api/v1/users").permitAll() // needed so that any user who logs in may create their own internal user entity
                         .anyRequest().authenticated() // check, if all other requests should rather be denied?!
                 )
                 .oauth2ResourceServer(
@@ -93,10 +90,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter() {
-        JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
-        converter.setAuthorityPrefix(jwtGrantedAuthoritiesPrefix());
-        return converter;
+    public CustomJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter() {
+        return new CustomJwtGrantedAuthoritiesConverter();
     }
 
     /*
@@ -104,7 +99,7 @@ public class SecurityConfig {
      */
     @Bean
     public String jwtGrantedAuthoritiesPrefix() {
-        return ROLE_PREFIX;
+        return AUTHORITY_PREFIX;
     }
 
     @Bean

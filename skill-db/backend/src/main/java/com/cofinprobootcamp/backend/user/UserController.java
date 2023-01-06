@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.role.RoleService;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,11 +12,9 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/users")
 public class UserController {
     private final UserService userService;
-    private final RoleService roleService;
 
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.roleService = roleService;
     }
 
     @PostMapping(path = "")
@@ -42,11 +39,5 @@ public class UserController {
     @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     public List<UserOutDTO> getAllUsers() {
         return userService.getAllUsers();
-    }
-
-    @GetMapping(path = "/roles")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
-    public List<String> getAllUserRoles() {
-        return userService.getAllUserRoles();
     }
 }
