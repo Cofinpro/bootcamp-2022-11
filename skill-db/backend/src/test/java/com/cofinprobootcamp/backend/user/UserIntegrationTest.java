@@ -28,20 +28,14 @@ class UserIntegrationTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        mvc.perform(post("/api/v1/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\": \"test@test.de\"," +
-                                " \"password\": \"password1\" ," +
-                                "\"userRole\":  \"ADMIN\"}"))
-                .andExpect(status().isOk());
-        //login as User just created
+        //login as Admin
         MvcResult result = mvc.perform(post("/api/v1/token")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\": \"test@test.de\", \"password\": \"password1\" }"))
+                        .content("{\"username\": \"lennart.rehmer@cofinpro.de\", \"password\": \"mega_gutes_passwort1\" }"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tokens.access_token").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tokens.refresh_token").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("test@test.de"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("lennart.rehmer@cofinpro.de"))
                 .andReturn();
         loginData = new JSONObject(result.getResponse().getContentAsString());
     }
@@ -61,6 +55,6 @@ class UserIntegrationTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        assertThat(mvcResult).contains("\"email\":\"test@test.de\",\"locked\":false,\"role\":\"Administrator\"");
+        assertThat(mvcResult).contains("\"email\":\"lennart.rehmer@cofinpro.de\",\"locked\":false,\"role\":\"Administrator\"");
     }
 }
