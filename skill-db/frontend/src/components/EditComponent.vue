@@ -72,6 +72,11 @@
           Profil erstellen
         </v-btn>
         <v-btn v-if="update === 'true'" class="mt-10"
+               :style="!isFilled ? {
+                  color: '#BDBDBD !important',
+                  border: '1px dashed #BBBBBB !important',
+                } : ''"
+               :disabled="!isFilled"
                @click="submitProfile()" elevation="0">
           Änderungen speichern
         </v-btn>
@@ -88,7 +93,6 @@
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
-import {useRoute} from "vue-router";
 import {useErrorStore} from "@/stores/ErrorStore";
 import UploadImageButton from "@/components/UploadImageButton.vue";
 
@@ -96,14 +100,6 @@ export default {
   name: "EditComponent",
   props: ['detail', 'update'],
   components: { UploadImageButton },
-  setup() {
-    const detailStore = useDetailStore();
-    const errorStore = useErrorStore();
-    const id = String(useRoute().params.id);
-
-    return {
-    };
-  },
   data() {
     return {
       firstName: '',
