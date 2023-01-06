@@ -6,9 +6,7 @@
 </template>
 
 <script type="ts">
-import {useBlobStore} from "@/stores/BlobStore";
 import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
-import {useErrorStore} from "@/stores/ErrorStore";
 
 export default {
   name: "ImportButton",
