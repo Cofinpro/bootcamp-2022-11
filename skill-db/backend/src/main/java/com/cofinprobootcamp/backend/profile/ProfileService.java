@@ -113,7 +113,12 @@ public class ProfileService {
                 .map(ProfileOverviewOutDTO::new)
                 .toList();
     }
-
+    public List<ProfileDetailsOutDTO> getAllDetailDTOs() {
+        List<Profile> profiles = profileRepository.findAll();
+        return profiles.stream()
+                .map(ProfileDetailsOutDTO::new)
+                .toList();
+    }
     public List<String> getAllExpertises() {
         return Expertises.getAllDefinedValuesAsString();
     }
