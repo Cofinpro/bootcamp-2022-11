@@ -152,6 +152,16 @@ public enum StandardRoles {
     // Public enum static methods
 
     /**
+     * Gets each {@code StandardRoles} constant
+     * defined in the enum.
+     *
+     * @return An array of {@code StandardRoles} values
+     */
+    public static StandardRoles[] getAllDefinedValues() {
+        return values;
+    }
+
+    /**
      * Gets a short name representation of each {@code StandardRoles} constant
      * defined in the enum.
      *
