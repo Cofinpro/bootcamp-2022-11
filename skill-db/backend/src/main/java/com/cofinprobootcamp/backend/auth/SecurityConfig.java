@@ -98,7 +98,7 @@ public class SecurityConfig {
      * This method is necessary s.t. role prefix can be used in annotation queries
      */
     @Bean
-    public String jwtGrantedAuthoritiesPrefix() {
+    public String authorityPrefix() {
         return AUTHORITY_PREFIX;
     }
 

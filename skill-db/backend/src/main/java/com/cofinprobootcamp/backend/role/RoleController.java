@@ -38,7 +38,7 @@ public class RoleController {
      * @return A {@code RoleDetailsOutDTO} containing any relevant information about the role, if it exists
      */
     @GetMapping(path = "{identifier}")
-    @PreAuthorize("hasPermission(#identifier, @roleController.localPermissionPrefix(), 'user')")
+    @PreAuthorize("hasPermission(#identifier, 'RoleDetailsOutDTO', @authorityPrefix + 'ROLES_GET_BY_ID')")
     public RoleDetailsOutDTO getRoleById(@PathVariable String identifier) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
@@ -51,6 +51,7 @@ public class RoleController {
      * @return A {@code RoleOverviewOutDTO} containing any relevant information about all roles
      */
     @GetMapping(path = "")
+    @PreAuthorize("hasPermission(null, @authorityPrefix + 'ROLES_GET_ALL')")
     public List<RoleDetailsOutDTO> getAllRoles() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);

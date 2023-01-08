@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.auth;
 
 import com.cofinprobootcamp.backend.exceptions.AuthTokenInfoOutOfSyncWithPersistenceException;
+import org.springframework.core.Constants;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +11,8 @@ import org.springframework.util.Assert;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
+
+import static com.cofinprobootcamp.backend.config.Constants.JWT_CLAIM_OID;
 
 /**
  * This is a custom implementation of the {@code org.springframework.core.convert.converter.Converter} interface.
@@ -37,7 +40,6 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
 
         // Get payload from JWT
         String principalClaimName = source.getClaimAsString(JwtClaimNames.SUB);
-        String tokenRole = extractRoleFromJwtSource(source);
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(principalClaimName);
 
         // Verify payload with userDetails
@@ -80,6 +82,13 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
     }
 
     private void verifyTokenPayload(Jwt source, UserDetailsImpl userDetails) {
-        //TODO: Implement
+        String tokenRole = extractRoleFromJwtSource(source);
+        if (
+                !userDetails.getOuterId().equals(source.getClaimAsString(JWT_CLAIM_OID))
+                        || !userDetails.getRoleName().equals(tokenRole)) {
+            throw new AuthTokenInfoOutOfSyncWithPersistenceException(
+                    new Exception("Corrupted data!")
+            );
+        }
     }
 }
