@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public class CustomJwtAuthenticationToken extends JwtAuthenticationToken {
 
-    private final static String template = "%s [Principal=%s, Authenticated=%b, Details=%s, Granted Authorities=%s]";
+    private final static String template = "%s [Principal=%s, Authenticated=%b, Details=%s, Role=%s, Granted Authorities=%s]";
     private final String role;
     private final boolean locked;
     private final String profileId;
@@ -39,6 +39,7 @@ public class CustomJwtAuthenticationToken extends JwtAuthenticationToken {
                 this.getName(),
                 this.isAuthenticated(),
                 this.getDetails().toString(),
+                this.getRoleName(),
                 this.getAuthorities().toString()
         );
     }
