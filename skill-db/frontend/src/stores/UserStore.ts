@@ -29,10 +29,7 @@ export const useUserStore = defineStore('userStore', {
         async changeRole(newRole: String, id: String) {
             this.loading = true;
             const errorStore = useErrorStore()
-            await axios.patch(`/api/v1/users/${id}/role`,
-                {
-                    'shortName': newRole,
-                }).then(() =>{
+            await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then(() =>{
                 errorStore.toggleHasError();
             }).catch((error) => {
                 console.log(error);
