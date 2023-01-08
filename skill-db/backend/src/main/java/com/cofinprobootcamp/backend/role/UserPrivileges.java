@@ -6,10 +6,10 @@ public enum UserPrivileges {
     /*
      * Endpoint "/api/v1/roles"
      */
-    ROLES_GET_BY_ID_SELF(
+    ROLES_GET_BY_ID$SELF(
             "Der Nutzer ist dazu berechtigt, Detailinformationen zu seiner eigenen Rolle einzusehen."
     ),
-    ROLES_GET_BY_ID_ANY(
+    ROLES_GET_BY_ID$ANY(
             "Der Nutzer ist dazu berechtigt, Detailinformationen zu jeder Rolle über dessen Kennung einzusehen."
     ),
     ROLES_GET_ALL(
@@ -19,28 +19,28 @@ public enum UserPrivileges {
     /*
      * Endpoint "/api/v1/profiles"
      */
-    PROFILES_POST_NEW_SELF(
+    PROFILES_POST_NEW$SELF(
             "Der Nutzer ist dazu berechtigt, ein neues Profil für sich selbst anzulegen."
     ),
-    PROFILES_POST_NEW_ANY(
+    PROFILES_POST_NEW$ANY(
             "Der Nutzer ist dazu berechtigt, für jeden Nutzer neue Profile anzulegen (d.h. für sich selbst und auch für andere)."
     ),
-    PROFILES_PATCH_BY_ID_SELF(
+    PROFILES_PATCH_BY_ID$SELF(
             "Der Nutzer ist dazu berechtigt, sein eigenes Profil zu bearbeiten."
     ),
-    PROFILES_DELETE_BY_ID_SELF(
+    PROFILES_DELETE_BY_ID$SELF(
             "Der Nutzer ist dazu berechtigt, sein eigenes Profil zu löschen."
     ),
-    PROFILES_GET_BY_ID_SELF(
+    PROFILES_GET_BY_ID$SELF(
             "Der Nutzer ist dazu berechtigt, sein eigenes Profil einzusehen."
     ),
-    PROFILES_PATCH_BY_ID_ANY(
+    PROFILES_PATCH_BY_ID$ANY(
             "Der Nutzer ist dazu berechtigt, jedes beliebige Profil über dessen Kennung zu bearbeiten."
     ),
-    PROFILES_DELETE_BY_ID_ANY(
+    PROFILES_DELETE_BY_ID$ANY(
             "Der Nutzer ist dazu berechtigt, jedes beliebige Profil über dessen Kennung zu löschen."
     ),
-    PROFILES_GET_BY_ID_ANY(
+    PROFILES_GET_BY_ID$ANY(
             "Der Nutzer ist dazu berechtigt, jedes beliebige Profil über dessen Kennung einzusehen."
     ),
     PROFILES_GET_ALL(
@@ -70,17 +70,29 @@ public enum UserPrivileges {
     /*
      * Endpoint "/api/v1/users"
      */
-    USERS_POST_NEW(
+    USERS_POST_NEW$SELF(
+            "Der Nutzer ist dazu berechtigt, einen neuen Nutzeraccount mit seiner eigenen Mail-Adresse mit der Rolle 'Nutzer' anzulegen."
+    ),
+    USERS_POST_NEW$ANY(
             "Der Nutzer ist dazu berechtigt, einen neuen Nutzeraccount mit beliebiger Rolle anzulegen."
     ),
-    USERS_DELETE_BY_ID(
+    USERS_DELETE_BY_ID$SELF(
+            "Der Nutzer ist dazu berechtigt, seinen eigenen Nutzeraccount über dessen Kennung zu löschen."
+    ),
+    USERS_DELETE_BY_ID$ANY(
             "Der Nutzer ist dazu berechtigt, einen beliebigen Nutzeraccount über dessen Kennung zu löschen."
     ),
-    USERS_GET_BY_ID(
+    USERS_GET_BY_ID$SELF(
+            "Der Nutzer ist dazu berechtigt, seinen eigenen Nutzeraccount über dessen Kennung einzusehen."
+    ),
+    USERS_GET_BY_ID$ANY(
             "Der Nutzer ist dazu berechtigt, einen beliebigen Nutzeraccount über dessen Kennung einzusehen."
     ),
     USERS_GET_ALL(
             "Der Nutzer ist dazu berechtigt, sich eine Übersicht aller bestehenden Nutzer anzeigen zu lassen."
+    ),
+    USERS_BY_ID_PATCH_ROLE_BY_ID(
+            "Der Nutzer ist dazu berechtigt, die Rolle aller bestehenden Nutzer zu ändern."
     ),
 
     /*

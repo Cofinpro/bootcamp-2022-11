@@ -41,11 +41,11 @@ public enum StandardRoles {
         @Override
         public Set<UserPrivileges> getAssociatedPrivileges() {
             return Set.of(
-                    UserPrivileges.ROLES_GET_BY_ID_SELF,
-                    UserPrivileges.PROFILES_POST_NEW_SELF,
-                    UserPrivileges.PROFILES_PATCH_BY_ID_SELF,
-                    UserPrivileges.PROFILES_DELETE_BY_ID_SELF,
-                    UserPrivileges.PROFILES_GET_BY_ID_ANY,
+                    UserPrivileges.ROLES_GET_BY_ID$SELF,
+                    UserPrivileges.PROFILES_POST_NEW$SELF,
+                    UserPrivileges.PROFILES_PATCH_BY_ID$SELF,
+                    UserPrivileges.PROFILES_DELETE_BY_ID$SELF,
+                    UserPrivileges.PROFILES_GET_BY_ID$ANY,
                     UserPrivileges.PROFILES_GET_ALL,
                     UserPrivileges.PROFILES_EXPERTISES_GET_ALL,
                     UserPrivileges.SKILLS_GET_ALL,
@@ -68,19 +68,19 @@ public enum StandardRoles {
         @Override
         public Set<UserPrivileges> getAssociatedPrivileges() {
             return Set.of(
-                    UserPrivileges.ROLES_GET_BY_ID_ANY,
+                    UserPrivileges.ROLES_GET_BY_ID$ANY,
                     UserPrivileges.ROLES_GET_ALL,
-                    UserPrivileges.PROFILES_POST_NEW_ANY,
-                    UserPrivileges.PROFILES_PATCH_BY_ID_ANY,
-                    UserPrivileges.PROFILES_DELETE_BY_ID_ANY,
-                    UserPrivileges.PROFILES_GET_BY_ID_ANY,
+                    UserPrivileges.PROFILES_POST_NEW$ANY,
+                    UserPrivileges.PROFILES_PATCH_BY_ID$ANY,
+                    UserPrivileges.PROFILES_DELETE_BY_ID$ANY,
+                    UserPrivileges.PROFILES_GET_BY_ID$ANY,
                     UserPrivileges.PROFILES_GET_ALL,
                     UserPrivileges.PROFILES_EXPERTISES_GET_ALL,
                     UserPrivileges.SKILLS_GET_ALL,
                     UserPrivileges.JOB_TITLES_GET_ALL,
                     UserPrivileges.JOB_TITLES_POST_NEW,
-                    UserPrivileges.USERS_POST_NEW,
-                    UserPrivileges.USERS_GET_BY_ID,
+                    UserPrivileges.USERS_POST_NEW$ANY,
+                    UserPrivileges.USERS_GET_BY_ID$ANY,
                     UserPrivileges.USERS_GET_ALL
             );
         }
