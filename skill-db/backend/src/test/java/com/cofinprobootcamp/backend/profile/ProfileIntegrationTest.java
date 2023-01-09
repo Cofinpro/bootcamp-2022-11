@@ -67,7 +67,7 @@ public class ProfileIntegrationTest {
                         "    \"email\": \"markus.kremer22@cofinpro.de\",\n" +
                         "    \"birthDate\": \"2020-10-10\"\n" +
                         "}"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isForbidden());
     }
     @Test
     @DisplayName("Test Profile with jobTitle that is not in database! Only success Criterium is to give back 404 error!")

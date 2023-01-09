@@ -79,6 +79,7 @@ public enum StandardRoles {
                             UserPrivileges.PROFILES_POST_NEW$ANY,
                             UserPrivileges.PROFILES_PATCH_BY_ID$ANY,
                             UserPrivileges.PROFILES_DELETE_BY_ID$ANY,
+                            UserPrivileges.PROFILES_EXPORT_GET_ALL,
                             UserPrivileges.JOB_TITLES_POST_NEW,
                             UserPrivileges.USERS_POST_NEW$ANY,
                             UserPrivileges.USERS_GET_BY_ID$ANY,

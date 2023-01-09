@@ -50,6 +50,9 @@ public enum UserPrivileges {
     PROFILES_EXPERTISES_GET_ALL(
             "Der Nutzer ist dazu berechtigt, sich eine Übersicht aller bestehenden Primärkompetenzen anzeigen zu lassen."
     ),
+    PROFILES_EXPORT_GET_ALL(
+            "Der Nutzer ist dazu berechtigt, alle Profile mit Detailinformationen zu exportieren."
+    ),
 
     /*
      * Endpoint "/api/v1/skills"

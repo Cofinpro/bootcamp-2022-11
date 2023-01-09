@@ -15,7 +15,6 @@ import com.cofinprobootcamp.backend.user.User;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -109,7 +108,7 @@ public class ProfileController {
      * @throws IllegalAccessException should never be thrown!
      */
     @GetMapping("/export")
-    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_EXPORT_GET_ALL')")
     public void exportAllToExcel(HttpServletResponse response)
             throws IOException, IllegalAccessException {
         response.setContentType("application/octet-stream");
