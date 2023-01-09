@@ -74,16 +74,11 @@ public enum StandardRoles {
             HashSet<UserPrivileges> privileges = new HashSet<>(USER.getAssociatedPrivileges()); // HR inherits any privilege from USER
             privileges.addAll(
                     Set.of(
-                            UserPrivileges.ROLES_GET_BY_ID$ANY,
-                            UserPrivileges.ROLES_GET_ALL,
                             UserPrivileges.PROFILES_POST_NEW$ANY,
                             UserPrivileges.PROFILES_PATCH_BY_ID$ANY,
                             UserPrivileges.PROFILES_DELETE_BY_ID$ANY,
                             UserPrivileges.PROFILES_EXPORT_GET_ALL,
-                            UserPrivileges.JOB_TITLES_POST_NEW,
-                            UserPrivileges.USERS_POST_NEW$ANY,
-                            UserPrivileges.USERS_GET_BY_ID$ANY,
-                            UserPrivileges.USERS_GET_ALL
+                            UserPrivileges.JOB_TITLES_POST_NEW
                     )
             );
             return privileges;
