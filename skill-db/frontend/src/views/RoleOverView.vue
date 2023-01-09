@@ -1,5 +1,5 @@
 <template>
-  <RoleDetails :roles="roles" :users="getNames(users)"/>
+  <RoleDetails :roles="roles" :users="getNames(allUsers)"/>
 </template>
 
 <script lang="ts">
@@ -18,17 +18,17 @@ export default {
 
     const userStore = useUserStore();
     userStore.loadUsers();
-    const users = userStore.users;
+    const allUsers = userStore.users;
 
     return {
-      roles, users
+      roles, allUsers
     };
   },
   methods: {
-    getNames(users: UserModel[]): String[] {
+    getNames(allUsers: UserModel[]): String[] {
       const userNames: String[] = [];
-      users.forEach(user => {
-        userNames.push(user.getEmail());
+      allUsers.forEach(user => {
+        userNames.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`);
       })
       return userNames;
     }
