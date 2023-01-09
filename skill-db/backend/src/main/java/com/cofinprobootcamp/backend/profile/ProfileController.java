@@ -12,7 +12,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.cofinprobootcamp.backend.user.User;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -94,5 +100,25 @@ public class ProfileController {
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_EXPERTISES_GET_ALL')")
     public List<String> getAllExpertises() { // makes more sense to have this as an endpoint under profiles, where content is actually stored
         return profileService.getAllExpertises();
+    }
+
+    /**
+     * generates excel and writes excel to responses outputstream
+     * @param response to get request
+     * @throws IOException if response is not writable
+     * @throws IllegalAccessException should never be thrown!
+     */
+    @GetMapping("/export")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
+    public void exportAllToExcel(HttpServletResponse response)
+            throws IOException, IllegalAccessException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+        ExcelGenerator excelGenerator = new ExcelGenerator(profileService.getAllDetailDTOs());
+        excelGenerator.createExcel(response.getOutputStream());
     }
 }
