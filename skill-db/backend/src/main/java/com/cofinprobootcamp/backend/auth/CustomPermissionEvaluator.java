@@ -13,6 +13,17 @@ import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * This is a custom implementation of the {@link PermissionEvaluator} interface
+ * that supports {@code @PreAuthorized} annotations that take our custom role management
+ * into account.
+ * <br>
+ * As per the interface definition the class provides two different implementations
+ * of the {@code hasPermission()} method to use in a SpEL query.
+ *
+ * @author l-rehm
+ * @version 1.0
+ */
 public class CustomPermissionEvaluator implements PermissionEvaluator {
     private static final String POSTFIX_SELF = "SELF";
     private static final String POSTFIX_ANY = "ANY";
@@ -24,35 +35,27 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     public boolean hasPermission(
             Authentication auth, Object targetDomainObject, Object permission
     ) {
-        System.out.println("Called hasPermission method 1 in CustomPermissionEvaluator");
         if ((auth == null) || (targetDomainObject == null) || !(permission instanceof String)) {
             return false;
         }
-        System.out.println("passed first check");
-        Set<String> matchingPermissions = matchPermissions(auth, permission.toString());
-        if (matchingPermissions.isEmpty()) {
-            return false;
-        }
-        System.out.println("passed second check");
-        if (matchingPermissions.contains(NO_POSTFIX) || matchingPermissions.contains(POSTFIX_ANY)) {
-            return true;
-        }
-        System.out.println("passed third check");
-        if (matchingPermissions.contains(POSTFIX_SELF)) {
-            return hasPermissionSelf(auth, targetDomainObject, buildPermissionString(permission, POSTFIX_SELF));
-        }
-        throw new InvalidAuthorityFormatException();
+        return p(auth, targetDomainObject, permission.toString());
     }
 
     @Override
     public boolean hasPermission(
             Authentication auth, Serializable targetId, String targetType, Object permission
     ) {
-        System.out.println("Called hasPermission method 2 in CustomPermissionEvaluator");
         if ((auth == null) || (targetType == null) || !(permission instanceof String)) {
             return false;
         }
-        Set<String> matchingPermissions = matchPermissions(auth, permission.toString());
+        return p(auth, targetId, permission.toString());
+    }
+
+    /*
+     * Internal method to provide single logic for both overwritten hasPermission() methods
+     */
+    private boolean p(Authentication auth, Object targetDomainObject, String permission) {
+        Set<String> matchingPermissions = matchPermissions(auth, permission);
         if (matchingPermissions.isEmpty()) {
             return false;
         }
@@ -60,7 +63,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             return true;
         }
         if (matchingPermissions.contains(POSTFIX_SELF)) {
-            return hasPermissionSelf(auth, targetId, buildPermissionString(permission, POSTFIX_SELF));
+            return hasPermissionSelf(auth, targetDomainObject, buildPermissionString(permission, POSTFIX_SELF));
         }
         throw new InvalidAuthorityFormatException();
     }
@@ -100,12 +103,9 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     }
 
     private boolean hasPermissionSelf(Authentication auth, Object targetDomainObject, String permission) {
-        System.out.println("Permission: " + permission);
-        System.out.println("AuthToken: " + auth.getClass().getSimpleName());
         if (auth instanceof CustomJwtAuthenticationToken customAuth) {
             switch (UserPrivileges.fromIdentifier(permission)) {
                 case USERS_POST_NEW$SELF -> {
-                    System.out.println("passed check 4");
                     if (targetDomainObject instanceof UserCreateInDTO inDTO) {
                         System.out.println("passed fifth check");
                         return mayCreateNewUserEntityForSelf(customAuth, inDTO);
@@ -147,7 +147,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                 }
             }
         }
-        return false; //TODO Implement
+        return false;
     }
 
     public void printWarning(String targetDomainObjectNameExpected, String targetDomainObjectNameActual) {

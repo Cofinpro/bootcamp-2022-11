@@ -7,6 +7,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * This class extends the standard {@link UsernamePasswordAuthenticationToken} class,
+ * s.t. it works with our custom role management system.
+ *
+ * @author l-rehm
+ * @version 1.0
+ */
 public class CustomUsernamePasswordAuthenticationToken extends UsernamePasswordAuthenticationToken {
 
     private final static String template = "%s [Principal=%s, Authenticated=%b, Details=%s, Role=%s, Granted Authorities=%s]";

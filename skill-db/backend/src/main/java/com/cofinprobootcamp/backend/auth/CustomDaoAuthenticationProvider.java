@@ -7,7 +7,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.*;
 
 /**
- * This class is almost a one to one copy
+ * This class extends the standard {@link DaoAuthenticationProvider} implementation
+ * to work with our custom {@link UserDetails} implementation (see {@link UserDetailsImpl}
+ *
+ * @author l-rehm
+ * @version 1.0
  */
 public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
 
