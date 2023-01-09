@@ -4,6 +4,7 @@ import com.cofinprobootcamp.backend.config.Constants;
 import com.cofinprobootcamp.backend.email.EmailSendService;
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.UserCreationFailedException;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
@@ -48,10 +49,13 @@ public class ProfileService {
         this.userService = userService;
     }
 
-    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException {
+    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle);
+        if (profileRepository.findProfileByOwner(user).isPresent()) {
+            throw new ProfileAlreadyExistsException();
+        }
         try {
             tryToSetUniqueOuterId(profile);
             profileRepository.saveAndFlush(profile);

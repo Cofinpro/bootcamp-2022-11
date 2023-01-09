@@ -20,10 +20,10 @@ export const useBlobStore = defineStore('blobStore',{
                 errorStore.catchExportError(error);
             })
         },
-        postCSV(file: File) {
+        async postCSV(file: File) {
             const formData = new FormData();
             formData.append('file', file);
-            axiosInstance({
+            await axiosInstance({
                 url: '/api/v1/profiles/import',
                 method: 'post',
                 data: formData,

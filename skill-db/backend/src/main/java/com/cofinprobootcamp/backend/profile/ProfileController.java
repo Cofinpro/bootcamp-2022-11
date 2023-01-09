@@ -39,9 +39,6 @@ public class ProfileController {
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
         User user = userService.getUserByUsername(profileInDTO.email());
-        if (profileRepository.findProfileByOwner(user).isPresent()) {
-            throw new ProfileAlreadyExistsException();
-        }
         Profile profile = profileService.createProfile(profileInDTO, user);
         userService.assignProfileToUser(user, profile);
     }
@@ -119,9 +116,9 @@ public class ProfileController {
     }
 
     @PostMapping(path="/import",  consumes="multipart/form-data")
-    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public void importFromCSV(@RequestParam("file") MultipartFile file)
-            throws IOException, JobTitleNotFoundException {
+            throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException {
         CSVReader reader = new CSVReader(file, profileService, userService);
         reader.readProfileFromFile();
     }

@@ -14,6 +14,8 @@
 <script type="ts">
 import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
 import {useBlobStore} from "@/stores/BlobStore";
+import router from "@/router";
+import {useOverviewStore} from "@/stores/OverviewStore";
 
 export default {
   name: "ImportButton",
@@ -25,9 +27,12 @@ export default {
     }
   },
   methods: {
-    uploadCSV(event) {
-      let blobStore = useBlobStore();
-      blobStore.postCSV(this.$refs.fileInput.files[0]);
+    async uploadCSV(event) {
+      const blobStore = useBlobStore();
+      await blobStore.postCSV(this.$refs.fileInput.files[0]);
+      this.$refs.fileInput.value = null;
+      const overviewStore = useOverviewStore();
+      overviewStore.loadOverview();
     },
   },
 }

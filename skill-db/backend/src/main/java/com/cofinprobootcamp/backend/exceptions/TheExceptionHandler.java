@@ -58,7 +58,7 @@ public class TheExceptionHandler {
     @ExceptionHandler(ProfileAlreadyExistsException.class)
     public ResponseEntity<CustomErrorMessage> handleProfileAlreadyExistsException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "Der zurzeit eingeloggte Nutzer hat bereits ein Profil!",
+                "Der Nutzer hat bereits ein Profil!",
                 wr.getDescription(false)
         );
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);

@@ -2,6 +2,7 @@ package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.exceptions.CSVArgumentNotValidException;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.user.UserService;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class CSVReader {
         this.userService = userService;
     }
 
-    public void readProfileFromFile() throws IOException, JobTitleNotFoundException {
+    public void readProfileFromFile() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException {
         String content = new String(file.getBytes());
         CSVFormat format = CSVFormat.DEFAULT
                 .builder()
