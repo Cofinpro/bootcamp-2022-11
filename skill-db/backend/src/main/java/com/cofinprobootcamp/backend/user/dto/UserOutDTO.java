@@ -1,6 +1,6 @@
 package com.cofinprobootcamp.backend.user.dto;
 
-import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
+import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 
 /**
  * A DTO that is used to pass detailed information about a user, their status and their role from the application
@@ -14,5 +14,5 @@ import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
  *                  if no profile was created for this user yet
  * @version 4.0
  */
-public record UserOutDTO(String id, String email, boolean locked, RoleDetailsOutDTO role, Long profileId) {
+public record UserOutDTO(String id, String email, boolean locked, RoleOverviewOutDTO role, Long profileId) {
 }

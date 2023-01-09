@@ -1,9 +1,6 @@
 package com.cofinprobootcamp.backend.role;
 
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
-import com.cofinprobootcamp.backend.profile.Profile;
-import com.cofinprobootcamp.backend.profile.ProfileRepository;
-import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 import com.cofinprobootcamp.backend.user.User;
@@ -12,7 +9,6 @@ import com.cofinprobootcamp.backend.user.UserRepository;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,8 +34,8 @@ public class RoleService {
         return RoleDirector.roleDetailsViewFromEnumType(role);
     }
 
-    public List<RoleDetailsOutDTO> getAllRoles() {
-        return RoleDirector.roleOverviewFromEnum();
+    public List<RoleOverviewOutDTO> getAllRoles() {
+        return RoleDirector.allRoleOverviewsFromEnum();
     }
 
     public List<UserOutDTO> getUsersByRole(String identifier) throws RoleNotFoundException {
