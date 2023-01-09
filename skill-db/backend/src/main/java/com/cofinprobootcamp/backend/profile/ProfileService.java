@@ -6,6 +6,8 @@ import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.UserCreationFailedException;
+import com.cofinprobootcamp.backend.image.Image;
+import com.cofinprobootcamp.backend.image.ImageService;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
@@ -36,22 +38,27 @@ public class ProfileService {
     private final EmailSendService emailSendService;
     private final UserService userService;
 
+    private final ImageService imageService;
+
     public ProfileService(ProfileRepository profileRepository,
                           SkillService skillService,
                           JobTitleService jobTitleService,
                           EmailSendService emailSendService,
-                          UserService userService) {
+                          UserService userService,
+                          ImageService imageService) {
         this.profileRepository = profileRepository;
         this.skillService = skillService;
         this.jobTitleService = jobTitleService;
         this.emailSendService = emailSendService;
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException {
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
-        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle);
+        Image profilePic = imageService.getImage(profileInDTO.profilePicId());
+        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle, profilePic);
         try {
             tryToSetUniqueOuterId(profile);
             profileRepository.saveAndFlush(profile);

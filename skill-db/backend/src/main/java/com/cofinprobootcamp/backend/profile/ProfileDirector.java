@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.image.Image;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
@@ -14,7 +15,8 @@ public class ProfileDirector {
     public static Profile CreateInDTOToEntity(ProfileCreateInDTO profileInDTO,
                                               User user,
                                               Set<Skill> skillSet,
-                                              JobTitle jobTitle) {
+                                              JobTitle jobTitle,
+                                              Image profilePic) {
         return Profile.builder()
                 .firstName(profileInDTO.firstName())
                 .lastName(profileInDTO.lastName())
@@ -26,6 +28,7 @@ public class ProfileDirector {
                 .skillSet(skillSet)
                 .birthDate(LocalDate.parse(profileInDTO.birthDate()))
                 .owner(user)
+                .profilePic(profilePic)
                 .build();
     }
 

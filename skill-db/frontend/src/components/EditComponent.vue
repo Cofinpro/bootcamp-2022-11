@@ -4,7 +4,7 @@
 
       <div class="header">
         <div class="d-flex flex-column align-items-center">
-          <upload-image-button/>
+          <upload-image-button v-on:upload="onUploadProfilePic"/>
         </div>
 
         <v-row class="headline">
@@ -15,7 +15,7 @@
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="jobs"/>
             <v-text-field v-model="phoneNumber" label="Telefonnummer"
-                          :rules="[ number => checkPhoneFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
+                          :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
           </v-col>
 
           <v-col lg="6" md="6" sm="12">
@@ -113,6 +113,7 @@ export default {
       givenTechnologies: [],
       newTechnologies: '',
       showAddTechnology: false,
+      profilePicUri: '',
     }
   },
 
@@ -153,11 +154,14 @@ export default {
         }
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
-        await detailStore.createProfile(newDetails);
+        await detailStore.createProfile(newDetails, this.profilePicUri);
         if (!errorStore.hasError) {
           await router.push('/');
         }
       }
+    },
+    onUploadProfilePic(base64String) {
+      this.profilePicUri = base64String;
     },
     leave() {
       if (this.update === 'true') {
@@ -189,8 +193,7 @@ export default {
       return inputDate <= currentDate;
     },
     checkPhoneNumberFormat(number) {
-      const regex = /[0-9]*\/*(\+49)* *(\([0-9]+\))*( *([-–])* *[0-9]+)*/g;
-      return regex.test(number);
+      return /^[0-9]{11,13}$/.test(number);
     },
   },
   computed: {

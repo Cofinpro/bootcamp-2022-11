@@ -3,10 +3,7 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
-import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
-import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
-import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
-import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
+import com.cofinprobootcamp.backend.profile.dto.*;
 import com.cofinprobootcamp.backend.user.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +55,7 @@ public class ProfileController {
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public void updateProfile(@PathVariable String id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
             throws ProfileNotFoundException, JobTitleNotFoundException {
-        profileService.updateProfile(profileInDTO, id);
+        Profile profile = profileService.updateProfile(profileInDTO, id);
     }
 
     /**

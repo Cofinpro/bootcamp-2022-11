@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.image;
 
+import com.cofinprobootcamp.backend.image.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -8,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Base64;
 
 
@@ -24,10 +24,10 @@ public class ImageController {
     }
 
     @PostMapping
-    public ResponseEntity<Image> saveImage(@RequestBody @Valid String base64Image) {
-        byte[] imageData = Base64.getMimeDecoder().decode(base64Image);
+    public ImageOutDTO saveImage(@RequestBody ImageInDTO base64Image) {
+        byte[] imageData = Base64.getMimeDecoder().decode(base64Image.file());
         Image image = imageService.saveImage(imageData);
-        return ResponseEntity.ok(image);
+        return new ImageOutDTO(image);
     }
 
     @GetMapping("/{id}")
@@ -40,3 +40,4 @@ public class ImageController {
         return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
     }
 }
+

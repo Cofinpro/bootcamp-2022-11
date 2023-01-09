@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.image.Image;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
@@ -27,13 +28,14 @@ class ProfileDirectorTest {
                 "references",
                 List.of("skill"),
                 "12345678901",
-                "1997-10-10"
+                "1997-10-10",
+                0L
         );
         User user = new User();
         user.setUsername("a@b.c");
         Set<Skill> skillSet= Set.of(new Skill());
 
-        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, new JobTitle("title"));
+        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, new JobTitle("title"), new Image());
 
         assertThat(profile.getBirthDate()).isEqualTo(profileInDTO.birthDate());
         assertThat(profile.getFirstName()).isEqualTo(profileInDTO.firstName());

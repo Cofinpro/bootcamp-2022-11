@@ -48,10 +48,22 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async createProfile(edits: DetailModel) {
+            async createProfile(edits: DetailModel, profilePicUri: String) {
                 this.loading = true;
+                let image_id = null;
+
                 console.log(edits);
                 const errorStore = useErrorStore();
+                await axiosInstance.post('/api/v1/images/', {file: profilePicUri})
+                    .then((response) => {
+                        image_id = response.data.id;
+                        console.log(image_id);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        errorStore.catchUploadImageError(error);
+                    });
+
                 await axiosInstance.post(`/api/v1/profiles/`,
                     {
                         'firstName': edits.getFirstName(),
@@ -64,7 +76,9 @@ export const useDetailStore = defineStore('detailStore', {
                         'phoneNumber': edits.getPhoneNumber(),
                         'email': localStorage.getItem('username'),
                         'birthDate': edits.getBirthDate(),
-                    }).then(() => {
+                        'profilePicId': image_id,
+                    }).then((response) => {
+                        console.log(response);
                     errorStore.toggleHasError();
                 })
                     .catch((error) => {

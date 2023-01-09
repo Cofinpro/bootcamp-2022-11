@@ -3,6 +3,7 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.email.EmailSendService;
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
+import com.cofinprobootcamp.backend.image.ImageService;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
@@ -39,6 +40,9 @@ class ProfileServiceTest {
     @Mock
     UserService userService;
 
+    @Mock
+    ImageService imageService;
+
     Profile profile;
 
     @BeforeEach
@@ -48,7 +52,8 @@ class ProfileServiceTest {
                 skillService,
                 jobTitleService,
                 emailSendService,
-                userService
+                userService,
+                imageService
                 );
         Set<Skill> skillSet = new HashSet<>();
         skillSet.add(new Skill(" "));

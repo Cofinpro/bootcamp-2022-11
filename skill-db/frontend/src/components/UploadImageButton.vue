@@ -55,6 +55,7 @@ export default {
           const reader = new FileReader();
           reader.onload = event => {
             this.imageDataUri = event.target.result;
+            this.$emit('upload', this.imageDataUri);
           }
           reader.readAsDataURL(file);
         };

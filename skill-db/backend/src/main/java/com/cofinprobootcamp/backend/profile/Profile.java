@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.image.Image;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
@@ -53,6 +54,10 @@ public class Profile {
     @JoinColumn(unique = true)
     @Builder.Default
     private User owner = null; // Default value
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(unique = true)
+    private Image profilePic = null;
 
     public int getAge() {
         return Period.between(this.birthDate, LocalDate.now()).getYears();
