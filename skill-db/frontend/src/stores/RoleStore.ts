@@ -23,25 +23,6 @@ export const useRoleStore = defineStore('roleStore', {
             this.loading = false;
         },
 
-        async loadUsersById(id: String) {
-            this.loading = true;
-            const errorStore = useErrorStore();
-            await axiosInstance.get(`/api/v1/roles/${id}/user`).then((response) => {
-                if(this.user.length > 0) {
-                    // reloads the list of users every time the method gets called,
-                    // in case the list is not empty
-                    this.user = [];
-                }
-                response.data.forEach((element: object) => {
-                    this.user.push(element.toString())
-                });
-            }).catch((error) => {
-                errorStore.catchGetRoleError(error, id);
-                console.log(error)
-            });
-            this.loading = false;
-        },
-
         async loadAllRoles() {
             this.loading = true;
             const errorStore = useErrorStore();

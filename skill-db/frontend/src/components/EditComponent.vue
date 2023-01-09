@@ -72,6 +72,11 @@
           Profil erstellen
         </v-btn>
         <v-btn v-if="update === 'true'" class="mt-10"
+               :style="!isFilled ? {
+                  color: '#BDBDBD !important',
+                  border: '1px dashed #BBBBBB !important',
+                } : ''"
+               :disabled="!isFilled"
                @click="submitProfile()" elevation="0">
           Änderungen speichern
         </v-btn>

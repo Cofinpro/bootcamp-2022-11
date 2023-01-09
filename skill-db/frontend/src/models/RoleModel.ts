@@ -35,7 +35,7 @@ export class RoleModel {
         this.description = value;
     }
 
-    getUser(): [] {
+    getUser(): String[] {
         return this.user;
     }
 
