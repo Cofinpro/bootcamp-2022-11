@@ -66,7 +66,7 @@ public enum StandardRoles {
      * but is excluded from internal administration rights.
      */
     HR(
-            "Personalabteilung/Human Resources",
+            "HR",
             "Mit dieser Rolle dürfen alle Profile angesehen, bearbeitet und gelöscht werden. Der Zugriff auf die Bearbeitung von Rollen ist nicht möglich."
     ) {
         @Override
