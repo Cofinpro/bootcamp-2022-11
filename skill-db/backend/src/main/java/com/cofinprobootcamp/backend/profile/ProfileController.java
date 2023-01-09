@@ -115,10 +115,8 @@ public class ProfileController {
     public void exportAllToExcel(HttpServletResponse response)
             throws IOException, IllegalAccessException {
         response.setContentType("application/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
+        String headerValue = "attachment; filename=profiles.xlsx";
         response.setHeader(headerKey, headerValue);
         ExcelGenerator excelGenerator = new ExcelGenerator(profileService.getAllDetailDTOs());
         excelGenerator.createExcel(response.getOutputStream());
@@ -126,8 +124,9 @@ public class ProfileController {
 
     @PostMapping(path="/import",  consumes="multipart/form-data")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
-    public void importFromCSV(@RequestParam("file") MultipartFile file) throws IOException {
-        CSVReader reader = new CSVReader(file);
+    public void importFromCSV(@RequestParam("file") MultipartFile file)
+            throws IOException, JobTitleNotFoundException {
+        CSVReader reader = new CSVReader(file, profileService, userService);
         reader.readProfileFromFile();
     }
 }

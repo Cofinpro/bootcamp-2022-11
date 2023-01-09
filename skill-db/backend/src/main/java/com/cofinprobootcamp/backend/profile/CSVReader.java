@@ -1,7 +1,9 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.exceptions.CSVArgumentNotValidException;
+import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
+import com.cofinprobootcamp.backend.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.Setter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,11 +24,21 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class CSVReader {
     private MultipartFile file;
-    public void readProfileFromFile() throws IOException {
+    private ProfileService profileService;
+    private UserService userService;
+
+    public CSVReader(MultipartFile file,
+                     @Autowired ProfileService profileService,
+                     @Autowired UserService userService) {
+        this.file = file;
+        this.profileService = profileService;
+        this.userService = userService;
+    }
+
+    public void readProfileFromFile() throws IOException, JobTitleNotFoundException {
         String content = new String(file.getBytes());
         CSVFormat format = CSVFormat.DEFAULT
                 .builder()
@@ -47,6 +60,8 @@ public class CSVReader {
                     record.get("Geburtsdatum")
             );
             validate(inDTO, lineCount);
+            profileService.createProfile(inDTO,
+                    userService.getUserByUsername(inDTO.email()));
             lineCount ++;
         }
 
