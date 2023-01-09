@@ -56,7 +56,7 @@ public class CSVReader {
                     record.get("Geburtsdatum")
             );
             validate(inDTO, lineCount);
-            profileService.createProfile(inDTO,
+            Profile profile = profileService.createProfile(inDTO,
                     userService.getUserByUsername(inDTO.email()));
             lineCount ++;
         }
