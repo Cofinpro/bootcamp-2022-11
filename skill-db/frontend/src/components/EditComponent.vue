@@ -14,9 +14,9 @@
         <v-row class="headline">
           <v-col cols="12" lg="6" md="6" sm="12">
             <v-text-field v-model="firstName" label="Vorname"
-                          :rules="[v => v.length > 1 || 'Erforderlich!']"/>
+                          :rules="[v => v.length > 0 || 'Erforderlich!']"/>
             <v-autocomplete v-model="jobTitle" label="Jobprofil"
-                            :rules="[v => v.length > 1 || 'Erforderlich!']"
+                            :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="jobs"/>
             <v-text-field v-model="phoneNumber" label="Telefonnummer"
                           :rules="[ number => checkPhoneFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
@@ -24,12 +24,13 @@
 
           <v-col lg="6" md="6" sm="12">
             <v-text-field v-model="lastName" label="Nachname"
-                          :rules="[v => v.length > 1 || 'Erforderlich']"/>
+                          :rules="[v => v.length > 0 || 'Erforderlich']"/>
             <v-autocomplete v-model="primarySkill" label="Primärkompetenz"
-                            :rules="[v => v.length > 1 || 'Erforderlich!']"
+                            :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="primaries"/>
             <v-text-field v-model="birthdate" label="Geburtsdatum"
-                          :rules="[ date => checkDateFormat(date) || 'Date Format must be DD.MM.YYYY']"/>
+                          :rules="[ date => checkDateFormat(date) ||
+                          'Datum muss im Format TT.MM.JJJJ eingegeben werden!']"/>
           </v-col>
         </v-row>
       </div>
@@ -51,13 +52,13 @@
                           @keydown.enter="addSkills"/>
 
             <v-text-field v-model="degree" label="Abschluss"
-                          :rules="[v => v.length > 1 || 'Erforderlich']"/>
+                          :rules="[v => v.length > 0 || 'Erforderlich']"/>
           </div>
         </v-col>
 
         <v-col>
           <v-text-field class="references" v-model="references" label="Referenzen"
-                        :rules="[v => v.length > 1 || 'Erforderlich!']"/>
+                        :rules="[v => v.length > 0 || 'Erforderlich!']"/>
         </v-col>
       </v-row>
 
@@ -93,7 +94,6 @@
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
-import {useRoute} from "vue-router";
 import {useErrorStore} from "@/stores/ErrorStore";
 import UploadImageButton from "@/components/UploadImageButton.vue";
 
@@ -101,14 +101,6 @@ export default {
   name: "EditComponent",
   props: ['detail', 'update'],
   components: { UploadImageButton },
-  setup() {
-    const detailStore = useDetailStore();
-    const errorStore = useErrorStore();
-    const id = String(useRoute().params.id);
-
-    return {
-    };
-  },
   data() {
     return {
       firstName: '',

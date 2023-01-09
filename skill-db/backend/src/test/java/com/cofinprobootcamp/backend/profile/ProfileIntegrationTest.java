@@ -26,17 +26,7 @@ public class ProfileIntegrationTest {
     private JSONObject loginData;
     @BeforeEach
     public void initialize() throws Exception {
-        /*
-        //create User in DB
-        mvc.perform(post("/api/v1/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\": \"lennart.rehmer@cofinpro.de\"," +
-                        " \"password\": \"mega_gutes_passwort1\" ," +
-                        "\"userRole\":  \"ADMIN\"}"))
-                .andExpect(status().isOk());*/
-
-
-        //login as User just created
+        //login as User
         MvcResult result = mvc.perform(post("/api/v1/token")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\": \"markus.kremer@cofinpro.de\", \"password\": \"mega_gutes_passwort1\" }"))

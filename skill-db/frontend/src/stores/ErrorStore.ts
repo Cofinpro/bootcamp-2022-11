@@ -11,10 +11,15 @@ export const useErrorStore = defineStore(
                 unauthorized: 'Nicht autorisiert!',
                 internalServerError: 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!',
                 idNotFound: 'Profil Id konnte nicht aufgelöst werden!',
-                notAllowed: 'Keine Berechtigung, diese Funktion aufzurufen. Dieser Vorfall wird an die Administratoren weitergeleitet.'
+                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Dieser Vorfall wird gemeldet.'
             }
         }),
         actions: {
+
+            toggleHasError() {
+                this.hasError = false;
+                this.errorText= '';
+            },
 
             catchGetAllError(error: AxiosError) {
                 this.hasError = true;
@@ -23,6 +28,8 @@ export const useErrorStore = defineStore(
                 } else {
                     if (error.response.status === 401) {
                         this.errorText = this.errorMessages.unauthorized;
+                    } else if (error.response.status === 403) {
+                        this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
                     } else {
@@ -52,17 +59,12 @@ export const useErrorStore = defineStore(
                 }
             },
 
-            toggleHasError() {
-                this.hasError = false;
-                this.errorText= '';
-            },
-
             handle400forProfile(error: AxiosError) {
                 const message: string = error.response.data.message.toString();
                 if (message === 'Der zurzeit eingeloggte Nutzer hat bereits ein Profil!') {
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
-                    let innerMessage = message.split(/(\[])/)[2];
+                    let innerMessage = message.split(/(\[|\])/)[2];
                     this.errorText = innerMessage;
                 } else if (message === 'Datum nicht in passendem Format!') {
                     this.errorText = message;
@@ -115,13 +117,14 @@ export const useErrorStore = defineStore(
                     }
                 }
             },
+
             catchExportError(error: AxiosError) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = this.errorMessages.unknownError;
                 } else {
                     if (error.response.status === 403) {
-                        this.errorText = this.errorMessages.unauthorized;
+                        this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 500 ){
                         this.errorText = this.errorMessages.internalServerError;
                     } else {
