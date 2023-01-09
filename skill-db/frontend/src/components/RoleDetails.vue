@@ -83,16 +83,10 @@ export default {
       if (role.getIdentifier() !== 'UNDEFINED') {
         await this.userStore.loadUsersByRoleId(role.getIdentifier());
         this.selectedUsers = this.userStore.users;
+        this.userStore.users = [];
       }
       this.roleHere = role;
       this.edit = true;
-    },
-    async submit(role, users) {
-      const userStore = useUserStore();
-      for (const user of users) {
-        await userStore.changeRole(role.getIdentifier(), user);
-      }
-      this.edit = false;
     },
   },
 }
