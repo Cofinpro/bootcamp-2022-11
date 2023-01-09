@@ -1,12 +1,10 @@
 <template>
-  <RoleDetails :roles="roles" :users="getNames(allUsers)"/>
+  <RoleDetails :roles="roles"/>
 </template>
 
 <script lang="ts">
 import RoleDetails from "@/components/RoleDetails.vue";
 import {useRoleStore} from "@/stores/RoleStore";
-import {useUserStore} from "@/stores/UserStore";
-import type {UserModel} from "@/models/UserModel";
 
 export default {
   name: "RoleOverView",
@@ -16,22 +14,9 @@ export default {
     roleStore.loadAllRoles();
     const roles = roleStore.allRoles;
 
-    const userStore = useUserStore();
-    userStore.loadUsers();
-    const allUsers = userStore.users;
-
     return {
-      roles, allUsers
+      roles
     };
-  },
-  methods: {
-    getNames(allUsers: UserModel[]): String[] {
-      const userNames: String[] = [];
-      allUsers.forEach(user => {
-        userNames.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`);
-      })
-      return userNames;
-    }
   },
 }
 </script>

@@ -13,8 +13,8 @@
     </div>
 
     <v-card-item class="d-flex flex-column justify-space-between">
-      <v-select v-model="selectedNamesAndRole"
-                :items="users" label="Wähle Nutzer"
+      <v-select v-model="selectedNamesAndRole" item-title="email"
+                :items="attachRole(users)" label="Wähle Nutzer"
                 multiple class="ml-5 mr-5" hide-details>
         <template v-slot:selection="{ item, index }">
           <v-chip v-if="index <= 0">
@@ -37,8 +37,8 @@ export default {
   name: "RoleDropdown",
   props: [
     'roleHere',
-    'users',
     'selectedUsers',
+    'users'
   ],
   data() {
     const nextUsers = this.selectedUsers;
@@ -46,8 +46,15 @@ export default {
     nextUsers.forEach(user => {
       selectedNamesAndRole.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`)
     });
+    function attachRole(users) {
+      let namesAndRoles = [];
+      users.forEach(user => {
+        namesAndRoles.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`)
+      });
+      return namesAndRoles;
+    }
     return {
-      nextUsers, selectedNamesAndRole
+      nextUsers, selectedNamesAndRole, attachRole
     }
   },
 
@@ -62,14 +69,19 @@ export default {
     *     -> as return of data with method: method can't find return of data
     * */
   methods: {
-    async trySubmit(role, selectedNamesAndRole) {
+    async trySubmit(role, nextUsers) {
       const userStore = useUserStore();
-      for (const nameAndRole of selectedNamesAndRole) {
-        const name = nameAndRole.split("(")[0].trim();
-        await userStore.changeRole(role.getIdentifier(), name);
+      for (const selected of nextUsers) {
+        this.users.forEach(user => {
+          if(user.getEmail() === selected.split("(")[0].trim()) {
+            userStore.changeRole(role.getIdentifier(), user.getId());
+          }
+        })
+
       }
       this.$emit('clicked');
     },
+
 
   }
 }
