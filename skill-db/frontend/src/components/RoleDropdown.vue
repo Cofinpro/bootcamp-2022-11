@@ -5,7 +5,7 @@
         {{ roleHere.getDisplayName() }}
       </v-card-title>
       <v-card-actions>
-        <v-btn class="mr-2 mt-2" @click="trySubmit(roleHere, selectedNames)"
+        <v-btn class="mr-2 mt-2" @click="trySubmit(roleHere, selectedNamesAndRole)"
                elevation="0" size="small">
           Bestätigen
         </v-btn>
@@ -13,7 +13,7 @@
     </div>
 
     <v-card-item class="d-flex flex-column justify-space-between">
-      <v-select v-model="selectedNames"
+      <v-select v-model="selectedNamesAndRole"
                 :items="users" label="Wähle Nutzer"
                 multiple class="ml-5 mr-5" hide-details>
         <template v-slot:selection="{ item, index }">
@@ -22,7 +22,7 @@
           </v-chip>
           <span v-if="index === 1"
                 class="grey--text text-caption">
-                    (+{{ selectedNames.length - 1 }} mehr)
+                    (+{{ selectedNamesAndRole.length - 1 }} mehr)
                   </span>
         </template>
       </v-select>
@@ -42,10 +42,12 @@ export default {
   ],
   data() {
     const nextUsers = this.selectedUsers;
-    const selectedNames = [];
-    nextUsers.forEach(user => selectedNames.push(user.getEmail()));
+    const selectedNamesAndRole = [];
+    nextUsers.forEach(user => {
+      selectedNamesAndRole.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`)
+    });
     return {
-      nextUsers, selectedNames
+      nextUsers, selectedNamesAndRole
     }
   },
 
@@ -60,9 +62,10 @@ export default {
     *     -> as return of data with method: method can't find return of data
     * */
   methods: {
-    async trySubmit(role, selectedNames) {
+    async trySubmit(role, selectedNamesAndRole) {
       const userStore = useUserStore();
-      for (const name of selectedNames) {
+      for (const nameAndRole of selectedNamesAndRole) {
+        const name = nameAndRole.split("(")[0].trim();
         await userStore.changeRole(role.getIdentifier(), name);
       }
       this.$emit('clicked');

@@ -142,6 +142,11 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                         return userOwnsProfile(customAuth, id);
                     }
                 }
+                case ROLES_GET_BY_ID$SELF -> {
+                    if (targetDomainObject instanceof String id) {
+                        return userHasRole(customAuth, id);
+                    }
+                }
                 default -> {
                     return false;
                 }
@@ -174,5 +179,9 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
     private boolean userOwnsProfile(CustomJwtAuthenticationToken authentication, String givenId) {
         return givenId.equals(authentication.getProfileId()); // "Yoda notation" for null check
+    }
+
+    private boolean userHasRole(CustomJwtAuthenticationToken authentication, String givenIdentifier) {
+        return givenIdentifier.equals(authentication.getRoleName()); // "Yoda notation" for null check
     }
 }

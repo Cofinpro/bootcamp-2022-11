@@ -16,6 +16,9 @@ public enum UserPrivileges {
     ROLES_GET_ALL(
             "Der Nutzer ist dazu berechtigt, eine Übersicht aller bestehenden Rollen einzusehen."
     ),
+    ROLES_BY_ID_GET_USERS_ALL(
+            "Der Nutzer ist dazu berechtigt, eine Übersicht aller Nutzernamen einzusehen, die eine bestimmte Rolle innehaben."
+    ),
 
     /*
      * Endpoint "/api/v1/profiles"
