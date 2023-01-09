@@ -15,7 +15,6 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.skills.SkillService;
 import com.cofinprobootcamp.backend.user.User;
-import com.cofinprobootcamp.backend.user.UserService;
 import com.cofinprobootcamp.backend.utils.RandomStringGenerator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,18 +33,15 @@ public class ProfileService {
     private final SkillService skillService;
     private final JobTitleService jobTitleService;
     private final EmailSendService emailSendService;
-    private final UserService userService;
 
     public ProfileService(ProfileRepository profileRepository,
                           SkillService skillService,
                           JobTitleService jobTitleService,
-                          EmailSendService emailSendService,
-                          UserService userService) {
+                          EmailSendService emailSendService) {
         this.profileRepository = profileRepository;
         this.skillService = skillService;
         this.jobTitleService = jobTitleService;
         this.emailSendService = emailSendService;
-        this.userService = userService;
     }
 
     public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException {
@@ -71,13 +67,13 @@ public class ProfileService {
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet, jobTitle);
 
-        String mailRecipientAddress = current.getOwner().getUsername();
+        /*String mailRecipientAddress = current.getOwner().getUsername();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(!mailRecipientAddress.equals(authentication.getName())) {
             // trigger info-email
             sendProfileUpdateMail(profile.getFullName(), authentication.getName(), mailRecipientAddress);
-        }
+        }*/
 
         return profileRepository.saveAndFlush(profile);
     }
