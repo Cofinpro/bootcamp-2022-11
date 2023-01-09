@@ -1,7 +1,6 @@
 package com.cofinprobootcamp.backend.role;
 
 import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
-import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class RoleDirector {
 
     public static List<RoleDetailsOutDTO> roleOverviewFromEnum() {
         List<RoleDetailsOutDTO> allRoles = new LinkedList<>();
-        for (var role : StandardRoles.values()) {
+        for (var role : StandardRoles.getAllDefinedValues()) {
             allRoles.add(roleDetailsViewFromEnumType(role));
         }
         return allRoles;

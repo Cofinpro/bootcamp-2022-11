@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -75,7 +74,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
-        var authProvider = new DaoAuthenticationProvider();
+        var authProvider = new CustomDaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
@@ -98,7 +97,7 @@ public class SecurityConfig {
      * This method is necessary s.t. role prefix can be used in annotation queries
      */
     @Bean
-    public String jwtGrantedAuthoritiesPrefix() {
+    public String authorityPrefix() {
         return AUTHORITY_PREFIX;
     }
 

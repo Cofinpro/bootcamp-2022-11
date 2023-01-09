@@ -29,7 +29,7 @@ public class RoleController {
      * @return A {@code RoleDetailsOutDTO} containing any relevant information about the role, if it exists
      */
     @GetMapping(path = "{identifier}")
-    @PreAuthorize("hasAnyAuthority(@jwtGrantedAuthoritiesPrefix + 'ADMIN', @jwtGrantedAuthoritiesPrefix + 'HR')")
+    @PreAuthorize("hasPermission(#identifier, 'RoleDetailsOutDTO', @authorityPrefix + 'ROLES_GET_BY_ID')")
     public RoleDetailsOutDTO getRoleById(@PathVariable String identifier) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
@@ -42,7 +42,7 @@ public class RoleController {
      * @return A {@code RoleOverviewOutDTO} containing any relevant information about all roles
      */
     @GetMapping(path = "")
-    @PreAuthorize("hasAnyAuthority(@jwtGrantedAuthoritiesPrefix + 'ADMIN', @jwtGrantedAuthoritiesPrefix + 'HR')")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'ROLES_GET_ALL')")
     public List<RoleDetailsOutDTO> getAllRoles() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication);
@@ -56,7 +56,7 @@ public class RoleController {
      * @return A list of usernames of all users with this role
      */
     @GetMapping(path = "{identifier}/user")
-    @PreAuthorize("hasAnyAuthority(@jwtGrantedAuthoritiesPrefix + 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority(@authorityPrefix + 'ADMIN')")
     public List<String> getAllUsersForRoleById(@PathVariable String identifier) {
         return roleService.getUsersByRole(identifier);
     }

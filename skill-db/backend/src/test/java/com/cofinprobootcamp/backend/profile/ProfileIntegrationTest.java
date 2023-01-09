@@ -26,21 +26,24 @@ public class ProfileIntegrationTest {
     private JSONObject loginData;
     @BeforeEach
     public void initialize() throws Exception {
+        /*
         //create User in DB
         mvc.perform(post("/api/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\": \"test@test.de\"," +
-                        " \"password\": \"password1\" ," +
+                .content("{\"email\": \"lennart.rehmer@cofinpro.de\"," +
+                        " \"password\": \"mega_gutes_passwort1\" ," +
                         "\"userRole\":  \"ADMIN\"}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk());*/
+
+
         //login as User just created
         MvcResult result = mvc.perform(post("/api/v1/token")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\": \"test@test.de\", \"password\": \"password1\" }"))
+                        .content("{\"username\": \"markus.kremer@cofinpro.de\", \"password\": \"mega_gutes_passwort1\" }"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tokens.access_token").isNotEmpty())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.tokens.refresh_token").isNotEmpty())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("test@test.de"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("markus.kremer@cofinpro.de"))
                 .andReturn();
         loginData = new JSONObject(result.getResponse().getContentAsString());
     }
@@ -64,7 +67,7 @@ public class ProfileIntegrationTest {
                         "    \"email\": \"markus.kremer22@cofinpro.de\",\n" +
                         "    \"birthDate\": \"2020-10-10\"\n" +
                         "}"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isForbidden());
     }
     @Test
     @DisplayName("Test Profile with jobTitle that is not in database! Only success Criterium is to give back 404 error!")
@@ -82,7 +85,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"test@test.de\",\n" +
+                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isNotFound());
@@ -124,7 +127,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"test@test.de\",\n" +
+                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isOk());
@@ -147,7 +150,7 @@ public class ProfileIntegrationTest {
                 .getContentAsString();
 
         assertThat(mvcResult).contains("\"id\":\"" + outerId + "\"");
-        assertThat(mvcResult).contains("\"email\":\"test@test.de\"");
+        assertThat(mvcResult).contains("\"email\":\"markus.kremer@cofinpro.de\"");
         assertThat(mvcResult).contains("\"phoneNumber\":\"12345678901\"");
         assertThat(mvcResult).contains("\"jobTitle\":\"Consultant\"");
         assertThat(mvcResult).contains("\"primaryExpertise\":\"Technologie\"");
@@ -175,7 +178,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"test@test.de\",\n" +
+                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isOk());
@@ -203,7 +206,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"test@test.de\",\n" +
+                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isOk());
@@ -235,7 +238,7 @@ public class ProfileIntegrationTest {
                                 "    \"referenceText\": \"afdaefnwprvgklrwnmgvwülärf\",\n" +
                                 "    \"skills\": [\"adfasdasd\",\"afasfdas\"],\n" +
                                 "    \"phoneNumber\": \"12345678901\",\n" +
-                                "    \"email\": \"test@test.de\",\n" +
+                                "    \"email\": \"markus.kremer@cofinpro.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
                 .andExpect(status().isOk());

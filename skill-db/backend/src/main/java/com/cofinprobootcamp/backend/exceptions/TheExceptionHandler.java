@@ -132,5 +132,14 @@ public class TheExceptionHandler {
                 atiooswpe.getCause());
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(InvalidAuthorityFormatException.class)
+    public ResponseEntity<CustomErrorMessage> handleInvalidAuthorityFormat(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Es gab einen Fehler beim Prüfen der Zugriffsberechtigungen dieses Nutzers [Ungültiges Rechteformat]. Zugriff verweigert.",
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
 
