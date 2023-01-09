@@ -2,7 +2,7 @@
   <v-tooltip>
     <template v-slot:activator="{ props }">
       <v-btn id="button" elevation="0"
-             min-width="40px" width="40px" height="35"
+             min-width="40px" width="40px" height="35px"
              v-bind="props" @click="$emit('clicked')">
         <v-icon size="large"> {{ icon }} </v-icon>
       </v-btn>
