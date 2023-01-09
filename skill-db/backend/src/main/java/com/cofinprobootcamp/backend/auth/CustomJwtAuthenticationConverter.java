@@ -76,7 +76,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
             tokenRole =  authorities.stream().findFirst().get();
         } catch (NoSuchElementException e) {
             // Internally a user must have EXACTLY one role (at least StandardRoles.UNDEFINED)
-            throw new AuthTokenInfoOutOfSyncWithPersistenceException(e);
+            throw new AuthTokenInfoOutOfSyncWithPersistenceException("[Corrupted data!] Nutzer hat nicht genau eine Rolle!", e);
         }
         return tokenRole.getAuthority();
     }
@@ -87,7 +87,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
                 !userDetails.getOuterId().equals(source.getClaimAsString(JWT_CLAIM_OID))
                         || !userDetails.getRoleName().equals(tokenRole)) {
             throw new AuthTokenInfoOutOfSyncWithPersistenceException(
-                    new Exception("Corrupted data!")
+                    "Login ist nicht (mehr) gültig. Grund ist vermutlich eine Änderung der Nutzerrolle. Bitte erneut einloggen."
             );
         }
     }

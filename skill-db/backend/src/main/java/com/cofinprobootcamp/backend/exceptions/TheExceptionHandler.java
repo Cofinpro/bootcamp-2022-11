@@ -127,9 +127,9 @@ public class TheExceptionHandler {
             AuthTokenInfoOutOfSyncWithPersistenceException atiooswpe,
             WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "Die Informationen aus dem Access Token stimmen nicht mit der Datenbank überein!",
+                atiooswpe.getMessage(),
                 wr.getDescription(false),
-                atiooswpe.getCause());
+                atiooswpe.getCause() != null ? atiooswpe.getCause() : atiooswpe);
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
