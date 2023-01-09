@@ -71,7 +71,7 @@ public enum StandardRoles {
     ) {
         @Override
         public Set<UserPrivileges> getAssociatedPrivileges() {
-            HashSet<UserPrivileges> privileges = new HashSet<>(USER.getAssociatedPrivileges());
+            HashSet<UserPrivileges> privileges = new HashSet<>(USER.getAssociatedPrivileges()); // HR inherits any privilege from USER
             privileges.addAll(
                     Set.of(
                             UserPrivileges.ROLES_GET_BY_ID$ANY,
