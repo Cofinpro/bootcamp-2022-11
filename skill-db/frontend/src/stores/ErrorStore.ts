@@ -11,7 +11,7 @@ export const useErrorStore = defineStore(
                 unauthorized: 'Nicht autorisiert!',
                 internalServerError: 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!',
                 idNotFound: 'Profil Id konnte nicht aufgelöst werden!',
-                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Dieser Vorfall wird an die Administratoren weitergeleitet.'
+                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Dieser Vorfall wird gemeldet.'
             }
         }),
         actions: {
