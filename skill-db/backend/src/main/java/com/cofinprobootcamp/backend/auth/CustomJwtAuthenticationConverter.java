@@ -1,7 +1,6 @@
 package com.cofinprobootcamp.backend.auth;
 
 import com.cofinprobootcamp.backend.exceptions.AuthTokenInfoOutOfSyncWithPersistenceException;
-import org.springframework.core.Constants;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -52,6 +51,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
                     principalClaimName,
                     userDetails.getRoleName(),
                     !userDetails.isAccountNonLocked(),
+                    userDetails.getOuterId(),
                     userDetails.getProfileId()
         );
     }
