@@ -175,7 +175,7 @@ public class ProfileIntegrationTest {
                 "12345678901",
                 "markus.kremer@cofinpro.de",
                 "2020-10-10");
-        patchProfile(toPost, outerId)
+        patchProfile(toPost, outerId, loginData)
                 .andExpect(status().isOk());
         mvcResult = mvc.perform(get("/api/v1/profiles")
                         .header("authorization",
@@ -187,6 +187,59 @@ public class ProfileIntegrationTest {
         assertThat(mvcResult).contains("\"name\":\"Markus Kremer\"");
         assertThat(mvcResult).contains("\"jobTitle\":\"Architect\"");
         assertThat(mvcResult).contains("\"primaryExpertise\":\"Technologie\"");
+    }
+
+    @DisplayName("Test patching other users profile as USER")
+    @Test
+    void testPatchOfOtherUsersProfile() throws Exception {
+        ToPost toPost = new ToPost("Markus",
+                "Kremer",
+                "Consultant",
+                "a",
+                "Technologie",
+                "ref",
+                "[\"skill\"]",
+                "12345678901",
+                "markus.kremer@cofinpro.de",
+                "2020-10-10");
+        postProfile(toPost)
+                .andExpect(status().isOk());
+        String mvcResult = mvc.perform(get("/api/v1/profiles")
+                        .header("authorization",
+                                "Bearer " + loginData.getJSONObject("tokens").get("access_token")))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(mvcResult).contains("\"name\":\"Markus Kremer\"");
+        assertThat(mvcResult).contains("\"jobTitle\":\"Consultant\"");
+        assertThat(mvcResult).contains("\"primaryExpertise\":\"Technologie\"");
+
+        String outerId = extractOuterIdFromMvcResult(mvcResult);
+
+        mvcResult = mvc.perform(get("/api/v1/profiles")
+                        .header("authorization",
+                                "Bearer " + loginData.getJSONObject("tokens").get("access_token")))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(mvcResult).contains("\"name\":\"Markus Kremer\"");
+        assertThat(mvcResult).contains("\"jobTitle\":\"Consultant\"");
+        assertThat(mvcResult).contains("\"primaryExpertise\":\"Technologie\"");
+
+
+        MvcResult result = mvc.perform(post("/api/v1/token")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\": \"luis.geyer@cofinpro.de\", \"password\": \"mega_gutes_passwort1\" }"))
+                .andExpect(status().isOk())
+                .andReturn();
+        JSONObject otherLoginData = new JSONObject(result.getResponse().getContentAsString());
+
+        patchProfile(toPost,outerId,otherLoginData)
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -245,7 +298,7 @@ public class ProfileIntegrationTest {
                         "}"));
     }
 
-    private ResultActions patchProfile(ToPost toPost, String outerId) throws Exception {
+    private ResultActions patchProfile(ToPost toPost, String outerId, JSONObject loginData) throws Exception {
         return mvc.perform(patch("/api/v1/profiles/" + outerId)
                 .header("authorization",
                         "Bearer " + loginData.getJSONObject("tokens").get("access_token"))
