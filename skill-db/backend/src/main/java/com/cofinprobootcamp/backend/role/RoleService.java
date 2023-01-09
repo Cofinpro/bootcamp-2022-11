@@ -7,10 +7,13 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 import com.cofinprobootcamp.backend.user.User;
+import com.cofinprobootcamp.backend.user.UserDirector;
 import com.cofinprobootcamp.backend.user.UserRepository;
+import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -39,16 +42,16 @@ public class RoleService {
         return RoleDirector.roleOverviewFromEnum();
     }
 
-    public List<String> getUsersByRole(String identifier) throws RoleNotFoundException {
+    public List<UserOutDTO> getUsersByRole(String identifier) throws RoleNotFoundException {
         StandardRoles role = StandardRoles.fromIdentifier(identifier);
         if (role.equals(StandardRoles.UNDEFINED)) {
             throw new RoleNotFoundException(identifier);
         }
         List<User> users = userRepository.findAllByRole(role);
-        List<String> userNames = new ArrayList<>();
-        for(User user : users) {
-            userNames.add(user.getUsername());
+        List<UserOutDTO> usersDTO = new LinkedList<>();
+        for (User user : users) {
+            usersDTO.add(UserDirector.EntityToUserOutDTO(user));
         }
-        return userNames;
+        return usersDTO;
     }
 }
