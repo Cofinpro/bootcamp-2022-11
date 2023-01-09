@@ -98,9 +98,4 @@ public class UserService {
         }
         user.setOuterId(candidateId);
     }
-
-    public String getUsernameByProfileId(Long profileId) {
-        Optional<String> username = userRepository.findUserByProfileId(profileId);
-        return username.orElse("");
-    }
 }

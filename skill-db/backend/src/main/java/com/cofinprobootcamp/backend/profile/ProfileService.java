@@ -71,7 +71,7 @@ public class ProfileService {
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet, jobTitle);
 
-        String mailRecipientAddress = userService.getUsernameByProfileId(current.getId());
+        String mailRecipientAddress = current.getOwner().getUsername();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(!mailRecipientAddress.equals(authentication.getName())) {
