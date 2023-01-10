@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.auth;
 
+import com.cofinprobootcamp.backend.config.Constants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
@@ -96,6 +97,16 @@ public class TokenService {
             return jwt.getSubject().equals(username);
         } catch (Exception exception) {
             return false;
+        }
+    }
+
+    public String extractRoleFromToken(String token) {
+        try {
+            Jwt jwt = jwtDecoder.decode(token);
+            UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(jwt.getSubject());
+            return Constants.JWT_ROLE_PREFIX + userDetails.getRoleName();
+        } catch (Exception e) {
+            return null;
         }
     }
 
