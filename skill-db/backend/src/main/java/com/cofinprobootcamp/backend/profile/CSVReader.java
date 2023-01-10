@@ -36,6 +36,14 @@ public class CSVReader {
         this.userService = userService;
     }
 
+    /**
+     * reads csv from file, validates content and, if content is valid creates profile objects in database.
+     * @throws IOException (not rly)
+     * @throws JobTitleNotFoundException from createprofile function
+     * @throws ProfileAlreadyExistsException from createprofile function
+     * @throws CSVFormatException if csv is not formatted correctly
+     * @throws CSVArgumentNotValidException if csv records contain nonvalid elements
+     */
     public void readProfileFromFile() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
         String content = new String(file.getBytes());
         CSVFormat format = CSVFormat.EXCEL
@@ -67,7 +75,6 @@ public class CSVReader {
         } catch (IllegalArgumentException e) {
             throw new CSVFormatException(e.getMessage());
         }
-
     }
     private void validate(ProfileCreateInDTO inDTO, int lineCount) {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();

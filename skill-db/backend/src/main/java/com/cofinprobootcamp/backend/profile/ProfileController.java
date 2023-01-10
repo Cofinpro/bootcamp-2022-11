@@ -116,6 +116,15 @@ public class ProfileController {
         excelGenerator.createExcel(response.getOutputStream());
     }
 
+    /**
+     *
+     * @param file to import from.
+     *             CSV in GERMAN format (aka semicolon separated values)
+     * @throws IOException not
+     * @throws JobTitleNotFoundException as in createprofile
+     * @throws ProfileAlreadyExistsException as in createprofile
+     * @throws CSVFormatException if columns in csv can not be read
+     */
     @PostMapping(path="/import",  consumes="multipart/form-data")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public void importFromCSV(@RequestParam("file") MultipartFile file)
