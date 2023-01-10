@@ -40,6 +40,9 @@ export const useErrorStore = defineStore(
 
             catchImportError(error: AxiosError) {
                 this.catchPostPatchError(error);
+                if (this.errorText === this.errorMessages.unknownError) {
+                    this.errorText = error.response.data.message.toString().split(",")[0];
+                }
                 },
             catchPostPatchError(error: AxiosError) {
                 this.hasError=true;
