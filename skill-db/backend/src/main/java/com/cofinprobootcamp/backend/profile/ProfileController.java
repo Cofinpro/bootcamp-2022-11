@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.profile;
 
+import com.cofinprobootcamp.backend.exceptions.CSVFormatException;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
@@ -118,7 +119,7 @@ public class ProfileController {
     @PostMapping(path="/import",  consumes="multipart/form-data")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
     public void importFromCSV(@RequestParam("file") MultipartFile file)
-            throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException {
+            throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
         CSVReader reader = new CSVReader(file, profileService, userService);
         reader.readProfileFromFile();
     }

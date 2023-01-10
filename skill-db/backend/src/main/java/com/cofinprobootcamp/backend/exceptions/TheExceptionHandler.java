@@ -37,6 +37,17 @@ public class TheExceptionHandler {
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CSVFormatException.class)
+    public ResponseEntity<CustomErrorMessage> handleCSVFormatException(
+            CSVFormatException e, WebRequest wr
+    ) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                e.getError(),
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(CSVArgumentNotValidException.class)
     public ResponseEntity<CustomErrorMessage> handleCSVArgumentNotValidException(
             CSVArgumentNotValidException e, WebRequest wr) {

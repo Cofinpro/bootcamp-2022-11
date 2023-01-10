@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.exceptions.CSVArgumentNotValidException;
+import com.cofinprobootcamp.backend.exceptions.CSVFormatException;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
@@ -35,7 +36,7 @@ public class CSVReader {
         this.userService = userService;
     }
 
-    public void readProfileFromFile() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException {
+    public void readProfileFromFile() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
         String content = new String(file.getBytes());
         CSVFormat format = CSVFormat.EXCEL
                 .builder()
@@ -44,23 +45,27 @@ public class CSVReader {
                 .setSkipHeaderRecord(true)
                 .build();
         int lineCount = 1;
-        for (CSVRecord record : CSVParser.parse(content, format)) {
-            ProfileCreateInDTO inDTO = new ProfileCreateInDTO(
-                    record.get("Email"),
-                    record.get("Vorname"),
-                    record.get("Nachname"),
-                    record.get("JobTitel"),
-                    record.get("Abschluss"),
-                    record.get("Primärkompetenz"),
-                    record.get("Referenzen"),
-                    Arrays.stream(record.get("Skills").split(";")).toList(),
-                    record.get("Telefonnummer"),
-                    record.get("Geburtsdatum")
-            );
-            validate(inDTO, lineCount);
-            Profile profile = profileService.createProfile(inDTO,
-                    userService.getUserByUsername(inDTO.email()));
-            lineCount ++;
+        try {
+            for (CSVRecord record : CSVParser.parse(content, format)) {
+                ProfileCreateInDTO inDTO = new ProfileCreateInDTO(
+                        record.get("Email"),
+                        record.get("Vorname"),
+                        record.get("Nachname"),
+                        record.get("JobTitel"),
+                        record.get("Abschluss"),
+                        record.get("Primärkompetenz"),
+                        record.get("Referenzen"),
+                        Arrays.stream(record.get("Skills").split(";")).toList(),
+                        record.get("Telefonnummer"),
+                        record.get("Geburtsdatum")
+                );
+                validate(inDTO, lineCount);
+                Profile profile = profileService.createProfile(inDTO,
+                        userService.getUserByUsername(inDTO.email()));
+                lineCount++;
+            }
+        } catch (IllegalArgumentException e) {
+            throw new CSVFormatException(e.getMessage());
         }
 
     }
