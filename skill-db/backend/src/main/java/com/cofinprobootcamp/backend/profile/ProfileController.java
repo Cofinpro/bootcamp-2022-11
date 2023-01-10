@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.profile;
 
+import com.cofinprobootcamp.backend.exceptions.CSVFormatException;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
@@ -11,14 +12,11 @@ import com.cofinprobootcamp.backend.user.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.cofinprobootcamp.backend.user.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -42,9 +40,6 @@ public class ProfileController {
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
         User user = userService.getUserByUsername(profileInDTO.email());
-        if (profileRepository.findProfileByOwner(user).isPresent()) {
-            throw new ProfileAlreadyExistsException();
-        }
         Profile profile = profileService.createProfile(profileInDTO, user);
         userService.assignProfileToUser(user, profile);
     }
@@ -104,8 +99,9 @@ public class ProfileController {
 
     /**
      * generates excel and writes excel to responses outputstream
+     *
      * @param response to get request
-     * @throws IOException if response is not writable
+     * @throws IOException            if response is not writable
      * @throws IllegalAccessException should never be thrown!
      */
     @GetMapping("/export")
@@ -113,12 +109,27 @@ public class ProfileController {
     public void exportAllToExcel(HttpServletResponse response)
             throws IOException, IllegalAccessException {
         response.setContentType("application/octet-stream");
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
-        String currentDateTime = dateFormatter.format(new Date());
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
+        String headerValue = "attachment; filename=profiles.xlsx";
         response.setHeader(headerKey, headerValue);
         ExcelGenerator excelGenerator = new ExcelGenerator(profileService.getAllDetailDTOs());
         excelGenerator.createExcel(response.getOutputStream());
+    }
+
+    /**
+     *
+     * @param file to import from.
+     *             CSV in GERMAN format (aka semicolon separated values)
+     * @throws IOException not
+     * @throws JobTitleNotFoundException as in createprofile
+     * @throws ProfileAlreadyExistsException as in createprofile
+     * @throws CSVFormatException if columns in csv can not be read
+     */
+    @PostMapping(path="/import",  consumes="multipart/form-data")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
+    public void importFromCSV(@RequestParam("file") MultipartFile file)
+            throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
+        CSVReader reader = new CSVReader(file, profileService, userService);
+        reader.readProfileFromFile();
     }
 }
