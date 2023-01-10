@@ -13,8 +13,8 @@
     </div>
 
     <v-card-item class="d-flex flex-column justify-space-between">
-      <v-select v-model="selectedNamesAndRole"
-                :items="users" label="Wähle Nutzer"
+      <v-select v-model="selectedNamesAndRole" item-title="email"
+                :items="attachRole(users)" label="Wähle Nutzer"
                 multiple class="ml-5 mr-5" hide-details>
         <template v-slot:selection="{ item, index }">
           <v-chip v-if="index <= 0">
@@ -37,39 +37,43 @@ export default {
   name: "RoleDropdown",
   props: [
     'roleHere',
-    'users',
     'selectedUsers',
   ],
   data() {
+    const userStore = useUserStore();
+    userStore.loadUsers();
+    const users = userStore.users
+
     const nextUsers = this.selectedUsers;
     const selectedNamesAndRole = [];
     nextUsers.forEach(user => {
       selectedNamesAndRole.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`)
     });
+    function attachRole(users) {
+      let namesAndRoles = [];
+      users.forEach(user => {
+        namesAndRoles.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`)
+      });
+      return namesAndRoles;
+    }
     return {
-      nextUsers, selectedNamesAndRole
+      users, nextUsers, selectedNamesAndRole, attachRole
     }
   },
-
-  /*
-  /!*Problem: selectedUsers
-    *   as Prop: can't be used as v-model because readOnly
-    *   as return of setup: needs role prop
-    *     -> as return of setup with function: method can't be found
-    *     -> as return of setup with method: method can't find return of setup
-    *   as return of data: needs role prop
-    *     -> as return of data with method: method can't be found
-    *     -> as return of data with method: method can't find return of data
-    * */
   methods: {
-    async trySubmit(role, selectedNamesAndRole) {
+    async trySubmit(role, nextUsers) {
       const userStore = useUserStore();
-      for (const nameAndRole of selectedNamesAndRole) {
-        const name = nameAndRole.split("(")[0].trim();
-        await userStore.changeRole(role.getIdentifier(), name);
+      for (const selected of nextUsers) {
+        this.users.forEach(user => {
+          if(user.getEmail() === selected.split("(")[0].trim()) {
+            userStore.changeRole(role.getIdentifier(), user.getId());
+          }
+        })
+
       }
       this.$emit('clicked');
     },
+
 
   }
 }
@@ -80,11 +84,10 @@ export default {
 .v-card {
   margin-top: 20vh;
   margin-left: 20vw;
-  max-width: 500px;
-  min-width: 400px;
+  width: 500px;
 }
 
 .v-select {
-  min-width: 340px;
+  min-width: 400px;
 }
 </style>
