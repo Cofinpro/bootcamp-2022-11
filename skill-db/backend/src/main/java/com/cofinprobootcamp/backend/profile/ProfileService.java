@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import static java.util.Objects.isNull;
 
 @Service
 public class ProfileService {
@@ -61,7 +62,7 @@ public class ProfileService {
         Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle, profilePic);
         try {
             tryToSetUniqueOuterId(profile);
-            profileRepository.saveAndFlush(profile);
+            profile = profileRepository.saveAndFlush(profile);
         } catch (Exception e) {
             throw new UserCreationFailedException();
         }
@@ -74,9 +75,13 @@ public class ProfileService {
         Profile current = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new);
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
+        Image oldImage = current.getProfilePic();
         Image image = imageService.getImage(profileInDTO.profilePicId());
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet, jobTitle, image);
         profile = profileRepository.saveAndFlush(profile);
+        if (!isNull(oldImage)) {
+            imageService.removeImage(oldImage.getId());
+        }
         //mailsending
         String mailRecipientAddress = current.getOwner().getUsername();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

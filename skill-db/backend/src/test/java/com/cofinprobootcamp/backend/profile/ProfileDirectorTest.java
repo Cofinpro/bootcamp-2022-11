@@ -60,7 +60,8 @@ class ProfileDirectorTest {
         "reference",
         List.of("skill"),
         "12345678901",
-        "2020-10-10");
+        "2020-10-10",
+                1L);
         Profile oldProfile = new Profile().builder()
                 .id(1L)
                 .owner(new User(1L, "00000","a","b",false,null,null))
@@ -74,7 +75,7 @@ class ProfileDirectorTest {
         Set<Skill> skillSet= Set.of(new Skill(inDTO.skills().get(0)));
         JobTitle jobTitle = new JobTitle(inDTO.jobTitle());
         Profile newProfile = ProfileDirector.UpdateInDTOToEntity(inDTO,oldProfile,
-                skillSet,jobTitle);
+                skillSet,jobTitle, new Image());
         //owner does not change
         assertThat(newProfile.getOwner().getUsername())
                 .isEqualTo(oldProfile.getOwner().getUsername());

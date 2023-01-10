@@ -55,7 +55,8 @@ public class Profile {
     @Builder.Default
     private User owner = null; // Default value
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,
+    fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private Image profilePic = null;
 

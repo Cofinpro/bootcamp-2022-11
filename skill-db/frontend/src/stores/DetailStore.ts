@@ -43,7 +43,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axiosInstance.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
-                    errorStore.catchDeleteError(error,id);
+                    errorStore.catchDeleteError(error, id);
                 });
                 this.loading = false;
             },
@@ -54,15 +54,17 @@ export const useDetailStore = defineStore('detailStore', {
 
                 console.log(edits);
                 const errorStore = useErrorStore();
-                await axiosInstance.post('/api/v1/images/', {file: profilePicUri})
-                    .then((response) => {
-                        image_id = response.data.id;
-                        console.log(image_id);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        errorStore.catchUploadImageError(error);
-                    });
+                if (profilePicUri) {
+                    await axiosInstance.post('/api/v1/images/', {file: profilePicUri})
+                        .then((response) => {
+                            image_id = response.data.id;
+                            console.log(image_id);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            errorStore.catchUploadImageError(error);
+                        });
+                }
 
                 await axiosInstance.post(`/api/v1/profiles/`,
                     {
@@ -78,7 +80,7 @@ export const useDetailStore = defineStore('detailStore', {
                         'birthDate': edits.getBirthDate(),
                         'profilePicId': image_id,
                     }).then((response) => {
-                        console.log(response);
+                    console.log(response);
                     errorStore.toggleHasError();
                 })
                     .catch((error) => {
@@ -88,10 +90,23 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async updateProfile(edits: DetailModel, id: String) {
+            async updateProfile(edits: DetailModel, id: String, profilePicUri: String) {
                 this.loading = true;
                 console.log(edits);
-                const errorStore = useErrorStore()
+                console.log(profilePicUri);
+                let image_id = null;
+                if (profilePicUri) {
+                    await axiosInstance.post('/api/v1/images/', {file: profilePicUri})
+                        .then((response) => {
+                            image_id = response.data.id;
+                            console.log(image_id);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            errorStore.catchUploadImageError(error);
+                        });
+                }
+                const errorStore = useErrorStore();
                 await axiosInstance.patch(`/api/v1/profiles/${id}`,
                     {
                         'firstName': edits.getFirstName(),
@@ -103,7 +118,8 @@ export const useDetailStore = defineStore('detailStore', {
                         'skills': edits.getTechnologies(),
                         'phoneNumber': edits.getPhoneNumber(),
                         'birthDate': edits.getBirthDate(),
-                    }).then(() =>{
+                        'profilePicId': image_id,
+                    }).then(() => {
                         errorStore.toggleHasError();
                 }).catch((error) => {
                     console.log(error);

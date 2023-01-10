@@ -22,6 +22,12 @@ public class ImageService {
         return imageRepository.save(image);
     }
 
+    public void removeImage(Long id) {
+        System.out.println(id);
+        imageRepository.deleteById(id);
+    }
+
+
     public Image getImage(Long id) {
         if (isNull(id)) return null;
         return imageRepository.findById(id).orElse(null);
