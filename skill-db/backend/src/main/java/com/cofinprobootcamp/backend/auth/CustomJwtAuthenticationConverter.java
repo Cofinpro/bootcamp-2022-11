@@ -4,6 +4,7 @@ import com.cofinprobootcamp.backend.exceptions.AuthTokenInfoOutOfSyncWithPersist
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimNames;
 import org.springframework.util.Assert;
@@ -74,9 +75,13 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
                 throw new NoSuchElementException();
             }
             tokenRole =  authorities.stream().findFirst().get();
-        } catch (NoSuchElementException e) {
+        } catch (NoSuchElementException noSuchElementException) {
             // Internally a user must have EXACTLY one role (at least StandardRoles.UNDEFINED)
-            throw new AuthTokenInfoOutOfSyncWithPersistenceException("[Corrupted data!] Nutzer hat nicht genau eine Rolle!", e);
+            throw new AuthTokenInfoOutOfSyncWithPersistenceException(
+                    OAuth2ErrorCodes.INVALID_TOKEN,
+                    "[Corrupted data!] Nutzer hat nicht genau eine Rolle!",
+                    noSuchElementException
+            );
         }
         return tokenRole.getAuthority();
     }
@@ -87,6 +92,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
                 !userDetails.getOuterId().equals(source.getClaimAsString(JWT_CLAIM_OID))
                         || !userDetails.getRoleName().equals(tokenRole)) {
             throw new AuthTokenInfoOutOfSyncWithPersistenceException(
+                    OAuth2ErrorCodes.INVALID_TOKEN,
                     "Login ist nicht (mehr) gültig. Grund ist vermutlich eine Änderung der Nutzerrolle. Bitte erneut einloggen."
             );
         }

@@ -122,17 +122,6 @@ public class TheExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(AuthTokenInfoOutOfSyncWithPersistenceException.class)
-    public ResponseEntity<CustomErrorMessage> handleAuthValidationOutOfSync(
-            AuthTokenInfoOutOfSyncWithPersistenceException atiooswpe,
-            WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage(
-                atiooswpe.getMessage(),
-                wr.getDescription(false),
-                atiooswpe.getCause() != null ? atiooswpe.getCause() : atiooswpe);
-        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
-    }
-
     @ExceptionHandler(InvalidAuthorityFormatException.class)
     public ResponseEntity<CustomErrorMessage> handleInvalidAuthorityFormat(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(

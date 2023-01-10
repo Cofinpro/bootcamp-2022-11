@@ -1,10 +1,16 @@
 package com.cofinprobootcamp.backend.exceptions;
 
-public class AuthTokenInfoOutOfSyncWithPersistenceException extends RuntimeException {
-    public AuthTokenInfoOutOfSyncWithPersistenceException(String message) {
-        super(message);
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
+
+public class AuthTokenInfoOutOfSyncWithPersistenceException extends OAuth2AuthenticationException {
+
+    public AuthTokenInfoOutOfSyncWithPersistenceException(String errorCode, String message) {
+        this(errorCode, message, null);
     }
-    public AuthTokenInfoOutOfSyncWithPersistenceException(String message, Throwable cause) {
-        super(message, cause);
+
+    public AuthTokenInfoOutOfSyncWithPersistenceException(String errorCode, String message, Throwable cause) {
+        super(new OAuth2Error(errorCode), message, cause);
+        System.out.printf("AuthTokenInfoOutOfSyncWithPersistenceException [ERROR CODE: %s]: %s%n", errorCode, message);
     }
 }
