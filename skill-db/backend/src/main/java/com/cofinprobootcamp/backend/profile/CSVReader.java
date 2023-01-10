@@ -55,7 +55,7 @@ public class CSVReader {
                         record.get("Abschluss"),
                         record.get("Primärkompetenz"),
                         record.get("Referenzen"),
-                        Arrays.stream(record.get("Skills").split(";")).toList(),
+                        Arrays.stream(record.get("Skills").split(",")).toList(),
                         record.get("Telefonnummer"),
                         record.get("Geburtsdatum")
                 );
