@@ -19,7 +19,22 @@ export const useBlobStore = defineStore('blobStore',{
                 const errorStore = useErrorStore();
                 errorStore.catchExportError(error);
             })
-        }
+        },
+        async postCSV(file: File) {
+            const formData = new FormData();
+            formData.append('file', file);
+            await axiosInstance({
+                url: '/api/v1/profiles/import',
+                method: 'post',
+                data: formData,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            }).then(response =>{
+              console.log(response);
+            }).catch(error => {
+                const errorStore = useErrorStore();
+                errorStore.catchImportError(error);
+            })
+        },
     }
     },
 

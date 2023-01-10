@@ -52,11 +52,17 @@ public class ExcelGenerator {
                     return field.getName();
                 })
                 .toList();
-        int col = 0;
-        for (String fieldName : fieldNames) {
-            createCell(row, col, fieldName, style);
-            col += 1;
-        }
+        createCell(row, 0, "Email", style);
+        createCell(row, 1, "Telefonnummer", style);
+        createCell(row, 2, "JobTitel", style);
+        createCell(row, 3, "Abschluss", style);
+        createCell(row, 4, "Primaerkompetenz", style);
+        createCell(row, 5, "Referenzen", style);
+        createCell(row, 6, "Skills", style);
+        createCell(row, 7, "Vorname", style);
+        createCell(row, 8, "Nachname", style);
+        createCell(row, 9, "Geburtsdatum", style);
+        createCell(row, 10, "Alter", style);
         return workbook;
     }
 
@@ -71,19 +77,25 @@ public class ExcelGenerator {
         style.setBorderRight(BorderStyle.DASHED);
         style.setBorderLeft(BorderStyle.DASHED);
         style.setBorderBottom(BorderStyle.DASHED);
-        int colCount = 0;
         for (ProfileDetailsOutDTO profile : profileList) {
             Row row = sheet.createRow(rowCount);
             rowCount += 1;
-            colCount = 0;
-            Field[] profileFields = ProfileDetailsOutDTO.class.getDeclaredFields();
-            for (Field field : profileFields) {
-                field.setAccessible(true);
-                createCell(row, colCount, field.get(profile), style);
-                colCount++;
-            }
+
+            createCell(row, 0, profile.email(), style);
+            createCell(row, 1, profile.phoneNumber(), style);
+            createCell(row, 2, profile.jobTitle(), style);
+            createCell(row, 3, profile.degree(), style);
+            createCell(row, 4, profile.primaryExpertise(), style);
+            createCell(row, 5, profile.referenceText(), style);
+            createCell(row, 6, profile.skills(), style);
+            createCell(row, 7, profile.firstName(), style);
+            createCell(row, 8, profile.lastName(), style);
+            createCell(row, 9, profile.birthDate(), style);
+            createCell(row, 10, profile.age(), style);
+
+
         }
-        for (int i = 0; i < colCount; i++) {
+        for (int i = 0; i < 10; i++) {
             sheet.autoSizeColumn(i);
         }
         return workbook;

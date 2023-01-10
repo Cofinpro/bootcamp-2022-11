@@ -1,7 +1,7 @@
 <template>
    <ButtonWithTooltip tooltip="Liste exportieren"
                       v-if="isAdminOrHR"
-                     icon="mdi-file-export"
+                      icon="mdi-file-export"
                      @clicked="exportProfiles"/>
 </template>
 
