@@ -18,4 +18,5 @@ public class Image {
 
     @Lob
     private byte[] data;
+    private String prefix;
 }

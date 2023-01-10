@@ -35,7 +35,8 @@ public class ProfileDirector {
     public static Profile UpdateInDTOToEntity(ProfileUpdateInDTO profileInDTO,
                                               Profile current,
                                               Set<Skill> skillSet,
-                                              JobTitle jobTitle) {
+                                              JobTitle jobTitle,
+                                              Image image) {
         current.setFirstName(profileInDTO.firstName());
         current.setLastName(profileInDTO.lastName());
         current.setJobTitle(jobTitle);
@@ -45,6 +46,7 @@ public class ProfileDirector {
         current.setReferenceText(profileInDTO.referenceText());
         current.setSkillSet(skillSet);
         current.setPhoneNumber(profileInDTO.phoneNumber());
+        current.setProfilePic(image);
         return current;
     }
 

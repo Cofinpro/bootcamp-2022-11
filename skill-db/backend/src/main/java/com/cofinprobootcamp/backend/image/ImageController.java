@@ -25,8 +25,12 @@ public class ImageController {
 
     @PostMapping
     public ImageOutDTO saveImage(@RequestBody ImageInDTO base64Image) {
-        byte[] imageData = Base64.getMimeDecoder().decode(base64Image.file());
-        Image image = imageService.saveImage(imageData);
+        System.out.println(base64Image.file());
+        String prefix = base64Image.file().split(",")[0];
+        byte[] imageData = Base64.getDecoder()
+                .decode(base64Image.file().split(",")[1]);
+
+        Image image = imageService.saveImage(imageData, prefix);
         return new ImageOutDTO(image);
     }
 
