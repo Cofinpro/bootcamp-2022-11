@@ -8,7 +8,7 @@ import com.cofinprobootcamp.backend.user.UserService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.*;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +37,10 @@ public class CSVReader {
 
     public void readProfileFromFile() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException {
         String content = new String(file.getBytes());
-        CSVFormat format = CSVFormat.DEFAULT
+        CSVFormat format = CSVFormat.EXCEL
                 .builder()
                 .setHeader()
+                .setDelimiter(';')
                 .setSkipHeaderRecord(true)
                 .build();
         int lineCount = 1;
