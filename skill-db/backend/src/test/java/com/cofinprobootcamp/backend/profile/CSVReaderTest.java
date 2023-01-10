@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.exceptions.CSVArgumentNotValidException;
+import com.cofinprobootcamp.backend.exceptions.CSVFormatException;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
@@ -36,7 +37,7 @@ class CSVReaderTest {
     }
     @Test
     @DisplayName("Happy path for reading Single profile Unit test")
-    void readProfileFromFileHappyPath() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException {
+    void readProfileFromFileHappyPath() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
         String email = "markus.kremer@cofinpro.de";
         String name = "Markus";
         String surname = "Kremer";
@@ -44,11 +45,11 @@ class CSVReaderTest {
         String degree = "M.Sc";
         String primary = "Technologie";
         String reference = "ref";
-        String skills = "skill1;skill2";
+        String skills = "skill1,skill2";
         String phoneNumber = "111111111111";
         String birthdate = "1997-10-10";
-        String contentOfFile = "Email,Vorname,Nachname,JobTitel,Abschluss,Primärkompetenz,Referenzen,Skills,Telefonnummer,Geburtsdatum\n" +
-                email + "," + name + "," + surname + "," + jobTitle + "," + degree + "," + primary + ","  + reference +"," + skills + "," + phoneNumber + "," + birthdate;
+        String contentOfFile = "Email;Vorname;Nachname;JobTitel;Abschluss;Primärkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
+                email + ";" + name + ";" + surname + ";" + jobTitle + ";" + degree + ";" + primary + ";"  + reference +";" + skills + ";" + phoneNumber + ";" + birthdate;
         Mockito.when(file.getBytes()).thenReturn(contentOfFile.getBytes());
         ArgumentCaptor< ProfileCreateInDTO > dtoArgumentCaptor = ArgumentCaptor.forClass(ProfileCreateInDTO.class);
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -84,8 +85,8 @@ class CSVReaderTest {
         String skills = "skill1;skill2";
         String phoneNumber = "111111111111";
         String birthdate = "1997-10-10";
-        String contentOfFile = "Email,Vorname,Nachname,JobTitel,Abschluss,Primärkompetenz,Referenzen,Skills,Telefonnummer,Geburtsdatum\n" +
-                email + "," + name + "," + surname + "," + jobTitle + "," + degree + "," + primary + "," + reference + "," + skills + "," + phoneNumber + "," + birthdate;
+        String contentOfFile = "Email;Vorname;Nachname;JobTitel;Abschluss;Primärkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
+                email + ";" + name + ";" + surname + ";" + jobTitle + ";" + degree + ";" + primary + ";"  + reference +";" + skills + ";" + phoneNumber + ";" + birthdate;
         Mockito.when(file.getBytes()).thenReturn(contentOfFile.getBytes());
         ArgumentCaptor<ProfileCreateInDTO> dtoArgumentCaptor = ArgumentCaptor.forClass(ProfileCreateInDTO.class);
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
@@ -93,5 +94,28 @@ class CSVReaderTest {
         Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
 
         assertThrows(CSVArgumentNotValidException.class, () ->{csvReader.readProfileFromFile();});
+    }
+    @Test
+    @DisplayName("Error path for reading wrongly formated csv")
+    void readProfileFromFileSadPath2() throws IOException, JobTitleNotFoundException {
+        String email = "markus.kremer@cofinpro.de";
+        String name = "Markus";
+        String surname = "";
+        String jobTitle = "Consultant";
+        String degree = "M.Sc";
+        String primary = "Technologie";
+        String reference = "ref";
+        String skills = "skill1;skill2";
+        String phoneNumber = "111111111111";
+        String birthdate = "1997-10-10";
+        String contentOfFile = "Email,Vorname;Nachname;JobTitel;Abschluss;Primärkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
+                email + ";" + name + ";" + surname + ";" + jobTitle + ";" + degree + ";" + primary + ";"  + reference +";" + skills + ";" + phoneNumber + ";" + birthdate;
+        Mockito.when(file.getBytes()).thenReturn(contentOfFile.getBytes());
+        ArgumentCaptor<ProfileCreateInDTO> dtoArgumentCaptor = ArgumentCaptor.forClass(ProfileCreateInDTO.class);
+        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        User user = new User();
+        Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
+
+        assertThrows(CSVFormatException.class, () ->{csvReader.readProfileFromFile();});
     }
 }
