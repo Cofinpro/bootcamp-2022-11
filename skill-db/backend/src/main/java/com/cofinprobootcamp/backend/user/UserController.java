@@ -2,6 +2,7 @@ package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "")
     @PreAuthorize("hasPermission(#userIn, @authorityPrefix + 'USERS_POST_NEW')")
     public void createUser(@RequestBody @Valid UserCreateInDTO userIn) {

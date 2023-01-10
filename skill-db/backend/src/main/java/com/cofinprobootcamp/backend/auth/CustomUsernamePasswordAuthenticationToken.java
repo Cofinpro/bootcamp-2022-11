@@ -42,7 +42,7 @@ public class CustomUsernamePasswordAuthenticationToken extends UsernamePasswordA
     @Override
     public String toString() {
         return String.format(template,
-                this.getClass().getName(),
+                this.getClass().getSimpleName(),
                 this.getName(),
                 this.isAuthenticated(),
                 this.getDetails() != null ? this.getDetails().toString() : "[PROTECTED]",

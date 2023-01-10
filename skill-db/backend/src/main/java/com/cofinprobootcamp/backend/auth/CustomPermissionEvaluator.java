@@ -107,7 +107,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             switch (UserPrivileges.fromIdentifier(permission)) {
                 case USERS_POST_NEW$SELF -> {
                     if (targetDomainObject instanceof UserCreateInDTO inDTO) {
-                        System.out.println("passed fifth check");
                         return mayCreateNewUserEntityForSelf(customAuth, inDTO);
                     }
                     printWarning("UserCreateInDTO", targetDomainObject.getClass().getSimpleName());

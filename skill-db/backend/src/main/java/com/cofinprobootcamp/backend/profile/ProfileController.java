@@ -8,6 +8,7 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.user.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.cofinprobootcamp.backend.user.User;
@@ -37,6 +38,7 @@ public class ProfileController {
     /**
      * @param profileInDTO creates profile in database if authorized (401.UNAUTHORIZED)
      */
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "")
     @PreAuthorize("hasPermission(#profileInDTO, @authorityPrefix + 'PROFILES_POST_NEW')")
     public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException {

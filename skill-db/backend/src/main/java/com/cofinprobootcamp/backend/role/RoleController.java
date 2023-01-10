@@ -4,8 +4,6 @@ import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,8 +31,6 @@ public class RoleController {
     @GetMapping(path = "{identifier}")
     @PreAuthorize("hasPermission(#identifier, 'RoleDetailsOutDTO', @authorityPrefix + 'ROLES_GET_BY_ID')")
     public RoleDetailsOutDTO getRoleById(@PathVariable String identifier) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
         return roleService.getRoleByIdentifier(identifier);
     }
 
@@ -46,8 +42,6 @@ public class RoleController {
     @GetMapping(path = "")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'ROLES_GET_ALL')")
     public List<RoleOverviewOutDTO> getAllRoles() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
         return roleService.getAllRoles();
     }
 

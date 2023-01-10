@@ -30,7 +30,7 @@ public class AuthController {
     public ResponseEntity<Object> token(@RequestBody LoginRequest userLogin) {
         Authentication authentication = authenticationManager.authenticate(
                 new CustomUsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
-        System.out.println(authentication);
+        System.out.println("New Login: " + authentication);
         Map<String, String> tokens = tokenService.generateToken(authentication);
         return ResponseEntity.ok()
                 .body(Map.of(
