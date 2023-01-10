@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.*;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -45,7 +47,7 @@ public class CSVReader {
      * @throws CSVArgumentNotValidException if csv records contain nonvalid elements
      */
     public void readProfileFromFile() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
-        String content = new String(file.getBytes());
+        String content = new String(file.getBytes(), Charset.defaultCharset());
         CSVFormat format = CSVFormat.EXCEL
                 .builder()
                 .setHeader()
@@ -61,7 +63,7 @@ public class CSVReader {
                         record.get("Nachname"),
                         record.get("JobTitel"),
                         record.get("Abschluss"),
-                        record.get("Primärkompetenz"),
+                        record.get("Primaerkompetenz"),
                         record.get("Referenzen"),
                         Arrays.stream(record.get("Skills").split(",")).toList(),
                         record.get("Telefonnummer"),
@@ -73,9 +75,11 @@ public class CSVReader {
                 lineCount++;
             }
         } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
             throw new CSVFormatException(e.getMessage());
         }
     }
+
     private void validate(ProfileCreateInDTO inDTO, int lineCount) {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         Set<ConstraintViolation<ProfileCreateInDTO>> violations = validator.validate(inDTO);

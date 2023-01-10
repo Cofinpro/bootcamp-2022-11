@@ -50,8 +50,7 @@ public record ProfileDetailsOutDTO(String id,
                 profile.getFirstName(),
                 profile.getLastName(),
                 profile.getBirthDate().toString(), // ISO Format String as specified in default setting (could also be .format(new DateTimeFormatterBuilder().appendLiteral(Regex.DATE_FORMAT).toFormatter()) )
-                profile.getAge()
-        );
+                profile.getAge());
     }
 
 }
