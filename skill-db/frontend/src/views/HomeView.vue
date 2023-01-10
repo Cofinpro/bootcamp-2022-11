@@ -11,7 +11,7 @@
         Searchbar
       </v-card>
       <div class="d-flex justify-space-between">
-        <ExportButton></ExportButton>
+        <ExportButton/>
         <ButtonWithTooltip tooltip="Neues Profil erstellen"
                            icon="mdi-plus-thick"
                            @clicked="createProfile"/>
@@ -31,6 +31,10 @@
     </div>
 
     <v-container class="cards mt-2 ml-0">
+      <h3 class="message d-flex justify-center"
+          v-if="overviewStore.cards.length === 0">
+        Aktuell sind keine Profile hinterlegt.
+      </h3>
       <v-row>
         <v-col v-for="card in overviewStore.cards" :key="card.getId()"
                cols="12" lg="3" md="4" sm="6">
@@ -81,6 +85,10 @@ body {
 
 h4 {
   margin-top: 1%;
+}
+
+h3.message {
+  color: #BDBDBD;
 }
 
 .searchAndButtons {
