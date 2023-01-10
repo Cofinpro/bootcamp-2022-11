@@ -34,7 +34,7 @@
           </v-icon>
 
           <v-overlay v-model="edit">
-            <role-dropdown @clicked="edit = false" :users="users"
+            <role-dropdown @clicked="edit = false"
                            :role-here="roleHere" :selected-users="selectedUsers"/>
           </v-overlay>
 
@@ -54,14 +54,6 @@ export default {
   name: "RoleDetails",
   components: { RoleDropdown },
   props: ['roles'],
-  setup() {
-    const userStore = useUserStore();
-    userStore.loadUsers();
-    const users = userStore.users
-    return {
-      users
-    };
-  },
   data() {
     return {
       edit: false,

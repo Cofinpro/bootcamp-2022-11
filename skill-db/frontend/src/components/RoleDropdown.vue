@@ -38,9 +38,12 @@ export default {
   props: [
     'roleHere',
     'selectedUsers',
-    'users'
   ],
   data() {
+    const userStore = useUserStore();
+    userStore.loadUsers();
+    const users = userStore.users
+
     const nextUsers = this.selectedUsers;
     const selectedNamesAndRole = [];
     nextUsers.forEach(user => {
@@ -54,20 +57,9 @@ export default {
       return namesAndRoles;
     }
     return {
-      nextUsers, selectedNamesAndRole, attachRole
+      users, nextUsers, selectedNamesAndRole, attachRole
     }
   },
-
-  /*
-  /!*Problem: selectedUsers
-    *   as Prop: can't be used as v-model because readOnly
-    *   as return of setup: needs role prop
-    *     -> as return of setup with function: method can't be found
-    *     -> as return of setup with method: method can't find return of setup
-    *   as return of data: needs role prop
-    *     -> as return of data with method: method can't be found
-    *     -> as return of data with method: method can't find return of data
-    * */
   methods: {
     async trySubmit(role, nextUsers) {
       const userStore = useUserStore();
