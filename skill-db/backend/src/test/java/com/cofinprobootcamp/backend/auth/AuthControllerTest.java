@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -135,12 +134,16 @@ public class AuthControllerTest {
 
         TimeUnit.SECONDS.sleep(1);
 
-        mvc.perform(post("/api/v1/token/refresh")
+        String mvcResult = mvc.perform(post("/api/v1/token/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\" : \"" + jsonObject.get("username") + "\" , \"refreshToken\" : \"" + jsonObject.getJSONObject("tokens").get("refresh_token") + "\"}"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.accessToken").isNotEmpty())
-                .andReturn();
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(mvcResult).contains(String.format("\"role\":\"%s\"", jsonObject.get("role").toString()));
     }
 
 
