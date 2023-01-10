@@ -105,7 +105,7 @@ public class ProfileIntegrationTest {
                 "markus.kremer@cofinpro.de",
                 "2020-10-10");
         postProfile(toPost)
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         String mvcResult = mvc.perform(get("/api/v1/profiles")
                 .header("authorization",
                         "Bearer " + loginData.getJSONObject("tokens").get("access_token")))
@@ -151,7 +151,7 @@ public class ProfileIntegrationTest {
                 "markus.kremer@cofinpro.de",
                 "2020-10-10");
         postProfile(toPost)
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         String mvcResult = mvc.perform(get("/api/v1/profiles")
                         .header("authorization",
                                 "Bearer " + loginData.getJSONObject("tokens").get("access_token")))
@@ -203,7 +203,7 @@ public class ProfileIntegrationTest {
                 "markus.kremer@cofinpro.de",
                 "2020-10-10");
         postProfile(toPost)
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         String mvcResult = mvc.perform(get("/api/v1/profiles")
                         .header("authorization",
                                 "Bearer " + loginData.getJSONObject("tokens").get("access_token")))
@@ -256,7 +256,7 @@ public class ProfileIntegrationTest {
                 "markus.kremer@cofinpro.de",
                 "2020-10-10");
         postProfile(toPost)
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
         String mvcResult = mvc.perform(get("/api/v1/profiles")
                         .header("authorization",
                                 "Bearer " + loginData.getJSONObject("tokens").get("access_token")))

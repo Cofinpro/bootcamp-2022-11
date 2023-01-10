@@ -2,6 +2,7 @@ package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
 import com.cofinprobootcamp.backend.profile.Profile;
+import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -124,5 +125,21 @@ class UserServiceTest {
         List<User> userList = List.of(user);
         Mockito.when(userRepository.findAll()).thenReturn(userList);
         assertThat(userService.getAllUsers().get(0).email()).isEqualTo(user.getUsername());
+    }
+
+    @Test
+    void changeRole() {
+        String outerId = "00000";
+        User user = User.builder()
+                        .outerId(outerId)
+                        .role(StandardRoles.USER)
+                        .username("aaa@bbb.cc")
+                        .build();
+
+        Mockito.when(userRepository.findFirstByOuterId(outerId)).thenReturn(Optional.of(user));
+        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
+        userService.changeRole(outerId, StandardRoles.ADMIN.name());
+        Mockito.verify(userRepository, Mockito.times(1)).saveAndFlush(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().getRole()).isEqualTo(StandardRoles.ADMIN);
     }
 }

@@ -51,7 +51,7 @@ public class RoleController {
      * @param identifier The unique short name of the role for internal identification
      * @return A list of usernames of all users with this role
      */
-    @GetMapping(path = "{identifier}/user")
+    @GetMapping(path = "{identifier}/users")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'ROLES_BY_ID_GET_USERS_ALL')")
     public List<UserOutDTO> getAllUsersForRoleById(@PathVariable String identifier) {
         return roleService.getUsersByRole(identifier);
