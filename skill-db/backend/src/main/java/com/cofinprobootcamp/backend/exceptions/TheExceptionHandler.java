@@ -36,6 +36,29 @@ public class TheExceptionHandler {
         );
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(CSVFormatException.class)
+    public ResponseEntity<CustomErrorMessage> handleCSVFormatException(
+            CSVFormatException e, WebRequest wr
+    ) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                e.getError(),
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CSVArgumentNotValidException.class)
+    public ResponseEntity<CustomErrorMessage> handleCSVArgumentNotValidException(
+            CSVArgumentNotValidException e, WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "VALIDATION:" +
+                        e.getViolations()+
+                        "  (At row number "  + e.getRowNumber() + ")",
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(ProfileNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleProfileNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage("Profil konnte nicht gefunden werden!",
@@ -46,7 +69,7 @@ public class TheExceptionHandler {
     @ExceptionHandler(ProfileAlreadyExistsException.class)
     public ResponseEntity<CustomErrorMessage> handleProfileAlreadyExistsException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "Der zurzeit eingeloggte Nutzer hat bereits ein Profil!",
+                "Der Nutzer hat bereits ein Profil!",
                 wr.getDescription(false)
         );
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);

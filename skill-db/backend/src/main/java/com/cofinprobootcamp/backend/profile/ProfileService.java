@@ -4,10 +4,10 @@ import com.cofinprobootcamp.backend.config.Constants;
 import com.cofinprobootcamp.backend.email.EmailSendService;
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
+import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.UserCreationFailedException;
-import com.cofinprobootcamp.backend.image.Image;
-import com.cofinprobootcamp.backend.image.ImageService;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
@@ -38,7 +38,6 @@ public class ProfileService {
     private final JobTitleService jobTitleService;
     private final EmailSendService emailSendService;
     private final UserService userService;
-
     private final ImageService imageService;
 
     public ProfileService(ProfileRepository profileRepository,
@@ -55,11 +54,14 @@ public class ProfileService {
         this.imageService = imageService;
     }
 
-    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException {
+    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Image profilePic = imageService.getImage(profileInDTO.profilePicId());
         Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle, profilePic);
+        if (profileRepository.findProfileByOwner(user).isPresent()) {
+            throw new ProfileAlreadyExistsException();
+        }
         try {
             tryToSetUniqueOuterId(profile);
             profile = profileRepository.saveAndFlush(profile);

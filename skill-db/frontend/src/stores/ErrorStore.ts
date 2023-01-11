@@ -38,6 +38,12 @@ export const useErrorStore = defineStore(
                 }
             },
 
+            catchImportError(error: AxiosError) {
+                this.catchPostPatchError(error);
+                if (this.errorText === this.errorMessages.unknownError) {
+                    this.errorText = error.response.data.message.toString().split(",")[0];
+                }
+                },
             catchPostPatchError(error: AxiosError) {
                 this.hasError=true;
                 if (error.response == undefined) {
@@ -52,7 +58,7 @@ export const useErrorStore = defineStore(
                     } else if (error.response.status === 403) {
                         this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 404) {
-                        this.errorText = `404: ${error.response.data.message}`;
+                        this.errorText = `${error.response.data.message}`;
                     } else {
                         this.errorText = this.errorMessages.unknownError;
                     }
