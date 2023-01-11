@@ -47,7 +47,8 @@ public class ImageController {
             return new ResponseEntity<>(null, headers, HttpStatus.OK);
         }
     }
-    @PreAuthorize("hasPermission(#id, 'void',@authorityPrefix + 'IMAGES_DELETE_BY_ID')")
+    @DeleteMapping("/{profileId}")
+    @PreAuthorize("hasPermission(#profileId, 'void',@authorityPrefix + 'IMAGES_DELETE_BY_ID')")
     public void deleteImage(@PathVariable String profileId) throws ProfileNotFoundException {
         Image image = profileRepository
                 .findFirstByOuterId(profileId)

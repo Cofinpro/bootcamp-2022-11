@@ -148,7 +148,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                 }
                 case IMAGES_DELETE_BY_ID$SELF -> {
                     if (targetDomainObject instanceof String id) {
-                        return userIsSelf(customAuth, id);
+                        return userOwnsProfile(customAuth, id);
                     }
                 }
                 default -> {

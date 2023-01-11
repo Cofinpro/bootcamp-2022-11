@@ -123,6 +123,16 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
+            async deleteProfilePictureByProfileId(id: String) {
+                this.loading = true;
+                const errorStore = useErrorStore();
+                await axiosInstance.delete(`/api/v1/images/${id}`)
+                    .catch((error) =>{
+                        errorStore.catchDeleteError(error, id);
+                    })
+                this.loading = false;
+            },
+
             getSkills() {
                 this.skills = [];
                 this.loading = true;

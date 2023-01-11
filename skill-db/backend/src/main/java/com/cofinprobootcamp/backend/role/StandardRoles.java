@@ -54,7 +54,8 @@ public enum StandardRoles {
                     UserPrivileges.USERS_POST_NEW$SELF,
                     UserPrivileges.USERS_DELETE_BY_ID$SELF,
                     UserPrivileges.USERS_GET_BY_ID$SELF,
-                    UserPrivileges.IMAGES_GET_BY_ID
+                    UserPrivileges.IMAGES_GET_BY_ID,
+                    UserPrivileges.IMAGES_DELETE_BY_ID$SELF
             );
         }
     },
@@ -78,6 +79,7 @@ public enum StandardRoles {
                             UserPrivileges.PROFILES_POST_NEW$ANY,
                             UserPrivileges.PROFILES_PATCH_BY_ID$ANY,
                             UserPrivileges.PROFILES_DELETE_BY_ID$ANY,
+                            UserPrivileges.IMAGES_DELETE_BY_ID$ANY,
                             UserPrivileges.PROFILES_EXPORT_GET_ALL,
                             UserPrivileges.PROFILES_IMPORT_POST_NEW,
                             UserPrivileges.JOB_TITLES_POST_NEW
