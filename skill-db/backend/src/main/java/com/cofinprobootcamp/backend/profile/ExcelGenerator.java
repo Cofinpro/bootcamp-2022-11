@@ -122,11 +122,10 @@ public class ExcelGenerator {
 
     /**
      * @param outputStream outputstream to which excel should be written
-     * @throws IllegalAccessException should never actually be thrown!
      * @throws IOException if something goes wrong with outputstream!
      */
     public void createExcel(OutputStream outputStream)
-            throws IllegalAccessException, IOException {
+            throws IOException {
         writeHeader();
         writeContent();
         workbook.write(outputStream);
