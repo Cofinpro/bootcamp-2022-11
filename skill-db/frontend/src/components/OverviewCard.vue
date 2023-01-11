@@ -32,7 +32,9 @@ export default {
 </script>
 
 <style scoped>
-
+img{
+  height: 80px;
+}
 #jobTitle {
   color: var(--primary-blue);
 }
