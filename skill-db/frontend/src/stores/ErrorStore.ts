@@ -14,7 +14,8 @@ export const useErrorStore = defineStore(
                 unauthorized: 'Nicht autorisiert! Loggen Sie sich erneut ein.',
                 internalServerError: 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!',
                 idNotFound: 'Profil Id konnte nicht aufgelöst werden!',
-                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Loggen Sie sich erneut ein.'
+                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Loggen Sie sich erneut ein.',
+                mailNotSent: 'Mail wurde nicht gesendet!'
             }
         }),
         actions: {
@@ -130,7 +131,7 @@ export const useErrorStore = defineStore(
                     this.errorText = this.errorMessages.unknownError;
                 } else {
                     if (error.response.status === 404) {
-                        this.errorText = `Profil ${id} existiert nicht!`;
+                            this.errorText = `Profil ${id} existiert nicht!`;
                     } else if (error.response.status === 401) {
                         this.authStore.logout();
                         this.errorText = this.errorMessages.unauthorized;
@@ -141,6 +142,8 @@ export const useErrorStore = defineStore(
                         this.errorText = this.errorMessages.internalServerError;
                     } else if (error.response.status === 400) {
                         this.errorText = this.errorMessages.idNotFound;
+                    } else if (error.response.status === 503) {
+                        this.errorText = this.errorMessages.mailNotSent;
                     }
                 }
             },

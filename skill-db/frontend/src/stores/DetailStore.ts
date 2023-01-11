@@ -128,6 +128,7 @@ export const useDetailStore = defineStore('detailStore', {
                 const errorStore = useErrorStore();
                 await axiosInstance.delete(`/api/v1/images/${id}`)
                     .catch((error) =>{
+                        console.log(error)
                         errorStore.catchDeleteError(error, id);
                     })
                 this.loading = false;
