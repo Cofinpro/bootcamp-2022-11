@@ -13,16 +13,17 @@ export default {
   name: "CreateButton",
   components: { ButtonWithTooltip },
   setup() {
-    const userId = window.localStorage.getItem('user_id');
     const userStore = useUserStore();
     return {
-      userStore, userId
+      userStore
     }
   },
   computed: {
     hasNoProfile(): boolean {
-      this.userStore.hasProfile(this.userId);
-      return (!this.userStore.profile);
+      const userId = window.localStorage.getItem('user_id');
+      this.userStore.checkForExistingUserProfile(userId);
+      console.log(userId);
+      return (!this.userStore.hasProfile);
     }
   },
 }
