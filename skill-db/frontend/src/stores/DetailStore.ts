@@ -52,6 +52,8 @@ export const useDetailStore = defineStore('detailStore', {
                         errorStore.catchDownloadImageError(error);
                     })
                     console.log(this.profilePic);
+                } else {
+                    this.profilePic = ''
                 }
                 this.loading = false;
             },
