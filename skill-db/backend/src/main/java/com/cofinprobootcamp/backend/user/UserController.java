@@ -48,4 +48,10 @@ public class UserController {
     public void changeRole(@PathVariable String id, @PathVariable String roleId){
         userService.changeRole(id, roleId);
     }
+
+    @PatchMapping(path = "/{id}/lock")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_LOCK')")
+    public void lockUser(@PathVariable String id){
+        userService.lockUser(id);
+    }
 }

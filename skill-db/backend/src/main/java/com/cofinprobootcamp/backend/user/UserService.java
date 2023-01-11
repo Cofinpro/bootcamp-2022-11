@@ -105,6 +105,12 @@ public class UserService {
         return userRepository.saveAndFlush(user);
     }
 
+    public User lockUser(String id) throws UserNotFoundException {
+        User user = userRepository.findFirstByOuterId(id).orElseThrow(UserNotFoundException::new);
+        user.setLocked(!user.isLocked());
+        return userRepository.saveAndFlush(user);
+    }
+
     private void tryToSetUniqueOuterId(User user) {
         String candidateId = RandomStringGenerator.nextOuterId(Constants.USER_OUTER_ID_LENGTH);
         Optional<User> userOptional = userRepository.findFirstByOuterId(candidateId);
