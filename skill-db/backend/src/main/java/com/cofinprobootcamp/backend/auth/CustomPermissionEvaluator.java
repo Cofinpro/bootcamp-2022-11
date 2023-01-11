@@ -146,6 +146,11 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                         return userHasRole(customAuth, id);
                     }
                 }
+                case IMAGES_DELETE_BY_ID$SELF -> {
+                    if (targetDomainObject instanceof String id) {
+                        return userIsSelf(customAuth, id);
+                    }
+                }
                 default -> {
                     return false;
                 }

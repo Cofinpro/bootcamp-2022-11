@@ -110,6 +110,13 @@ public enum UserPrivileges {
     IMAGES_GET_BY_ID(
             "Der Nutzer ist dazu berechtigt, alle Bilder einzusehen."
     ),
+    IMAGES_DELETE_BY_ID$SELF(
+            "Der Nutzer ist dazu berichtigt, sein eigenes Profilbild zu löschen."
+    ),
+
+    IMAGES_DELETE_BY_ID$ANY(
+            "Der Nutzer ist dazu berechtigt, alle Profilbilder zu löschen."
+    )
 
     /*
      * Fallback
