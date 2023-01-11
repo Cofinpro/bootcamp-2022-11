@@ -54,7 +54,7 @@ public class ImageService {
         return image;
     }
 
-    public void deleteImageById(Long id) {
+    public void removeImage(Long id) {
         System.out.println(id);
         imageRepository.deleteById(id);
     }

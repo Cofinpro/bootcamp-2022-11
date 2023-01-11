@@ -4,7 +4,7 @@
 
       <div class="header">
         <div class="d-flex flex-column align-items-center">
-          <upload-image-button v-on:upload="onUploadProfilePic"/>
+          <upload-image-button :upload="onUploadProfilePic" :current-image="oldProfilePic"/>
         </div>
 
         <v-row class="headline">
@@ -95,7 +95,7 @@ import UploadImageButton from "@/components/UploadImageButton.vue";
 
 export default {
   name: "EditComponent",
-  props: ['detail', 'update'],
+  props: ['detail', 'update', 'oldProfilePic'],
   components: { UploadImageButton },
   data() {
     return {

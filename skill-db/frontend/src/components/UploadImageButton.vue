@@ -1,8 +1,8 @@
 <template>
   <div class="image-upload">
     <input type="file" ref="imageInput" class="hidden"/>
-    <img class="image" v-if="imageDataUri" alt="Profilbild" v-bind:src="imageDataUri"/>
-    <img class="image" v-else alt="Profilbild" src="@/assets/images/dummy_profilePicture.png"/>
+    <img class="image" v-if="imageDataUri" alt="Profilbild" :src="imageDataUri"/>
+    <img class="image" v-else-if="currentImage" alt="Profilbild" :src="currentImage"/>
     <div class="upload-text">
       <v-btn elevation="0" size="small"
              @click="openFileDialog">
@@ -23,6 +23,9 @@ export default {
       maxUploadSize: 20000000, // Angabe in bytes, entspricht 20 MB
       imageDataUri: null,
     }
+  },
+  props:{
+    currentImage: String,
   },
   methods: {
     isPermissibleSize(file) {
