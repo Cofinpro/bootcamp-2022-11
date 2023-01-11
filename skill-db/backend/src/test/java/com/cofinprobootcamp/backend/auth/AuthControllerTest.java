@@ -154,7 +154,7 @@ public class AuthControllerTest {
      * @throws Exception
      */
     @Test
-    @DisplayName("For testing, the REFRESH_TOKEN_DURATION_SECONDS in class ProfileConfiguration have to be set to > 12 seconds (otherwise the test fails)")
+    @DisplayName("For testing, the REFRESH_TOKEN_DURATION_SECONDS in class ProfileConfiguration have to be set to less than 12 seconds (otherwise the test fails)")
     void whenRefreshTokenExpiredThenAnswerCodeUnauthorized() throws Exception {
         JSONObject jsonObject = login();
 
