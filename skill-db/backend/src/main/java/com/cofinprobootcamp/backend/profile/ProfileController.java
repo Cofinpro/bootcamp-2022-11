@@ -100,7 +100,7 @@ public class ProfileController {
     @GetMapping("/export")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_EXPORT_GET_ALL')")
     public void exportAllToExcel(HttpServletResponse response)
-            throws IOException, IllegalAccessException {
+            throws IOException {
         response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=profiles.xlsx";

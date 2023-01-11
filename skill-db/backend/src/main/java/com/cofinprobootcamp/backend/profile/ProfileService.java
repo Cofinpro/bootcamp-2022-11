@@ -16,19 +16,16 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.skills.SkillService;
 import com.cofinprobootcamp.backend.user.User;
-import com.cofinprobootcamp.backend.user.UserService;
 import com.cofinprobootcamp.backend.utils.RandomStringGenerator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.net.ConnectException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import static java.util.Objects.isNull;
 
 @Service
 public class ProfileService {
@@ -37,20 +34,17 @@ public class ProfileService {
     private final SkillService skillService;
     private final JobTitleService jobTitleService;
     private final EmailSendService emailSendService;
-    private final UserService userService;
     private final ImageService imageService;
 
     public ProfileService(ProfileRepository profileRepository,
                           SkillService skillService,
                           JobTitleService jobTitleService,
                           EmailSendService emailSendService,
-                          UserService userService,
                           ImageService imageService) {
         this.profileRepository = profileRepository;
         this.skillService = skillService;
         this.jobTitleService = jobTitleService;
         this.emailSendService = emailSendService;
-        this.userService = userService;
         this.imageService = imageService;
     }
 

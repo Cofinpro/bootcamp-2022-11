@@ -40,26 +40,21 @@ export const useDetailStore = defineStore('detailStore', {
                     errorStore.catchGetError(error, id);
                     console.log(error)
                 });
-                if (!errorStore.hasError) {
-                    await axiosInstance({
-                        url: `/api/v1/images/${profilePicId}`,
-                        method: 'get',
-                        responseType: 'blob'
-                    }).then((response) => {
-                        if (response.data.size === 0) {
-                            this.profilePic = '';
-                        }
-                        else{
-                            this.profilePic=URL.createObjectURL(response.data);
-                        }
-                    }).catch((error) => {
-                        console.log(error);
-                        errorStore.catchDownloadImageError(error);
-                    })
-                    console.log(this.profilePic);
-                } else {
-                    this.profilePic = ''
-                }
+                await axiosInstance({
+                    url: `/api/v1/images/${profilePicId}`,
+                    method: 'get',
+                    responseType: 'blob'
+                }).then((response) => {
+                    if (response.data.size === 0) {
+                        this.profilePic = '';
+                    } else {
+                        this.profilePic = URL.createObjectURL(response.data);
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    errorStore.catchDownloadImageError(error);
+                })
+                console.log(this.profilePic);
                 this.loading = false;
             },
 
@@ -127,7 +122,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 await axiosInstance.delete(`/api/v1/images/${id}`)
-                    .catch((error) =>{
+                    .catch((error) => {
                         console.log(error)
                         errorStore.catchDeleteError(error, id);
                     })
