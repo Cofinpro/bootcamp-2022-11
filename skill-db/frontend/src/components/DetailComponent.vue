@@ -74,7 +74,7 @@
         </div>
         <div class="block_content">
           <ul class="pl-6">
-            <li v-for="reference in detailStore.details.getReferences().split(',')">
+            <li v-for="reference in detailStore.details.getReferences().split('\n')">
               <p>{{ reference }}</p>
             </li>
           </ul>

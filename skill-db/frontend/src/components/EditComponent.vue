@@ -57,7 +57,7 @@
         </v-col>
 
         <v-col>
-          <v-text-field class="references" v-model="references" label="Referenzen"
+          <v-textarea class="references" v-model="references" label="Referenzen"
                         :rules="[v => v.length > 0 || 'Erforderlich!']"/>
         </v-col>
       </v-row>
@@ -70,7 +70,7 @@
                 } : ''"
                :disabled="!isFilled"
                @click="submitProfile()" elevation="0">
-          {{ update === true ? "Änderungen speichern" : "Profil erstellen" }}
+          {{ update ? "Änderungen speichern" : "Profil erstellen" }}
         </v-btn>
 
         <v-btn class="mt-10 ml-lg-5 ml-md-5"
@@ -124,7 +124,7 @@ export default {
     this.jobs = detailStore.jobs;
     this.primaries = detailStore.primarys;
 
-    if (this.update === true) {
+    if (this.update) {
       this.firstName = this.detail.getFirstName();
       this.lastName = this.detail.getLastName();
       this.degree = this.detail.getDegree();
@@ -140,8 +140,7 @@ export default {
     async submitProfile() {
       const detailStore = useDetailStore();
       const errorStore = useErrorStore();
-      console.log(this.isFilled);
-      if (this.update === true) {
+      if (this.update) {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
         await detailStore.updateProfile(editDetails, id);
@@ -157,7 +156,7 @@ export default {
       }
     },
     leave() {
-      if (this.update === true) {
+      if (this.update) {
         const id = this.detail.getId();
         router.push({name: 'userDetails', params: {id}});
       } else {
@@ -203,6 +202,11 @@ export default {
   width: 100%;
   display: flex;
 }
+
+.references {
+  min-height: 234px;
+}
+
 
 .uploadBtn {
   width: 200px;
@@ -254,7 +258,6 @@ img {
 
   .buttons {
     flex-direction: column;
-
   }
 }
 </style>
