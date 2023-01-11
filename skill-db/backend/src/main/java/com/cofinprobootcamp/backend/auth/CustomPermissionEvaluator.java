@@ -74,9 +74,13 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     private Set<String> matchPermissions(Authentication authentication, String permission) {
         return authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .filter(grantedAuthority -> grantedAuthority.startsWith(permission))
+                .filter(grantedAuthority -> extractPrefix(grantedAuthority).equals(permission))
                 .map(this::extractPostfix)
                 .collect(Collectors.toSet());
+    }
+
+    private String extractPrefix(String grantedAuthority) {
+        return grantedAuthority.split(DELIMITER)[0];
     }
 
     /*
