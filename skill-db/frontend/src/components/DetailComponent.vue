@@ -6,7 +6,7 @@
   </div>
 
   <div class="header">
-    <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">
+    <img v-bind:src="detailStore.profilePic"  alt="Profilbild">
     <div class="header_content d-flex flex-column align-content-space-between">
       <div class="headline">
         <h1> {{ detailStore.details.getFirstName() }} {{ detailStore.details.getLastName() }}</h1>

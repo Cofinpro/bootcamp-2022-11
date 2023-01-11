@@ -10,6 +10,7 @@ export const useDetailStore = defineStore('detailStore', {
             skills: [] as String[],
             jobs: [] as String[],
             primarys: [] as String[],
+            profilePic: '',
         }),
         actions: {
             loadDemoDetails() {
@@ -27,15 +28,31 @@ export const useDetailStore = defineStore('detailStore', {
                 })
             },
 
-            loadDetailsById(id: String) {
+            async loadDetailsById(id: String) {
                 this.loading = true;
+                let profilePicId = null
                 const errorStore = useErrorStore();
-                axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
+                await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
+                    console.log(response);
                     this.details = ConvertToDetailModel.toDetail(response.data);
+                    profilePicId = response.data.profilePicId
                 }).catch((error) => {
                     errorStore.catchGetError(error, id);
                     console.log(error)
                 });
+                if (profilePicId) {
+
+                    await axiosInstance({
+                        url: `/api/v1/images/${profilePicId}`,
+                        method: 'get',
+                        responseType: 'blob'
+                    }).then((response) => {
+                        this.profilePic=URL.createObjectURL(response.data);
+                    }).catch((error) => {
+                        console.log(error);
+                    });
+                    console.log(this.profilePic);
+                }
                 this.loading = false;
             },
 
@@ -103,6 +120,7 @@ export const useDetailStore = defineStore('detailStore', {
                         })
                         .catch((error) => {
                             console.log(error);
+                            const errorStore = useErrorStore();
                             errorStore.catchUploadImageError(error);
                         });
                 }
@@ -120,7 +138,7 @@ export const useDetailStore = defineStore('detailStore', {
                         'birthDate': edits.getBirthDate(),
                         'profilePicId': image_id,
                     }).then(() => {
-                        errorStore.toggleHasError();
+                    errorStore.toggleHasError();
                 }).catch((error) => {
                     console.log(error);
                     errorStore.catchPostPatchError(error);

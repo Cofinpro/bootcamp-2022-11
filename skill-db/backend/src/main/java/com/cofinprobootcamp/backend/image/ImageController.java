@@ -25,7 +25,7 @@ public class ImageController {
 
     @PostMapping
     public ImageOutDTO saveImage(@RequestBody ImageInDTO base64Image) {
-        String prefix = base64Image.file().split(",")[0];
+        String prefix = base64Image.file().split("[,;:]")[1];
         byte[] imageData = Base64.getDecoder()
                 .decode(base64Image.file().split(",")[1]);
 
@@ -39,7 +39,7 @@ public class ImageController {
         Image image = imageService.getImage(id);
         byte[] imageData = image.getData();
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG);
+        headers.set("Content-Type",image.getPrefix());
         return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
     }
 }
