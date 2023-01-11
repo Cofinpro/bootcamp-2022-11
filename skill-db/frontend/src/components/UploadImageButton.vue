@@ -1,6 +1,10 @@
 <template>
   <div class="image-upload">
-    <input type="file" ref="imageInput" class="hidden"/>
+    <input
+        type="file"
+        ref="imageInput"
+        class="hidden"
+        accept="image/png, image/jpg, image/jpeg"/>
     <img class="image" v-if="imageDataUri" alt="Profilbild" :src="imageDataUri"/>
     <img class="image" v-else-if="oldPicture" alt="Profilbild" :src="oldPicture"/>
     <img class="image" v-else alt="Profilbild" src="@/assets/images/dummy_profilePicture.png"/>
