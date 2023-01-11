@@ -2,6 +2,7 @@ package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.exceptions.*;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
+import com.cofinprobootcamp.backend.user.User;
 import com.cofinprobootcamp.backend.user.UserService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -68,8 +69,9 @@ public class CSVReader {
                         null
                 );
                 validate(inDTO, lineCount);
-                Profile profile = profileService.createProfile(inDTO,
-                        userService.getUserByUsername(inDTO.email()));
+                User user = userService.getUserByUsername(inDTO.email());
+                Profile profile = profileService.createProfile(inDTO, user);
+                userService.assignProfileToUser(user, profile);
                 lineCount++;
             }
         } catch (IllegalArgumentException e) {
