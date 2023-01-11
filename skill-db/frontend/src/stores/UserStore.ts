@@ -6,7 +6,8 @@ import axiosInstance from "@/axios";
 export const useUserStore = defineStore('userStore', {
     state: () => ({
         users: [] as UserModel[],
-        loading: Boolean(false)
+        loading: Boolean(false),
+        profile: Boolean(false),
     }),
     actions: {
         loadUsers(): void {
@@ -24,6 +25,19 @@ export const useUserStore = defineStore('userStore', {
             }).catch((error) => {
                 errorStore.catchGetAllError(error);
             })
+        },
+
+        async hasProfile(userId: String) {
+            this.loading = true;
+            const errorStore = useErrorStore();
+            await axiosInstance.get("api/v1/users/${userId}/profile").then(response => {
+                this.profile = response.data;
+            }
+        ).catch((error) => {
+            errorStore.catchGetProfileError(error, userId);
+            console.log(error)
+        });
+            this.loading = false;
         },
 
         async loadUsersByRoleId(id: String) {

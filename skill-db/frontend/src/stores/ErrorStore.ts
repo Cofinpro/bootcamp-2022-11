@@ -112,6 +112,24 @@ export const useErrorStore = defineStore(
                 }
             },
 
+            catchGetProfileError(error: AxiosError, id: String) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = this.errorMessages.unknownError;
+                } else {
+                    if (error.response.status === 404) {
+                        this.errorText = `Nutzer ${id} existiert nicht!`;
+                    } else if (error.response.status === 401) {
+                        this.authStore.logout();
+                        this.errorText = this.errorMessages.unauthorized;
+                    } else if (error.response.status === 500) {
+                        this.errorText = this.errorMessages.internalServerError;
+                    } else if (error.response.status === 400) {
+                        this.errorText = this.errorMessages.idNotFound;
+                    }
+                }
+            },
+
             catchDeleteError(error: AxiosError, id: String) {
                 this.hasError = true;
                 if (error.response == undefined) {

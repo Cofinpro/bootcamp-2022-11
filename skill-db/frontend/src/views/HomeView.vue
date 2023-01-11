@@ -13,9 +13,7 @@
       <div class="d-flex justify-space-between">
         <ImportButton/>
         <ExportButton/>
-        <ButtonWithTooltip tooltip="Neues Profil erstellen"
-                           icon="mdi-plus-thick"
-                           @clicked="createProfile"/>
+        <CreateButton/>
         <ButtonWithTooltip v-if="false"
                            tooltip="Filter"
                            icon="mdi-filter"
@@ -53,13 +51,13 @@
 import OverviewCard from "@/components/OverviewCard.vue";
 import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
 import {useOverviewStore} from "@/stores/OverviewStore";
-import router from "@/router";
 import ExportButton from "@/components/ExportButton.vue";
 import ImportButton from "@/components/ImportButton.vue";
+import CreateButton from "@/components/CreateButton.vue";
 
 export default {
   name: "HomeView",
-  components: {ExportButton, ImportButton, OverviewCard, ButtonWithTooltip },
+  components: {ExportButton, ImportButton, CreateButton, OverviewCard, ButtonWithTooltip },
   setup() {
     const overviewStore = useOverviewStore();
     overviewStore.loadOverview();
@@ -68,10 +66,6 @@ export default {
     };
   },
   methods: {
-    createProfile() {
-      console.log("Now you can create a new profile.");
-      router.push(`/details/new`);
-    },
     filterProfiles() {
       console.log("Start filtering.");
     }
