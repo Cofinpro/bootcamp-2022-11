@@ -7,7 +7,8 @@ export const useUserStore = defineStore('userStore', {
     state: () => ({
         users: [] as UserModel[],
         loading: Boolean(false),
-        profile: Boolean(false),
+        hasProfile: Boolean(false),
+        profileId: String,
     }),
     actions: {
         loadUsers(): void {
@@ -27,16 +28,29 @@ export const useUserStore = defineStore('userStore', {
             })
         },
 
-        async hasProfile(userId: String) {
+        async checkForExistingUserProfile(userId: String) {
             this.loading = true;
             const errorStore = useErrorStore();
-            await axiosInstance.get(`api/v1/users/${userId}/profile`).then(response => {
-                this.profile = response.data;
+            await axiosInstance.get(`api/v1/users/${userId}/profile/exists`).then(response => {
+                this.hasProfile = response.data;
             }
         ).catch((error) => {
             errorStore.catchGetProfileError(error, userId);
             console.log(error)
         });
+            this.loading = false;
+        },
+
+        async getProfileIdFromUser(userId: String) {
+            this.loading = true;
+            const errorStore = useErrorStore();
+            await axiosInstance.get(`api/v1/users/${userId}/profile`).then(response => {
+                    this.profileId = response.data;
+                }
+            ).catch((error) => {
+                errorStore.catchGetProfileError(error, userId);
+                console.log(error)
+            });
             this.loading = false;
         },
 

@@ -12,7 +12,7 @@ export const useErrorStore = defineStore(
                 unknownError: 'Unbekannter Fehler!',
                 unauthorized: 'Nicht autorisiert! Loggen Sie sich erneut ein.',
                 internalServerError: 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!',
-                idNotFound: 'Profil Id konnte nicht aufgelöst werden!',
+                idNotFound: 'Id konnte nicht aufgelöst werden!',
                 notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Loggen Sie sich erneut ein.'
             }
         }),
