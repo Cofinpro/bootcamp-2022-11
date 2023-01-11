@@ -15,7 +15,7 @@ export const useErrorStore = defineStore(
                 internalServerError: 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!',
                 idNotFound: 'Profil Id konnte nicht aufgelöst werden!',
                 notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Loggen Sie sich erneut ein.',
-                mailNotSent: 'Mail wurde nicht gesendet!'
+                mailNotSent: 'Mail wurde nicht gesendet! Deine Änderungen wurden dennoch gespeichert.'
             }
         }),
         actions: {
@@ -68,6 +68,8 @@ export const useErrorStore = defineStore(
                         this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 404) {
                         this.errorText = `${error.response.data.message}`;
+                    } else if (error.response.status === 503) {
+                        this.errorText = this.errorMessages.mailNotSent;
                     } else {
                         this.errorText = this.errorMessages.unknownError;
                     }
@@ -144,6 +146,8 @@ export const useErrorStore = defineStore(
                         this.errorText = this.errorMessages.idNotFound;
                     } else if (error.response.status === 503) {
                         this.errorText = this.errorMessages.mailNotSent;
+                    } else {
+                        this.errorText = this.errorMessages.unknownError;
                     }
                 }
             },
