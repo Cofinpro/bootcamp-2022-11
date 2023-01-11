@@ -18,7 +18,7 @@ export const useOverviewStore = defineStore('OverviewStore', {
                     this.cards.push(ConvertToOverviewCard.toOverviewCard(element))
                 }
             }).catch((error) => {
-                errorStore.catchUserOverviewError(error);
+                errorStore.catchGetAllError(error);
             });
             await this.loadAllProfilePics();
             this.loading = false;

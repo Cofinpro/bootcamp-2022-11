@@ -66,7 +66,8 @@ public class ProfileService {
             tryToSetUniqueOuterId(profile);
             profile = profileRepository.saveAndFlush(profile);
         } catch (Exception e) {
-            throw new UserCreationFailedException();
+            String msg = "Das Profil konnte nicht gespeichert werden. Ursache könnte möglicherweise eine Race Condition sein. Bitte erneut versuchen!";
+            throw new InternalOperationFailedException(msg, e);
         }
         return profile;
     }

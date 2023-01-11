@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import type {AxiosError} from "axios";
+import {useAuthStore} from "@/stores/auth";
 
 export const useErrorStore = defineStore(
     'ErrorStore',
@@ -7,12 +8,13 @@ export const useErrorStore = defineStore(
         state: () => ({
             hasError: Boolean(false),
             errorText: '',
+            authStore: useAuthStore(),
             errorMessages: {
                 unknownError: 'Unbekannter Fehler!',
-                unauthorized: 'Nicht autorisiert!',
+                unauthorized: 'Nicht autorisiert! Loggen Sie sich erneut ein.',
                 internalServerError: 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!',
                 idNotFound: 'Profil Id konnte nicht aufgelöst werden!',
-                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Dieser Vorfall wird gemeldet.'
+                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Loggen Sie sich erneut ein.'
             }
         }),
         actions: {
@@ -22,14 +24,16 @@ export const useErrorStore = defineStore(
                 this.errorText = '';
             },
 
-            catchUserOverviewError(error: AxiosError) {
+            catchGetAllError(error: AxiosError) {
                 this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = this.errorMessages.unknownError;
                 } else {
                     if (error.response.status === 401) {
+                        this.authStore.logout();
                         this.errorText = this.errorMessages.unauthorized;
                     } else if (error.response.status === 403) {
+                        this.authStore.logout();
                         this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
@@ -54,10 +58,12 @@ export const useErrorStore = defineStore(
                     if (error.response.status === 400) {
                         this.handle400forProfile(error);
                     } else if (error.response.status === 401) {
+                        this.authStore.logout();
                         this.errorText = this.errorMessages.unauthorized;
                     } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
                     } else if (error.response.status === 403) {
+                        this.authStore.logout();
                         this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 404) {
                         this.errorText = `${error.response.data.message}`;
@@ -69,7 +75,7 @@ export const useErrorStore = defineStore(
 
             handle400forProfile(error: AxiosError) {
                 const message: string = error.response.data.message.toString();
-                if (message === 'Der zurzeit eingeloggte Nutzer hat bereits ein Profil!') {
+                if (message === 'Der Nutzer hat bereits ein Profil!') {
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
                     let innerMessage = message.split(/(\[|\])/)[2];
@@ -108,6 +114,7 @@ export const useErrorStore = defineStore(
                     if (error.response.status === 404) {
                         this.errorText = `Profil ${id} existiert nicht!`;
                     } else if (error.response.status === 401) {
+                        this.authStore.logout();
                         this.errorText = this.errorMessages.unauthorized;
                     } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
@@ -125,8 +132,10 @@ export const useErrorStore = defineStore(
                     if (error.response.status === 404) {
                         this.errorText = `Profil ${id} existiert nicht!`;
                     } else if (error.response.status === 401) {
+                        this.authStore.logout();
                         this.errorText = this.errorMessages.unauthorized;
                     } else if (error.response.status === 403) {
+                        this.authStore.logout();
                         this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
@@ -142,6 +151,7 @@ export const useErrorStore = defineStore(
                     this.errorText = this.errorMessages.unknownError;
                 } else {
                     if (error.response.status === 403) {
+                        this.authStore.logout();
                         this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
@@ -150,6 +160,28 @@ export const useErrorStore = defineStore(
                     }
                 }
             },
+
+            catchGetRoleError(error: AxiosError, id: String) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = this.errorMessages.unknownError;
+                } else {
+                    if (error.response.status === 404) {
+                        this.errorText = `Rolle ${id} existiert nicht!`;
+                    } else if (error.response.status === 401) {
+                        this.authStore.logout();
+                        this.errorText = this.errorMessages.unauthorized;
+                    } else if (error.response.status === 403) {
+                        this.authStore.logout();
+                        this.errorText = this.errorMessages.notAllowed;
+                    } else if (error.response.status === 500) {
+                        this.errorText = this.errorMessages.internalServerError;
+                    } else if (error.response.status === 400) {
+                        this.errorText = 'Rollen Id konnte nicht aufgelöst werden!'
+                    }
+                }
+            },
+
         }
     }
 )

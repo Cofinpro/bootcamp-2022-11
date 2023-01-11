@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import {createRouter, createWebHistory} from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import DetailView from '../views/DetailView.vue'
 import NewView from '../views/NewView.vue'
@@ -6,61 +6,70 @@ import EditView from '../views/EditView.vue'
 import LoginView from "@/views/LoginView.vue";
 import UserOverView from "@/views/UserOverView.vue"
 import {useAuthStore} from "@/stores/auth";
+import RoleOverView from "@/views/RoleOverView.vue";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/login',
-      name: 'Login',
-      component: LoginView,
-      meta: {
-        title: 'Login'
-      }
-    },
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-      meta: {
-          title: 'Profilübersicht'
-      }
-    },
-    {
-        path: '/details/new',
-        name: 'new',
-        component: NewView,
-        meta: {
-            title: 'Neues Profil erstellen'
-        }
-    },
-    {
-        path: '/admin/users',
-        name: 'userOverview',
-        component: UserOverView,
-        meta: {
-            title: 'Nutzerübersicht'
-        }
-    },
-    {
-      path: '/detail/edit/:id',
-      name: 'editView',
-      component: EditView,
-      props: true,
-      meta: {
-        title: 'Bearbeite dein Profil'
-      }
-    },
-    {
-      path: '/detail/:id',
-      name: 'userDetails',
-      component: DetailView,
-      props: true,
-      meta: {
-        title: 'Profil-Detailansicht'
-      }
-    },
-  ]
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: '/login',
+            name: 'Login',
+            component: LoginView,
+            meta: {
+                title: 'Login'
+            }
+        },
+        {
+            path: '/',
+            name: 'home',
+            component: HomeView,
+            meta: {
+                title: 'Profilübersicht'
+            }
+        },
+        {
+            path: '/details/new',
+            name: 'new',
+            component: NewView,
+            meta: {
+                title: 'Neues Profil erstellen'
+            }
+        },
+        {
+            path: '/admin/users',
+            name: 'userOverview',
+            component: UserOverView,
+            meta: {
+                title: 'Nutzerübersicht'
+            }
+        },
+        {
+            path: '/admin/roles',
+            name: 'roleOverview',
+            component: RoleOverView,
+            meta: {
+                title: 'Rollenübersicht'
+            }
+        },
+        {
+            path: '/detail/edit/:id',
+            name: 'editView',
+            component: EditView,
+            props: true,
+            meta: {
+                title: 'Bearbeite dein Profil'
+            }
+        },
+        {
+            path: '/detail/:id',
+            name: 'userDetails',
+            component: DetailView,
+            props: true,
+            meta: {
+                title: 'Profil-Detailansicht'
+            }
+        },
+    ]
 })
 
 /**

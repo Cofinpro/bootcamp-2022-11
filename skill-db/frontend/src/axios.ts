@@ -51,15 +51,16 @@ const refreshTokenFn = async () => {
     try {
         const response = await axios.post("/api/v1/token/refresh", refreshTokenRequest);
         const session = response.data;
-        if (!session?.accessToken) {
+        if (!session?.accessToken || !session?.role) {
             localStorage.removeItem("refresh_token");
             localStorage.removeItem("access_token");
             localStorage.removeItem("username");
             localStorage.removeItem("role")
             router.push("/login");
         }
-
+        localStorage.setItem("role", session.role);
         localStorage.setItem("access_token", session.accessToken);
+        router.go(0);
 
         return session;
     } catch (error) {

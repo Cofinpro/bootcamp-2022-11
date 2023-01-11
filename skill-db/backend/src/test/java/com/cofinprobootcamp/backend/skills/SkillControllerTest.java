@@ -15,23 +15,23 @@ import static org.assertj.core.api.Assertions.*;
 class SkillControllerTest {
     SkillController skillController;
     @Mock
-    SkillRepository skillRepository;
+    SkillService skillService;
 
     @BeforeEach
     public void initialize() {
         MockitoAnnotations.openMocks(this);
-        skillController = new SkillController(skillRepository);
+        skillController = new SkillController(skillService);
     }
     @Test
     void given_repository_of_skills_then_return_list_of_skill_names() {
-        List<Skill> skillList = List.of(
-                new Skill("name"),
-                new Skill("name2")
+        List<String> skillList = List.of(
+                "skill1",
+                "skill2"
         );
-        Mockito.when(skillRepository.findAll()).thenReturn(skillList);
+        Mockito.when(skillService.getAllSkills()).thenReturn(skillList);
         List<String> nameList = List.of(
-                skillList.get(0).getName(),
-                skillList.get(1).getName()
+                skillList.get(0),
+                skillList.get(1)
         );
         assertThat(skillController.getSkills()).isEqualTo(nameList);
     }

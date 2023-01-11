@@ -11,7 +11,6 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.skills.SkillService;
 import com.cofinprobootcamp.backend.user.User;
-import com.cofinprobootcamp.backend.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,7 +50,7 @@ class ProfileServiceTest {
         profileService = new ProfileService(profileRepository,
                 skillService,
                 jobTitleService,
-                emailSendService,
+                emailSendService
                 userService,
                 imageService
                 );

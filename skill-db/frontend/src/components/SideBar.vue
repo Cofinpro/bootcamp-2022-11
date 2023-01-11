@@ -34,15 +34,15 @@
       <RouterLink to="/admin/users" v-if="isAdmin">
         <v-list-item link>
           <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">
-            mdi-account-box-outline
+            mdi-account-group
           </v-icon>
           Nutzerübersicht
         </v-list-item>
       </RouterLink>
-      <RouterLink to="/admin/users" v-if="isAdmin">
+      <RouterLink to="/admin/roles" v-if="isAdmin">
         <v-list-item link>
           <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">
-            mdi-account-box-outline
+            mdi-shield-account
           </v-icon>
           Rollenübersicht
         </v-list-item>
@@ -67,6 +67,8 @@ import {useAuthStore} from "@/stores/auth";
 
 export default {
   name: "SideBar",
+  components: {},
+
   props: {
     id: Number,
   },

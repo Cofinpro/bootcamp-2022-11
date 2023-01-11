@@ -4,7 +4,7 @@
 
     <v-main>
       <router-view/>
-      <ErrorSnackbar v-if="$route.path !== '/login'"></ErrorSnackbar>
+      <ErrorSnackbar/>
     </v-main>
 
   </v-app>
