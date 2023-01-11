@@ -7,7 +7,9 @@ import static java.util.Objects.isNull;
 
 @Service
 public class ImageService {
-
+    private static final String PNG="image/png";
+    private static final String JPG="image/jpg";
+    private static final String JPEG="image/jpeg";
     private final ImageRepository imageRepository;
 
     @Autowired
@@ -18,6 +20,9 @@ public class ImageService {
     public Image saveImage(byte[] data, String prefix) {
         Image image = new Image();
         image.setData(data);
+        if (!(prefix == PNG || prefix == JPG || prefix == JPEG)) {
+            throw new ImageFormatNotAllowedException();
+        }
         image.setPrefix(prefix);
         return imageRepository.save(image);
     }

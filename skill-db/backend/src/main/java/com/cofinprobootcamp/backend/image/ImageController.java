@@ -17,7 +17,6 @@ import java.util.Base64;
 public class ImageController {
 
     private final ImageService imageService;
-
     @Autowired
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
@@ -28,7 +27,6 @@ public class ImageController {
         String prefix = base64Image.file().split("[,;:]")[1];
         byte[] imageData = Base64.getDecoder()
                 .decode(base64Image.file().split(",")[1]);
-
         Image image = imageService.saveImage(imageData, prefix);
         return new ImageOutDTO(image);
     }

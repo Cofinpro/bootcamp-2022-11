@@ -41,7 +41,6 @@ export const useDetailStore = defineStore('detailStore', {
                     console.log(error)
                 });
                 if (profilePicId) {
-
                     await axiosInstance({
                         url: `/api/v1/images/${profilePicId}`,
                         method: 'get',
