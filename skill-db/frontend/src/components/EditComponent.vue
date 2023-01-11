@@ -63,24 +63,16 @@
       </v-row>
 
       <div class="buttons d-flex justify-end">
-        <v-btn v-if="update === 'false'" class="mt-10"
+        <v-btn  class="mt-10"
                :style="!isFilled ? {
                   color: '#BDBDBD !important',
                   border: '1px dashed #BBBBBB !important',
                 } : ''"
                :disabled="!isFilled"
                @click="submitProfile()" elevation="0">
-          Profil erstellen
+          {{ update === true ? "Änderungen speichern" : "Profil erstellen" }}
         </v-btn>
-        <v-btn v-if="update === 'true'" class="mt-10"
-               :style="!isFilled ? {
-                  color: '#BDBDBD !important',
-                  border: '1px dashed #BBBBBB !important',
-                } : ''"
-               :disabled="!isFilled"
-               @click="submitProfile()" elevation="0">
-          Änderungen speichern
-        </v-btn>
+
         <v-btn class="mt-10 ml-lg-5 ml-md-5"
                @click="leave" elevation="0">
           Abbrechen
@@ -91,7 +83,7 @@
 </template>
 
 <script> /*TODO should be TypeScript*/
-import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
+import {ConvertToDetailModelForOutput, DetailModel} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
@@ -99,7 +91,9 @@ import UploadImageButton from "@/components/UploadImageButton.vue";
 
 export default {
   name: "EditComponent",
-  props: ['detail', 'update'],
+  props: {
+    detail: DetailModel,
+    update: Boolean},
   components: { UploadImageButton },
   data() {
     return {
@@ -130,7 +124,7 @@ export default {
     this.jobs = detailStore.jobs;
     this.primaries = detailStore.primarys;
 
-    if (this.update === 'true') {
+    if (this.update === true) {
       this.firstName = this.detail.getFirstName();
       this.lastName = this.detail.getLastName();
       this.degree = this.detail.getDegree();
@@ -147,7 +141,7 @@ export default {
       const detailStore = useDetailStore();
       const errorStore = useErrorStore();
       console.log(this.isFilled);
-      if (this.update === 'true') {
+      if (this.update === true) {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
         await detailStore.updateProfile(editDetails, id);
@@ -163,7 +157,7 @@ export default {
       }
     },
     leave() {
-      if (this.update === 'true') {
+      if (this.update === true) {
         const id = this.detail.getId();
         router.push({name: 'userDetails', params: {id}});
       } else {
