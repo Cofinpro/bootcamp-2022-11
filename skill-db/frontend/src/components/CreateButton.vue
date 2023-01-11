@@ -1,5 +1,5 @@
 <template>
-  <ButtonWithTooltip v-if="hasNoProfile"
+  <ButtonWithTooltip :disabled="hasProfile"
                      tooltip="Neues Profil erstellen"
                      icon="mdi-plus-thick"
                      @clicked="$router.push(`/details/new`)"/>
@@ -19,11 +19,11 @@ export default {
     }
   },
   computed: {
-    hasNoProfile(): boolean {
+    hasProfile(): boolean {
       const userId = window.localStorage.getItem('user_id');
       this.userStore.checkForExistingUserProfile(userId);
       console.log(userId);
-      return (!this.userStore.hasProfile);
+      return this.userStore.hasProfile;
     }
   },
 }
