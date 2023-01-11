@@ -97,7 +97,7 @@ public class MailIntegrationTest {
                                 "    \"email\": \"luis.geyer@cofinpro.de\",\n" +
                                 "    \"birthDate\": \"2020-10-10\"\n" +
                                 "}"))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     private String getProfileOuterId() throws Exception {

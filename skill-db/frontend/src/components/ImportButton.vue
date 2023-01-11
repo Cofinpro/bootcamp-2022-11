@@ -1,7 +1,7 @@
 <template>
    <ButtonWithTooltip v-if="isAdminOrHR"
                       tooltip="Profil von csv importieren"
-                     icon="mdi-file-import"
+                     icon="mdi-file-upload-outline"
                      @clicked="$refs.fileInput.click()"/>
   <input type="file"
          v-if="isAdminOrHR"
@@ -14,7 +14,6 @@
 <script type="ts">
 import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
 import {useBlobStore} from "@/stores/BlobStore";
-import router from "@/router";
 import {useOverviewStore} from "@/stores/OverviewStore";
 
 export default {

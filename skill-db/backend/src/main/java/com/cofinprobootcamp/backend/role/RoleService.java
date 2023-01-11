@@ -1,86 +1,53 @@
 package com.cofinprobootcamp.backend.role;
 
-import com.cofinprobootcamp.backend.exceptions.RoleAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
-import com.cofinprobootcamp.backend.role.dto.RoleCreateInDTO;
-import com.cofinprobootcamp.backend.role.dto.RoleOutDTO;
+import com.cofinprobootcamp.backend.role.dto.RoleDetailsOutDTO;
 import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
+import com.cofinprobootcamp.backend.user.User;
+import com.cofinprobootcamp.backend.user.UserDirector;
+import com.cofinprobootcamp.backend.user.UserRepository;
+import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Role service.
+ *
+ * @version 2.0
+ */
 @Service
 public class RoleService {
 
-    private final RoleRepository roleRepository;
-    private final UserRightRepository userRightRepository;
+    private final UserRepository userRepository;
 
-    public RoleService(RoleRepository roleRepository, UserRightRepository userRightRepository) {
-        this.roleRepository = roleRepository;
-        this.userRightRepository = userRightRepository;
+    public RoleService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public Role createRole(RoleCreateInDTO roleDTO) {
-        if (roleRepository.existsByName(roleDTO.shortName())) {
-            throw new RoleAlreadyExistsException();
+    public RoleDetailsOutDTO getRoleByIdentifier(String identifier) throws RoleNotFoundException {
+        StandardRoles role = StandardRoles.fromIdentifier(identifier);
+        if (role.equals(StandardRoles.UNDEFINED)) {
+            throw new RoleNotFoundException(identifier);
         }
-        Role role = RoleDirector.CreateInDTOToEntity(roleDTO);
-        List<UserRight> existingRights = new LinkedList<>();
-        List<UserRight> newRights = new LinkedList<>();
-        for (UserRight userRight : role.getUserRights()) {
-            Optional<UserRight> existingRight = userRightRepository
-                    .findUserRightByNamespaceAndOperationAndScope(userRight.getNamespace(), userRight.getOperation(),
-                            userRight.getScope());
-            if (existingRight.isPresent()) {
-                existingRights.add(existingRight.get());
-            } else {
-                newRights.add(userRight);
-            }
+        return RoleDirector.roleDetailsViewFromEnumType(role);
+    }
+
+    public List<RoleOverviewOutDTO> getAllRoles() {
+        return RoleDirector.allRoleOverviewsFromEnum();
+    }
+
+    public List<UserOutDTO> getUsersByRole(String identifier) throws RoleNotFoundException {
+        StandardRoles role = StandardRoles.fromIdentifier(identifier);
+        if (role.equals(StandardRoles.UNDEFINED)) {
+            throw new RoleNotFoundException(identifier);
         }
-        userRightRepository.saveAllAndFlush(newRights);
-        newRights.addAll(existingRights);
-        role.setUserRights(newRights);
-        return roleRepository.saveAndFlush(role);
-    }
-
-    public Role saveRole(Role role) {
-        userRightRepository.saveAllAndFlush(role.getUserRights());
-        return roleRepository.saveAndFlush(role);
-    }
-
-    public RoleOutDTO getRoleDTOByName(String name) {
-        Optional<Role> roleOptional = roleRepository.findRoleByName(name);
-        return new RoleOutDTO(roleOptional.orElseThrow(RoleNotFoundException::new));
-    }
-
-    public List<RoleOutDTO> getAllRoleDTOs() {
-        List<Role> roles = roleRepository.findAll();
-        return roles.stream().map(RoleOutDTO::new).toList();
-    }
-
-    // Temporary class for sprint 1
-    public RoleOverviewOutDTO getSimplifiedRoleDTOByName(String name) {
-        Optional<Role> roleOptional = roleRepository.findRoleByName(name);
-        return new RoleOverviewOutDTO(roleOptional.orElseThrow(RoleNotFoundException::new));
-    }
-
-    // Temporary class for sprint 1
-    public List<RoleOverviewOutDTO> getAllSimplifiedRoleDTOs() {
-        List<Role> roles = roleRepository.findAll();
-        return roles.stream().map(RoleOverviewOutDTO::new).toList();
-    }
-
-    public Optional<Role> getRoleByName(String name) {
-        return roleRepository.findRoleByName(name);
-    }
-
-    public List<Role> getAllRoles() {
-        return roleRepository.findAll();
-    }
-
-    public void deleteRoleByName(String name) {
-        roleRepository.deleteRoleByName(name);
+        List<User> users = userRepository.findAllByRole(role);
+        List<UserOutDTO> usersDTO = new LinkedList<>();
+        for (User user : users) {
+            usersDTO.add(UserDirector.EntityToUserOutDTO(user));
+        }
+        return usersDTO;
     }
 }

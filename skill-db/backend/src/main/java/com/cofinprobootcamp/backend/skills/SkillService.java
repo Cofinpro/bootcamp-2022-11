@@ -17,12 +17,24 @@ public class SkillService {
         return skillInputs.stream()
                 .map(
                         name -> {
-                            System.out.println(skillRepository.findSkillByName(name).orElse(new Skill(name)));
                             if (skillRepository.findSkillByName(name).isPresent()) {
                                 return skillRepository.findSkillByName(name).get();
                             } else{
                                 return skillRepository.saveAndFlush(new Skill(name));
-                            }})
+                            }}
+                )
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * Gets all available skills from the database.
+     * @return A {@link List} of {@link String} representations of each {@link Skill}.
+     */
+    public List<String> getAllSkills() {
+        return skillRepository
+                .findAll()
+                .stream()
+                .map(Skill::getName)
+                .toList();
     }
 }

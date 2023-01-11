@@ -55,6 +55,11 @@ class UserIntegrationTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        assertThat(mvcResult).contains("\"email\":\"lennart.rehmer@cofinpro.de\",\"locked\":false,\"role\":\"Administrator\"");
+        assertThat(mvcResult)
+                .contains(
+                        "\"email\":\"lennart.rehmer@cofinpro.de\"," +
+                        "\"locked\":false," +
+                        "\"role\":{\"identifier\":\"ADMIN\",\"displayName\":\"Administrator\""
+                );
     }
 }

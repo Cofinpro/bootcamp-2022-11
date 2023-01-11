@@ -33,7 +33,6 @@ public final class Regex {
      * A regular expression that can be used to specify the date format for printing
      * and {@code String} representation.
      */
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String DATE_REGEX = "\\d{4}-\\d{2}-\\d{2}";
     public static final int MINIMUM_PASSWORD_LENGTH = 8;
 

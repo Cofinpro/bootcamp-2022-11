@@ -8,17 +8,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/skills")
 public class SkillController {
-    SkillRepository skillRepository;
-    public SkillController(SkillRepository skillRepository) {
-        this.skillRepository = skillRepository;
+    private final SkillService skillService;
+
+    public SkillController(SkillService skillService) {
+        this.skillService = skillService;
     }
+
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'SKILLS_GET_ALL')")
     public List<String> getSkills() {
-        return skillRepository
-                .findAll()
-                .stream()
-                .map(Skill::getName)
-                .toList();
+        return skillService.getAllSkills();
     }
 }

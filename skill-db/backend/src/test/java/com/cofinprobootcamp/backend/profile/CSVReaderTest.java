@@ -48,7 +48,7 @@ class CSVReaderTest {
         String skills = "skill1,skill2";
         String phoneNumber = "111111111111";
         String birthdate = "1997-10-10";
-        String contentOfFile = "Email;Vorname;Nachname;JobTitel;Abschluss;Primärkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
+        String contentOfFile = "Email;Vorname;Nachname;JobTitel;Abschluss;Primaerkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
                 email + ";" + name + ";" + surname + ";" + jobTitle + ";" + degree + ";" + primary + ";"  + reference +";" + skills + ";" + phoneNumber + ";" + birthdate;
         Mockito.when(file.getBytes()).thenReturn(contentOfFile.getBytes());
         ArgumentCaptor< ProfileCreateInDTO > dtoArgumentCaptor = ArgumentCaptor.forClass(ProfileCreateInDTO.class);
@@ -85,7 +85,7 @@ class CSVReaderTest {
         String skills = "skill1;skill2";
         String phoneNumber = "111111111111";
         String birthdate = "1997-10-10";
-        String contentOfFile = "Email;Vorname;Nachname;JobTitel;Abschluss;Primärkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
+        String contentOfFile = "Email;Vorname;Nachname;JobTitel;Abschluss;Primaerkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
                 email + ";" + name + ";" + surname + ";" + jobTitle + ";" + degree + ";" + primary + ";"  + reference +";" + skills + ";" + phoneNumber + ";" + birthdate;
         Mockito.when(file.getBytes()).thenReturn(contentOfFile.getBytes());
         ArgumentCaptor<ProfileCreateInDTO> dtoArgumentCaptor = ArgumentCaptor.forClass(ProfileCreateInDTO.class);
@@ -108,7 +108,7 @@ class CSVReaderTest {
         String skills = "skill1;skill2";
         String phoneNumber = "111111111111";
         String birthdate = "1997-10-10";
-        String contentOfFile = "Email,Vorname;Nachname;JobTitel;Abschluss;Primärkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
+        String contentOfFile = "Email,Vorname;Nachname;JobTitel;Abschluss;Primaerkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
                 email + ";" + name + ";" + surname + ";" + jobTitle + ";" + degree + ";" + primary + ";"  + reference +";" + skills + ";" + phoneNumber + ";" + birthdate;
         Mockito.when(file.getBytes()).thenReturn(contentOfFile.getBytes());
         ArgumentCaptor<ProfileCreateInDTO> dtoArgumentCaptor = ArgumentCaptor.forClass(ProfileCreateInDTO.class);

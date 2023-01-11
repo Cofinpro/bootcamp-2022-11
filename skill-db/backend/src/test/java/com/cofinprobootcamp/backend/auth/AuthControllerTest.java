@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -135,12 +134,16 @@ public class AuthControllerTest {
 
         TimeUnit.SECONDS.sleep(1);
 
-        mvc.perform(post("/api/v1/token/refresh")
+        String mvcResult = mvc.perform(post("/api/v1/token/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\" : \"" + jsonObject.get("username") + "\" , \"refreshToken\" : \"" + jsonObject.getJSONObject("tokens").get("refresh_token") + "\"}"))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.accessToken").isNotEmpty())
-                .andReturn();
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        assertThat(mvcResult).contains(String.format("\"role\":\"%s\"", jsonObject.get("role").toString()));
     }
 
 
@@ -151,7 +154,7 @@ public class AuthControllerTest {
      * @throws Exception
      */
     @Test
-    @DisplayName("For testing, the REFRESH_TOKEN_DURATION_SECONDS in class ProfileConfiguration have to be set to > 12 seconds (otherwise the test fails)")
+    @DisplayName("For testing, the REFRESH_TOKEN_DURATION_SECONDS in class ProfileConfiguration have to be set to less than 12 seconds (otherwise the test fails)")
     void whenRefreshTokenExpiredThenAnswerCodeUnauthorized() throws Exception {
         JSONObject jsonObject = login();
 

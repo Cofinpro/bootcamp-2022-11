@@ -2,6 +2,7 @@ package com.cofinprobootcamp.backend.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,28 +14,24 @@ import java.time.DateTimeException;
 public class TheExceptionHandler {
 
     @ExceptionHandler(DateTimeException.class)
-    public ResponseEntity<CustomErrorMessage> handleDateTimeException(
-            DateTimeException e, WebRequest wr) {
+    public ResponseEntity<CustomErrorMessage> handleDateTimeException(DateTimeException e, WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
                 "Datum nicht in passendem Format!",
-                wr.getDescription(false)
-        );
+                wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<CustomErrorMessage> handleMethodArgumentNotValidException(
-            MethodArgumentNotValidException e, WebRequest wr
-    ) {
+            MethodArgumentNotValidException e,
+            WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
                 "VALIDATION: " +
-                e.getBindingResult().getFieldErrors()
-                        .stream()
-                        .map((fieldError -> fieldError.getDefaultMessage()))
-                        .toList(),
-                wr.getDescription(false)
-        );
-        return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
+                        e.getBindingResult().getFieldErrors().stream()
+                                .map((fieldError -> fieldError.getDefaultMessage()))
+                                .toList(),
+                wr.getDescription(false));
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CSVFormatException.class)
@@ -59,21 +56,25 @@ public class TheExceptionHandler {
         );
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(ProfileNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleProfileNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("Profil konnte nicht gefunden werden!",
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Profil konnte nicht gefunden werden!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ProfileAlreadyExistsException.class)
-    public ResponseEntity<CustomErrorMessage> handleProfileAlreadyExistsException(WebRequest wr) {
+    public ResponseEntity<CustomErrorMessage> handleProfileAlreadyExistsException(ProfileAlreadyExistsException paee, WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
                 "Der Nutzer hat bereits ein Profil!",
-                wr.getDescription(false)
+                wr.getDescription(false),
+                paee
         );
         return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(JobTitleNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleJobTitleNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
@@ -84,15 +85,27 @@ public class TheExceptionHandler {
 
     @ExceptionHandler(ExpertiseNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleExpertiseNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("Unbekannte Primärkompetenz!",
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Unbekannte Primärkompetenz!",
                 wr.getDescription(false));
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<CustomErrorMessage> handleUsernameNotFoundException(
+            UsernameNotFoundException unfe,
+            WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                unfe.getMessage(),
+                wr.getDescription(false),
+                unfe);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<CustomErrorMessage> handleUserNotFoundException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
-                "E-Mail ist keinem Nutzer zugewiesen!",
+                "Der angefragte Nutzer konnte nicht gefunden werden!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
@@ -106,23 +119,40 @@ public class TheExceptionHandler {
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
-    public ResponseEntity<CustomErrorMessage> handleRoleNotFoundException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("Es existiert keine Rolle mit diesem Namen!",
+    public ResponseEntity<CustomErrorMessage> handleRoleNotFoundException(
+            RoleNotFoundException rnfe,
+            WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                rnfe.getRoleErrorMessage(),
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RoleAlreadyExistsException.class)
     public ResponseEntity<CustomErrorMessage> handleRoleAlreadyExists(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("Rolle mit diesem Namen existiert bereits!",
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Eine Rolle mit diesem Namen existiert bereits!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(UserCreationFailedException.class)
-    public ResponseEntity<CustomErrorMessage> handleUserCreationFailed(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("Nutzer konnte nicht gespeichert werden!",
-                wr.getDescription(false));
+    @ExceptionHandler(InternalOperationFailedException.class)
+    public ResponseEntity<CustomErrorMessage> handleUserCreationFailed(
+            InternalOperationFailedException iofe,
+            WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                iofe.getMessage(),
+                wr.getDescription(false),
+                iofe.getCause());
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(InvalidAuthorityFormatException.class)
+    public ResponseEntity<CustomErrorMessage> handleInvalidAuthorityFormat(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Es gab einen Fehler beim Prüfen der Zugriffsberechtigungen dieses Nutzers [Ungültiges Rechteformat]. Zugriff verweigert.",
+                wr.getDescription(false)
+        );
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

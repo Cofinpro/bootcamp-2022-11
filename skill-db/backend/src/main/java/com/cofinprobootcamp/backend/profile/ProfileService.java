@@ -6,7 +6,7 @@ import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
-import com.cofinprobootcamp.backend.exceptions.UserCreationFailedException;
+import com.cofinprobootcamp.backend.exceptions.InternalOperationFailedException;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
@@ -16,7 +16,6 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.skills.SkillService;
 import com.cofinprobootcamp.backend.user.User;
-import com.cofinprobootcamp.backend.user.UserService;
 import com.cofinprobootcamp.backend.utils.RandomStringGenerator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,18 +34,15 @@ public class ProfileService {
     private final SkillService skillService;
     private final JobTitleService jobTitleService;
     private final EmailSendService emailSendService;
-    private final UserService userService;
 
     public ProfileService(ProfileRepository profileRepository,
                           SkillService skillService,
                           JobTitleService jobTitleService,
-                          EmailSendService emailSendService,
-                          UserService userService) {
+                          EmailSendService emailSendService) {
         this.profileRepository = profileRepository;
         this.skillService = skillService;
         this.jobTitleService = jobTitleService;
         this.emailSendService = emailSendService;
-        this.userService = userService;
     }
 
     public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
@@ -60,7 +56,8 @@ public class ProfileService {
             tryToSetUniqueOuterId(profile);
             profileRepository.saveAndFlush(profile);
         } catch (Exception e) {
-            throw new UserCreationFailedException();
+            String msg = "Das Profil konnte nicht gespeichert werden. Ursache könnte möglicherweise eine Race Condition sein. Bitte erneut versuchen!";
+            throw new InternalOperationFailedException(msg, e);
         }
         return profile;
     }
@@ -69,19 +66,18 @@ public class ProfileService {
     // --> should give back "outer id" of profile and update that way!
     public Profile updateProfile(ProfileUpdateInDTO profileInDTO, String outerId)
             throws ProfileNotFoundException, JobTitleNotFoundException {
-        // In theory: convert id to internal id
         Profile current = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new);
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet, jobTitle);
 
-        String mailRecipientAddress = current.getOwner().getUsername();
+        /*String mailRecipientAddress = current.getOwner().getUsername();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(!mailRecipientAddress.equals(authentication.getName())) {
             // trigger info-email
             sendProfileUpdateMail(profile.getFullName(), authentication.getName(), mailRecipientAddress);
-        }
+        }*/
 
         return profileRepository.saveAndFlush(profile);
     }
