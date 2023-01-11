@@ -67,4 +67,16 @@ public class User {
     @JoinColumn(unique = true)
     @Builder.Default
     private Profile profile = null; // Default value
+
+    @Override
+    public String toString() {
+        return String.format(
+                "User[outerId: %s, user name: %s, locked: %b, role: %s, profileId: %s]",
+                this.outerId,
+                this.username,
+                this.locked,
+                this.role.toString(),
+                profile != null ? profile.getOuterId() : ""
+        );
+    }
 }
