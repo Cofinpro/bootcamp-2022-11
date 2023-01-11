@@ -29,7 +29,7 @@ class ProfileDirectorTest {
                 List.of("skill"),
                 "12345678901",
                 "1997-10-10",
-                0L
+                null
         );
         User user = new User();
         user.setUsername("a@b.c");
@@ -61,7 +61,7 @@ class ProfileDirectorTest {
         List.of("skill"),
         "12345678901",
         "2020-10-10",
-                1L);
+                null);
         Profile oldProfile = new Profile().builder()
                 .id(1L)
                 .owner(new User(1L, "00000","a","b",false,null,null))

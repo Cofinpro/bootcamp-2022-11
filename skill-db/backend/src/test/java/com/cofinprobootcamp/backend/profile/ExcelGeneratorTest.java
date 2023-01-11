@@ -50,7 +50,8 @@ class ExcelGeneratorTest {
                                 "firstname",
                                 "lastname",
                                 "date",
-                                123
+                                123,
+                                null
                         )
                 )
         );
@@ -84,7 +85,8 @@ class ExcelGeneratorTest {
                         "firstname",
                         "lastname",
                         "date",
-                        123
+                        123,
+                        null
                 )
         ));
         excelGenerator.createExcel(fileOutputStream);

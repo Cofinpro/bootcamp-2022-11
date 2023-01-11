@@ -3,6 +3,7 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.email.EmailSendService;
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
+import com.cofinprobootcamp.backend.image.Image;
 import com.cofinprobootcamp.backend.image.ImageService;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
@@ -68,6 +69,7 @@ class ProfileServiceTest {
                 .skillSet(skillSet)
                 .birthDate(LocalDate.of(10,10,10))
                 .owner(new User())
+                .profilePic(new Image(1L,"".getBytes(),"none"))
                 .build();
     }
 
