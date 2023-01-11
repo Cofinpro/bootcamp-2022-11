@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
+import java.util.Objects;
 
 
 @RestController
@@ -27,7 +28,7 @@ public class ImageController {
     @PreAuthorize("hasAuthority(@authorityPrefix + 'IMAGES_GET_BY_ID')")
     public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
         Image image = imageService.getImage(id);
-        if (!(image.getPrefix() == "none")) {
+        if (!(Objects.equals(image.getPrefix(), "none"))) {
             byte[] imageData = image.getData();
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", image.getPrefix());
