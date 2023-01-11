@@ -73,7 +73,7 @@ export const useErrorStore = defineStore(
 
             handle400forProfile(error: AxiosError) {
                 const message: string = error.response.data.message.toString();
-                if (message === 'Der zurzeit eingeloggte Nutzer hat bereits ein Profil!') {
+                if (message === 'Der Nutzer hat bereits ein Profil!') {
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
                     let innerMessage = message.split(/(\[|\])/)[2];

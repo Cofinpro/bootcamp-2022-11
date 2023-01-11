@@ -11,8 +11,8 @@
         Searchbar
       </v-card>
       <div class="d-flex justify-space-between">
-        <ExportButton/>
         <ImportButton/>
+        <ExportButton/>
         <ButtonWithTooltip tooltip="Neues Profil erstellen"
                            icon="mdi-plus-thick"
                            @clicked="createProfile"/>
