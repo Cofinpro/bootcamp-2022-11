@@ -1,9 +1,6 @@
 package com.cofinprobootcamp.backend.profile;
 
-import com.cofinprobootcamp.backend.exceptions.CSVFormatException;
-import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
-import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
-import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.*;
 import com.cofinprobootcamp.backend.profile.dto.*;
 import com.cofinprobootcamp.backend.user.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -49,7 +46,7 @@ public class ProfileController {
     @PatchMapping(path = "/{id}")
     @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
     public void updateProfile(@PathVariable String id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
-            throws ProfileNotFoundException, JobTitleNotFoundException {
+            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException {
         Profile profile = profileService.updateProfile(profileInDTO, id);
     }
 

@@ -132,5 +132,12 @@ public class TheExceptionHandler {
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(MailNotSentException.class)
+    public ResponseEntity<CustomErrorMessage> handleMailNotSentException(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage("Mail was not send correctly!",
+                wr.getDescription(false));
+        return new ResponseEntity<>(body,HttpStatus.NOT_FOUND);
+    }
 }
 

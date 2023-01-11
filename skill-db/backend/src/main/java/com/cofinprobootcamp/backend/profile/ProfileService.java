@@ -3,11 +3,8 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.config.Constants;
 import com.cofinprobootcamp.backend.email.EmailSendService;
 import com.cofinprobootcamp.backend.enums.Expertises;
-import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.*;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
-import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
-import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
-import com.cofinprobootcamp.backend.exceptions.UserCreationFailedException;
 import com.cofinprobootcamp.backend.image.Image;
 import com.cofinprobootcamp.backend.image.ImageService;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
@@ -26,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.net.ConnectException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -75,7 +73,7 @@ public class ProfileService {
 
 
     public Profile updateProfile(ProfileUpdateInDTO profileInDTO, String outerId)
-            throws ProfileNotFoundException, JobTitleNotFoundException {
+            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException {
         Profile current = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new);
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
@@ -87,14 +85,17 @@ public class ProfileService {
             imageService.removeImage(oldImage.getId());
         }
         //mailsending
-        String mailRecipientAddress = current.getOwner().getUsername();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        try {
+            String mailRecipientAddress = current.getOwner().getUsername();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(!mailRecipientAddress.equals(authentication.getName())) {
-            // trigger info-email
-            sendProfileUpdateMail(profile.getFullName(), authentication.getName(), mailRecipientAddress);
+            if (!mailRecipientAddress.equals(authentication.getName())) {
+                // trigger info-email
+                sendProfileUpdateMail(profile.getFullName(), authentication.getName(), mailRecipientAddress);
+            }
+        } catch (Exception e) {
+            throw new MailNotSentException();
         }
-
         return profile;
     }
 
