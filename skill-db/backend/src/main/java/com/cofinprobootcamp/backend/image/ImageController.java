@@ -23,23 +23,19 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping
-    public ImageOutDTO saveImage(@RequestBody ImageInDTO base64Image) throws ImageFormatNotAllowedException {
-        String prefix = base64Image.file().split("[,;:]")[1];
-        byte[] imageData = Base64.getDecoder()
-                .decode(base64Image.file().split(",")[1]);
-        Image image = imageService.saveImage(imageData, prefix);
-        return new ImageOutDTO(image);
-    }
-
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_USER', 'SCOPE_ROLE_HR')")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'IMAGES_GET_BY_ID')")
     public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
         Image image = imageService.getImage(id);
-        byte[] imageData = image.getData();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type",image.getPrefix());
-        return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
+        if (!(image.getPrefix() == "none")) {
+            byte[] imageData = image.getData();
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", image.getPrefix());
+            return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
+        } else {
+            HttpHeaders headers = new HttpHeaders();
+            return new ResponseEntity<>(null, headers, HttpStatus.OK);
+        }
     }
 }
 

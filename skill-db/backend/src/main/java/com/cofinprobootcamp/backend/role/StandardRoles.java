@@ -53,7 +53,8 @@ public enum StandardRoles {
                     UserPrivileges.JOB_TITLES_GET_ALL,
                     UserPrivileges.USERS_POST_NEW$SELF,
                     UserPrivileges.USERS_DELETE_BY_ID$SELF,
-                    UserPrivileges.USERS_GET_BY_ID$SELF
+                    UserPrivileges.USERS_GET_BY_ID$SELF,
+                    UserPrivileges.IMAGES_GET_BY_ID
             );
         }
     },

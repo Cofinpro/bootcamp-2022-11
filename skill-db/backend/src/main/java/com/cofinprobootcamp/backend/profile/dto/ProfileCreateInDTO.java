@@ -54,5 +54,5 @@ public record ProfileCreateInDTO(
         @NotNull(message = "Geburtsdatum muss angegeben werden!")
         @Pattern(regexp = Regex.DATE_REGEX, message = "Geburtsdatum muss im Format DD.MM.YYYY angegeben werden!")
         String birthDate,
-        Long profilePicId) {
+        String profilePic) {
 }

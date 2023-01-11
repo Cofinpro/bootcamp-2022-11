@@ -31,7 +31,7 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "")
     @PreAuthorize("hasPermission(#profileInDTO, @authorityPrefix + 'PROFILES_POST_NEW')")
-    public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
+    public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException {
         User user = userService.getUserByUsername(profileInDTO.email());
         Profile profile = profileService.createProfile(profileInDTO, user);
         userService.assignProfileToUser(user, profile);
@@ -45,7 +45,7 @@ public class ProfileController {
     @PatchMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, @authorityPrefix + 'PROFILES_PATCH_BY_ID')")
     public void updateProfile(@PathVariable String id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
-            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException {
+            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException, ImageFormatNotAllowedException {
         Profile profile = profileService.updateProfile(profileInDTO, id);
     }
 

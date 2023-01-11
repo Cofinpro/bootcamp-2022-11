@@ -40,13 +40,18 @@ export const useDetailStore = defineStore('detailStore', {
                     errorStore.catchGetError(error, id);
                     console.log(error)
                 });
-                if (profilePicId && !errorStore.hasError) {
+                if (!errorStore.hasError) {
                     await axiosInstance({
                         url: `/api/v1/images/${profilePicId}`,
                         method: 'get',
                         responseType: 'blob'
                     }).then((response) => {
-                        this.profilePic=URL.createObjectURL(response.data);
+                        if (response.data.size === 0) {
+                            this.profilePic = '';
+                        }
+                        else{
+                            this.profilePic=URL.createObjectURL(response.data);
+                        }
                     }).catch((error) => {
                         console.log(error);
                         errorStore.catchDownloadImageError(error);
@@ -69,22 +74,7 @@ export const useDetailStore = defineStore('detailStore', {
 
             async createProfile(edits: DetailModel, profilePicUri: String) {
                 this.loading = true;
-                let image_id = null;
-
-                console.log(edits);
                 const errorStore = useErrorStore();
-                if (profilePicUri) {
-                    await axiosInstance.post('/api/v1/images/', {file: profilePicUri})
-                        .then((response) => {
-                            image_id = response.data.id;
-                            console.log(image_id);
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            errorStore.catchUploadImageError(error);
-                        });
-                }
-
                 await axiosInstance.post(`/api/v1/profiles/`,
                     {
                         'firstName': edits.getFirstName(),
@@ -97,7 +87,7 @@ export const useDetailStore = defineStore('detailStore', {
                         'phoneNumber': edits.getPhoneNumber(),
                         'email': localStorage.getItem('username'),
                         'birthDate': edits.getBirthDate(),
-                        'profilePicId': image_id,
+                        'profilePic': profilePicUri,
                     }).then((response) => {
                     console.log(response);
                     errorStore.toggleHasError();
@@ -111,21 +101,6 @@ export const useDetailStore = defineStore('detailStore', {
 
             async updateProfile(edits: DetailModel, id: String, profilePicUri: String) {
                 this.loading = true;
-                console.log(edits);
-                console.log(profilePicUri);
-                let image_id = null;
-                if (profilePicUri) {
-                    await axiosInstance.post('/api/v1/images/', {file: profilePicUri})
-                        .then((response) => {
-                            image_id = response.data.id;
-                            console.log(image_id);
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                            const errorStore = useErrorStore();
-                            errorStore.catchUploadImageError(error);
-                        });
-                }
                 const errorStore = useErrorStore();
                 await axiosInstance.patch(`/api/v1/profiles/${id}`,
                     {
@@ -138,7 +113,7 @@ export const useDetailStore = defineStore('detailStore', {
                         'skills': edits.getTechnologies(),
                         'phoneNumber': edits.getPhoneNumber(),
                         'birthDate': edits.getBirthDate(),
-                        'profilePicId': image_id,
+                        'profilePic': profilePicUri,
                     }).then(() => {
                     errorStore.toggleHasError();
                 }).catch((error) => {

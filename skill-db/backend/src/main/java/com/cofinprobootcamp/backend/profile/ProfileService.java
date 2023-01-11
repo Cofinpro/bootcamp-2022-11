@@ -54,11 +54,14 @@ public class ProfileService {
         this.imageService = imageService;
     }
 
-    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
+    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user)
+            throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException
+    {
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
-        Image profilePic = imageService.getImage(profileInDTO.profilePicId());
-        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle, profilePic);
+        Image profilePic = imageService.saveImage(profileInDTO.profilePic());
+        Profile profile = ProfileDirector
+                .CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle, profilePic);
         if (profileRepository.findProfileByOwner(user).isPresent()) {
             throw new ProfileAlreadyExistsException();
         }
@@ -74,17 +77,13 @@ public class ProfileService {
 
 
     public Profile updateProfile(ProfileUpdateInDTO profileInDTO, String outerId)
-            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException {
+            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException, ImageFormatNotAllowedException {
         Profile current = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new);
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
-        Image oldImage = current.getProfilePic();
-        Image image = imageService.getImage(profileInDTO.profilePicId());
+        Image image = imageService.updateImageIfGiven(profileInDTO.profilePic(), current.getProfilePic().getId());
         Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet, jobTitle, image);
         profile = profileRepository.saveAndFlush(profile);
-        if (!isNull(oldImage)) {
-            imageService.removeImage(oldImage.getId());
-        }
         //mailsending
         try {
             String mailRecipientAddress = current.getOwner().getUsername();
@@ -112,7 +111,8 @@ public class ProfileService {
 
     @Transactional
     public void deleteProfileByOuterId(String outerId) throws ProfileNotFoundException {
-        profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new); // Check may be unnecessary
+        Profile profile = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new); // Check may be unnecessary
+        imageService.deleteImageById(profile.getProfilePic().getId());
         profileRepository.deleteByOuterId(outerId);
     }
 

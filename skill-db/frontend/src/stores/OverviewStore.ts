@@ -9,7 +9,7 @@ export const useOverviewStore = defineStore('OverviewStore', {
         loading: Boolean(false),
     }),
     actions: {
-        async loadOverview(): void {
+        async loadOverview(): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore();
             await axiosInstance.get('/api/v1/profiles').then((response) => {
@@ -25,19 +25,22 @@ export const useOverviewStore = defineStore('OverviewStore', {
         },
         async loadAllProfilePics(): Promise<void> {
             const errorStore = useErrorStore();
-            for (const element of this.cards){
-                if (element.getProfilePicId()) {
-                    await axiosInstance({
-                        url: `/api/v1/images/${element.getProfilePicId()}`,
-                        method: 'get',
-                        responseType: 'blob'
-                    }).then((response) => {
+            for (const element of this.cards) {
+                await axiosInstance({
+                    url: `/api/v1/images/${element.getProfilePicId()}`,
+                    method: 'get',
+                    responseType: 'blob'
+                }).then((response) => {
+                    if (response.data.size === 0) {
+                        element.setProfilePic('');
+                    }
+                    else{
                         element.setProfilePic(URL.createObjectURL(response.data));
-                    }).catch((error) => {
-                        console.log(error);
-                        errorStore.catchDownloadImageError(error);
-                    })
-                }
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    errorStore.catchDownloadImageError(error);
+                })
             }
         },
     }
