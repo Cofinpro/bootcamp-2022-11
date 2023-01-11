@@ -2,12 +2,11 @@
   <ButtonWithTooltip v-if="hasNoProfile"
                      tooltip="Neues Profil erstellen"
                      icon="mdi-plus-thick"
-                     @clicked="createProfile"/>
+                     @clicked="$router.push(`/details/new`)"/>
 </template>
 
-<script>
+<script lang="ts">
 import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
-import router from "@/router";
 import {useUserStore} from "@/stores/UserStore";
 
 export default {
@@ -16,21 +15,16 @@ export default {
   setup() {
     const userId = window.localStorage.getItem('user_id');
     const userStore = useUserStore();
-    userStore.hasProfile(userId);
     return {
-      userStore
+      userStore, userId
     }
   },
   computed: {
-    hasNoProfile() {
+    hasNoProfile(): boolean {
+      this.userStore.hasProfile(this.userId);
       return (!this.userStore.profile);
     }
   },
-  methods: {
-    createProfile() {
-      router.push(`/details/new`);
-    },
-  }
 }
 </script>
 

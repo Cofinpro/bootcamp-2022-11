@@ -50,7 +50,6 @@ export const useDetailStore = defineStore('detailStore', {
 
             async createProfile(edits: DetailModel) {
                 this.loading = true;
-                console.log(edits);
                 const errorStore = useErrorStore();
                 await axiosInstance.post(`/api/v1/profiles/`,
                     {

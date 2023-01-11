@@ -30,7 +30,7 @@ export const useUserStore = defineStore('userStore', {
         async hasProfile(userId: String) {
             this.loading = true;
             const errorStore = useErrorStore();
-            await axiosInstance.get("api/v1/users/${userId}/profile").then(response => {
+            await axiosInstance.get(`api/v1/users/${userId}/profile`).then(response => {
                 this.profile = response.data;
             }
         ).catch((error) => {
