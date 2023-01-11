@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * of the {@code hasPermission()} method to use in a SpEL query.
  *
  * @author l-rehm
- * @version 1.0
+ * @version 1.1
  */
 public class CustomPermissionEvaluator implements PermissionEvaluator {
     private static final String POSTFIX_SELF = "SELF";
