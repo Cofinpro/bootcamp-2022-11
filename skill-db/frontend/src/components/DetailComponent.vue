@@ -128,9 +128,10 @@ export default {
     }
 
     function lockProfile(): void {
-      //const userStore = useUserStore();
-      //const userId;
-      //userStore.lockUser(userId);
+      const userStore = useUserStore();
+      detailStore.loadDetailsById(id);
+      const userId = detailStore.details.getOwnerId();
+      userStore.lockUser(userId);
       locked.value = true;
     }
 
