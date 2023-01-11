@@ -67,7 +67,7 @@ public enum StandardRoles {
      */
     HR(
             "HR",
-            "Mit dieser Rolle dürfen alle Profile angesehen, bearbeitet und gelöscht werden. Der Zugriff auf die Bearbeitung von Rollen ist nicht möglich."
+            "Mit dieser Rolle dürfen alle Profile angesehen, bearbeitet und gelöscht werden. Der Zugriff auf Rollen ist nicht möglich."
     ) {
         @Override
         public Set<UserPrivileges> getAssociatedPrivileges() {
@@ -78,6 +78,7 @@ public enum StandardRoles {
                             UserPrivileges.PROFILES_PATCH_BY_ID$ANY,
                             UserPrivileges.PROFILES_DELETE_BY_ID$ANY,
                             UserPrivileges.PROFILES_EXPORT_GET_ALL,
+                            UserPrivileges.PROFILES_IMPORT_POST_NEW,
                             UserPrivileges.JOB_TITLES_POST_NEW
                     )
             );

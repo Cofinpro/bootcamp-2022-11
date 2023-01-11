@@ -18,9 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -28,13 +25,10 @@ import java.util.List;
 public class ProfileController {
     private final ProfileService profileService;
     private final UserService userService;
-    private final ProfileRepository profileRepository;
 
-    public ProfileController(ProfileService profileService, UserService userService,
-                             ProfileRepository profileRepository) {
+    public ProfileController(ProfileService profileService, UserService userService) {
         this.profileService = profileService;
         this.userService = userService;
-        this.profileRepository = profileRepository;
     }
 
     /**
@@ -130,8 +124,9 @@ public class ProfileController {
      * @throws ProfileAlreadyExistsException as in createprofile
      * @throws CSVFormatException if columns in csv can not be read
      */
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/import",  consumes="multipart/form-data")
-    @PreAuthorize("hasAnyAuthority('SCOPE_ROLE_ADMIN', 'SCOPE_ROLE_HR')")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_IMPORT_POST_NEW')")
     public void importFromCSV(@RequestParam("file") MultipartFile file)
             throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
         CSVReader reader = new CSVReader(file, profileService, userService);

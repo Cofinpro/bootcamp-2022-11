@@ -56,6 +56,9 @@ public enum UserPrivileges {
     PROFILES_EXPORT_GET_ALL(
             "Der Nutzer ist dazu berechtigt, alle Profile mit Detailinformationen zu exportieren."
     ),
+    PROFILES_IMPORT_POST_NEW(
+      "Der Nutzer ist dazu berechtigt, neue Profile per CSV-Import anzulegen."
+    ),
 
     /*
      * Endpoint "/api/v1/skills"
