@@ -54,7 +54,8 @@ public enum StandardRoles {
                     UserPrivileges.USERS_POST_NEW$SELF,
                     UserPrivileges.USERS_DELETE_BY_ID$SELF,
                     UserPrivileges.USERS_GET_BY_ID$SELF,
-                    UserPrivileges.USERS_BY_ID_GET_HAS_PROFILE$ANY
+                    UserPrivileges.USERS_BY_ID_GET_PROFILE$SELF,
+                    UserPrivileges.USERS_BY_ID_GET_PROFILE_EXISTS$ANY
             );
         }
     },

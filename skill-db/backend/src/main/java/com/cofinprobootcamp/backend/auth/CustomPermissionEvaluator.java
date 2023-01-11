@@ -121,7 +121,12 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                         return userIsSelf(customAuth, id);
                     }
                 }
-                case USERS_BY_ID_GET_HAS_PROFILE$ANY -> {
+                case USERS_BY_ID_GET_PROFILE$SELF -> {
+                    if (targetDomainObject instanceof String id) {
+                        return userIsSelf(customAuth, id);
+                    }
+                }
+                case USERS_BY_ID_GET_PROFILE_EXISTS$SELF -> {
                     if (targetDomainObject instanceof String id) {
                         return userIsSelf(customAuth, id);
                     }

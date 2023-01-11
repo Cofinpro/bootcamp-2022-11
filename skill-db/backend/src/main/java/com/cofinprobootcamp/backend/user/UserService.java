@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.user;
 
 import com.cofinprobootcamp.backend.config.Constants;
+import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.InternalOperationFailedException;
 import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
@@ -94,6 +95,14 @@ public class UserService {
         return users.stream()
                 .map(UserDirector::EntityToUserOutDTO)
                 .toList();
+    }
+
+    public String getProfileOuterIdByUserOuterId(String outerId) throws ProfileNotFoundException {
+        String profileOuterId = getUserByOuterId(outerId).profileId();
+        if (profileOuterId == null) {
+            throw new ProfileNotFoundException();
+        }
+        return profileOuterId;
     }
 
     public boolean hasUserAProfile(String outerId) {

@@ -98,10 +98,16 @@ public enum UserPrivileges {
     USERS_GET_BY_ID$ANY(
             "Der Nutzer ist dazu berechtigt, einen beliebigen Nutzeraccount über dessen Kennung einzusehen."
     ),
-    USERS_BY_ID_GET_HAS_PROFILE$SELF(
+    USERS_BY_ID_GET_PROFILE$SELF(
+            "Der Nutzer ist dazu berechtigt, die Kennung seines eigenen Profils abzurufen."
+    ),
+    USERS_BY_ID_GET_PROFILE$ANY(
+            "Der Nutzer ist dazu berechtigt, die Kennung des Profils von jedem Nutzer abzurufen."
+    ),
+    USERS_BY_ID_GET_PROFILE_EXISTS$SELF(
             "Der Nutzer ist dazu berechtigt, zu überprüfen, ob er selbst bereits über ein Profil verfügt."
     ),
-    USERS_BY_ID_GET_HAS_PROFILE$ANY(
+    USERS_BY_ID_GET_PROFILE_EXISTS$ANY(
             "Der Nutzer ist dazu berechtigt, für jeden Nutzer zu überprüfen, ob dieser bereits über ein Profil verfügt."
     ),
     USERS_GET_ALL(
