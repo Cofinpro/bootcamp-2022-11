@@ -21,7 +21,7 @@
         </v-list-item>
       </RouterLink>
       <!--TODO get id of user-->
-<!-- <RouterLink :to="{ name: 'userDetail', params: { id: id }}">
+<!--      <RouterLink v-if="hasProfile" :to="{ name: 'userDetail', params: { id: getProfileId }}">
         <v-list-item link>
           <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">
             mdi-account-box-outline
@@ -75,10 +75,27 @@ export default {
   computed: {
     isAdmin() {
       return window.localStorage.getItem('role') === 'ROLE_ADMIN';
-    }
+    },
+    /*hasProfile() {
+      const userStore = useUserStore();
+      const userId = window.localStorage.getItem('user_id');
+      userStore.checkForExistingUserProfile(userId);
+      return userStore.hasProfile;
+    },
+    getProfileId() {
+      const userStore = useUserStore();
+      const userId = window.localStorage.getItem('user_id');
+      userStore.checkForExistingUserProfile(userId);
+      if (userStore.hasProfile) {
+        const userId = window.localStorage.getItem('user_id');
+        userStore.getProfileIdFromUser(userId);
+        return userStore.profileId;
+      }
+    },*/
   },
   data() {
     const store = useAuthStore();
+
     return {
       store,
       drawer: null,
