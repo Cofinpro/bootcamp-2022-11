@@ -37,6 +37,12 @@ public class UserController {
         return userService.getUserByOuterId(id);
     }
 
+    @GetMapping(path = "/{id}/profile")
+    @PreAuthorize("hasPermission(#id, 'boolean', @authorityPrefix + 'USERS_BY_ID_GET_HAS_PROFILE')")
+    public boolean hasUserProfile(@PathVariable String id) {
+        return userService.hasUserAProfile(id);
+    }
+
     @GetMapping(path = "")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_GET_ALL')")
     public List<UserOutDTO> getAllUsers() {

@@ -96,6 +96,10 @@ public class UserService {
                 .toList();
     }
 
+    public boolean hasUserAProfile(String outerId) {
+        return getUserByOuterId(outerId).profileId() != null;
+    }
+
     public User changeRole(String id, String roleIdentifier) throws UserNotFoundException {
         StandardRoles role = StandardRoles.fromIdentifier(roleIdentifier);
         User user = userRepository.findFirstByOuterId(id).orElseThrow(UserNotFoundException::new);
