@@ -200,6 +200,7 @@ img {
 
 .references {
   margin-left: -42px;
+  overflow-wrap: break-word;
 }
 
 .block_title {
