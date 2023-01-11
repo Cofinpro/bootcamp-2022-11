@@ -57,5 +57,17 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
+        async lockUser(userId: String) {
+            this.loading = true;
+            const errorStore = useErrorStore()
+            await axiosInstance.patch(`/api/v1/users/${userId}/lock`).then(() =>{
+                errorStore.toggleHasError();
+            }).catch((error) => {
+                console.log(error);
+                errorStore.catchPostPatchError(error);
+            });
+            this.loading = false;
+        },
+
     }
 })

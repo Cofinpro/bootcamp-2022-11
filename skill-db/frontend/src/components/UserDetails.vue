@@ -29,7 +29,7 @@
                            :color="roleColor(user.getRole().getIdentifier())"/>
         </td>
         <td>
-          <v-icon @click="user.locked = !user.locked"
+          <v-icon @click="toggleLock(user)"
                   :class="{ locked: user.locked, notLocked: !user.locked}">
             {{ user.locked ? 'mdi-lock' : 'mdi-lock-open' }}
           </v-icon>
@@ -41,6 +41,7 @@
 
 <script lang="ts">
 import ChipWithInfotext from "@/components/ChipWithInfotext.vue";
+import {useUserStore} from "@/stores/UserStore";
 export default {
   name: "UserDetails",
   components: { ChipWithInfotext },
@@ -61,6 +62,11 @@ export default {
       } else {
         return 'red';
       }
+    },
+    toggleLock(user: any): void {
+      const userStore = useUserStore();
+      userStore.lockUser(user.getId());
+      user.locked = !user.locked
     }
   }
 }
