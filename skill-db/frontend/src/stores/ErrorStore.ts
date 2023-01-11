@@ -3,7 +3,8 @@ import type {AxiosError} from "axios";
 
 export const useErrorStore = defineStore(
     'ErrorStore',
-    {state: () =>({
+    {
+        state: () => ({
             hasError: Boolean(false),
             errorText: '',
             errorMessages: {
@@ -18,7 +19,7 @@ export const useErrorStore = defineStore(
 
             toggleHasError() {
                 this.hasError = false;
-                this.errorText= '';
+                this.errorText = '';
             },
 
             catchUserOverviewError(error: AxiosError) {
@@ -43,9 +44,10 @@ export const useErrorStore = defineStore(
                 if (this.errorText === this.errorMessages.unknownError) {
                     this.errorText = error.response.data.message.toString().split(",")[0];
                 }
-                },
+            },
+
             catchPostPatchError(error: AxiosError) {
-                this.hasError=true;
+                this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = this.errorMessages.unknownError;
                 } else {
@@ -90,7 +92,12 @@ export const useErrorStore = defineStore(
 
             catchUploadImageError(error: Error) {
                 this.hasError = true;
-                this.errorText = error == undefined ? 'Unbekannter Fehler!' : error.message;
+                this.errorText = error == undefined ? this.errorMessages.unknownError : error.message;
+            },
+
+            catchDownloadImageError(error: AxiosError) {
+                this.hasError = true;
+                this.errorText = this.errorMessages.unknownError
             },
 
             catchGetError(error: AxiosError, id: String) {
@@ -136,7 +143,7 @@ export const useErrorStore = defineStore(
                 } else {
                     if (error.response.status === 403) {
                         this.errorText = this.errorMessages.notAllowed;
-                    } else if (error.response.status === 500 ){
+                    } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
                     } else {
                         this.errorText = this.errorMessages.unknownError;

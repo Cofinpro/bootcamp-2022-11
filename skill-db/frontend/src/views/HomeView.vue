@@ -38,7 +38,8 @@
           <OverviewCard :id="card.getId()"
                         :name="card.getName()"
                         :job-title="card.getJobTitle()"
-                        :primary-skill="card.getPrimarySkill()"/>
+                        :primary-skill="card.getPrimarySkill()"
+                        :profile-pic="card.getProfilePic()"/>
         </v-col>
       </v-row>
     </v-container>

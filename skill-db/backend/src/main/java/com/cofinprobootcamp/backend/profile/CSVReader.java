@@ -67,7 +67,8 @@ public class CSVReader {
                         record.get("Referenzen"),
                         Arrays.stream(record.get("Skills").split(",")).toList(),
                         record.get("Telefonnummer"),
-                        record.get("Geburtsdatum")
+                        record.get("Geburtsdatum"),
+                        null
                 );
                 validate(inDTO, lineCount);
                 Profile profile = profileService.createProfile(inDTO,

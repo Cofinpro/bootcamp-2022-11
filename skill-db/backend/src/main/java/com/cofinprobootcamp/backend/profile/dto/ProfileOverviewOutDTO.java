@@ -11,13 +11,18 @@ import com.cofinprobootcamp.backend.profile.Profile;
  * @param primaryExpertise A {@code String} representation of the user's primary expertise. This corresponds to the
  *                         {@code Expertises} type's full name.
  */
-public record ProfileOverviewOutDTO(String id, String name, String jobTitle, String primaryExpertise) {
+public record ProfileOverviewOutDTO(String id,
+                                    String name,
+                                    String jobTitle,
+                                    String primaryExpertise,
+                                    Long profilePicId) {
     public ProfileOverviewOutDTO(Profile profile) {
         this(
                 profile.getOuterId(),
                 profile.getFullName(),
                 profile.getJobTitle().getName(),
-                profile.getPrimaryExpertise().toFullNameString()
+                profile.getPrimaryExpertise().toFullNameString(),
+                profile.getProfilePic()==null? null : profile.getProfilePic().getId()
         );
     }
 }

@@ -40,7 +40,7 @@ export const useDetailStore = defineStore('detailStore', {
                     errorStore.catchGetError(error, id);
                     console.log(error)
                 });
-                if (profilePicId) {
+                if (profilePicId && !errorStore.hasError) {
                     await axiosInstance({
                         url: `/api/v1/images/${profilePicId}`,
                         method: 'get',
@@ -49,7 +49,8 @@ export const useDetailStore = defineStore('detailStore', {
                         this.profilePic=URL.createObjectURL(response.data);
                     }).catch((error) => {
                         console.log(error);
-                    });
+                        errorStore.catchDownloadImageError(error);
+                    })
                     console.log(this.profilePic);
                 }
                 this.loading = false;

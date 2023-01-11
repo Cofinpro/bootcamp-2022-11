@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.image;
 
+import com.cofinprobootcamp.backend.exceptions.ImageFormatNotAllowedException;
 import com.cofinprobootcamp.backend.image.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +24,7 @@ public class ImageController {
     }
 
     @PostMapping
-    public ImageOutDTO saveImage(@RequestBody ImageInDTO base64Image) {
+    public ImageOutDTO saveImage(@RequestBody ImageInDTO base64Image) throws ImageFormatNotAllowedException {
         String prefix = base64Image.file().split("[,;:]")[1];
         byte[] imageData = Base64.getDecoder()
                 .decode(base64Image.file().split(",")[1]);
