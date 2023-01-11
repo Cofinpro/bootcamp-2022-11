@@ -2,7 +2,7 @@
   <v-container v-if="!detailStore.loading">
     <EditComponent update=true
                    :detail="detailStore.details"
-    :oldProfilePic="detailStore.profilePic"/>
+    :old-picture="detailStore.profilePic"/>
   </v-container>
 </template>
 
