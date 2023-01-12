@@ -50,8 +50,8 @@
   </div>
   <v-container>
     <v-row class="lowerHalf pl-6 pr-6">
-      <v-col cols="12" lg="4" md="6" sm="12">
-          <v-card class="ml-n5"  elevation="3" style="border: 2px solid lightgray">
+      <v-col cols="12" lg="4" md="4" sm="12">
+          <v-card class="ml-n5"  elevation="3" style="border: 1px solid lightgray" max-width="300px">
             <p class="block_title">
               Skills
             </p>
@@ -61,7 +61,7 @@
               </div>
             </div>
           </v-card>
-        <v-card class="mt-3 ml-n5" elevation="3" style="border: 2px solid lightgray">
+        <v-card class="mt-3 ml-n5" elevation="3" style="border: 1px solid lightgray" max-width="300px">
           <div class="block_title">
             Abschluss
           </div>
@@ -70,7 +70,7 @@
           </div>
         </v-card>
       </v-col>
-      <v-col cols="12" lg="8" md="6" sm="12">
+      <v-col cols="12" lg="8" md="8" sm="12">
         <div class="ml-4">
           <div class="references pl-6 pt-2 ">
             <div class="block_title">
