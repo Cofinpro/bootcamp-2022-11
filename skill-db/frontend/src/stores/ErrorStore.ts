@@ -48,7 +48,11 @@ export const useErrorStore = defineStore(
             catchImportError(error: AxiosError) {
                 this.catchPostPatchError(error);
                 if (this.errorText === this.errorMessages.unknownError) {
-                    this.errorText = error.response.data.message.toString().split(",")[0];
+                    const colNameNotFound = `${error.response.data.message
+                        .toString()
+                        .split(",")[0]
+                        .split(' ')[2]}`
+                    this.errorText = `Spalte \"${colNameNotFound}\" wurde in der CSV Datei nicht gefunden!`;
                 }
             },
 

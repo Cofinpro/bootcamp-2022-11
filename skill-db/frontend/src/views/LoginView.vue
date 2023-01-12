@@ -37,11 +37,11 @@
                 </v-text-field>
                 <v-text-field class="align-content-sp"
                     v-model="userRequestLogin.password"
-                    :append-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
+                    :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="visible ? 'text' : 'password'"
                     variant="outlined"
                     label="Passwort"
-                    @click:append="visible = !visible"
+                    @click:append-inner="visible = !visible"
                     :rules="[rules.required, rules.min]"
                     counter
                     @keydown.enter="login"

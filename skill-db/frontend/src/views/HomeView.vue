@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!overviewStore.loading">
+  <div v-if="!overviewStore.loading" >
     <div class="headline">
       <h3>Profilübersicht</h3>
       <h4 class="font-weight-regular">Übersicht über alle vorhandenen Profile</h4>
@@ -29,14 +29,14 @@
       </div>
     </div>
 
-    <v-container class="cards mt-2 ml-0">
+    <v-container class="mt-2" >
       <h3 class="message d-flex justify-center"
           v-if="overviewStore.cards.length === 0">
         Aktuell sind keine Profile hinterlegt.
       </h3>
-      <v-row>
+      <v-row class="d-flex">
         <v-col v-for="card in overviewStore.cards" :key="card.getId()"
-               cols="12" lg="3" md="4" sm="6">
+               cols="12" xl="2" lg="3" md="4" sm="6">
           <OverviewCard :id="card.getId()"
                         :name="card.getName()"
                         :job-title="card.getJobTitle()"
