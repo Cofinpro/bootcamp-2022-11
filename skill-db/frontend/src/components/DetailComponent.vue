@@ -6,9 +6,9 @@
   </div>
 
   <div class="header">
-    <img v-if="detailStore.profilePic" v-bind:src="detailStore.profilePic"  alt="Profilbild" class="profilePic">
-    <v-avatar v-else color="primary" size="180"  rounded="0" class="ma-4">
-        <span class="text-h3">{{detailStore.details.getFirstName()[0]}}{{detailStore.details.getLastName()[0]}}</span>
+    <img v-if="detailStore.profilePic" v-bind:src="detailStore.profilePic" alt="Profilbild" class="profilePic">
+    <v-avatar v-else color="primary" size="180" rounded="0" class="ma-4">
+      <span class="text-h3">{{ detailStore.details.getFirstName()[0] }}{{ detailStore.details.getLastName()[0] }}</span>
     </v-avatar>
     <div class="header_content d-flex flex-column align-content-space-between">
       <div class="headline">
@@ -48,43 +48,46 @@
       </div>
     </div>
   </div>
-
-  <v-row class="lowerHalf pl-6 pr-6">
-    <v-col cols="12" lg="4" md="4" sm="12">
-      <div class="content_card d-flex">
-        <p class="block_title">
-          Skills
-        </p>
-        <div class="d-flex flex-wrap">
-          <div v-for="skill in detailStore.details.getTechnologies()" class="pa-1">
-            <v-chip>{{ skill }}</v-chip>
+  <v-container>
+    <v-row class="lowerHalf pl-6 pr-6">
+      <v-col cols="12" lg="4" md="6" sm="12">
+          <v-card class="ml-n5"  elevation="3" style="border: 2px solid lightgray">
+            <p class="block_title">
+              Skills
+            </p>
+            <div class="d-flex flex-wrap">
+              <div v-for="skill in detailStore.details.getTechnologies()" class="pa-1">
+                <v-chip>{{ skill }}</v-chip>
+              </div>
+            </div>
+          </v-card>
+        <v-card class="mt-3 ml-n5" elevation="3" style="border: 2px solid lightgray">
+          <div class="block_title">
+            Abschluss
+          </div>
+          <div class="block_content">
+            {{ detailStore.details.getDegree() }}
+          </div>
+        </v-card>
+      </v-col>
+      <v-col cols="12" lg="8" md="6" sm="12">
+        <div class="ml-4">
+          <div class="references pl-6 pt-2 ">
+            <div class="block_title">
+              Referenzen
+            </div>
+            <div class="block_content">
+              <ul class="pl-6">
+                <li v-for="reference in detailStore.details.getReferences().split(',')">
+                  <p>{{ reference }}</p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="content_card mt-5">
-        <div class="block_title">
-          Abschluss
-        </div>
-        <div class="block_content">
-          {{ detailStore.details.getDegree() }}
-        </div>
-      </div>
-    </v-col>
-    <v-col cols="12" lg="8" md="8" sm="12">
-      <div class="references pl-6 pt-2">
-        <div class="block_title">
-          Referenzen
-        </div>
-        <div class="block_content">
-          <ul class="pl-6">
-            <li v-for="reference in detailStore.details.getReferences().split(',')">
-              <p>{{ reference }}</p>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </v-col>
-  </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -97,7 +100,7 @@ import router from "@/router";
 
 export default {
   name: "DetailComponent",
-  components: { DropdownButton, DeleteProfileDialog },
+  components: {DropdownButton, DeleteProfileDialog},
   setup() {
     const detailStore = useDetailStore();
     const id = String(useRoute().params.id);
@@ -159,6 +162,7 @@ export default {
 .infos {
   display: flex;
   justify-content: space-between;
+  font-size: 11pt;
   height: 100px;
   margin-left: 10%;
   margin-top: 60px;
@@ -174,16 +178,11 @@ export default {
 }
 
 .content_card {
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
   border-radius: 8px;
   padding: 8px 12px;
   border-color: rgba(217, 217, 217, 1);
   border-width: 1px;
   border-style: solid;
-  width: 300px;
-  margin-left: -30px;
 }
 
 .references {
@@ -206,7 +205,7 @@ export default {
   font-family: "Poppins", sans-serif;
 }
 
-@media screen and (max-width: 1050px) {
+@media screen and (max-width: 960px) {
   .header {
     height: 480px;
     margin: auto;
