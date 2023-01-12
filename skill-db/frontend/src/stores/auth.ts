@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
         login(user: LoginRequest): void{
+            localStorage.clear();
             const errorStore = useErrorStore();
             axiosInstance.post("/api/v1/token", user).then((result) => {
                 localStorage.setItem("access_token", result.data.tokens["access_token"]);

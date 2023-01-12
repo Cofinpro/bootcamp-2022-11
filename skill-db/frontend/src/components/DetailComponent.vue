@@ -109,17 +109,12 @@ export default {
 
     let dropdownFunctions = [];
     const role = window.localStorage.getItem('role');
-    if(role === 'ROLE_ADMIN') {
-      dropdownFunctions = [
-        {name: 'Bearbeiten', method: enterEdit},
-        {name: 'Löschen', method: toggleDelete},
-        {name: 'Sperren', method: lockProfile},
-      ];
-    } else {
-      dropdownFunctions = [
-        {name: 'Bearbeiten', method: enterEdit},
-        {name: 'Löschen', method: toggleDelete},
-      ];
+    dropdownFunctions = [
+      {name: 'Bearbeiten', method: enterEdit},
+      {name: 'Löschen', method: toggleDelete},
+    ];
+    if(role === 'ROLE_ADMIN' && !locked.value) {
+      dropdownFunctions.push({name: 'Sperren', method: lockProfile});
     }
 
     function enterEdit(): void {

@@ -37,7 +37,7 @@
       <v-row class="skillRow">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete v-model="technologies"
+            <v-autocomplete v-model="technologies" label="Skills"
                             :items="givenTechnologies"
                             multiple auto-select-first
                             chips closable-chips/>
@@ -82,7 +82,7 @@
 </template>
 
 <script> /*TODO should be TypeScript*/
-import {ConvertToDetailModelForOutput, DetailModel} from "@/models/DetailModel";
+import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
