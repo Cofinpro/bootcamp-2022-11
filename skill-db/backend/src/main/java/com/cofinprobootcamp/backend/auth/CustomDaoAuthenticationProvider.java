@@ -21,8 +21,9 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
         UsernamePasswordAuthenticationToken auth =
                 (UsernamePasswordAuthenticationToken)super.createSuccessAuthentication(principal, authentication, user);
         if (user instanceof UserDetailsImpl customUser) {
+            String outerId = customUser.getOuterId();
             String roleName = Constants.JWT_ROLE_PREFIX + customUser.getRoleName();
-            auth = new CustomUsernamePasswordAuthenticationToken(auth, roleName);
+            auth = new CustomUsernamePasswordAuthenticationToken(auth, outerId, roleName);
         }
         return auth;
     }

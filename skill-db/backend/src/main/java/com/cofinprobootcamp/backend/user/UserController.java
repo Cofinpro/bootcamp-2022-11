@@ -1,5 +1,6 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,18 @@ public class UserController {
     @PreAuthorize("hasPermission(#id, 'UserOutDTO', @authorityPrefix + 'USERS_GET_BY_ID')")
     public UserOutDTO getUserById(@PathVariable String id) {
         return userService.getUserByOuterId(id);
+    }
+
+    @GetMapping(path = "/{id}/profile")
+    @PreAuthorize("hasPermission(#id, 'String', @authorityPrefix + 'USERS_BY_ID_GET_PROFILE')")
+    public String getProfileByUserId(@PathVariable String id) throws ProfileNotFoundException {
+        return userService.getProfileOuterIdByUserOuterId(id);
+    }
+
+    @GetMapping(path = "/{id}/profile/exists")
+    @PreAuthorize("hasPermission(#id, 'boolean', @authorityPrefix + 'USERS_BY_ID_GET_PROFILE_EXISTS')")
+    public boolean hasUserProfile(@PathVariable String id) {
+        return userService.hasUserAProfile(id);
     }
 
     @GetMapping(path = "")

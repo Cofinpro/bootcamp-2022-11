@@ -22,6 +22,10 @@
 </template>
 
 <script lang="ts">
+
+import {useUserStore} from "@/stores/UserStore";
+
+
 export default {
   name: "DropdownButton",
   props: {
@@ -29,7 +33,34 @@ export default {
       type: Array,
       required: true,
     }
-  }
+  },
+  setup() {
+    const userStore = useUserStore();
+    return {
+      userStore,
+    }
+  },
+  /*computed: {
+    isAuthorized(): boolean {
+      const role = window.localStorage.getItem('role');
+      if (role === "ROLE_ADMIN" || role === "ROLE_HR") {
+        return true;
+      }
+
+      const userId = window.localStorage.getItem('user_id');
+      this.userStore.checkForExistingUserProfile(userId);
+      if (role === "ROLE_USER") {
+        if (!this.userStore.hasProfile) {
+          return false;
+        }
+        return true;
+        /!*const profileId = String(useRoute().params.id);
+        this.userStore.getProfileIdFromUser(userId);
+        return (String(this.userStore.profileId) === profileId);*!/
+      }
+      return false;
+    }
+  },*/
 }
 </script>
 
