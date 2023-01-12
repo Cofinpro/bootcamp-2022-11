@@ -33,7 +33,6 @@ export const useDetailStore = defineStore('detailStore', {
                 let profilePicId = null
                 const errorStore = useErrorStore();
                 await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
-                    console.log(response);
                     this.details = ConvertToDetailModel.toDetail(response.data);
                     profilePicId = response.data.profilePicId
                 }).catch((error) => {
@@ -54,7 +53,6 @@ export const useDetailStore = defineStore('detailStore', {
                     console.log(error);
                     errorStore.catchDownloadImageError(error);
                 })
-                console.log(this.profilePic);
                 this.loading = false;
             },
 

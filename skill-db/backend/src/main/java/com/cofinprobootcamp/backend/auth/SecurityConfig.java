@@ -1,11 +1,13 @@
 package com.cofinprobootcamp.backend.auth;
 
+import com.cofinprobootcamp.backend.exceptions.UserIsLockedException;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,8 +20,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.*;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -36,10 +38,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
-
     private final RsaKeyProperties rsaKeys;
     private final UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
     public SecurityConfig(RsaKeyProperties rsaKeys, UserDetailsServiceImpl userDetailsService) {
         this.rsaKeys = rsaKeys;
         this.userDetailsService = userDetailsService;
@@ -49,24 +51,31 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeRequests(auth -> auth
-                        .mvcMatchers("/swagger-ui/*").permitAll()
-                        .mvcMatchers("/v3/api-docs/swagger-config").permitAll()
-                        .mvcMatchers("/v3/*").permitAll()
-                        .mvcMatchers("/api/v1/token").permitAll()
-                        .mvcMatchers("/api/v1/token/refresh").permitAll()
-                        .mvcMatchers("/api/v1/token/verify").permitAll()
-                        .mvcMatchers("/api/v1/users").permitAll() // needed so that any user who logs in may create their own internal user entity
-                        .anyRequest().authenticated() // check, if all other requests should rather be denied?!
+                .authorizeRequests(
+                        //@FunctionalInterface Customizer<T> with method customize() as lambda
+                        (auth) -> auth
+                            .mvcMatchers("/swagger-ui/*").permitAll()
+                            .mvcMatchers("/v3/api-docs/swagger-config").permitAll()
+                            .mvcMatchers("/v3/*").permitAll()
+                            .mvcMatchers("/api/v1/token").permitAll()
+                            .mvcMatchers("/api/v1/token/refresh").permitAll()
+                            .mvcMatchers("/api/v1/token/verify").permitAll()
+                            .anyRequest().authenticated() // check, if all other requests should rather be denied?!
                 )
                 .oauth2ResourceServer(
-                        oauth2 -> oauth2.jwt()
-                                .jwtAuthenticationConverter(customJwtAuthenticationConverter())
+                        //@FunctionalInterface Customizer<T> with method customize() as lambda
+                        (oauth2) -> {
+                            oauth2.jwt()
+                                    .jwtAuthenticationConverter(customJwtAuthenticationConverter());
+                            oauth2.authenticationEntryPoint(customAuthEntryPoint());
+                        }
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .exceptionHandling((ex) -> ex
-                        .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-                        .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
+                .exceptionHandling(
+                        //@FunctionalInterface Customizer<T> with method customize() as lambda
+                        (ex) -> ex
+                            .authenticationEntryPoint(customAuthEntryPoint())
+                            .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
                 )
                 .httpBasic(withDefaults())
                 .build();
@@ -77,7 +86,19 @@ public class SecurityConfig {
         var authProvider = new CustomDaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
+        // Anonymous implementation of quasi-functional interface UserDetailsChecker with method check(UserDetails ud)
+        // with lambda
+        authProvider.setPreAuthenticationChecks(toCheck -> {
+            if (!toCheck.isAccountNonLocked()) {
+                throw new UserIsLockedException("Einloggen nicht möglich.");
+            }
+        });
         return new ProviderManager(authProvider);
+    }
+
+    @Bean
+    public AuthenticationEntryPoint customAuthEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
     }
 
     @Bean

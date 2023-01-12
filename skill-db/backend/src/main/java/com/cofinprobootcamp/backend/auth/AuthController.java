@@ -1,10 +1,15 @@
 package com.cofinprobootcamp.backend.auth;
 
+import com.cofinprobootcamp.backend.config.Constants;
+import com.cofinprobootcamp.backend.exceptions.CustomErrorMessage;
+import com.cofinprobootcamp.backend.exceptions.RefreshTokenExpiredException;
+import com.cofinprobootcamp.backend.exceptions.UserIsLockedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -64,20 +69,25 @@ public class AuthController {
      */
     @PostMapping("/refresh")
     public ResponseEntity<Object> refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
-
         String token = refreshToken.getRefreshToken();
-
-        if (tokenService.verifyToken(token, refreshToken.getUsername())) {
-            String accessToken = tokenService.generateNewAccessToken(refreshToken.getUsername());
-            return ResponseEntity.ok()
-                    .body(Map.of(
-                            "accessToken", accessToken,
-                            "role", tokenService.extractRoleFromToken(token)
+        String tokenStatus = tokenService.verifyToken(token, refreshToken.getUsername());
+        return switch (tokenStatus) {
+            case Constants.TOKEN_OK -> {
+                String accessToken = tokenService.generateNewAccessToken(refreshToken.getUsername());
+                yield ResponseEntity.ok()
+                        .body(Map.of(
+                                "accessToken", accessToken,
+                                "role", tokenService.extractRoleFromToken(token)
+                        ));
+            }
+            case OAuth2ErrorCodes.INVALID_TOKEN -> throw new RefreshTokenExpiredException();
+            case OAuth2ErrorCodes.UNAUTHORIZED_CLIENT -> throw new UserIsLockedException("Refresh nicht möglich.");
+            default -> ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new CustomErrorMessage(
+                            "Refresh nicht möglich.",
+                            "uri=/api/v1/token/refresh"
                     ));
-        }
-
-        return new ResponseEntity<>("This user is not logged in anymore!", HttpStatus.UNAUTHORIZED);
-
+        };
     }
 
     /**
@@ -87,7 +97,11 @@ public class AuthController {
      */
     @PostMapping("/verify")
     public boolean verifyToken(@RequestBody RefreshTokenRequest refreshToken) {
-        return tokenService.verifyToken(refreshToken.getRefreshToken(), refreshToken.getUsername());
+        return Constants.TOKEN_OK.equals(
+                tokenService.verifyToken(
+                        refreshToken.getRefreshToken(),
+                        refreshToken.getUsername()
+                ));
     }
 
 }

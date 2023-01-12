@@ -2,6 +2,7 @@ import {defineStore} from 'pinia'
 import type {LoginRequest} from "@/models/LoginRequest";
 import router from "@/router";
 import axiosInstance from "@/axios";
+import {useErrorStore} from "@/stores/ErrorStore";
 
 export const useAuthStore = defineStore('auth', {
     state: () =>({
@@ -12,6 +13,8 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
         login(user: LoginRequest): void{
+            localStorage.clear();
+            const errorStore = useErrorStore();
             axiosInstance.post("/api/v1/token", user).then((result) => {
                 localStorage.setItem("access_token", result.data.tokens["access_token"]);
                 localStorage.setItem("refresh_token", result.data.tokens["refresh_token"]);
@@ -23,6 +26,7 @@ export const useAuthStore = defineStore('auth', {
                 this.role = result.data.role;
                 router.push('/');
             }).catch((error) => {
+                errorStore.catchTokenError(error);
                 console.log(error.response)
             });
         },
@@ -42,6 +46,7 @@ export const useAuthStore = defineStore('auth', {
                 "username": username,
             }
 
+            const errorStore = useErrorStore();
             return await axiosInstance.post("/api/v1/token/verify", user)
                 .then((result) => {
                     if (result.data) {
@@ -51,6 +56,7 @@ export const useAuthStore = defineStore('auth', {
                     this.loggedIn = false;
                     return false;
                 }).catch((error) => {
+                    errorStore.catchTokenError(error);
                     console.log(error.response)
                     this.loggedIn = false;
                     return false;
