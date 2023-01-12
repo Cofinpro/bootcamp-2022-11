@@ -1,7 +1,8 @@
 <template>
-  <v-container v-if="!detailStore.loading">
+  <v-container v-show="!detailStore.loading">
     <EditComponent update=true
-                   :detail="detailStore.details"/>
+                   :detail="detailStore.details"
+    :old-picture="detailStore.profilePic"/>
   </v-container>
 </template>
 

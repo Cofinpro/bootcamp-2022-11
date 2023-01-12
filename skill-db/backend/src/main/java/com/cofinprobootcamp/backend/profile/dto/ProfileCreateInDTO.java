@@ -1,11 +1,10 @@
 package com.cofinprobootcamp.backend.profile.dto;
 
 import com.cofinprobootcamp.backend.config.Regex;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.validation.constraints.*;
-
-import java.time.LocalDate;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 /**
@@ -54,5 +53,6 @@ public record ProfileCreateInDTO(
         String phoneNumber,
         @NotNull(message = "Geburtsdatum muss angegeben werden!")
         @Pattern(regexp = Regex.DATE_REGEX, message = "Geburtsdatum muss im Format DD.MM.YYYY angegeben werden!")
-        String birthDate) {
+        String birthDate,
+        String profilePic) {
 }

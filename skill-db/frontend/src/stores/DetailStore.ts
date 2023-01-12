@@ -10,6 +10,7 @@ export const useDetailStore = defineStore('detailStore', {
             skills: [] as String[],
             jobs: [] as String[],
             primarys: [] as String[],
+            profilePic: '',
         }),
         actions: {
             loadDemoDetails() {
@@ -27,15 +28,33 @@ export const useDetailStore = defineStore('detailStore', {
                 })
             },
 
-            loadDetailsById(id: String) {
+            async loadDetailsById(id: String) {
                 this.loading = true;
+                let profilePicId = null
                 const errorStore = useErrorStore();
-                axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
+                await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
+                    console.log(response);
                     this.details = ConvertToDetailModel.toDetail(response.data);
+                    profilePicId = response.data.profilePicId
                 }).catch((error) => {
                     errorStore.catchGetError(error, id);
                     console.log(error)
                 });
+                await axiosInstance({
+                    url: `/api/v1/images/${profilePicId}`,
+                    method: 'get',
+                    responseType: 'blob'
+                }).then((response) => {
+                    if (response.data.size === 0) {
+                        this.profilePic = '';
+                    } else {
+                        this.profilePic = URL.createObjectURL(response.data);
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    errorStore.catchDownloadImageError(error);
+                })
+                console.log(this.profilePic);
                 this.loading = false;
             },
 
@@ -43,12 +62,12 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axiosInstance.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
-                    errorStore.catchDeleteError(error,id);
+                    errorStore.catchDeleteError(error, id);
                 });
                 this.loading = false;
             },
 
-            async createProfile(edits: DetailModel) {
+            async createProfile(edits: DetailModel, profilePicUri: String) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 await axiosInstance.post(`/api/v1/profiles/`,
@@ -63,7 +82,9 @@ export const useDetailStore = defineStore('detailStore', {
                         'phoneNumber': edits.getPhoneNumber(),
                         'email': localStorage.getItem('username'),
                         'birthDate': edits.getBirthDate(),
-                    }).then(() => {
+                        'profilePic': profilePicUri,
+                    }).then((response) => {
+                    console.log(response);
                     errorStore.toggleHasError();
                 })
                     .catch((error) => {
@@ -73,10 +94,9 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async updateProfile(edits: DetailModel, id: String) {
+            async updateProfile(edits: DetailModel, id: String, profilePicUri: String) {
                 this.loading = true;
-                console.log(edits);
-                const errorStore = useErrorStore()
+                const errorStore = useErrorStore();
                 await axiosInstance.patch(`/api/v1/profiles/${id}`,
                     {
                         'firstName': edits.getFirstName(),
@@ -88,12 +108,24 @@ export const useDetailStore = defineStore('detailStore', {
                         'skills': edits.getTechnologies(),
                         'phoneNumber': edits.getPhoneNumber(),
                         'birthDate': edits.getBirthDate(),
-                    }).then(() =>{
-                        errorStore.toggleHasError();
+                        'profilePic': profilePicUri,
+                    }).then(() => {
+                    errorStore.toggleHasError();
                 }).catch((error) => {
                     console.log(error);
                     errorStore.catchPostPatchError(error);
                 });
+                this.loading = false;
+            },
+
+            async deleteProfilePictureByProfileId(id: String) {
+                this.loading = true;
+                const errorStore = useErrorStore();
+                await axiosInstance.delete(`/api/v1/images/${id}`)
+                    .catch((error) => {
+                        console.log(error)
+                        errorStore.catchDeleteError(error, id);
+                    })
                 this.loading = false;
             },
 

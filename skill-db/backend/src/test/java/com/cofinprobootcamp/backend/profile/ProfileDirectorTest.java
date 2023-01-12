@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.image.Image;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
@@ -27,13 +28,14 @@ class ProfileDirectorTest {
                 "references",
                 List.of("skill"),
                 "12345678901",
-                "1997-10-10"
+                "1997-10-10",
+                null
         );
         User user = new User();
         user.setUsername("a@b.c");
         Set<Skill> skillSet= Set.of(new Skill());
 
-        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, new JobTitle("title"));
+        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, new JobTitle("title"), new Image());
 
         assertThat(profile.getBirthDate()).isEqualTo(profileInDTO.birthDate());
         assertThat(profile.getFirstName()).isEqualTo(profileInDTO.firstName());
@@ -58,7 +60,8 @@ class ProfileDirectorTest {
         "reference",
         List.of("skill"),
         "12345678901",
-        "2020-10-10");
+        "2020-10-10",
+                null);
         Profile oldProfile = new Profile().builder()
                 .id(1L)
                 .owner(new User(1L, "00000","a","b",false,null,null))
@@ -72,7 +75,7 @@ class ProfileDirectorTest {
         Set<Skill> skillSet= Set.of(new Skill(inDTO.skills().get(0)));
         JobTitle jobTitle = new JobTitle(inDTO.jobTitle());
         Profile newProfile = ProfileDirector.UpdateInDTOToEntity(inDTO,oldProfile,
-                skillSet,jobTitle);
+                skillSet,jobTitle, new Image());
         //owner does not change
         assertThat(newProfile.getOwner().getUsername())
                 .isEqualTo(oldProfile.getOwner().getUsername());

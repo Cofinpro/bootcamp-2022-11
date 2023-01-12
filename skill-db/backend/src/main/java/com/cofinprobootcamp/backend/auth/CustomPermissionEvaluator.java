@@ -141,6 +141,12 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                     }
                     yield false;
                 }
+                case IMAGES_DELETE_BY_ID$SELF -> {
+                    if (targetDomainObject instanceof String id) {
+                        yield userOwnsProfile(customAuth, id);
+                    }
+                    yield false;
+                }
                 default -> false;
             };
         }

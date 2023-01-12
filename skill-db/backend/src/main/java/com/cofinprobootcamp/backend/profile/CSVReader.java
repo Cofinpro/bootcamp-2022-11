@@ -1,10 +1,8 @@
 package com.cofinprobootcamp.backend.profile;
 
-import com.cofinprobootcamp.backend.exceptions.CSVArgumentNotValidException;
-import com.cofinprobootcamp.backend.exceptions.CSVFormatException;
-import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
-import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
+import com.cofinprobootcamp.backend.exceptions.*;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
+import com.cofinprobootcamp.backend.user.User;
 import com.cofinprobootcamp.backend.user.UserService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.*;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -46,7 +43,7 @@ public class CSVReader {
      * @throws CSVFormatException if csv is not formatted correctly
      * @throws CSVArgumentNotValidException if csv records contain nonvalid elements
      */
-    public void readProfileFromFile() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
+    public void readProfileFromFile() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException, ImageFormatNotAllowedException {
         String content = new String(file.getBytes(), Charset.defaultCharset());
         CSVFormat format = CSVFormat.EXCEL
                 .builder()
@@ -67,11 +64,13 @@ public class CSVReader {
                         record.get("Referenzen"),
                         Arrays.stream(record.get("Skills").split(",")).toList(),
                         record.get("Telefonnummer"),
-                        record.get("Geburtsdatum")
+                        record.get("Geburtsdatum"),
+                        null
                 );
                 validate(inDTO, lineCount);
-                Profile profile = profileService.createProfile(inDTO,
-                        userService.getUserByUsername(inDTO.email()));
+                User user = userService.getUserByUsername(inDTO.email());
+                Profile profile = profileService.createProfile(inDTO, user);
+                userService.assignProfileToUser(user, profile);
                 lineCount++;
             }
         } catch (IllegalArgumentException e) {

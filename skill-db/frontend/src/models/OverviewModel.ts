@@ -1,14 +1,19 @@
+
 export class OverviewModel{
     private id: String;
     private name: String;
     private jobTitle: String;
     private primarySkill: String;
+    private profilePicId: number;
+    private profilePic: string;
 
     constructor() {
         this.id = '';
         this.name = '';
         this.jobTitle = '';
         this.primarySkill = '';
+        this.profilePicId = 0
+        this.profilePic = '';
     }
 
     public getId(): String {
@@ -42,6 +47,20 @@ export class OverviewModel{
     public getPrimarySkill(): String {
         return this.primarySkill;
     }
+
+    public getProfilePicId(): number {
+        return this.profilePicId;
+    }
+    public setProfilePicId(value: number) {
+        this.profilePicId = value;
+    }
+    public getProfilePic(): string {
+        return this.profilePic;
+    }
+
+    public setProfilePic(value: string) {
+        this.profilePic = value;
+    }
 }
 
 export class ConvertToOverviewCard{
@@ -51,6 +70,7 @@ export class ConvertToOverviewCard{
         overviewCard.setName(String(object?.name));
         overviewCard.setJobTitle(String(object?.jobTitle));
         overviewCard.setPrimarySkill(String(object?.primaryExpertise));
+        overviewCard.setProfilePicId(Number(object?.profilePicId))
         return overviewCard;
     }
 }

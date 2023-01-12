@@ -3,10 +3,10 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.config.Constants;
 import com.cofinprobootcamp.backend.email.EmailSendService;
 import com.cofinprobootcamp.backend.enums.Expertises;
-import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.*;
 import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
-import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
-import com.cofinprobootcamp.backend.exceptions.InternalOperationFailedException;
+import com.cofinprobootcamp.backend.image.Image;
+import com.cofinprobootcamp.backend.image.ImageService;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
@@ -34,27 +34,34 @@ public class ProfileService {
     private final SkillService skillService;
     private final JobTitleService jobTitleService;
     private final EmailSendService emailSendService;
+    private final ImageService imageService;
 
     public ProfileService(ProfileRepository profileRepository,
                           SkillService skillService,
                           JobTitleService jobTitleService,
-                          EmailSendService emailSendService) {
+                          EmailSendService emailSendService,
+                          ImageService imageService) {
         this.profileRepository = profileRepository;
         this.skillService = skillService;
         this.jobTitleService = jobTitleService;
         this.emailSendService = emailSendService;
+        this.imageService = imageService;
     }
 
-    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
+    public Profile createProfile(ProfileCreateInDTO profileInDTO, User user)
+            throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException
+    {
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
-        Profile profile = ProfileDirector.CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle);
+        Image profilePic = imageService.saveImage(profileInDTO.profilePic());
+        Profile profile = ProfileDirector
+                .CreateInDTOToEntity(profileInDTO, user, skillSet, jobTitle, profilePic);
         if (profileRepository.findProfileByOwner(user).isPresent()) {
             throw new ProfileAlreadyExistsException();
         }
         try {
             tryToSetUniqueOuterId(profile);
-            profileRepository.saveAndFlush(profile);
+            profile = profileRepository.saveAndFlush(profile);
         } catch (Exception e) {
             String msg = "Das Profil konnte nicht gespeichert werden. Ursache könnte möglicherweise eine Race Condition sein. Bitte erneut versuchen!";
             throw new InternalOperationFailedException(msg, e);
@@ -62,39 +69,35 @@ public class ProfileService {
         return profile;
     }
 
-    // changing email does not work since id of user is not given to frontend here!
-    // --> should give back "outer id" of profile and update that way!
+
     public Profile updateProfile(ProfileUpdateInDTO profileInDTO, String outerId)
-            throws ProfileNotFoundException, JobTitleNotFoundException {
+            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException, ImageFormatNotAllowedException {
         Profile current = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new);
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
-        Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet, jobTitle);
+        Image image = imageService.updateImageIfGiven(profileInDTO.profilePic(), current.getProfilePic().getId());
+        Profile profile = ProfileDirector.UpdateInDTOToEntity(profileInDTO, current, skillSet, jobTitle, image);
+        profile = profileRepository.saveAndFlush(profile);
+        //mailsending
+        try {
+            String mailRecipientAddress = current.getOwner().getUsername();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        /*String mailRecipientAddress = current.getOwner().getUsername();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(!mailRecipientAddress.equals(authentication.getName())) {
-            // trigger info-email
-            sendProfileUpdateMail(profile.getFullName(), authentication.getName(), mailRecipientAddress);
-        }*/
-
-        return profileRepository.saveAndFlush(profile);
+            if (!mailRecipientAddress.equals(authentication.getName())) {
+                // trigger info-email
+                emailSendService.sendProfileUpdateMail(profile.getFullName(), authentication.getName(), mailRecipientAddress);
+            }
+        } catch (Exception e) {
+            throw new MailNotSentException();
+        }
+        return profile;
     }
 
-    private void sendProfileUpdateMail(String mailRecipientFullName, String changingUserEmailAddress, String mailRecipientEmailAddress) {
-        String day = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        String time = LocalTime.now().toString().substring(0, 5);
-
-        String mailText = "Hallo " + mailRecipientFullName + ",\n\n" +
-                "dein Profil in der Cofinpro Skill-DB wurde am " + day + " um " + time + " Uhr von " + changingUserEmailAddress + " geändert.";
-
-        emailSendService.sendSimpleMessage(mailRecipientEmailAddress, "Profilupdate", mailText);
-    }
 
     @Transactional
     public void deleteProfileByOuterId(String outerId) throws ProfileNotFoundException {
-        profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new); // Check may be unnecessary
+        Profile profile = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new); // Check may be unnecessary
+        imageService.deleteImageById(profile.getProfilePic().getId());
         profileRepository.deleteByOuterId(outerId);
     }
 

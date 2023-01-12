@@ -1,9 +1,6 @@
 package com.cofinprobootcamp.backend.profile;
 
-import com.cofinprobootcamp.backend.exceptions.CSVArgumentNotValidException;
-import com.cofinprobootcamp.backend.exceptions.CSVFormatException;
-import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
-import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
+import com.cofinprobootcamp.backend.exceptions.*;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
 import com.cofinprobootcamp.backend.user.User;
 import com.cofinprobootcamp.backend.user.UserService;
@@ -37,7 +34,7 @@ class CSVReaderTest {
     }
     @Test
     @DisplayName("Happy path for reading Single profile Unit test")
-    void readProfileFromFileHappyPath() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
+    void readProfileFromFileHappyPath() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException, ImageFormatNotAllowedException {
         String email = "markus.kremer@cofinpro.de";
         String name = "Markus";
         String surname = "Kremer";
