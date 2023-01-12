@@ -63,9 +63,9 @@ export default {
         return 'red';
       }
     },
-    toggleLock(user: any): void {
+    async toggleLock(user: any): Promise<void> {
       const userStore = useUserStore();
-      userStore.lockUser(user.getId());
+      await userStore.lockUser(user.getId());
       user.locked = !user.locked
     }
   }

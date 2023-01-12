@@ -21,6 +21,10 @@ axiosInstance.interceptors.response.use(
     async (error: any) => {
         const config = error?.config;
 
+        if (error?.response?.data.cause.causeExceptionName === "UserIsLockedException") {
+            return Promise.reject(error);
+        }
+
         if (error?.response?.status === 401 && !config?.sent) {
             config.sent = true;
 

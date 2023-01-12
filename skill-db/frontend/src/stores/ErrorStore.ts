@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import type {AxiosError} from "axios";
 import {useAuthStore} from "@/stores/auth";
+import {LoginRequest} from "@/models/LoginRequest";
 
 export const useErrorStore = defineStore(
     'ErrorStore',
@@ -169,6 +170,23 @@ export const useErrorStore = defineStore(
                     }
                 }
             },
+
+            catchTokenError(error: AxiosError) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = this.errorMessages.unknownError;
+                } else {
+                    if (error.response.status === 401) {
+                        if (error.response.data.cause.causeExceptionName === "UserIsLockedException") {
+                            this.errorText = error.response.data.message.toString();
+                        } else if (error.response.data.cause.causeExceptionName === "InvalidBearerTokenException"){
+                            //refresh
+                        }
+                    } else if (error.response.status === 500) {
+                        this.errorText = this.errorMessages.internalServerError;
+                    }
+                }
+            }
 
         }
     }
