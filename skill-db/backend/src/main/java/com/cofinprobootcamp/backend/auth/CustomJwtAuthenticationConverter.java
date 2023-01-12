@@ -25,7 +25,7 @@ import static com.cofinprobootcamp.backend.config.Constants.JWT_CLAIM_OID;
  * correct {@code User} entity.
  *
  * @author l-rehm
- * @version 1.0
+ * @version 1.2
  */
 public class CustomJwtAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
     private CustomJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter;
@@ -97,7 +97,7 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
                         || !userDetails.getRoleName().equals(tokenRole)) {
             throw new AuthTokenInfoOutOfSyncWithPersistenceException(
                     OAuth2ErrorCodes.INVALID_TOKEN,
-                    "Login ist nicht (mehr) gültig. Grund ist vermutlich eine Änderung der Nutzerrolle. Bitte erneut einloggen."
+                    "Login ist nicht (mehr) gültig. Grund ist vermutlich eine Änderung der Nutzerrolle. Bitte Login über Refresh Token erneuern."
             );
         }
     }
