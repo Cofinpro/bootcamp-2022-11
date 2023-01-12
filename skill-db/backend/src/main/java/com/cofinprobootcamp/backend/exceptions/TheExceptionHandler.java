@@ -164,5 +164,14 @@ public class TheExceptionHandler {
         );
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(UserIsLockedException.class)
+    public ResponseEntity<CustomErrorMessage> handleUserIsLockedException(UserIsLockedException uile, WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                uile.getMessage(),
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
 }
 
