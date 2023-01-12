@@ -5,11 +5,21 @@
         ref="imageInput"
         class="hidden"
         accept="image/png, image/jpg, image/jpeg"/>
-    <img class="image" v-if="imageDataUri" alt="Profilbild" :src="imageDataUri"/>
+    <img class="image"
+         v-if="imageDataUri" alt="Profilbild" :src="imageDataUri"/>
     <img class="image" v-else-if="oldPicture" alt="Profilbild" :src="oldPicture"/>
     <img class="image" v-else alt="Profilbild" src="@/assets/images/dummy_profilePicture.png"/>
+    <v-btn v-if="(oldPicture || imageDataUri)"
+           class="uploadBtn  d-flex justify-center button"
+           elevation="0"
+           width="200"
+           size="small"
+    @click.prevent="deleteProfilePicture">
+      Bild Löschen
+    </v-btn>
     <div class="upload-text">
-      <v-btn elevation="0" size="small"
+      <v-btn elevation="0"
+             size="small"
              @click="openFileDialog">
         Profilbild ändern
       </v-btn>
@@ -38,6 +48,9 @@ export default {
     },
     async openFileDialog() {
       this.$refs.imageInput.click();
+    },
+    deleteProfilePicture() {
+      this.$emit('delete');
     },
     async uploadImage() {
       const fileInput = this.$refs.imageInput;
@@ -70,7 +83,7 @@ export default {
     }
   },
 
-  props:{
+  props: {
     oldPicture: String,
   },
 
@@ -95,6 +108,10 @@ export default {
   display: block;
 }
 
+.uploadBtn {
+  margin-top: -5px;
+}
+
 .upload-text {
   display: none;
   position: absolute;
@@ -116,4 +133,9 @@ export default {
 .hidden {
   display: none;
 }
+
+.button {
+  margin-bottom: 20px;
+}
+
 </style>

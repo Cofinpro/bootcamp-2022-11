@@ -4,7 +4,10 @@
 
       <div class="header">
         <div class="d-flex flex-column align-items-center">
-          <upload-image-button v-on:upload="onUploadProfilePic" :old-picture="oldPicture"/>
+          <upload-image-button
+              v-on:upload="onUploadProfilePic"
+              :old-picture="oldPicture"
+          v-on:delete="deleteProfilePicture"/>
         </div>
 
         <v-row class="headline">
@@ -31,10 +34,10 @@
         </v-row>
       </div>
 
-      <v-row>
+      <v-row class="skillRow">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete v-model="technologies" label="Skills"
+            <v-autocomplete v-model="technologies"
                             :items="givenTechnologies"
                             multiple auto-select-first
                             chips closable-chips/>
@@ -160,6 +163,12 @@ export default {
         }
       }
     },
+    async deleteProfilePicture() {
+      const detailStore = useDetailStore();
+      const id = this.detail.getId();
+      await detailStore.deleteProfilePictureByProfileId(id);
+
+    },
     onUploadProfilePic(base64String) {
       this.profilePicUri = base64String;
     },
@@ -260,6 +269,7 @@ img {
 
   .skillsAndDegree {
     margin-left: 0;
+    margin-top: 20px;
   }
 
   .buttons {

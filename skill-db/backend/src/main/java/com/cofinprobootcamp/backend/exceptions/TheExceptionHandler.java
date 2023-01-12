@@ -167,7 +167,7 @@ public class TheExceptionHandler {
     public ResponseEntity<CustomErrorMessage> handleMailNotSentException(WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage("Mail wurde nicht gesendet!",
                 wr.getDescription(false));
-        return new ResponseEntity<>(body,HttpStatus.SERVICE_UNAVAILABLE);
+        return new ResponseEntity<>(body,HttpStatus.BAD_GATEWAY);
     }
 }
 

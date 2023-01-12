@@ -68,7 +68,7 @@ export const useErrorStore = defineStore(
                         this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 404) {
                         this.errorText = `${error.response.data.message}`;
-                    } else if (error.response.status === 503) {
+                    } else if (error.response.status === 502) {
                         this.errorText = this.errorMessages.mailNotSent;
                     } else {
                         this.errorText = this.errorMessages.unknownError;
@@ -144,7 +144,7 @@ export const useErrorStore = defineStore(
                         this.errorText = this.errorMessages.internalServerError;
                     } else if (error.response.status === 400) {
                         this.errorText = this.errorMessages.idNotFound;
-                    } else if (error.response.status === 503) {
+                    } else if (error.response.status === 502) {
                         this.errorText = this.errorMessages.mailNotSent;
                     } else {
                         this.errorText = this.errorMessages.unknownError;
