@@ -50,7 +50,6 @@ export const useDetailStore = defineStore('detailStore', {
 
             async createProfile(edits: DetailModel) {
                 this.loading = true;
-                console.log(edits);
                 const errorStore = useErrorStore();
                 await axiosInstance.post(`/api/v1/profiles/`,
                     {
@@ -76,7 +75,6 @@ export const useDetailStore = defineStore('detailStore', {
 
             async updateProfile(edits: DetailModel, id: String) {
                 this.loading = true;
-                console.log(edits);
                 const errorStore = useErrorStore()
                 await axiosInstance.patch(`/api/v1/profiles/${id}`,
                     {

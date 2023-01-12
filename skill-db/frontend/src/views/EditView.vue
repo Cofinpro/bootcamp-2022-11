@@ -1,6 +1,6 @@
 <template>
   <v-container v-if="!detailStore.loading">
-    <EditComponent update=true
+    <EditComponent :update = true
                    :detail="detailStore.details"/>
   </v-container>
 </template>
