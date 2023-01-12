@@ -121,7 +121,7 @@ public enum UserPrivileges {
     ),
 
     /*
-     * Images endpoint
+     * Endpoint "/api/v1/images"
      */
     IMAGES_GET_BY_ID(
             "Der Nutzer ist dazu berechtigt, alle Bilder einzusehen."
