@@ -3,8 +3,9 @@
           @click="$router.push(`/detail/${id}`)"
           elevation="2" class="d-flex align-center justify-space-between">
 
-    <v-avatar size="60" class="ma-5">
-      <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">
+    <v-avatar size="60" class="ma-5" color="primary">
+      <img v-if="profilePic" :src="profilePic" alt="Profilbild">
+      <div v-else>{{name[0]}}{{name.split(' ')[1][0]}}</div>
     </v-avatar>
     <div>
       <v-card-text>
@@ -25,12 +26,15 @@ export default {
     name: String,
     jobTitle: String,
     primarySkill: String,
+    profilePic: String
   }
 }
 </script>
 
 <style scoped>
-
+img{
+  height: 80px;
+}
 #jobTitle {
   color: var(--primary-blue);
 }

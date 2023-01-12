@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container :v-if="!userStore.loading">
     <h2>Nutzerübersicht</h2>
     <h3>Übersicht über alle vorhandenen Nutzer</h3>
     <v-table>
@@ -18,7 +18,7 @@
       </thead>
       <tr v-for="user in users"
           :key="user.getEmail()"
-          :class="{ locked: user.locked, notLocked: !user.locked}">
+          :class="{ locked: user.getLocked(), notLocked: !user.getLocked()}">
         <td>
           {{ user.getEmail() }}
         </td>
@@ -30,8 +30,8 @@
         </td>
         <td>
           <v-icon @click="toggleLock(user)"
-                  :class="{ locked: user.locked, notLocked: !user.locked}">
-            {{ user.locked ? 'mdi-lock' : 'mdi-lock-open' }}
+                  :class="{ locked: user.getLocked(), notLocked: !user.getLocked()}">
+            {{ user.getLocked() ? 'mdi-lock' : 'mdi-lock-open' }}
           </v-icon>
         </td>
       </tr>
@@ -42,13 +42,16 @@
 <script lang="ts">
 import ChipWithInfotext from "@/components/ChipWithInfotext.vue";
 import {useUserStore} from "@/stores/UserStore";
+import type {UserModel} from "@/models/UserModel";
 export default {
   name: "UserDetails",
   components: { ChipWithInfotext },
-  props: ['users'],
-  data() {
+  setup() {
+    const userStore = useUserStore();
+    userStore.loadUsers();
+    const users = userStore.users;
     return {
-      alert: false
+      users, userStore
     }
   },
   methods: {
@@ -63,10 +66,10 @@ export default {
         return 'red';
       }
     },
-    async toggleLock(user: any): Promise<void> {
+    async toggleLock(user: UserModel): Promise<void> {
       const userStore = useUserStore();
       await userStore.lockUser(user.getId());
-      user.locked = !user.locked
+      user.setLocked(!user.getLocked());
     }
   }
 }

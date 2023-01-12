@@ -25,9 +25,20 @@ import java.util.List;
  * @param age              The user's age as calculated per {@code birthDate} ({@code Integer} value)
  * @param ownerId          The outer ID of the user who owns this profile
  */
-public record ProfileDetailsOutDTO(String id, String email, String phoneNumber, String jobTitle, String degree,
-                                   String primaryExpertise, String referenceText, List<String> skills, String firstName,
-                                   String lastName, String birthDate, Integer age, String ownerId) {
+public record ProfileDetailsOutDTO(String id,
+                                   String email,
+                                   String phoneNumber,
+                                   String jobTitle,
+                                   String degree,
+                                   String primaryExpertise,
+                                   String referenceText,
+                                   List<String> skills,
+                                   String firstName,
+                                   String lastName,
+                                   String birthDate,
+                                   Integer age,
+                                   String ownerId,
+                                   Long profilePicId) {
 
     public ProfileDetailsOutDTO(Profile profile) {
         this(
@@ -45,8 +56,8 @@ public record ProfileDetailsOutDTO(String id, String email, String phoneNumber, 
                 profile.getLastName(),
                 profile.getBirthDate().toString(), // ISO Format String as specified in default setting (could also be .format(new DateTimeFormatterBuilder().appendLiteral(Regex.DATE_FORMAT).toFormatter()) )
                 profile.getAge(),
-                profile.getOwner().getOuterId()
-        );
+                profile.getOwner().getOuterId(),
+                profile.getProfilePic()==null? null : profile.getProfilePic().getId());
     }
 
 }

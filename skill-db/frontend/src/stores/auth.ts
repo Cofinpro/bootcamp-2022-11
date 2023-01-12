@@ -13,20 +13,21 @@ export const useAuthStore = defineStore('auth', {
 
     actions: {
         login(user: LoginRequest): void{
-            const errorStore = useErrorStore();
             localStorage.clear();
+            const errorStore = useErrorStore();
             axiosInstance.post("/api/v1/token", user).then((result) => {
                 localStorage.setItem("access_token", result.data.tokens["access_token"]);
                 localStorage.setItem("refresh_token", result.data.tokens["refresh_token"]);
                 localStorage.setItem("username", result.data.username);
                 localStorage.setItem("role", result.data.role);
+                localStorage.setItem("user_id", result.data.user_id);
                 this.loggedIn = true;
                 this.username = result.data.username;
                 this.role = result.data.role;
                 router.push('/');
             }).catch((error) => {
                 errorStore.catchTokenError(error);
-                console.log(error);
+                console.log(error.response)
             });
         },
         logout(): void{

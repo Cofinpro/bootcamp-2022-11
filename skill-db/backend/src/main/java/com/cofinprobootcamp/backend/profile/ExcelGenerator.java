@@ -10,16 +10,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 public class ExcelGenerator {
-    private List<ProfileDetailsOutDTO> profileList;
-    private XSSFWorkbook workbook;
-    private XSSFSheet sheet;
+    private final List<ProfileDetailsOutDTO> profileList;
+    private final XSSFWorkbook workbook;
+    private final XSSFSheet sheet;
 
     /**
      * @param profileList profiles to be exportet to excel
@@ -43,15 +41,6 @@ public class ExcelGenerator {
         XSSFFont font = workbook.createFont();
         font.setBold(true);
         style.setFont(font);
-        List<String> fieldNames = Arrays.stream(
-                        ProfileDetailsOutDTO.class
-                                .getDeclaredFields()
-                )
-                .map(field -> {
-                    field.setAccessible(true);
-                    return field.getName();
-                })
-                .toList();
         createCell(row, 0, "Email", style);
         createCell(row, 1, "Telefonnummer", style);
         createCell(row, 2, "JobTitel", style);
@@ -69,9 +58,8 @@ public class ExcelGenerator {
     /**
      * Writes data into excel workbook from ProfileDetailsOutDTO List
      * @return Workbook for testing purposes
-     * @throws IllegalAccessException should never be thrown!
      */
-    public Workbook writeContent() throws IllegalAccessException {
+    public Workbook writeContent() {
         int rowCount = 1;
         CellStyle style = workbook.createCellStyle();
         style.setBorderRight(BorderStyle.DASHED);
@@ -134,11 +122,10 @@ public class ExcelGenerator {
 
     /**
      * @param outputStream outputstream to which excel should be written
-     * @throws IllegalAccessException should never actually be thrown!
      * @throws IOException if something goes wrong with outputstream!
      */
     public void createExcel(OutputStream outputStream)
-            throws IllegalAccessException, IOException {
+            throws IOException {
         writeHeader();
         writeContent();
         workbook.write(outputStream);

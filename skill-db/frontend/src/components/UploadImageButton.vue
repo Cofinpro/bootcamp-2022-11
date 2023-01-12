@@ -1,10 +1,26 @@
 <template>
   <div class="image-upload">
-    <input type="file" ref="imageInput" class="hidden"/>
-    <img class="image" v-if="imageDataUri" alt="Profilbild" v-bind:src="imageDataUri"/>
+    <input
+        type="file"
+        ref="imageInput"
+        class="hidden"
+        accept="image/png, image/jpg, image/jpeg"/>
+    <img class="image"
+         v-if="imageDataUri"
+         alt="Profilbild" :src="imageDataUri"/>
+    <img class="image" v-else-if="oldPicture" alt="Profilbild" :src="oldPicture"/>
     <img class="image" v-else alt="Profilbild" src="@/assets/images/dummy_profilePicture.png"/>
+    <v-btn v-if="(oldPicture || imageDataUri)"
+           class="uploadBtn  d-flex justify-center button"
+           elevation="0"
+           width="200"
+           size="small"
+    @click.prevent="deleteProfilePicture">
+      Bild Löschen
+    </v-btn>
     <div class="upload-text">
-      <v-btn elevation="0" size="small"
+      <v-btn elevation="0"
+             size="small"
              @click="openFileDialog">
         Profilbild ändern
       </v-btn>
@@ -12,38 +28,75 @@
   </div>
 </template>
 
-<script> /*TODO should be TypeScript*/
+<script>
+import {useErrorStore} from "@/stores/ErrorStore";
+
 export default {
-  name:"UploadImageButton",
+  name: "UploadImageButton",
   data() {
     return {
+      errorStore: useErrorStore(),
+      maxUploadSize: 20000000, // Angabe in bytes, entspricht 20 MB
       imageDataUri: null,
     }
   },
   methods: {
+    isPermissibleSize(file) {
+      return file.size <= this.maxUploadSize;
+    },
+    isInPortraitMode(image) {
+      return image.height > image.width;
+    },
     async openFileDialog() {
       this.$refs.imageInput.click();
     },
+    deleteProfilePicture() {
+      this.imageDataUri ='';
+      this.$refs.imageInput.value='';
+      this.uploadImage();
+      this.$emit('delete');
+    },
     async uploadImage() {
-      const fileInput = this.$refs.imageInput
-
+      const fileInput = this.$refs.imageInput;
+      console.log(fileInput.value)
       if (fileInput && fileInput.value) {
-        const file = fileInput.files[0]
+        const file = fileInput.files[0];
 
-        if (file instanceof Blob) {
-          const reader = new FileReader()
-          reader.onload = event => {
-            this.imageDataUri = event.target.result
-          }
-          reader.readAsDataURL(file)
+        if (!(file instanceof Blob) || !this.isPermissibleSize(file)) {
+          this.errorStore.catchUploadImageError(new Error('Falsche Größe: max. 20 MB zulässig!'));
+          return;
         }
+
+        const image = new Image();
+        image.onload = () => {
+          if (!this.isInPortraitMode(image)) {
+            this.errorStore.catchUploadImageError(new Error('Falsches Format: Nur Hochformat zulässig!'));
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = event => {
+            this.imageDataUri = event.target.result;
+            this.$emit('upload', this.imageDataUri);
+          }
+          reader.readAsDataURL(file);
+        };
+
+        image.src = URL.createObjectURL(file);
+      }
+      else{
+        this.$emit('upload',undefined)
       }
     }
   },
 
+  props: {
+    oldPicture: String,
+  },
+
   mounted() {
     if (this.$refs.imageInput) {
-      this.$refs.imageInput.addEventListener('change', this.uploadImage)
+      this.$refs.imageInput.addEventListener('input', this.uploadImage)
     }
   }
 }
@@ -53,11 +106,17 @@ export default {
 
 .image-upload {
   position: relative;
+  border: 1px solid dimgray;
   width: 200px;
+  height: 200px;
 }
 
 .image-upload:hover .upload-text {
   display: block;
+}
+
+.uploadBtn {
+  margin-top: -5px;
 }
 
 .upload-text {
@@ -73,12 +132,17 @@ export default {
 }
 
 .image {
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
 .hidden {
   display: none;
 }
+
+.button {
+  margin-bottom: 20px;
+}
+
 </style>

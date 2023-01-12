@@ -4,11 +4,10 @@
 
       <div class="header">
         <div class="d-flex flex-column align-items-center">
-          <upload-image-button/>
-<!--          <v-btn class="uploadBtn mt-3 mb-10 d-flex justify-center"
-                  elevation="0" size="small">
-            Bild hochladen
-          </v-btn>-->
+          <upload-image-button
+              v-on:upload="onUploadProfilePic"
+              :old-picture="pic"
+          v-on:delete="deleteProfilePicture"/>
         </div>
 
         <v-row class="headline">
@@ -19,7 +18,7 @@
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="jobs"/>
             <v-text-field v-model="phoneNumber" label="Telefonnummer"
-                          :rules="[ number => checkPhoneFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
+                          :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
           </v-col>
 
           <v-col lg="6" md="6" sm="12">
@@ -35,7 +34,7 @@
         </v-row>
       </div>
 
-      <v-row>
+      <v-row class="skillRow">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
             <v-autocomplete v-model="technologies" label="Skills"
@@ -83,7 +82,7 @@
 </template>
 
 <script> /*TODO should be TypeScript*/
-import {ConvertToDetailModelForOutput, DetailModel} from "@/models/DetailModel";
+import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
@@ -91,9 +90,7 @@ import UploadImageButton from "@/components/UploadImageButton.vue";
 
 export default {
   name: "EditComponent",
-  props: {
-    detail: DetailModel,
-    update: Boolean},
+  props: ['detail', 'update','oldPicture'],
   components: { UploadImageButton },
   data() {
     return {
@@ -111,6 +108,8 @@ export default {
       givenTechnologies: [],
       newTechnologies: '',
       showAddTechnology: false,
+      profilePicUri: '',
+      pic:''
     }
   },
 
@@ -134,8 +133,10 @@ export default {
       this.primarySkill = this.detail.getPrimarySkill();
       this.technologies = this.detail.getTechnologies();
       this.references = this.detail.getReferences();
+      this.pic = this.oldPicture;
     }
   },
+
   methods: {
     async submitProfile() {
       const detailStore = useDetailStore();
@@ -143,17 +144,26 @@ export default {
       if (this.update) {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
-        await detailStore.updateProfile(editDetails, id);
-        if (! errorStore.hasError) {
+        await detailStore.updateProfile(editDetails, id, this.profilePicUri);
+        if (!errorStore.hasError) {
           await router.push({name: 'userDetails', params: {id}});
         }
       } else {
         const newDetails = ConvertToDetailModelForOutput.toDetail(this);
-        await detailStore.createProfile(newDetails);
-        if (! errorStore.hasError){
+        await detailStore.createProfile(newDetails, this.profilePicUri);
+        if (!errorStore.hasError) {
           await router.push('/');
         }
       }
+    },
+    deleteProfilePicture() {
+      const detailStore = useDetailStore();
+      const id = this.detail.getId();
+      detailStore.deleteProfilePictureByProfileId(id);
+      this.pic='';
+    },
+    onUploadProfilePic(base64String) {
+      this.profilePicUri = base64String;
     },
     leave() {
       if (this.update) {
@@ -175,22 +185,29 @@ export default {
       this.showAddTechnology = false;
     },
     checkDateFormat(date) {
-      return /[0-3][0-9]\.[0-1][0-9]\.[1-2][0-9]{3}/.test(date)
+      const regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/;
+      if (!regex.test(date)) return false;
+
+      const currentDate = new Date();
+      const [day, month, year] = date.split('.');
+      const inputDate = new Date(Date.UTC(year, month - 1, day));
+
+      return inputDate <= currentDate;
     },
-    checkPhoneFormat(number) {
+    checkPhoneNumberFormat(number) {
       return /^[0-9]{11,13}$/.test(number);
-    }
+    },
   },
   computed: {
     isFilled() {
       return (this.checkDateFormat(this.birthdate) &&
-      this.checkPhoneFormat(this.phoneNumber) &&
-      this.references.length > 0 &&
-      this.jobTitle.length > 0 &&
-      this.primarySkill.length > 0 &&
-      this.lastName.length > 0 &&
-      this.firstName.length > 0 &&
-      this.degree.length > 0 )
+          this.checkPhoneNumberFormat(this.phoneNumber) &&
+          this.references.length > 0 &&
+          this.jobTitle.length > 0 &&
+          this.primarySkill.length > 0 &&
+          this.lastName.length > 0 &&
+          this.firstName.length > 0 &&
+          this.degree.length > 0)
     },
   }
 }
@@ -254,6 +271,7 @@ img {
 
   .skillsAndDegree {
     margin-left: 0;
+    margin-top: 20px;
   }
 
   .buttons {
