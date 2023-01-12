@@ -119,6 +119,7 @@ public enum UserPrivileges {
     USERS_BY_ID_PATCH_LOCK(
             "Der Nutzer ist dazu berechtigt, einen bestehenden Nutzer zu sperren oder zu entsperren."
     ),
+
     /*
      * Images endpoint
      */
