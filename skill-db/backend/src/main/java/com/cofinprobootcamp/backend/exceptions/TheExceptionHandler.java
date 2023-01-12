@@ -81,7 +81,18 @@ public class TheExceptionHandler {
                 wr.getDescription(false),
                 paee
         );
-        return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<CustomErrorMessage> handleUserAlreadyExistsException(UserAlreadyExistsException uaee,
+                                                                               WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                uaee.getMessage(),
+                wr.getDescription(false),
+                uaee
+        );
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(JobTitleNotFoundException.class)
@@ -169,9 +180,9 @@ public class TheExceptionHandler {
     public ResponseEntity<CustomErrorMessage> handleUserIsLockedException(UserIsLockedException uile, WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
                 uile.getMessage(),
-                wr.getDescription(false)
+                wr.getDescription(false),
+                uile
         );
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 }
-

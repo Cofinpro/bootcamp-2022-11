@@ -9,6 +9,8 @@ import java.util.List;
  * A DTO that can be used to pass detailed information about a User to the outside.
  *
  * @param id               An outer ID for identification purposes (is a unique alphanumeric {@code String})
+ * @param email            A {@code String} representation of the user's email address (must be unique)
+ * @param phoneNumber      A {@code String} representation of the user's phone number
  * @param jobTitle         A {@code String} representation of the user's current job title (as of this profile)
  * @param degree           A {@code String} representation of the user's academic degree or their highest level of education
  *                         (as of this profile)
@@ -20,21 +22,12 @@ import java.util.List;
  * @param lastName         A {@code String} representation of that user's last name who is the owner of the profile
  * @param birthDate        A {@code String} representation of that user's birthdate who is the owner of the profile
  *                         (The format is specified as "yyyy-MM-dd")
- * @param age              The user's age as calculated per {@code birthDate} (Integer value)
+ * @param age              The user's age as calculated per {@code birthDate} ({@code Integer} value)
+ * @param ownerId          The outer ID of the user who owns this profile
  */
-public record ProfileDetailsOutDTO(String id,
-                                   String email,
-                                   String phoneNumber,
-                                   String jobTitle,
-                                   String degree,
-                                   String primaryExpertise,
-                                   String referenceText,
-                                   List<String> skills,
-                                   String firstName,
-                                   String lastName,
-                                   String birthDate,
-                                   Integer age,
-                                   String ownerId) {
+public record ProfileDetailsOutDTO(String id, String email, String phoneNumber, String jobTitle, String degree,
+                                   String primaryExpertise, String referenceText, List<String> skills, String firstName,
+                                   String lastName, String birthDate, Integer age, String ownerId) {
 
     public ProfileDetailsOutDTO(Profile profile) {
         this(
@@ -52,7 +45,8 @@ public record ProfileDetailsOutDTO(String id,
                 profile.getLastName(),
                 profile.getBirthDate().toString(), // ISO Format String as specified in default setting (could also be .format(new DateTimeFormatterBuilder().appendLiteral(Regex.DATE_FORMAT).toFormatter()) )
                 profile.getAge(),
-                profile.getOwner().getOuterId());
+                profile.getOwner().getOuterId()
+        );
     }
 
 }
