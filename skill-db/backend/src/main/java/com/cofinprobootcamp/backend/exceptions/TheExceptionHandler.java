@@ -158,7 +158,7 @@ public class TheExceptionHandler {
 
     @ExceptionHandler(ImageFormatNotAllowedException.class)
     public ResponseEntity<CustomErrorMessage> handleImageFormatNotAllowedException(WebRequest wr) {
-        CustomErrorMessage body = new CustomErrorMessage("Bild Muss Format JPG. PNG oder JPEG haben!",
+        CustomErrorMessage body = new CustomErrorMessage("Bild Muss Format PNG, JPG oder JPEG haben!",
                 wr.getDescription(false));
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
