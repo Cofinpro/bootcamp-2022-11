@@ -14,7 +14,6 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         login(user: LoginRequest): void{
             const errorStore = useErrorStore();
-            localStorage.clear();
             axiosInstance.post("/api/v1/token", user).then((result) => {
                 localStorage.setItem("access_token", result.data.tokens["access_token"]);
                 localStorage.setItem("refresh_token", result.data.tokens["refresh_token"]);
@@ -26,7 +25,7 @@ export const useAuthStore = defineStore('auth', {
                 router.push('/');
             }).catch((error) => {
                 errorStore.catchTokenError(error);
-                console.log(error);
+                console.log(error.response)
             });
         },
         logout(): void{
