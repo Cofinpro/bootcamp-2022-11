@@ -4,64 +4,71 @@
     <delete-profile-dialog v-model="toDelete" :functions="dialogFunctions"/>
     <v-overlay v-model="locked" absolute/>
   </div>
-
-  <div class="header">
-    <img v-if="detailStore.profilePic" v-bind:src="detailStore.profilePic" alt="Profilbild" class="profilePic">
-    <v-avatar v-else color="primary" size="180" rounded="0" class="ma-4">
-      <span class="text-h3">{{ detailStore.details.getFirstName()[0] }}{{ detailStore.details.getLastName()[0] }}</span>
-    </v-avatar>
-    <div class="header_content d-flex flex-column align-content-space-between">
-      <div class="headline">
-        <h1> {{ detailStore.details.getFirstName() }} {{ detailStore.details.getLastName() }}</h1>
-        <h3> {{ detailStore.details.getJobTitle() }}, {{ detailStore.details.getAge() }}</h3>
-      </div>
-
-      <div class="infos">
-        <div class="infos1 d-flex flex-column align-content-end">
-          <p>
-            <v-icon class="mr-3" size="small" color="#BDBDBD">
-              mdi-email
-            </v-icon>
-            {{ detailStore.details.getEmail() }}
-          </p>
-          <p class="mt-3">
-            <v-icon class="mr-3" size="small" color="#BDBDBD">
-              mdi-crown-outline
-            </v-icon>
-            {{ detailStore.details.getPrimarySkill() }}
-          </p>
-        </div>
-        <div class="infos2 d-flex flex-column">
-          <p>
-            <v-icon class="mr-3" size="small" color="#BDBDBD">
-              mdi-phone
-            </v-icon>
-            {{ detailStore.details.getPhoneNumber() }}
-          </p>
-          <p class="mt-3">
-            <v-icon class="mr-3" size="small" color="#BDBDBD">
-              mdi-cake-variant-outline
-            </v-icon>
-            {{ detailStore.details.getBirthDate() }}
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
   <v-container>
-    <v-row class="lowerHalf pl-6 pr-6">
-      <v-col cols="12" lg="4" md="4" sm="12">
-          <v-card class="ml-n5"  elevation="3" style="border: 1px solid lightgray" max-width="300px">
-            <p class="block_title">
-              Skills
-            </p>
-            <div class="d-flex flex-wrap">
-              <div v-for="skill in detailStore.details.getTechnologies()" class="pa-1">
-                <v-chip>{{ skill }}</v-chip>
-              </div>
+    <v-row>
+      <v-col cols="12" lg="3" md="3" sm="12">
+        <img v-if="detailStore.profilePic" v-bind:src="detailStore.profilePic" alt="Profilbild" class="profilePic mr-3">
+        <v-avatar class="mr-3" v-else color="primary" size="170" rounded="0">
+        <span class="text-h3">{{ detailStore.details.getFirstName()[0] }}{{
+            detailStore.details.getLastName()[0]
+          }}</span>
+        </v-avatar>
+      </v-col>
+      <v-col cols="12" lg="9" md="9" sm="12">
+        <v-container>
+          <v-row>
+            <v-col cols="12" lg="12" md="12" sm="12">
+              <h1> {{ detailStore.details.getFirstName() }} {{ detailStore.details.getLastName() }}</h1>
+              <h3> {{ detailStore.details.getJobTitle() }}, {{ detailStore.details.getAge() }}</h3>
+            </v-col>
+          </v-row>
+          <v-row align-content="space-between" justify="space-between">
+            <v-col cols="12" lg="8" md="7" sm="12" align-self="start">
+              <p>
+                <v-icon class="mr-3" size="small" color="#BDBDBD">
+                  mdi-email
+                </v-icon>
+                {{ detailStore.details.getEmail() }}
+              </p>
+              <p class="mt-3">
+                <v-icon class="mr-3" size="small" color="#BDBDBD">
+                  mdi-crown-outline
+                </v-icon>
+                {{ detailStore.details.getPrimarySkill() }}
+              </p>
+            </v-col>
+            <v-col cols="12" lg="4" md="5" sm="12" align-self="end">
+              <p>
+                <v-icon class="mr-3" size="small" color="#BDBDBD">
+                  mdi-phone
+                </v-icon>
+                {{ detailStore.details.getPhoneNumber() }}
+              </p>
+              <p class="mt-3">
+                <v-icon class="mr-3" size="small" color="#BDBDBD">
+                  mdi-cake-variant-outline
+                </v-icon>
+                {{ detailStore.details.getBirthDate() }}
+              </p>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-col>
+    </v-row>
+
+    <v-row class="pt-8 pl-6 pr-6">
+      <v-col cols="12" lg="3" md="4" sm="12" class="ml-n5 align-start justify-start">
+        <v-card class="ml-n5" elevation="3" style="border: 1px solid lightgray">
+          <p class="block_title">
+            Skills
+          </p>
+          <div class="d-flex flex-wrap">
+            <div v-for="skill in detailStore.details.getTechnologies()" class="pa-1">
+              <v-chip>{{ skill }}</v-chip>
             </div>
-          </v-card>
-        <v-card class="mt-3 ml-n5" elevation="3" style="border: 1px solid lightgray" max-width="300px">
+          </div>
+        </v-card>
+        <v-card class="mt-3 ml-n5" elevation="3" style="border: 1px solid lightgray">
           <div class="block_title">
             Abschluss
           </div>
@@ -70,19 +77,17 @@
           </div>
         </v-card>
       </v-col>
-      <v-col cols="12" lg="8" md="8" sm="12">
-        <div class="ml-4">
-          <div class="references pl-6 pt-2 ">
-            <div class="block_title">
-              Referenzen
-            </div>
-            <div class="block_content">
-              <ul class="pl-6">
-                <li v-for="reference in detailStore.details.getReferences().split(',')">
-                  <p>{{ reference }}</p>
-                </li>
-              </ul>
-            </div>
+      <v-col cols="12" lg="8" md="8" sm="12" class="pl-8">
+        <div class="references pl-6 pt-2 ">
+          <div class="block_title">
+            Referenzen
+          </div>
+          <div class="block_content">
+            <ul class="pl-6">
+              <li v-for="reference in detailStore.details.getReferences().split(',')">
+                <p>{{ reference }}</p>
+              </li>
+            </ul>
           </div>
         </div>
       </v-col>
@@ -205,42 +210,5 @@ export default {
   font-family: "Poppins", sans-serif;
 }
 
-@media screen and (max-width: 960px) {
-  .header {
-    height: 480px;
-    margin: auto;
-    display: grid;
-    grid-template-rows: 1fr 1fr 0.8fr;
-    grid-row: 2 / span 1;
-  }
 
-  img {
-    display: grid;
-    grid-row: 1 / span 1;
-    margin-left: 0;
-  }
-
-  .headline {
-    display: grid;
-    grid-row: 2 / span 1;
-    margin-left: 0;
-    margin-top: 5%;
-  }
-
-  .infos {
-    display: grid;
-    margin-left: 0;
-    margin-top: 5%;
-    height: 150px;
-    width: 400px;
-  }
-
-  .infos2 {
-    margin-top: 10px;
-  }
-
-  .lowerHalf {
-    margin-top: 40px;
-  }
-}
 </style>
