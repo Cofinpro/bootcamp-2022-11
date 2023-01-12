@@ -200,4 +200,15 @@ public class TheExceptionHandler {
         );
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(RoleChangePendingException.class)
+    public ResponseEntity<CustomErrorMessage> handleRoleChangePendingException(RoleChangePendingException rcpe,
+                                                                               WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Die Ausführung dieser Operation (Rollenänderung eines Administrators) bedarf einer Verifizierung durch einen anderen Administrator",
+                wr.getDescription(false),
+                rcpe
+        );
+        return new ResponseEntity<>(body, HttpStatus.ACCEPTED);
+    }
 }
