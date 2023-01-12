@@ -113,10 +113,6 @@ export default {
     function toggleDelete(): void {
       toDelete.value = !toDelete.value;
     }
-    async function deleteProfilePicture(): void {
-        await detailStore.deleteProfilePictureByProfileId(id);
-        await detailStore.loadDetailsById(id)
-    }
 
     function lockProfile(): void {
       locked.value = true;
@@ -133,7 +129,6 @@ export default {
       dropdownFunctions: [
         {name: 'Bearbeiten', method: enterEdit},
         {name: 'Löschen', method: toggleDelete},
-        {name: 'Profilbild Löschen', method: deleteProfilePicture},
       ],
       dialogFunctions: [
         {name: 'Ja', method: deleteProfile},

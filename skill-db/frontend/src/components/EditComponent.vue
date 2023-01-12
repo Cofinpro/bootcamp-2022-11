@@ -6,7 +6,7 @@
         <div class="d-flex flex-column align-items-center">
           <upload-image-button
               v-on:upload="onUploadProfilePic"
-              :old-picture="oldPicture"
+              :old-picture="pic"
           v-on:delete="deleteProfilePicture"/>
         </div>
 
@@ -117,6 +117,7 @@ export default {
       newTechnologies: '',
       showAddTechnology: false,
       profilePicUri: '',
+      pic:''
     }
   },
 
@@ -140,6 +141,7 @@ export default {
       this.primarySkill = this.detail.getPrimarySkill();
       this.technologies = this.detail.getTechnologies();
       this.references = this.detail.getReferences();
+      this.pic = this.oldPicture;
     }
   },
 
@@ -163,11 +165,11 @@ export default {
         }
       }
     },
-    async deleteProfilePicture() {
+    deleteProfilePicture() {
       const detailStore = useDetailStore();
       const id = this.detail.getId();
-      await detailStore.deleteProfilePictureByProfileId(id);
-
+      detailStore.deleteProfilePictureByProfileId(id);
+      this.pic='';
     },
     onUploadProfilePic(base64String) {
       this.profilePicUri = base64String;

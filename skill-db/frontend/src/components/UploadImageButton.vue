@@ -6,7 +6,8 @@
         class="hidden"
         accept="image/png, image/jpg, image/jpeg"/>
     <img class="image"
-         v-if="imageDataUri" alt="Profilbild" :src="imageDataUri"/>
+         v-if="imageDataUri"
+         alt="Profilbild" :src="imageDataUri"/>
     <img class="image" v-else-if="oldPicture" alt="Profilbild" :src="oldPicture"/>
     <img class="image" v-else alt="Profilbild" src="@/assets/images/dummy_profilePicture.png"/>
     <v-btn v-if="(oldPicture || imageDataUri)"
@@ -50,11 +51,14 @@ export default {
       this.$refs.imageInput.click();
     },
     deleteProfilePicture() {
+      this.imageDataUri ='';
+      this.$refs.imageInput.value='';
+      this.uploadImage();
       this.$emit('delete');
     },
     async uploadImage() {
       const fileInput = this.$refs.imageInput;
-
+      console.log(fileInput.value)
       if (fileInput && fileInput.value) {
         const file = fileInput.files[0];
 
@@ -80,6 +84,9 @@ export default {
 
         image.src = URL.createObjectURL(file);
       }
+      else{
+        this.$emit('upload',undefined)
+      }
     }
   },
 
@@ -89,7 +96,7 @@ export default {
 
   mounted() {
     if (this.$refs.imageInput) {
-      this.$refs.imageInput.addEventListener('change', this.uploadImage)
+      this.$refs.imageInput.addEventListener('input', this.uploadImage)
     }
   }
 }
