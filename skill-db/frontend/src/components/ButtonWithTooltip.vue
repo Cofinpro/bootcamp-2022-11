@@ -1,7 +1,11 @@
 <template>
   <v-tooltip>
     <template v-slot:activator="{ props }">
-      <v-btn id="button" elevation="0"
+      <v-btn id="button" elevation="0" :disabled="disabled"
+             :style="disabled ? {
+                  color: '#BDBDBD !important',
+                  border: '1px dashed #BBBBBB !important',
+                } : ''"
              min-width="40px" width="40px" height="35px"
              v-bind="props" @click="$emit('clicked')">
         <v-icon size="large"> {{ icon }} </v-icon>
@@ -17,6 +21,7 @@ export default {
   props: {
     tooltip: String,
     icon: String,
+    disabled: true
   }
 }
 </script>

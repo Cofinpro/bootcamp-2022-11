@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * of the {@code hasPermission()} method to use in a SpEL query.
  *
  * @author l-rehm
- * @version 1.0
+ * @version 1.1
  */
 public class CustomPermissionEvaluator implements PermissionEvaluator {
     private static final String POSTFIX_SELF = "SELF";
@@ -74,9 +74,13 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     private Set<String> matchPermissions(Authentication authentication, String permission) {
         return authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .filter(grantedAuthority -> grantedAuthority.startsWith(permission))
+                .filter(grantedAuthority -> extractPrefix(grantedAuthority).equals(permission))
                 .map(this::extractPostfix)
                 .collect(Collectors.toSet());
+    }
+
+    private String extractPrefix(String grantedAuthority) {
+        return grantedAuthority.split(DELIMITER)[0];
     }
 
     /*
@@ -104,52 +108,41 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
     private boolean hasPermissionSelf(Authentication auth, Object targetDomainObject, String permission) {
         if (auth instanceof CustomJwtAuthenticationToken customAuth) {
-            switch (UserPrivileges.fromIdentifier(permission)) {
+            return switch (UserPrivileges.fromIdentifier(permission)) {
                 case USERS_POST_NEW$SELF -> {
                     if (targetDomainObject instanceof UserCreateInDTO inDTO) {
-                        return mayCreateNewUserEntityForSelf(customAuth, inDTO);
+                        yield mayCreateNewUserEntityForSelf(customAuth, inDTO);
                     }
                     printWarning("UserCreateInDTO", targetDomainObject.getClass().getSimpleName());
+                    yield false;
                 }
-                case USERS_DELETE_BY_ID$SELF -> {
+                case USERS_DELETE_BY_ID$SELF, USERS_BY_ID_GET_PROFILE$SELF, USERS_BY_ID_GET_PROFILE_EXISTS$SELF -> {
                     if (targetDomainObject instanceof String id) {
-                        return userIsSelf(customAuth, id);
+                        yield userIsSelf(customAuth, id);
                     }
-                }
-                case USERS_GET_BY_ID$SELF -> {
-                    if (targetDomainObject instanceof String id) {
-                        return userIsSelf(customAuth, id);
-                    }
+                    yield false;
                 }
                 case PROFILES_POST_NEW$SELF -> {
                     if (targetDomainObject instanceof ProfileCreateInDTO inDTO) {
-                        return mayCreateNewProfileForSelf(customAuth, inDTO);
+                        yield mayCreateNewProfileForSelf(customAuth, inDTO);
                     }
+                    printWarning("ProfileCreateInDTO", targetDomainObject.getClass().getSimpleName());
+                    yield false;
                 }
-                case PROFILES_PATCH_BY_ID$SELF -> {
+                case PROFILES_PATCH_BY_ID$SELF, PROFILES_DELETE_BY_ID$SELF, PROFILES_GET_BY_ID$SELF -> {
                     if (targetDomainObject instanceof String id) {
-                        return userOwnsProfile(customAuth, id);
+                        yield userOwnsProfile(customAuth, id);
                     }
-                }
-                case PROFILES_DELETE_BY_ID$SELF -> {
-                    if (targetDomainObject instanceof String id) {
-                        return userOwnsProfile(customAuth, id);
-                    }
-                }
-                case PROFILES_GET_BY_ID$SELF -> {
-                    if (targetDomainObject instanceof String id) {
-                        return userOwnsProfile(customAuth, id);
-                    }
+                    yield false;
                 }
                 case ROLES_GET_BY_ID$SELF -> {
                     if (targetDomainObject instanceof String id) {
-                        return userHasRole(customAuth, id);
+                        yield userHasRole(customAuth, id);
                     }
+                    yield false;
                 }
-                default -> {
-                    return false;
-                }
-            }
+                default -> false;
+            };
         }
         return false;
     }

@@ -20,7 +20,7 @@ public class UserDirector {
                 user.getUsername(), // email in OutDTO is User entity's username
                 user.isLocked(),
                 RoleDirector.roleOverviewFromEnumType(user.getRole()), // Create sub-DTO for role
-                user.getProfile() != null ? user.getProfile().getId() : null // Get String profileId or null
+                user.getProfile() != null ? user.getProfile().getOuterId() : null // Get String profileId or null
         );
     }
 }
