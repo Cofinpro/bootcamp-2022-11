@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-end">
+  <div style="float: right">
     <dropdown-button :functions="dropdownFunctions"/>
     <delete-profile-dialog v-model="toDelete" :functions="dialogFunctions"/>
     <v-overlay v-model="locked" absolute/>
@@ -58,7 +58,7 @@
 
     <v-row class="pt-8 pl-6 pr-6">
       <v-col cols="12" lg="3" md="4" sm="12" class="ml-n5 align-start justify-start">
-        <v-card class="ml-n5" elevation="3" style="border: 1px solid lightgray">
+        <v-card class="ml-n5"  style="border: 1px solid lightgray">
           <p class="block_title">
             Skills
           </p>
@@ -68,7 +68,7 @@
             </div>
           </div>
         </v-card>
-        <v-card class="mt-3 ml-n5" elevation="3" style="border: 1px solid lightgray">
+        <v-card class="mt-3 ml-n5" style="border: 1px solid lightgray">
           <div class="block_title">
             Abschluss
           </div>
