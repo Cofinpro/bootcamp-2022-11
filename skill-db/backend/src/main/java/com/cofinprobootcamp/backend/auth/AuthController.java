@@ -1,6 +1,6 @@
 package com.cofinprobootcamp.backend.auth;
 
-import org.springframework.http.HttpStatus;
+import com.cofinprobootcamp.backend.exceptions.RefreshTokenExpiredException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -59,9 +59,7 @@ public class AuthController {
      */
     @PostMapping("/refresh")
     public ResponseEntity<Object> refreshToken(@RequestBody RefreshTokenRequest refreshToken) {
-
         String token = refreshToken.getRefreshToken();
-
         if (tokenService.verifyToken(token, refreshToken.getUsername())) {
             String accessToken = tokenService.generateNewAccessToken(refreshToken.getUsername());
             return ResponseEntity.ok()
@@ -70,9 +68,7 @@ public class AuthController {
                             "role", tokenService.extractRoleFromToken(token)
                     ));
         }
-
-        return new ResponseEntity<>("This user is not logged in anymore!", HttpStatus.UNAUTHORIZED);
-
+        throw new RefreshTokenExpiredException();
     }
 
     /**

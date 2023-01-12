@@ -13,6 +13,15 @@ import java.time.DateTimeException;
 @ControllerAdvice
 public class TheExceptionHandler {
 
+    @ExceptionHandler(RefreshTokenExpiredException.class)
+    public ResponseEntity<CustomErrorMessage> handleRefreshTokenExpiredException(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Die Sitzung ist abgelaufen.",
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(DateTimeException.class)
     public ResponseEntity<CustomErrorMessage> handleDateTimeException(DateTimeException e, WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
