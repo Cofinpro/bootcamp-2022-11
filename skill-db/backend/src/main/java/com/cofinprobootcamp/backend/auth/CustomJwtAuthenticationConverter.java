@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.auth;
 
 import com.cofinprobootcamp.backend.exceptions.AuthTokenInfoOutOfSyncWithPersistenceException;
+import com.cofinprobootcamp.backend.exceptions.UserIsLockedException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -87,6 +88,9 @@ public class CustomJwtAuthenticationConverter implements Converter<Jwt, Abstract
     }
 
     private void verifyTokenPayload(Jwt source, UserDetailsImpl userDetails) {
+        if (!userDetails.isAccountNonLocked()) {
+            throw new UserIsLockedException("Login ist nicht mehr gültig.");
+        }
         String tokenRole = extractRoleFromJwtSource(source);
         if (
                 !userDetails.getOuterId().equals(source.getClaimAsString(JWT_CLAIM_OID))
