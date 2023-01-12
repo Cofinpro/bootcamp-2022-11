@@ -84,23 +84,16 @@ public class ImageService {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!mailRecipientAddress.equals(authentication.getName())) {
                 // trigger info-email
-                sendProfileUpdateMail(current.getFullName(), authentication.getName(), mailRecipientAddress);
+                emailSendService.sendProfileUpdateMail(
+                        current.getFullName(),
+                        authentication.getName(),
+                        mailRecipientAddress);
             }
         } catch (Exception e) {
             throw new MailNotSentException();
         }
     }
 
-    private void sendProfileUpdateMail(String mailRecipientFullName, String changingUserEmailAddress, String mailRecipientEmailAddress) {
-        // trigger info-email
-        String day = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-        String time = LocalTime.now().toString().substring(0, 5);
-
-        String mailText = "Hallo " + mailRecipientFullName + ",\n\n" +
-                "dein Profil in der Cofinpro Skill-DB wurde am " + day + " um " + time + " Uhr von " + changingUserEmailAddress + " geändert.";
-
-        emailSendService.sendSimpleMessage(mailRecipientEmailAddress, "Profilupdate", mailText);
-    }
 
     public void deleteImageById(Long id) {
         System.out.println(id);

@@ -149,7 +149,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                 }
                 default -> false;
             };
-            }
         }
         return false;
     }
