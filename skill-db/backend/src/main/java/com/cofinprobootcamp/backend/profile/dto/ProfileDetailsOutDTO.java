@@ -24,6 +24,7 @@ import java.util.List;
  *                         (The format is specified as "yyyy-MM-dd")
  * @param age              The user's age as calculated per {@code birthDate} ({@code Integer} value)
  * @param ownerId          The outer ID of the user who owns this profile
+ * @param profilePicId     A {@code Long} representing an associated profile picture
  */
 public record ProfileDetailsOutDTO(String id,
                                    String email,

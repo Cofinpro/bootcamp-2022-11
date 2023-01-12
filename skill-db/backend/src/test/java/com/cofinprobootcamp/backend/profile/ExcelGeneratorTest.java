@@ -76,7 +76,8 @@ class ExcelGeneratorTest {
                 "Nachname",
                 "1999-09-19",
                 123,
-                "JNOF1"
+                "JNOF1",
+                0L
         );
     }
 }

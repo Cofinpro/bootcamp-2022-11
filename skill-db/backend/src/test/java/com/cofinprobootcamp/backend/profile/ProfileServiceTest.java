@@ -53,7 +53,6 @@ class ProfileServiceTest {
                 skillService,
                 jobTitleService,
                 emailSendService,
-                userService,
                 imageService
                 );
         Set<Skill> skillSet = new HashSet<>();
