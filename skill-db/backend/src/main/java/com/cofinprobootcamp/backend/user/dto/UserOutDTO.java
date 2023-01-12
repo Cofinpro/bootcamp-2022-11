@@ -14,5 +14,5 @@ import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
  *                  if no profile was created for this user yet
  * @version 4.0
  */
-public record UserOutDTO(String id, String email, boolean locked, RoleOverviewOutDTO role, Long profileId) {
+public record UserOutDTO(String id, String email, boolean locked, RoleOverviewOutDTO role, String profileId) {
 }

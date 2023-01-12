@@ -5,7 +5,8 @@ import {LoginRequest} from "@/models/LoginRequest";
 
 export const useErrorStore = defineStore(
     'ErrorStore',
-    {state: () =>({
+    {
+        state: () => ({
             hasError: Boolean(false),
             errorText: '',
             authStore: useAuthStore(),
@@ -13,15 +14,16 @@ export const useErrorStore = defineStore(
                 unknownError: 'Unbekannter Fehler!',
                 unauthorized: 'Nicht autorisiert! Loggen Sie sich erneut ein.',
                 internalServerError: 'Unbekannter Fehler aufgetreten. Bitte kontaktieren Sie Ihren Administrator, falls der Fehler anhält!',
-                idNotFound: 'Profil Id konnte nicht aufgelöst werden!',
-                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Loggen Sie sich erneut ein.'
+                idNotFound: 'Id konnte nicht aufgelöst werden!',
+                notAllowed: 'Sie haben keine Berechtigung, diese Funktion aufzurufen. Loggen Sie sich erneut ein.',
+                mailNotSent: 'Mail wurde nicht gesendet! Deine Änderungen wurden dennoch gespeichert.'
             }
         }),
         actions: {
 
             toggleHasError() {
                 this.hasError = false;
-                this.errorText= '';
+                this.errorText = '';
             },
 
             catchGetAllError(error: AxiosError) {
@@ -48,9 +50,10 @@ export const useErrorStore = defineStore(
                 if (this.errorText === this.errorMessages.unknownError) {
                     this.errorText = error.response.data.message.toString().split(",")[0];
                 }
-                },
+            },
+
             catchPostPatchError(error: AxiosError) {
-                this.hasError=true;
+                this.hasError = true;
                 if (error.response == undefined) {
                     this.errorText = this.errorMessages.unknownError;
                 } else {
@@ -66,6 +69,8 @@ export const useErrorStore = defineStore(
                         this.errorText = this.errorMessages.notAllowed;
                     } else if (error.response.status === 404) {
                         this.errorText = `${error.response.data.message}`;
+                    } else if (error.response.status === 502) {
+                        this.errorText = this.errorMessages.mailNotSent;
                     } else {
                         this.errorText = this.errorMessages.unknownError;
                     }
@@ -95,6 +100,16 @@ export const useErrorStore = defineStore(
                 }
             },
 
+            catchUploadImageError(error: Error) {
+                this.hasError = true;
+                this.errorText = error == undefined ? this.errorMessages.unknownError : error.message;
+            },
+
+            catchDownloadImageError(error: AxiosError) {
+                this.hasError = true;
+                this.errorText = this.errorMessages.unknownError
+            },
+
             catchGetError(error: AxiosError, id: String) {
                 this.hasError = true;
                 if (error.response == undefined) {
@@ -102,6 +117,24 @@ export const useErrorStore = defineStore(
                 } else {
                     if (error.response.status === 404) {
                         this.errorText = `Profil ${id} existiert nicht!`;
+                    } else if (error.response.status === 401) {
+                        this.authStore.logout();
+                        this.errorText = this.errorMessages.unauthorized;
+                    } else if (error.response.status === 500) {
+                        this.errorText = this.errorMessages.internalServerError;
+                    } else if (error.response.status === 400) {
+                        this.errorText = this.errorMessages.idNotFound;
+                    }
+                }
+            },
+
+            catchGetProfileError(error: AxiosError, id: String) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = this.errorMessages.unknownError;
+                } else {
+                    if (error.response.status === 404) {
+                        this.errorText = `Nutzer ${id} existiert nicht!`;
                     } else if (error.response.status === 401) {
                         this.authStore.logout();
                         this.errorText = this.errorMessages.unauthorized;
@@ -130,6 +163,10 @@ export const useErrorStore = defineStore(
                         this.errorText = this.errorMessages.internalServerError;
                     } else if (error.response.status === 400) {
                         this.errorText = this.errorMessages.idNotFound;
+                    } else if (error.response.status === 502) {
+                        this.errorText = this.errorMessages.mailNotSent;
+                    } else {
+                        this.errorText = this.errorMessages.unknownError;
                     }
                 }
             },
@@ -142,7 +179,7 @@ export const useErrorStore = defineStore(
                     if (error.response.status === 403) {
                         this.authStore.logout();
                         this.errorText = this.errorMessages.notAllowed;
-                    } else if (error.response.status === 500 ){
+                    } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
                     } else {
                         this.errorText = this.errorMessages.unknownError;

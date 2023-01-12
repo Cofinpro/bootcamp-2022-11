@@ -6,7 +6,10 @@
   </div>
 
   <div class="header">
-    <img src="@/assets/images/dummy_profilePicture.png" alt="Profilbild">
+    <img v-if="detailStore.profilePic" v-bind:src="detailStore.profilePic"  alt="Profilbild" class="profilePic">
+    <v-avatar v-else color="primary" size="180"  rounded="0" class="ma-4">
+        <span class="text-h3">{{detailStore.details.getFirstName()[0]}}{{detailStore.details.getLastName()[0]}}</span>
+    </v-avatar>
     <div class="header_content d-flex flex-column align-content-space-between">
       <div class="headline">
         <h1> {{ detailStore.details.getFirstName() }} {{ detailStore.details.getLastName() }}</h1>
@@ -159,7 +162,7 @@ export default {
   display: flex;
 }
 
-img {
+.profilePic {
   height: 200px;
 }
 

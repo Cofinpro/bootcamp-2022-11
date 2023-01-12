@@ -3,6 +3,8 @@ package com.cofinprobootcamp.backend.profile;
 import com.cofinprobootcamp.backend.email.EmailSendService;
 import com.cofinprobootcamp.backend.enums.Expertises;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
+import com.cofinprobootcamp.backend.image.Image;
+import com.cofinprobootcamp.backend.image.ImageService;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.jobTitle.JobTitleService;
 import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
@@ -10,6 +12,7 @@ import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.skills.SkillService;
 import com.cofinprobootcamp.backend.user.User;
+import com.cofinprobootcamp.backend.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +38,11 @@ class ProfileServiceTest {
     JobTitleService jobTitleService;
     @Mock
     EmailSendService emailSendService;
+    @Mock
+    UserService userService;
+
+    @Mock
+    ImageService imageService;
 
     Profile profile;
 
@@ -44,7 +52,9 @@ class ProfileServiceTest {
         profileService = new ProfileService(profileRepository,
                 skillService,
                 jobTitleService,
-                emailSendService
+                emailSendService,
+                userService,
+                imageService
                 );
         Set<Skill> skillSet = new HashSet<>();
         skillSet.add(new Skill(" "));
@@ -59,6 +69,7 @@ class ProfileServiceTest {
                 .skillSet(skillSet)
                 .birthDate(LocalDate.of(10,10,10))
                 .owner(new User())
+                .profilePic(new Image(1L,"".getBytes(),"none"))
                 .build();
     }
 

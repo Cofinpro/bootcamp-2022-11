@@ -57,7 +57,7 @@ public enum UserPrivileges {
             "Der Nutzer ist dazu berechtigt, alle Profile mit Detailinformationen zu exportieren."
     ),
     PROFILES_IMPORT_POST_NEW(
-      "Der Nutzer ist dazu berechtigt, neue Profile per CSV-Import anzulegen."
+            "Der Nutzer ist dazu berechtigt, neue Profile per CSV-Import anzulegen."
     ),
 
     /*
@@ -98,6 +98,18 @@ public enum UserPrivileges {
     USERS_GET_BY_ID$ANY(
             "Der Nutzer ist dazu berechtigt, einen beliebigen Nutzeraccount über dessen Kennung einzusehen."
     ),
+    USERS_BY_ID_GET_PROFILE$SELF(
+            "Der Nutzer ist dazu berechtigt, die Kennung seines eigenen Profils abzurufen."
+    ),
+    USERS_BY_ID_GET_PROFILE$ANY(
+            "Der Nutzer ist dazu berechtigt, die Kennung des Profils von jedem Nutzer abzurufen."
+    ),
+    USERS_BY_ID_GET_PROFILE_EXISTS$SELF(
+            "Der Nutzer ist dazu berechtigt, zu überprüfen, ob er selbst bereits über ein Profil verfügt."
+    ),
+    USERS_BY_ID_GET_PROFILE_EXISTS$ANY(
+            "Der Nutzer ist dazu berechtigt, für jeden Nutzer zu überprüfen, ob dieser bereits über ein Profil verfügt."
+    ),
     USERS_GET_ALL(
             "Der Nutzer ist dazu berechtigt, sich eine Übersicht aller bestehenden Nutzer anzeigen zu lassen."
     ),
@@ -106,6 +118,19 @@ public enum UserPrivileges {
     ),
     USERS_BY_ID_PATCH_LOCK(
             "Der Nutzer ist dazu berechtigt, einen bestehenden Nutzer zu sperren oder zu entsperren."
+    ),
+    /*
+     * Images endpoint
+     */
+    IMAGES_GET_BY_ID(
+            "Der Nutzer ist dazu berechtigt, alle Bilder einzusehen."
+    ),
+    IMAGES_DELETE_BY_ID$SELF(
+            "Der Nutzer ist dazu berichtigt, sein eigenes Profilbild zu löschen."
+    ),
+
+    IMAGES_DELETE_BY_ID$ANY(
+            "Der Nutzer ist dazu berechtigt, alle Profilbilder zu löschen."
     ),
 
     /*

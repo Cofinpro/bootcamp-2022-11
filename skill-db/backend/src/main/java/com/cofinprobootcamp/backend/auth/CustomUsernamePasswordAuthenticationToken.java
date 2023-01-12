@@ -17,6 +17,7 @@ import java.util.List;
 public class CustomUsernamePasswordAuthenticationToken extends UsernamePasswordAuthenticationToken {
 
     private final static String template = "%s [Principal=%s, Authenticated=%b, Details=%s, Role=%s, Granted Authorities=%s]";
+    private String outerId;
     private String roleName = "";
 
     public CustomUsernamePasswordAuthenticationToken(Object principal, Object credentials) {
@@ -29,14 +30,19 @@ public class CustomUsernamePasswordAuthenticationToken extends UsernamePasswordA
      * producing a trusted (i.e. {@link #isAuthenticated()} = <code>true</code>)
      * authentication token.
      */
-    public CustomUsernamePasswordAuthenticationToken(UsernamePasswordAuthenticationToken parentToken, String roleName) {
+    public CustomUsernamePasswordAuthenticationToken(UsernamePasswordAuthenticationToken parentToken, String outerId, String roleName) {
         super(parentToken.getPrincipal(), parentToken.getCredentials(), parentToken.getAuthorities());
+        this.outerId = outerId;
         this.roleName = roleName;
     }
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(roleName));
+    }
+
+    public String getOuterId() {
+        return outerId;
     }
 
     @Override

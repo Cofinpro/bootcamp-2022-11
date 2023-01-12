@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.image.Image;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
@@ -54,11 +55,28 @@ public class Profile {
     @Builder.Default
     private User owner = null; // Default value
 
+    @OneToOne(cascade = CascadeType.ALL,
+    fetch = FetchType.LAZY)
+    @JoinColumn(unique = true)
+    private Image profilePic = null;
+
     public int getAge() {
         return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
 
     public String getFullName() {
         return this.firstName + " " + this.lastName;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Profile[outerId: %s, first name: %s, last name: %s, title: %s, owner: %s]",
+                this.outerId,
+                this.firstName,
+                this.lastName,
+                this.jobTitle.getName(),
+                owner != null ? owner.getUsername() : ""
+                );
     }
 }

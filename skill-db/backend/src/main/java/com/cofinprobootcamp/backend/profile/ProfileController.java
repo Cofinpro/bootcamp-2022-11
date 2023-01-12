@@ -1,13 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
-import com.cofinprobootcamp.backend.exceptions.CSVFormatException;
-import com.cofinprobootcamp.backend.exceptions.JobTitleNotFoundException;
-import com.cofinprobootcamp.backend.exceptions.ProfileAlreadyExistsException;
-import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
-import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
-import com.cofinprobootcamp.backend.profile.dto.ProfileDetailsOutDTO;
-import com.cofinprobootcamp.backend.profile.dto.ProfileOverviewOutDTO;
-import com.cofinprobootcamp.backend.profile.dto.ProfileUpdateInDTO;
+import com.cofinprobootcamp.backend.exceptions.*;
+import com.cofinprobootcamp.backend.profile.dto.*;
 import com.cofinprobootcamp.backend.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,7 +31,7 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "")
     @PreAuthorize("hasPermission(#profileInDTO, @authorityPrefix + 'PROFILES_POST_NEW')")
-    public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException {
+    public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException {
         User user = userService.getUserByUsername(profileInDTO.email());
         Profile profile = profileService.createProfile(profileInDTO, user);
         userService.assignProfileToUser(user, profile);
@@ -51,8 +45,8 @@ public class ProfileController {
     @PatchMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, @authorityPrefix + 'PROFILES_PATCH_BY_ID')")
     public void updateProfile(@PathVariable String id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
-            throws ProfileNotFoundException, JobTitleNotFoundException {
-        profileService.updateProfile(profileInDTO, id);
+            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException, ImageFormatNotAllowedException {
+        Profile profile = profileService.updateProfile(profileInDTO, id);
     }
 
     /**
@@ -106,7 +100,7 @@ public class ProfileController {
     @GetMapping("/export")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_EXPORT_GET_ALL')")
     public void exportAllToExcel(HttpServletResponse response)
-            throws IOException, IllegalAccessException {
+            throws IOException {
         response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=profiles.xlsx";
@@ -128,7 +122,7 @@ public class ProfileController {
     @PostMapping(path="/import",  consumes="multipart/form-data")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_IMPORT_POST_NEW')")
     public void importFromCSV(@RequestParam("file") MultipartFile file)
-            throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException {
+            throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException, ImageFormatNotAllowedException {
         CSVReader reader = new CSVReader(file, profileService, userService);
         reader.readProfileFromFile();
     }

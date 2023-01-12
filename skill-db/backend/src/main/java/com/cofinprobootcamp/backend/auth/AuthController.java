@@ -38,12 +38,17 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new CustomUsernamePasswordAuthenticationToken(userLogin.username(), userLogin.password()));
         System.out.println("New Login: " + authentication);
+        String outerId = "";
         Map<String, String> tokens = tokenService.generateToken(authentication);
         Optional<? extends GrantedAuthority> authorityOptional = authentication.getAuthorities().stream().findFirst();
+        if (authentication instanceof CustomUsernamePasswordAuthenticationToken customToken) {
+            outerId = customToken.getOuterId();
+        }
         return ResponseEntity.ok()
                 .body(Map.of(
                         "tokens", tokens,
                         "username", userLogin.username(),
+                        "user_id", outerId,
                         "role", authorityOptional.isPresent() ? authorityOptional.get().getAuthority() : "ROLE_ANONYMOUS"
                 ));
     }
