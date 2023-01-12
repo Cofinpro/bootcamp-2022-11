@@ -1,9 +1,9 @@
 <template>
-  <v-card height="165" max-width="255" min-width="255"
+  <v-card height="165" max-width="255" min-width="200"
           @click="$router.push(`/detail/${id}`)"
           elevation="2" class="d-flex align-center justify-space-between">
 
-    <v-avatar size="60" class="ma-5" color="primary">
+    <v-avatar size="60" class="ma-3" color="primary">
       <img v-if="profilePic" :src="profilePic" alt="Profilbild">
       <div v-else>{{name[0]}}{{name.split(' ')[1][0]}}</div>
     </v-avatar>
