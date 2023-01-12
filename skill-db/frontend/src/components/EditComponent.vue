@@ -40,7 +40,8 @@
             <v-autocomplete v-model="technologies"
                             :items="givenTechnologies"
                             multiple auto-select-first
-                            chips closable-chips/>
+                            chips closable-chips
+            label="Skills"/>
 
             <v-btn class="mb-5" size="small" elevation="0"
                    v-if="!showAddTechnology" @click="showAddTechnology=true">
