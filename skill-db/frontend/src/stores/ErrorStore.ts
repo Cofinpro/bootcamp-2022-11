@@ -7,7 +7,7 @@ export const useErrorStore = defineStore(
     {
         state: () => ({
             hasError: Boolean(false),
-            allowed: Boolean(true),
+            allowed: Boolean(false),
             errorText: '',
             authStore: useAuthStore(),
             errorMessages: {
