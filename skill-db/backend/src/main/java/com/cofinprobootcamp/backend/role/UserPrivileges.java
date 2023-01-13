@@ -116,6 +116,10 @@ public enum UserPrivileges {
     USERS_BY_ID_PATCH_ROLE_BY_ID(
             "Der Nutzer ist dazu berechtigt, die Rolle aller bestehenden Nutzer zu ändern."
     ),
+    USERS_BY_ID_PATCH_LOCK(
+            "Der Nutzer ist dazu berechtigt, einen bestehenden Nutzer zu sperren oder zu entsperren."
+    ),
+
     /*
      * Images endpoint
      */

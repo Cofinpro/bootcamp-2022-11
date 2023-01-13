@@ -13,6 +13,15 @@ import java.time.DateTimeException;
 @ControllerAdvice
 public class TheExceptionHandler {
 
+    @ExceptionHandler(RefreshTokenExpiredException.class)
+    public ResponseEntity<CustomErrorMessage> handleRefreshTokenExpiredException(WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                "Die Sitzung ist abgelaufen.",
+                wr.getDescription(false)
+        );
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(DateTimeException.class)
     public ResponseEntity<CustomErrorMessage> handleDateTimeException(DateTimeException e, WebRequest wr) {
         CustomErrorMessage body = new CustomErrorMessage(
@@ -72,7 +81,18 @@ public class TheExceptionHandler {
                 wr.getDescription(false),
                 paee
         );
-        return new ResponseEntity<>(body,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<CustomErrorMessage> handleUserAlreadyExistsException(UserAlreadyExistsException uaee,
+                                                                               WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                uaee.getMessage(),
+                wr.getDescription(false),
+                uaee
+        );
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(JobTitleNotFoundException.class)
@@ -169,5 +189,15 @@ public class TheExceptionHandler {
                 wr.getDescription(false));
         return new ResponseEntity<>(body,HttpStatus.BAD_GATEWAY);
     }
-}
 
+
+    @ExceptionHandler(UserIsLockedException.class)
+    public ResponseEntity<CustomErrorMessage> handleUserIsLockedException(UserIsLockedException uile, WebRequest wr) {
+        CustomErrorMessage body = new CustomErrorMessage(
+                uile.getMessage(),
+                wr.getDescription(false),
+                uile
+        );
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+}
