@@ -129,7 +129,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                     printWarning("ProfileCreateInDTO", targetDomainObject.getClass().getSimpleName());
                     yield false;
                 }
-                case PROFILES_PATCH_BY_ID$SELF, PROFILES_DELETE_BY_ID$SELF, PROFILES_GET_BY_ID$SELF -> {
+                case PROFILES_PATCH_BY_ID$SELF, PROFILES_DELETE_BY_ID$SELF, PROFILES_GET_BY_ID$SELF, IMAGES_DELETE_BY_ID$SELF -> {
                     if (targetDomainObject instanceof String id) {
                         yield userOwnsProfile(customAuth, id);
                     }
@@ -138,12 +138,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
                 case ROLES_GET_BY_ID$SELF -> {
                     if (targetDomainObject instanceof String id) {
                         yield userHasRole(customAuth, id);
-                    }
-                    yield false;
-                }
-                case IMAGES_DELETE_BY_ID$SELF -> {
-                    if (targetDomainObject instanceof String id) {
-                        yield userOwnsProfile(customAuth, id);
                     }
                     yield false;
                 }
