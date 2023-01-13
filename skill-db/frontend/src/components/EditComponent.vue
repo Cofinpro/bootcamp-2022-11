@@ -145,7 +145,7 @@ export default {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
         await detailStore.updateProfile(editDetails, id, this.profilePicUri);
-        if (errorStore.allowed) {
+        if ((!errorStore.hasError || errorStore.allowed)) {
           await router.push({name: 'userDetails', params: {id}});
         }
       } else {
