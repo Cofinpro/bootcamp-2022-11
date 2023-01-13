@@ -22,6 +22,7 @@ export default {
     hasProfile(): boolean {
       const userId = window.localStorage.getItem('user_id');
       this.userStore.checkForExistingUserProfile(userId);
+      console.log(userId);
       return this.userStore.hasProfile;
     }
   },

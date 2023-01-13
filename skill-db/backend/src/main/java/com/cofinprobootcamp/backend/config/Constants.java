@@ -34,8 +34,6 @@ public final class Constants {
 
     public static final String JWT_ISSUER_NAME = "Cofinpro Bootcamp 2022";
 
-    public static final String TOKEN_OK = "ok";
-
     private Constants() {
     }
 }

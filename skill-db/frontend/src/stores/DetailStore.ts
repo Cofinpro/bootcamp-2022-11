@@ -13,15 +13,32 @@ export const useDetailStore = defineStore('detailStore', {
             profilePic: '',
         }),
         actions: {
+            loadDemoDetails() {
+                this.details = ConvertToDetailModel.toDetail({
+                    id: '0',
+                    age: 20,
+                    firstName: "Max",
+                    birthDate: "2022-12-10",
+                    lastName: "Mustewrmann",
+                    degree: "Master of Nothing",
+                    primarySkill: "Tech",
+                    jobTitle: "Consultant",
+                    technologies: ["Nothing", "Less than Nothing"],
+                    references: "No references,really none"
+                })
+            },
+
             async loadDetailsById(id: String) {
                 this.loading = true;
                 let profilePicId = null
                 const errorStore = useErrorStore();
                 await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
+                    console.log(response);
                     this.details = ConvertToDetailModel.toDetail(response.data);
                     profilePicId = response.data.profilePicId
                 }).catch((error) => {
                     errorStore.catchGetError(error, id);
+                    console.log(error)
                 });
                 await axiosInstance({
                     url: `/api/v1/images/${profilePicId}`,
@@ -37,6 +54,7 @@ export const useDetailStore = defineStore('detailStore', {
                     console.log(error);
                     errorStore.catchDownloadImageError(error);
                 })
+                console.log(this.profilePic);
                 this.loading = false;
             },
 
@@ -66,9 +84,11 @@ export const useDetailStore = defineStore('detailStore', {
                         'birthDate': edits.getBirthDate(),
                         'profilePic': profilePicUri,
                     }).then((response) => {
+                    console.log(response);
                     errorStore.toggleHasError();
                 })
                     .catch((error) => {
+                        console.log(error);
                         errorStore.catchPostPatchError(error);
                     });
                 this.loading = false;
@@ -92,6 +112,7 @@ export const useDetailStore = defineStore('detailStore', {
                     }).then(() => {
                     errorStore.toggleHasError();
                 }).catch((error) => {
+                    console.log(error);
                     errorStore.catchPostPatchError(error);
                 });
                 this.loading = false;
@@ -102,6 +123,7 @@ export const useDetailStore = defineStore('detailStore', {
                 const errorStore = useErrorStore();
                 await axiosInstance.delete(`/api/v1/images/${id}`)
                     .catch((error) => {
+                        console.log(error)
                         errorStore.catchDeleteError(error, id);
                     })
                 this.loading = false;
@@ -116,7 +138,8 @@ export const useDetailStore = defineStore('detailStore', {
                         this.skills.push(element.toString());
                     })
                 }).catch((error) => {
-                    errorStore.catchSkillsJobsPrimariesError(error, 'skills');
+                    errorStore.catchSkillsJobsPrimariesError(error, 'skills')
+                    console.log(error);
                 });
                 this.loading = false;
             },
@@ -130,7 +153,8 @@ export const useDetailStore = defineStore('detailStore', {
                         this.jobs.push(element)
                     })
                 }).catch((error) => {
-                    errorStore.catchSkillsJobsPrimariesError(error, 'Jobtitel');
+                    errorStore.catchSkillsJobsPrimariesError(error, 'Jobtitel')
+                    console.log(error);
                 });
                 this.loading = false;
             },
@@ -144,7 +168,21 @@ export const useDetailStore = defineStore('detailStore', {
                         this.primarys.push(element)
                     })
                 }).catch((error) => {
-                    errorStore.catchSkillsJobsPrimariesError(error, 'Primärkompetenz');
+                    errorStore.catchSkillsJobsPrimariesError(error, 'Primärkompetenz')
+                    console.log(error);
+                });
+                this.loading = false;
+            },
+
+            setJobs(id: number, name: String) {
+                this.loading = true;
+                axiosInstance.post(`/api/v1/jobTitles/`,
+                    {
+                        'id': id,
+                        'name': name,
+                    }).then(() => {
+                }).catch((error) => {
+                    console.log(error);
                 });
                 this.loading = false;
             },

@@ -160,14 +160,13 @@ public class AuthControllerTest {
 
         TimeUnit.SECONDS.sleep(12);
 
-        String mvcResult = mvc.perform(post("/api/v1/token/refresh")
+        mvc.perform(post("/api/v1/token/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\" : \"" + jsonObject.get("username") + "\" , \"refreshToken\" : \"" + jsonObject.getJSONObject("tokens").get("refresh_token") + "\"}"))
                 .andExpect(status().isUnauthorized())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        assertThat(mvcResult).contains("\"message\":\"Die Sitzung ist abgelaufen.\"");
+                .andExpect(MockMvcResultMatchers.content().string("This user is not logged in anymore!"))
+                .andReturn();
+
     }
 
     /**

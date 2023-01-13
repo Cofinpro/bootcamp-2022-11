@@ -36,6 +36,7 @@ export const useUserStore = defineStore('userStore', {
             }
         ).catch((error) => {
             errorStore.catchGetProfileError(error, userId);
+            console.log(error)
         });
             this.loading = false;
         },
@@ -48,6 +49,7 @@ export const useUserStore = defineStore('userStore', {
                 }
             ).catch((error) => {
                 errorStore.catchGetProfileError(error, userId);
+                console.log(error)
             });
             this.loading = false;
         },
@@ -66,6 +68,7 @@ export const useUserStore = defineStore('userStore', {
                 });
             }).catch((error) => {
                 errorStore.catchGetRoleError(error, id);
+                console.log(error)
             });
             this.loading = false;
         },
@@ -76,17 +79,7 @@ export const useUserStore = defineStore('userStore', {
             await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then(() =>{
                 errorStore.toggleHasError();
             }).catch((error) => {
-                errorStore.catchPostPatchError(error);
-            });
-            this.loading = false;
-        },
-
-        async lockUser(userId: String) {
-            this.loading = true;
-            const errorStore = useErrorStore()
-            await axiosInstance.patch(`/api/v1/users/${userId}/lock`).then(() =>{
-                errorStore.toggleHasError();
-            }).catch((error) => {
+                console.log(error);
                 errorStore.catchPostPatchError(error);
             });
             this.loading = false;

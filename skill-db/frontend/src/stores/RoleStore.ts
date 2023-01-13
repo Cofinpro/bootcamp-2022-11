@@ -18,6 +18,7 @@ export const useRoleStore = defineStore('roleStore', {
                 this.details = ConvertToRoleModel.toRole(response.data);
             }).catch((error) => {
                 errorStore.catchGetRoleError(error, id);
+                console.log(error)
             });
             this.loading = false;
         },
@@ -36,6 +37,7 @@ export const useRoleStore = defineStore('roleStore', {
                 });
             }).catch((error) => {
                 errorStore.catchGetAllError(error);
+                console.log(error)
             });
             this.loading = false;
         },

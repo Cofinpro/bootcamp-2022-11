@@ -55,9 +55,9 @@ public class Profile {
     @Builder.Default
     private User owner = null; // Default value
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL,
+    fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
-    @Builder.Default
     private Image profilePic = null;
 
     public int getAge() {
