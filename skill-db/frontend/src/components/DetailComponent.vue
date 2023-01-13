@@ -56,8 +56,8 @@
       </v-col>
     </v-row>
 
-    <v-row class="pt-8 pl-6 d-flex justify-center">
-      <v-col cols="12" lg="4" md="5" sm="12" class="ml-n5 d-md-flex flex-md-column align-md-center">
+    <v-row class="pt-8 pl-md-6 d-md-flex justify-md-center">
+      <v-col cols="12" lg="4" md="5" sm="12" class="d-md-flex flex-column align-md-center align-sm-start pa-sm-3 pl-2 ">
         <v-card class="ml-n5" style="border: 1px solid lightgray" max-width="275" min-width="275">
           <p class="block_title pa-1">
             Skills
