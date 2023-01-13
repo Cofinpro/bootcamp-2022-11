@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface StoredOperationRepository extends JpaRepository<StoredOperation, Long> {
-    List<StoredOperation> findAllByOperationPathAndUser(String operationPath, User user);
+    List<StoredOperation> findAllByOperationPathAndUserAndParameters(String operationPath, User user, String params);
 }

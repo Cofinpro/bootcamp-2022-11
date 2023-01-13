@@ -87,8 +87,7 @@ public class UserController {
                     methodManager,
                     "USERS_BY_ID_PATCH_ROLE_BY_ID",
                     customAuth.getOuterId(),
-                    id,
-                    roleId
+                    id
             );
         }
         if (!isApproved) {

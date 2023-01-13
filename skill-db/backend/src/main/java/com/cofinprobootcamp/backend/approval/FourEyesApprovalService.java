@@ -65,7 +65,7 @@ public class FourEyesApprovalService<T> {
     public StoredOperation createStoredOperation(String operationPath, String userId, Object... params) {
         Long id = userService.getIdByOuterId(userId);
         User user = userService.getUserById(id);
-        List<StoredOperation> existing = operationRepository.findAllByOperationPathAndUser(operationPath, user);
+        List<StoredOperation> existing = operationRepository.findAllByOperationPathAndUserAndParameters(operationPath, user, createParamsString(params));
         if (existing.isEmpty()) {
             StoredOperation operation = StoredOperation.builder()
                     .operationPath(operationPath)
