@@ -16,7 +16,7 @@
         </th>
       </tr>
       </thead>
-      <tr v-for="user in users"
+      <tr v-for="user in userStore.users"
           :key="user.getEmail()"
           :class="{ locked: user.getLocked(), notLocked: !user.getLocked()}">
         <td>
@@ -49,9 +49,8 @@ export default {
   setup() {
     const userStore = useUserStore();
     userStore.loadUsers();
-    const users = userStore.users;
     return {
-      users, userStore
+      userStore
     }
   },
   methods: {
