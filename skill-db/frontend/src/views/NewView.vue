@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="! detailStore.loading">
+  <v-container v-show="! detailStore.loading">
     <h1>Neues Profil erstellen</h1>
     <h2>Hier kannst du ein neues Profil anlegen!</h2>
 
