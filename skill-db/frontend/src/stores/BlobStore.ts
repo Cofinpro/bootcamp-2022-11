@@ -14,7 +14,6 @@ export const useBlobStore = defineStore('blobStore',{
                 responseType: 'blob',
             }).then((response) => {
                 this.blob = response.data;
-                console.log(response.data);
             }).catch((error) => {
                 const errorStore = useErrorStore();
                 errorStore.catchExportError(error);
@@ -28,9 +27,7 @@ export const useBlobStore = defineStore('blobStore',{
                 method: 'post',
                 data: formData,
                 headers: { 'Content-Type': 'multipart/form-data' }
-            }).then(response =>{
-              console.log(response);
-            }).catch(error => {
+            }).then().catch(error => {
                 const errorStore = useErrorStore();
                 errorStore.catchImportError(error);
             })
