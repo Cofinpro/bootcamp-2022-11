@@ -2,25 +2,20 @@ package com.cofinprobootcamp.backend.approval;
 
 import com.cofinprobootcamp.backend.exceptions.InternalOperationFailedException;
 import com.cofinprobootcamp.backend.user.User;
-import com.cofinprobootcamp.backend.user.UserRepository;
 import com.cofinprobootcamp.backend.user.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class FourEyesApprovalService {
+public class FourEyesApprovalService<T> {
     private final StoredOperationRepository operationRepository;
     private final UserService userService;
-    private final UserRepository userRepository;
 
-    FourEyesApprovalService(StoredOperationRepository operationRepository, UserService userService,
-                            UserRepository userRepository) {
+    FourEyesApprovalService(StoredOperationRepository operationRepository, UserService userService) {
         this.operationRepository = operationRepository;
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     /**
@@ -42,9 +37,9 @@ public class FourEyesApprovalService {
      */
     public boolean presentForApproval(
             PendingOperation<?> pendingOperation,
-            OperationApprovalManager<PendingOperation<?>> approvalManager,
+            OperationApprovalManager<PendingOperation<T>> approvalManager,
             String operationId,
-            Long operationSourceId,
+            String operationSourceId,
             Object... operationParams) {
         boolean isApproved = false;
         for (var storedOperation : getAllStoredOperations()) {
@@ -52,21 +47,24 @@ public class FourEyesApprovalService {
                     && storedOperation.getParameters().equals(createParamsString(operationParams))
                     && !storedOperation.getUserId().equals(operationSourceId)
             ) {
-                isApproved = approvalManager.approve(pendingOperation);
+                isApproved = approvalManager.approve((PendingOperation<T>) pendingOperation);
+                deleteStoredOperationById(storedOperation.getId());
             }
         }
         if (!isApproved) {
             createStoredOperation(operationId, operationSourceId, operationParams);
         }
-        return true;
+        System.out.printf("Approval status: %b%n", isApproved);
+        return isApproved;
     }
 
     public List<StoredOperation> getAllStoredOperations() {
         return operationRepository.findAll();
     }
 
-    public StoredOperation createStoredOperation(String operationPath, Long userId, Object... params) {
-        User user = userService.getUserById(userId);
+    public StoredOperation createStoredOperation(String operationPath, String userId, Object... params) {
+        Long id = userService.getIdByOuterId(userId);
+        User user = userService.getUserById(id);
         List<StoredOperation> existing = operationRepository.findAllByOperationPathAndUser(operationPath, user);
         if (existing.isEmpty()) {
             StoredOperation operation = StoredOperation.builder()

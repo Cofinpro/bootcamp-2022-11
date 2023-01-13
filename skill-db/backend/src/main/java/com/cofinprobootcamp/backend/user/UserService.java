@@ -128,6 +128,11 @@ public class UserService {
         return userRepository.saveAndFlush(user);
     }
 
+    public Long getIdByOuterId(String outerId) {
+        User user = userRepository.findFirstByOuterId(outerId).orElseThrow(UserNotFoundException::new);
+        return user.getId();
+    }
+
     private void tryToSetUniqueOuterId(User user) {
         String candidateId = RandomStringGenerator.nextOuterId(Constants.USER_OUTER_ID_LENGTH);
         Optional<User> userOptional = userRepository.findFirstByOuterId(candidateId);

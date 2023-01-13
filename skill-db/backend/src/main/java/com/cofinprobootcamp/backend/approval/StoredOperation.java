@@ -21,12 +21,11 @@ public class StoredOperation {
     String operationPath;
 
     @ManyToOne
-    @JoinColumn(name = "id")
     User user;
 
     String parameters;
 
-    public Long getUserId() {
-        return user.getId();
+    public String getUserId() {
+        return user.getOuterId();
     }
 }
