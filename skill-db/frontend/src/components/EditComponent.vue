@@ -37,7 +37,7 @@
       <v-row class="skillRow">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete v-model="technologies" label="Skills"
+            <v-autocomplete v-model="technologies"
                             :items="givenTechnologies"
                             multiple auto-select-first
                             chips closable-chips

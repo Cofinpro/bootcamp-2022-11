@@ -11,21 +11,23 @@ export const useUserStore = defineStore('userStore', {
         profileId: String,
     }),
     actions: {
-        loadUsers(): void {
+        async loadUsers(): void {
             this.loading = true;
             const errorStore = useErrorStore();
-            axiosInstance.get("/api/v1/users").then(response => {
+            await axiosInstance.get("/api/v1/users").then(response => {
                 if(this.users.length > 0) {
                     // reloads the list of users every time the method gets called,
                     // in case the list is not empty
                     this.users = [];
                 }
-                response.data.forEach((element: object) => {
+                response.data.forEach(
+                    (element: object) => {
                     this.users.push(ConvertToUserModel.toUserModel(element));
                 })
             }).catch((error) => {
                 errorStore.catchGetAllError(error);
             })
+            this.loading=false;
         },
 
         async checkForExistingUserProfile(userId: String) {
