@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!overviewStore.loading" >
+  <div v-show="!overviewStore.loading" >
     <div class="headline">
       <h3>Profilübersicht</h3>
       <h4 class="font-weight-regular">Übersicht über alle vorhandenen Profile</h4>
