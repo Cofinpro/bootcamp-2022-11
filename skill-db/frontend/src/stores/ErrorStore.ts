@@ -71,6 +71,8 @@ export const useErrorStore = defineStore(
                     } else if (error.response.status === 403) {
                         this.authStore.logout();
                         this.errorText = this.errorMessages.notAllowed;
+                    } else if (error.response.status === 409) {
+                        this.errorText = 'Der Nutzer hat bereits ein Profil!';
                     } else if (error.response.status === 404) {
                         this.errorText = `${error.response.data.message}`;
                     } else if (error.response.status === 502) {
