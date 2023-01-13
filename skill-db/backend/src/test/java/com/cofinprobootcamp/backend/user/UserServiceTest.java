@@ -89,7 +89,7 @@ class UserServiceTest {
     void getUserById() {
         User user = User.builder().username("aaaaa").build();
         Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        assertThat(userService.getUserById(1L).email()).isEqualTo(user.getUsername());
+        assertThat(userService.getUserById(1L).getUsername()).isEqualTo(user.getUsername());
 
         Mockito.when(userRepository.findById(2L)).thenReturn(Optional.empty());
 

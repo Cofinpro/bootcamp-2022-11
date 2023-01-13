@@ -1,11 +1,9 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.approval.FourEyesApprovalManager;
+import com.cofinprobootcamp.backend.approval.OperationApprovalManager;
 import com.cofinprobootcamp.backend.approval.PendingOperation;
-import com.cofinprobootcamp.backend.approval.TheApprovalHandler;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.RoleChangePendingException;
-import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.http.HttpStatus;
@@ -15,20 +13,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/api/v1/users")
 public class UserController {
     private final UserService userService;
-    private final TheApprovalHandler approvalHandler;
-    private Map<String, FourEyesApprovalManager<PendingOperation<User>>> approvalManagers = new HashMap<>();
 
-    public UserController(UserService userService, TheApprovalHandler approvalHandler) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.approvalHandler = approvalHandler;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -75,29 +68,18 @@ public class UserController {
             System.out.printf("We reached 'method' with values [id: %s, roleId: %s]%n", id, roleId);
             return userService.changeRole(id, roleId);
         };
-        FourEyesApprovalManager<PendingOperation<User>> methodManager;
+        OperationApprovalManager<PendingOperation<User>> methodManager;
         if (approvalManagers.containsKey("changeRole")) {
             System.out.println("Load existing Manager");
             methodManager = approvalManagers.get("changeRole");
         } else {
             System.out.println("Create new Manager");
-            methodManager = new FourEyesApprovalManager<>(approvalHandler) {
+            methodManager = new OperationApprovalManager<PendingOperation<User>>() {
                 @Override
                 public boolean approve(PendingOperation<User> pendingOperation) {
                     System.out.printf("Called approve() with %s%n", pendingOperation.getClass().getSimpleName());
                     pendingOperation.resolve();
                     return true;
-                }
-
-                @Override
-                public boolean present(PendingOperation<User> pendingOperation, User operationSource, Object... parameters) {
-                    System.out.println("Enter present() method");
-                    if (userService.getUserByOuterId(id).role().identifier().equals(StandardRoles.ADMIN.name())) {
-                        System.out.printf("Check if role of user with id %s is ADMIN: %s -> TRUE%n", id, StandardRoles.ADMIN.name());
-                        return super.present(pendingOperation, operationSource, parameters);
-                    } else {
-                        return approve(pendingOperation);
-                    }
                 }
             };
             methodManager.register();
@@ -106,7 +88,7 @@ public class UserController {
         System.out.println("Method manager object: " + methodManager);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("Read auth: " + authentication.getName());
-        if (!methodManager.present(method, userService.getUserByUsername(authentication.getName()), id, roleId)) {
+        if (!methodManager.presentForApproval(method, userService.getUserByUsername(authentication.getName()), id, roleId)) {
             throw new RoleChangePendingException();
         }
     }

@@ -10,14 +10,8 @@ import javax.validation.constraints.NotNull;
  * @version 1.0
  * @param <P> The type of {@code PendingOperation} to handle
  */
+@FunctionalInterface
 public interface OperationApprovalManager<P extends PendingOperation<?> > {
-
-    /**
-     * Represents a unique identifier to find this specific {@code OperationApprovalManager}.
-     *
-     * @return A {@link String} uniquely representing this object
-     */
-    @NotNull String identifier();
 
     /**
      * Tries to approve the given pending operation and resolve it, if approved, or decline

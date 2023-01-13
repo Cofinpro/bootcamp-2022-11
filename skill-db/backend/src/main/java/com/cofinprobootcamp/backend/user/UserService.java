@@ -84,9 +84,9 @@ public class UserService {
         return UserDirector.EntityToUserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
     }
 
-    public UserOutDTO getUserById(Long id) {
+    public User getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
-        return UserDirector.EntityToUserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
+        return userOptional.orElseThrow(UserNotFoundException::new);
     }
 
     public User getUserByUsername(String email) {
