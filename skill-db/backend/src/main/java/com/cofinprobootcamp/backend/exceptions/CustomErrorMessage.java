@@ -10,7 +10,7 @@ public class CustomErrorMessage {
 
     private record ErrorCause(String causeExceptionName, String causeMessage) {
         ErrorCause(Throwable cause) {
-            this(cause.getClass().getSimpleName(), cause.getMessage());
+            this(cause.getClass().getName(), cause.getMessage());
         }
     }
 

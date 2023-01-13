@@ -4,7 +4,6 @@ import com.cofinprobootcamp.backend.config.Constants;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.RoleNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.InternalOperationFailedException;
-import com.cofinprobootcamp.backend.exceptions.UserAlreadyExistsException;
 import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
 import com.cofinprobootcamp.backend.profile.Profile;
 import com.cofinprobootcamp.backend.role.StandardRoles;
@@ -45,9 +44,6 @@ public class UserService {
     }
 
     public User createUser(UserCreateInDTO inDTO) {
-        if (userRepository.findByUsername(inDTO.email()).isPresent()) {
-            throw new UserAlreadyExistsException();
-        }
         String password = passwordEncoder.encode(inDTO.password());
         StandardRoles role = (inDTO.userRole() != null) ? StandardRoles.fromIdentifier(inDTO.userRole()) : null;
         if (StandardRoles.UNDEFINED.equals(role)) {
@@ -119,12 +115,6 @@ public class UserService {
         if (!user.getRole().equals(role)) {
             user.setRole(role);
         }
-        return userRepository.saveAndFlush(user);
-    }
-
-    public User lockUser(String id) throws UserNotFoundException {
-        User user = userRepository.findFirstByOuterId(id).orElseThrow(UserNotFoundException::new);
-        user.setLocked(!user.isLocked());
         return userRepository.saveAndFlush(user);
     }
 

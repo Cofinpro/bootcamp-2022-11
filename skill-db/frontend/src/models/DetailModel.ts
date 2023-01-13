@@ -11,7 +11,6 @@ export class DetailModel {
     private references: String;
     private phoneNumber: String;
     private email: String;
-    private ownerId: String;
 
     constructor() {
         this.id = '';
@@ -26,7 +25,6 @@ export class DetailModel {
         this.references = '';
         this.phoneNumber = '';
         this.email = '';
-        this.ownerId = '';
     }
 
     public getDegree(): String {
@@ -124,14 +122,6 @@ export class DetailModel {
     public setEmail(value: String) {
         this.email = value;
     }
-
-    getOwnerId(): String {
-        return this.ownerId;
-    }
-
-    setOwnerId(value: String) {
-        this.ownerId = value;
-    }
 }
 
 export class ConvertToDetailModel {
@@ -149,7 +139,6 @@ export class ConvertToDetailModel {
         detailModel.setPhoneNumber(object?.phoneNumber);
         detailModel.setEmail(object?.email);
         detailModel.setAge(object?.age);
-        detailModel.setOwnerId(object?.ownerId);
         return detailModel;
     }
 

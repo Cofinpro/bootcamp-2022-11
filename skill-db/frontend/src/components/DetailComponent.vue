@@ -77,7 +77,7 @@
         </div>
         <div class="block_content">
           <ul class="pl-6">
-            <li v-for="reference in detailStore.details.getReferences().split('\n')">
+            <li v-for="reference in detailStore.details.getReferences().split(',')">
               <p>{{ reference }}</p>
             </li>
           </ul>
@@ -94,7 +94,6 @@ import {useDetailStore} from "@/stores/DetailStore";
 import {useRoute} from "vue-router";
 import {ref} from "vue";
 import router from "@/router";
-import {useUserStore} from "@/stores/UserStore";
 
 export default {
   name: "DetailComponent",
@@ -107,16 +106,6 @@ export default {
     const locked = ref(false);
     const toDelete = ref(false);
 
-    let dropdownFunctions = [];
-    const role = window.localStorage.getItem('role');
-    dropdownFunctions = [
-      {name: 'Bearbeiten', method: enterEdit},
-      {name: 'Löschen', method: toggleDelete},
-    ];
-    if(role === 'ROLE_ADMIN' && !locked.value) {
-      dropdownFunctions.push({name: 'Sperren', method: lockProfile});
-    }
-
     function enterEdit(): void {
       router.push({name: 'editView', params: {id: id}});
     }
@@ -126,11 +115,9 @@ export default {
     }
 
     function lockProfile(): void {
-      const userStore = useUserStore();
-      detailStore.loadDetailsById(id);
-      const userId = detailStore.details.getOwnerId();
-      userStore.lockUser(userId);
       locked.value = true;
+      console.log("This profile is now locked away.");
+      /*router.push(`/`);*/
     }
 
     function deleteProfile(): void {
@@ -139,7 +126,10 @@ export default {
     }
 
     return {
-      dropdownFunctions,
+      dropdownFunctions: [
+        {name: 'Bearbeiten', method: enterEdit},
+        {name: 'Löschen', method: toggleDelete},
+      ],
       dialogFunctions: [
         {name: 'Ja', method: deleteProfile},
         {name: 'Nein', method: toggleDelete}
@@ -198,7 +188,6 @@ export default {
 
 .references {
   margin-left: -42px;
-  overflow-wrap: break-word;
 }
 
 .block_title {

@@ -2,7 +2,6 @@ package com.cofinprobootcamp.backend.auth;
 
 import com.cofinprobootcamp.backend.config.Constants;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
@@ -87,21 +86,17 @@ public class TokenService {
      * @param username
      * @return boolean: true in case the token is not expired; false in case the token is expired
      */
-    public String verifyToken(String token, String username) {
+    public boolean verifyToken(String token, String username) {
         try {
             Jwt jwt = jwtDecoder.decode(token);
+
             if (jwt.getExpiresAt().isBefore(Instant.now())) {
-                return OAuth2ErrorCodes.INVALID_TOKEN;
+                return false;
             }
-            if (!jwt.getSubject().equals(username)) {
-                return OAuth2ErrorCodes.INVALID_TOKEN;
-            }
-            if (userDetailsService.loadUserByUsername(username).isAccountNonLocked()) {
-                return TOKEN_OK;
-            }
-            return OAuth2ErrorCodes.UNAUTHORIZED_CLIENT;
+
+            return jwt.getSubject().equals(username);
         } catch (Exception exception) {
-            return OAuth2ErrorCodes.SERVER_ERROR;
+            return false;
         }
     }
 
