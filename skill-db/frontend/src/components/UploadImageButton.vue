@@ -58,7 +58,6 @@ export default {
     },
     async uploadImage() {
       const fileInput = this.$refs.imageInput;
-      console.log(fileInput.value)
       if (fileInput && fileInput.value) {
         const file = fileInput.files[0];
 
