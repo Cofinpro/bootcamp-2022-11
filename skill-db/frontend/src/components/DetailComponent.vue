@@ -4,25 +4,25 @@
     <delete-profile-dialog v-model="toDelete" :functions="dialogFunctions"/>
     <v-overlay v-model="locked" absolute/>
   </div>
-  <v-container>
-    <v-row>
-      <v-col cols="12" lg="3" md="3" sm="12">
+  <v-container class="pr-0 pl-2 pl-sm-2 pl-md-4">
+    <v-row class="pl-n6">
+      <v-col cols="12" lg="4" md="5" sm="12" class="d-flex justify-md-center">
         <img v-if="detailStore.profilePic" v-bind:src="detailStore.profilePic" alt="Profilbild" class="profilePic mr-3">
-        <v-avatar class="mr-3" v-else color="primary" size="170" rounded="0">
+        <v-avatar  v-else color="primary" size="170" rounded="0">
         <span class="text-h3">{{ detailStore.details.getFirstName()[0] }}{{
             detailStore.details.getLastName()[0]
           }}</span>
         </v-avatar>
       </v-col>
-      <v-col cols="12" lg="9" md="9" sm="12">
-        <v-container>
+      <v-col cols="12" lg="8" md="7" sm="12" class="pa-0 pl-md-3 pl-sm-0 pr-0">
+        <v-container class="pa-2 pr-0">
           <v-row>
             <v-col cols="12" lg="12" md="12" sm="12">
               <h1> {{ detailStore.details.getFirstName() }} {{ detailStore.details.getLastName() }}</h1>
               <h3> {{ detailStore.details.getJobTitle() }}, {{ detailStore.details.getAge() }}</h3>
             </v-col>
           </v-row>
-          <v-row align-content="space-between" justify="space-between">
+          <v-row>
             <v-col cols="12" lg="8" md="7" sm="12" align-self="start">
               <p>
                 <v-icon class="mr-3" size="small" color="#BDBDBD">
@@ -56,29 +56,29 @@
       </v-col>
     </v-row>
 
-    <v-row class="pt-8 pl-6 pr-6">
-      <v-col cols="12" lg="3" md="4" sm="12" class="ml-n5 align-start justify-start">
-        <v-card class="ml-n5"  style="border: 1px solid lightgray">
-          <p class="block_title">
+    <v-row class="pt-8 pl-6 d-flex justify-center">
+      <v-col cols="12" lg="4" md="5" sm="12" class="ml-n5 d-md-flex flex-md-column align-md-center">
+        <v-card class="ml-n5" style="border: 1px solid lightgray" max-width="275" min-width="275">
+          <p class="block_title pa-1">
             Skills
           </p>
-          <div class="d-flex flex-wrap">
-            <div v-for="skill in detailStore.details.getTechnologies()" class="pa-1">
+          <div class="d-flex flex-wrap justify-space-between">
+            <div v-for="skill in detailStore.details.getTechnologies()" class="pa-2">
               <v-chip>{{ skill }}</v-chip>
             </div>
           </div>
         </v-card>
-        <v-card class="mt-3 ml-n5" style="border: 1px solid lightgray">
+        <v-card class="mt-3 ml-n5" style="border: 1px solid lightgray"  max-width="275" min-width="275">
           <div class="block_title">
             Abschluss
           </div>
-          <div class="block_content">
+          <div class="pa-2">
             {{ detailStore.details.getDegree() }}
           </div>
         </v-card>
       </v-col>
-      <v-col cols="12" lg="8" md="8" sm="12" class="pl-8">
-        <div class="references pl-6 pt-2 ">
+      <v-col cols="12" lg="8" md="7" sm="12" class="pl-md-2 pl-sm-0 pr-0" >
+        <div class="references pt-0 ">
           <div class="block_title">
             Referenzen
           </div>
@@ -190,16 +190,12 @@ export default {
   border-style: solid;
 }
 
-.references {
-  margin-left: -42px;
-}
 
 .block_title {
   font-size: 16px;
   font-weight: bold;
   line-height: 20px;
   letter-spacing: 2px;
-  text-align: left;
   font-family: "Poppins", sans-serif;
 }
 

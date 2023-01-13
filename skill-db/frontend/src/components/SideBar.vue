@@ -1,7 +1,8 @@
 <template>
   <v-app-bar elevation="0"
-             order="0">
-    <v-app-bar-nav-icon @click="toggleDrawer()"/>
+             order="0"
+             v-if="$vuetify.display.sm">
+    <v-app-bar-nav-icon @click="toggleDrawer()" />
   </v-app-bar>
   <v-navigation-drawer elevation="0"
                        v-model="drawer" order="1"
@@ -76,22 +77,6 @@ export default {
     isAdmin() {
       return window.localStorage.getItem('role') === 'ROLE_ADMIN';
     },
-    /*hasProfile() {
-      const userStore = useUserStore();
-      const userId = window.localStorage.getItem('user_id');
-      userStore.checkForExistingUserProfile(userId);
-      return userStore.hasProfile;
-    },
-    getProfileId() {
-      const userStore = useUserStore();
-      const userId = window.localStorage.getItem('user_id');
-      userStore.checkForExistingUserProfile(userId);
-      if (userStore.hasProfile) {
-        const userId = window.localStorage.getItem('user_id');
-        userStore.getProfileIdFromUser(userId);
-        return userStore.profileId;
-      }
-    },*/
   },
   data() {
     const store = useAuthStore();
