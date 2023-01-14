@@ -1,7 +1,5 @@
 package com.cofinprobootcamp.backend.approval;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * This interface represents a manager that is capable of evaluating and eventually approving
  * {@link PendingOperation}s of the given type.

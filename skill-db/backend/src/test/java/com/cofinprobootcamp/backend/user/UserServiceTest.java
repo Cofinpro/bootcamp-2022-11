@@ -24,6 +24,7 @@ class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
+
     private UserService userService;
 
     @BeforeEach
