@@ -69,9 +69,9 @@ public class UserController {
 
     @PatchMapping(path = "/{id}/{roleId}")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_ROLE_BY_ID')")
-    public void changeRole(@PathVariable String id, @PathVariable String roleId) {
+    public void changeRole(@PathVariable String id, @PathVariable String roleId) throws RoleChangePendingException{
         PendingOperation<User> method = () -> userService.changeRole(id, roleId);
-        boolean isApproved = checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_ROLE_BY_ID", id, StandardRoles.ADMIN, id);
+        boolean isApproved = checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_ROLE_BY_ID", id, StandardRoles.ADMIN, id, roleId);
         if (!isApproved) {
             throw new RoleChangePendingException();
         }
