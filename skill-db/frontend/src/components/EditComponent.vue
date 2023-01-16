@@ -2,61 +2,81 @@
   <v-container>
     <v-form @submit.prevent>
 
-      <div class="header">
+      <div class="header mt-0 pt-0">
         <div class="d-flex flex-column align-items-center">
           <upload-image-button
               v-on:upload="onUploadProfilePic"
               :old-picture="oldPic"
               v-on:toggleDelete="onToggleDelete"/>
         </div>
-
-        <v-row class="headline">
-          <v-col cols="12" lg="6" md="6" sm="12">
-            <v-text-field v-model="firstName" label="Vorname"
+        <v-row class="pl-6">
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+            <v-text-field v-model="firstName"
+                          label="Vorname"
                           :rules="[v => v.length > 0 || 'Erforderlich!']"/>
-            <v-autocomplete v-model="jobTitle" label="Jobprofil"
+          </v-col>
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+            <v-text-field v-model="lastName"
+                          label="Nachname"
+                          :rules="[v => v.length > 0 || 'Erforderlich']"/>
+          </v-col>
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+            <v-autocomplete v-model="jobTitle"
+                            label="Jobprofil"
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="jobs"/>
-            <v-text-field v-model="phoneNumber" label="Telefonnummer"
-                          :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
           </v-col>
-
-          <v-col lg="6" md="6" sm="12">
-            <v-text-field v-model="lastName" label="Nachname"
-                          :rules="[v => v.length > 0 || 'Erforderlich']"/>
-            <v-autocomplete v-model="primarySkill" label="Primärkompetenz"
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+            <v-autocomplete v-model="primarySkill"
+                            label="Primärkompetenz"
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="primaries"/>
-            <v-text-field v-model="birthdate" label="Geburtsdatum"
+          </v-col>
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+            <v-text-field v-model="phoneNumber"
+                          label="Telefonnummer"
+                          :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
+          </v-col>
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+            <v-text-field v-model="birthdate"
+                          label="Geburtsdatum"
                           :rules="[ date => checkDateFormat(date) ||
                           'Datum muss im Format TT.MM.JJJJ eingegeben werden!']"/>
           </v-col>
         </v-row>
       </div>
 
-      <v-row class="skillRow">
+      <v-row class="skillRow pt-5">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete v-model="technologies" label="Skills"
+            <v-autocomplete v-model="technologies"
+                            label="Skills"
                             :items="givenTechnologies"
-                            multiple auto-select-first
-                            chips closable-chips/>
+                            multiple
+                            auto-select-first
+                            chips
+                            closable-chips/>
 
-            <v-btn class="mb-5" size="small" elevation="0"
-                   v-if="!showAddTechnology" @click="showAddTechnology=true">
+            <v-btn v-if="!showAddTechnology"
+                   class="mb-5" size="small" elevation="0"
+                   @click="showAddTechnology=true">
               Technologie nicht gefunden?
             </v-btn>
-            <v-text-field v-if="showAddTechnology" v-model="newTechnologies"
+            <v-text-field v-if="showAddTechnology"
+                          v-model="newTechnologies"
                           placeholder="Füge mehrere Skills hinzu, indem du sie mit Kommata [','] separierst."
                           @keydown.enter="addSkills"/>
 
-            <v-text-field v-model="degree" label="Abschluss"
+            <v-text-field v-model="degree"
+                          label="Abschluss"
                           :rules="[v => v.length > 0 || 'Erforderlich']"/>
           </div>
         </v-col>
 
         <v-col>
-          <v-textarea class="references" v-model="references" label="Referenzen"
+          <v-textarea class="references"
+                      v-model="references"
+                      label="Referenzen"
                       :rules="[v => v.length > 0 || 'Erforderlich!']"/>
         </v-col>
       </v-row>
@@ -68,7 +88,7 @@
                   border: '1px dashed #BBBBBB !important',
                 } : ''"
                :disabled="!isFilled"
-               @click="update? updateProfile() : submitProfile()"
+               @click="update? updateProfile() : createProfile()"
                elevation="0">
           {{ update ? "Änderungen speichern" : "Profil erstellen" }}
         </v-btn>
@@ -140,7 +160,7 @@ export default {
   },
 
   methods: {
-    async submitProfile() {
+    async createProfile() {
       const detailStore = useDetailStore();
       const errorStore = useErrorStore();
       const newDetails = ConvertToDetailModelForOutput.toDetail(this);
@@ -225,7 +245,6 @@ export default {
 </script>
 
 <style scoped>
-
 .header {
   width: 100%;
   display: flex;
@@ -238,10 +257,6 @@ export default {
 
 .uploadBtn {
   width: 200px;
-}
-
-.headline {
-  margin-left: 20px;
 }
 
 img {
