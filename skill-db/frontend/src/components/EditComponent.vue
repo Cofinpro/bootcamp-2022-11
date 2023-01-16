@@ -94,7 +94,7 @@ import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
-import UploadImageButton from "@/components/UploadImageButton.vue";
+import UploadImageButton from "@/components/EditComponents/UploadImageButton.vue";
 import SkillInput from "@/components/EditComponents/SkillInput.vue";
 
 export default {
