@@ -80,7 +80,8 @@
         </v-btn>
 
         <v-btn class="mt-10 ml-lg-5 ml-md-5"
-               @click="leave" elevation="0">
+               @click="leave"
+               elevation="0">
           Abbrechen
         </v-btn>
       </div>
@@ -94,7 +95,7 @@ import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
 import UploadImageButton from "@/components/UploadImageButton.vue";
-import SkillInput from "@/components/SkillInput.vue";
+import SkillInput from "@/components/EditComponents/SkillInput.vue";
 
 export default {
   name: "EditComponent",

@@ -1,5 +1,5 @@
 <template>
-  <v-autocomplete v-model="skills"
+  <v-autocomplete :v-model="skills"
                   label="Skills"
                   :items="detailStore.skills"
                   @update:modelValue="onInput"
