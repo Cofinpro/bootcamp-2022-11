@@ -67,7 +67,7 @@ export default {
         this.users.forEach(user => {
           if(user.getEmail() === selected.split("(")[0].trim()
               && user.getRole().getIdentifier() !== role.getIdentifier()) {
-            userStore.changeRole(role.getIdentifier(), user.getId());
+            userStore.changeRole(user.getId(), role.getDisplayName());
           }
         })
 

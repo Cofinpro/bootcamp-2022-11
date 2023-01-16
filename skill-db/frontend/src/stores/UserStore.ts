@@ -3,6 +3,7 @@ import {ConvertToUserModel, UserModel} from "@/models/UserModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 import {AxiosError} from "axios";
+import {ConvertToOperationsModel, OperationsModel} from "@/models/OperationsModel";
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
@@ -10,6 +11,8 @@ export const useUserStore = defineStore('userStore', {
         loading: Boolean(false),
         hasProfile: Boolean(false),
         profileId: String,
+        roleOperations: [] as OperationsModel[],
+        lockOperations: [] as OperationsModel[],
     }),
     actions: {
         loadUsers(): void {
@@ -71,7 +74,43 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async changeRole(newRole: String, id: String) {
+        async getPendingRoleChanges() {
+            this.loading = true;
+            const errorStore = useErrorStore();
+            await axiosInstance.get(`/api/v1/users/pending/role`).then((response) => {
+                if(this.roleOperations.length > 0) {
+                    // reloads the list of users every time the method gets called,
+                    // in case the list is not empty
+                    this.roleOperations = [];
+                }
+                response.data.forEach((element: object) => {
+                    this.roleOperations.push(ConvertToOperationsModel.toOperationsModel(element));
+                });
+            }).catch((error) => {
+                errorStore.catchGetAllError(error);
+            });
+            this.loading = false;
+        },
+
+        async getPendingLockChanges() {
+            this.loading = true;
+            const errorStore = useErrorStore();
+            await axiosInstance.get(`/api/v1/users/pending/lock`).then((response) => {
+                if(this.lockOperations.length > 0) {
+                    // reloads the list of users every time the method gets called,
+                    // in case the list is not empty
+                    this.lockOperations = [];
+                }
+                response.data.forEach((element: object) => {
+                    this.lockOperations.push(ConvertToOperationsModel.toOperationsModel(element));
+                });
+            }).catch((error) => {
+                errorStore.catchGetAllError(error);
+            });
+            this.loading = false;
+        },
+
+        async changeRole(id: String, newRole: String) {
             this.loading = true;
             const errorStore = useErrorStore()
             await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then((response) =>{
