@@ -2,42 +2,42 @@
   <v-container>
     <v-form @submit.prevent>
 
-      <div class="header mt-0 pt-0">
-        <div class="d-flex flex-column align-items-center">
+      <div class="d-md-flex flex-md-row mt-0 pt-0">
+        <div class="pl-3">
           <upload-image-button
               v-on:upload="onUploadProfilePic"
               :old-picture="oldPic"
               v-on:toggleDelete="onToggleDelete"/>
         </div>
-        <v-row class="pl-6 pt-3">
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
+        <v-row class="pl-md-6 pl-3 pt-6 pt-sm-6">
+          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-text-field v-model="firstName"
                           label="Vorname"
                           :rules="[v => v.length > 0 || 'Erforderlich!']"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
+          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-text-field v-model="lastName"
                           label="Nachname"
                           :rules="[v => v.length > 0 || 'Erforderlich']"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
+          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-autocomplete v-model="jobTitle"
                             label="Jobprofil"
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="detailStore.jobs"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
+          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-autocomplete v-model="primarySkill"
                             label="Primärkompetenz"
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="detailStore.primarys"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
+          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-text-field v-model="phoneNumber"
                           label="Telefonnummer"
                           :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
+          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-text-field v-model="birthdate"
                           label="Geburtsdatum"
                           :rules="[ date => checkDateFormat(date) ||
@@ -46,9 +46,9 @@
         </v-row>
       </div>
 
-      <v-row class="skillRow pt-5">
+      <v-row class="pt-5">
         <v-col cols="12" lg="6" md="6" sm="12">
-          <div class="skillsAndDegree d-flex flex-column">
+          <div class="d-flex flex-column">
 
            <SkillInput :skills-in="detailStore.details.getSkills()"
            v-on:updateSkills="(value) => {this.skills = value;}"/>
@@ -68,16 +68,11 @@
       </v-row>
 
       <div class="buttons d-flex justify-end">
-        <v-btn class="mt-10"
-               :style="!isValid ? {
-                  color: '#BDBDBD !important',
-                  border: '1px dashed #BBBBBB !important',
-                } : ''"
-               :disabled="!isValid"
-               @click="update? updateProfile() : createProfile()"
-               elevation="0">
-          {{ update ? "Änderungen speichern" : "Profil erstellen" }}
-        </v-btn>
+
+        <ConfirmButton :update="update"
+                       :is-valid="isValid"
+                        @updateProfile="updateProfile()"
+                        @createProfile="createProfile()"/>
 
         <v-btn class="mt-10 ml-lg-5 ml-md-5"
                @click="leave"
@@ -96,6 +91,7 @@ import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
 import UploadImageButton from "@/components/EditComponents/UploadImageButton.vue";
 import SkillInput from "@/components/EditComponents/SkillInput.vue";
+import ConfirmButton from "@/components/EditComponents/ConfirmButton.vue";
 
 export default {
   name: "EditComponent",
@@ -109,7 +105,7 @@ export default {
       required: false
     }
   },
-  components: {SkillInput, UploadImageButton},
+  components: {ConfirmButton, SkillInput, UploadImageButton},
   setup(props) {
     const detailStore = useDetailStore();
     const errorStore = useErrorStore();
@@ -243,10 +239,6 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  width: 100%;
-  display: flex;
-}
 
 .references {
   min-height: 234px;
@@ -257,32 +249,10 @@ img {
   width: 200px;
 }
 
-.skillsAndDegree {
-  margin-left: -10px;
-}
-
 @media screen and (max-width: 1050px) {
-  .header {
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-  }
-
-
-  .skillsAndDegree {
-    margin-left: 0;
-  }
 }
 
 @media screen and (max-width: 957px) {
-  .header {
-    display: grid;
-    grid-template-rows: 0.5fr 1fr;
-  }
-
-  .skillsAndDegree {
-    margin-left: 0;
-    margin-top: 20px;
-  }
 
   .buttons {
     flex-direction: column;
