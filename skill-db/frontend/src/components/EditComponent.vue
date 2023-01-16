@@ -6,8 +6,8 @@
         <div class="d-flex flex-column align-items-center">
           <upload-image-button
               v-on:upload="onUploadProfilePic"
-              :old-picture="pic"
-          v-on:delete="deleteProfilePicture"/>
+              :old-picture="oldPic"
+              v-on:toggleDelete="onToggleDelete"/>
         </div>
 
         <v-row class="headline">
@@ -57,18 +57,19 @@
 
         <v-col>
           <v-textarea class="references" v-model="references" label="Referenzen"
-                        :rules="[v => v.length > 0 || 'Erforderlich!']"/>
+                      :rules="[v => v.length > 0 || 'Erforderlich!']"/>
         </v-col>
       </v-row>
 
       <div class="buttons d-flex justify-end">
-        <v-btn  class="mt-10"
+        <v-btn class="mt-10"
                :style="!isFilled ? {
                   color: '#BDBDBD !important',
                   border: '1px dashed #BBBBBB !important',
                 } : ''"
                :disabled="!isFilled"
-               @click="submitProfile()" elevation="0">
+               @click="update? updateProfile() : submitProfile()"
+               elevation="0">
           {{ update ? "Änderungen speichern" : "Profil erstellen" }}
         </v-btn>
 
@@ -90,8 +91,8 @@ import UploadImageButton from "@/components/UploadImageButton.vue";
 
 export default {
   name: "EditComponent",
-  props: ['detail', 'update','oldPicture'],
-  components: { UploadImageButton },
+  props: ['detail', 'update', 'oldPicture'],
+  components: {UploadImageButton},
   data() {
     return {
       firstName: '',
@@ -108,8 +109,9 @@ export default {
       givenTechnologies: [],
       newTechnologies: '',
       showAddTechnology: false,
+      picToDelete: false,
       profilePicUri: '',
-      pic:''
+      oldPic: ''
     }
   },
 
@@ -133,7 +135,7 @@ export default {
       this.primarySkill = this.detail.getPrimarySkill();
       this.technologies = this.detail.getTechnologies();
       this.references = this.detail.getReferences();
-      this.pic = this.oldPicture;
+      this.oldPic = this.oldPicture;
     }
   },
 
@@ -141,26 +143,35 @@ export default {
     async submitProfile() {
       const detailStore = useDetailStore();
       const errorStore = useErrorStore();
-      if (this.update) {
-        const editDetails = ConvertToDetailModelForOutput.toDetail(this);
-        const id = this.detail.getId();
-        await detailStore.updateProfile(editDetails, id, this.profilePicUri);
-        if ((!errorStore.hasError || errorStore.allowed)) {
-          await router.push({name: 'userDetails', params: {id}});
-        }
-      } else {
-        const newDetails = ConvertToDetailModelForOutput.toDetail(this);
-        await detailStore.createProfile(newDetails, this.profilePicUri);
-        if (!errorStore.hasError) {
-          await router.push('/');
-        }
+      const newDetails = ConvertToDetailModelForOutput.toDetail(this);
+      await detailStore.createProfile(newDetails, this.profilePicUri);
+      if (!errorStore.hasError) {
+        await router.push('/');
       }
     },
-    deleteProfilePicture() {
+    async updateProfile() {
+      const editDetails = ConvertToDetailModelForOutput.toDetail(this);
+      const detailStore = useDetailStore();
+      const errorStore = useErrorStore();
+      const id = this.detail.getId();
+      if (this.picToDelete) {
+        await this.deleteProfilePicture();
+      }
+      await detailStore.updateProfile(editDetails, id, this.profilePicUri);
+      if ((!errorStore.hasError || errorStore.allowed)) {
+        await router.push({name: 'userDetails', params: {id}});
+      }
+    },
+    async deleteProfilePicture() {
       const detailStore = useDetailStore();
       const id = this.detail.getId();
-      detailStore.deleteProfilePictureByProfileId(id);
-      this.pic='';
+      console.log("hi");
+      await detailStore.deleteProfilePictureByProfileId(id);
+      this.oldPic = '';
+    },
+    onToggleDelete(targetValue) {
+      this.picToDelete = targetValue;
+      this.oldPic = '';
     },
     onUploadProfilePic(base64String) {
       this.profilePicUri = base64String;
