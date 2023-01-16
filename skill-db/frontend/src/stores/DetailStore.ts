@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ConvertToDetailModel, DetailModel} from "@/models/DetailModel";
+import {ConvertResponseToDetailModel, DetailModel} from "@/models/DetailModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 
@@ -19,7 +19,7 @@ export const useDetailStore = defineStore('detailStore', {
                 const errorStore = useErrorStore();
                 await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
                     console.log(response);
-                    this.details = ConvertToDetailModel.toDetail(response.data);
+                    this.details = ConvertResponseToDetailModel.toDetail(response.data);
                     profilePicId = response.data.profilePicId
                 }).catch((error) => {
                     errorStore.catchGetError(error, id);
@@ -51,7 +51,7 @@ export const useDetailStore = defineStore('detailStore', {
             },
 
             async createProfile(edits: DetailModel, profilePicUri: string) {
-                this.loading = true;
+                this.loading = true
                 const errorStore = useErrorStore();
                 await axiosInstance.post(`/api/v1/profiles/`,
                     {

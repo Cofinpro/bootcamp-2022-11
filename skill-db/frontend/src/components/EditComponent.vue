@@ -83,11 +83,11 @@
 
       <div class="buttons d-flex justify-end">
         <v-btn class="mt-10"
-               :style="!isFilled ? {
+               :style="!isValid ? {
                   color: '#BDBDBD !important',
                   border: '1px dashed #BBBBBB !important',
                 } : ''"
-               :disabled="!isFilled"
+               :disabled="!isValid"
                @click="update? updateProfile() : createProfile()"
                elevation="0">
           {{ update ? "Änderungen speichern" : "Profil erstellen" }}
@@ -189,8 +189,7 @@ export default {
     },
     async deleteProfilePicture() {
       const detailStore = useDetailStore();
-      const id = this.detail.getId();
-      console.log("hi");
+      const id = this.detailStore.details.getId();
       await detailStore.deleteProfilePictureByProfileId(id);
       this.oldPic = '';
     },
@@ -210,8 +209,8 @@ export default {
       }
     },
     addSkills() {
-      if (this.newTechnologies?.length > 0) {
-        let skills = this.newTechnologies.trim().split(',');
+      if (this.newSkills?.length > 0) {
+        let skills = this.newSkills.trim().split(',');
 
         this.givenTechnologies = this.givenTechnologies.concat(skills);
         this.skills = this.skills.concat(skills);
@@ -235,7 +234,7 @@ export default {
     },
   },
   computed: {
-    isFilled() {
+    isValid() {
       return (this.checkDateFormat(this.birthdate) &&
           this.checkPhoneNumberFormat(this.phoneNumber) &&
           this.references.length > 0 &&

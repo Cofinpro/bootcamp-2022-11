@@ -134,7 +134,7 @@ export class DetailModel {
     }
 }
 
-export class ConvertToDetailModel {
+export class ConvertResponseToDetailModel {
     public static toDetail(object: any): DetailModel {
         const detailModel = new DetailModel();
         detailModel.setId(object?.id.toString());
