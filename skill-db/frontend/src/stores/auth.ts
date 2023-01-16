@@ -27,7 +27,6 @@ export const useAuthStore = defineStore('auth', {
                 router.push('/');
             }).catch((error) => {
                 errorStore.catchTokenError(error);
-                console.log(error.response)
             });
         },
         logout(): void{
@@ -57,7 +56,6 @@ export const useAuthStore = defineStore('auth', {
                     return false;
                 }).catch((error) => {
                     errorStore.catchTokenError(error);
-                    console.log(error.response)
                     this.loggedIn = false;
                     return false;
                 })

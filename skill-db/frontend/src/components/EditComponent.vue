@@ -40,8 +40,7 @@
             <v-autocomplete v-model="technologies" label="Skills"
                             :items="givenTechnologies"
                             multiple auto-select-first
-                            chips closable-chips
-            label="Skills"/>
+                            chips closable-chips/>
 
             <v-btn class="mb-5" size="small" elevation="0"
                    v-if="!showAddTechnology" @click="showAddTechnology=true">
@@ -146,7 +145,7 @@ export default {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
         await detailStore.updateProfile(editDetails, id, this.profilePicUri);
-        if (!errorStore.hasError) {
+        if ((!errorStore.hasError || errorStore.allowed)) {
           await router.push({name: 'userDetails', params: {id}});
         }
       } else {
