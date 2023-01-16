@@ -9,35 +9,35 @@
               :old-picture="oldPic"
               v-on:toggleDelete="onToggleDelete"/>
         </div>
-        <v-row class="pl-6">
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+        <v-row class="pl-6 pt-3">
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-text-field v-model="firstName"
                           label="Vorname"
                           :rules="[v => v.length > 0 || 'Erforderlich!']"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-text-field v-model="lastName"
                           label="Nachname"
                           :rules="[v => v.length > 0 || 'Erforderlich']"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-autocomplete v-model="jobTitle"
                             label="Jobprofil"
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="jobs"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-autocomplete v-model="primarySkill"
                             label="Primärkompetenz"
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
                             :items="primaries"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-text-field v-model="phoneNumber"
                           label="Telefonnummer"
                           :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
           </v-col>
-          <v-col lg="6" md="6" sm="12" class="pa-0 pr-4">
+          <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-text-field v-model="birthdate"
                           label="Geburtsdatum"
                           :rules="[ date => checkDateFormat(date) ||
