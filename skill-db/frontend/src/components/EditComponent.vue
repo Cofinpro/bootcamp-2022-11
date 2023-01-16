@@ -24,13 +24,13 @@
             <v-autocomplete v-model="jobTitle"
                             label="Jobprofil"
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
-                            :items="jobs"/>
+                            :items="detailStore.jobs"/>
           </v-col>
           <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-autocomplete v-model="primarySkill"
                             label="Primärkompetenz"
                             :rules="[v => v.length > 0 || 'Erforderlich!']"
-                            :items="primaries"/>
+                            :items="detailStore.primarys"/>
           </v-col>
           <v-col lg="6" md="6" sm="12" class="pa-0 pr-3">
             <v-text-field v-model="phoneNumber"
@@ -51,7 +51,7 @@
           <div class="skillsAndDegree d-flex flex-column">
             <v-autocomplete v-model="technologies"
                             label="Skills"
-                            :items="givenTechnologies"
+                            :items="detailStore.skills"
                             multiple
                             auto-select-first
                             chips
@@ -102,7 +102,7 @@
   </v-container>
 </template>
 
-<script> /*TODO should be TypeScript*/
+<script lang="ts"> /*TODO should be TypeScript*/
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
@@ -113,6 +113,17 @@ export default {
   name: "EditComponent",
   props: ['detail', 'update', 'oldPicture'],
   components: {UploadImageButton},
+  setup() {
+     const detailStore = useDetailStore();
+     const errorStore = useErrorStore();
+     detailStore.loadJobs();
+     detailStore.loadPrimarys();
+     detailStore.loadSkills();
+     return{
+       detailStore,
+       errorStore
+     }
+  },
   data() {
     return {
       firstName: '',
@@ -124,9 +135,6 @@ export default {
       primarySkill: '',
       technologies: [],
       references: '',
-      jobs: [],
-      primaries: [],
-      givenTechnologies: [],
       newTechnologies: '',
       showAddTechnology: false,
       picToDelete: false,
@@ -136,15 +144,6 @@ export default {
   },
 
   created() {
-    const detailStore = useDetailStore();
-    detailStore.getSkills();
-    detailStore.getJobs();
-    detailStore.getPrimarys();
-
-    this.givenTechnologies = detailStore.skills;
-    this.jobs = detailStore.jobs;
-    this.primaries = detailStore.primarys;
-
     if (this.update) {
       this.firstName = this.detail.getFirstName();
       this.lastName = this.detail.getLastName();

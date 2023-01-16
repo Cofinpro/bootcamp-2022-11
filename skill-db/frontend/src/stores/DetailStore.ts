@@ -111,7 +111,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            getSkills() {
+            loadSkills() {
                 this.skills = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
@@ -124,8 +124,7 @@ export const useDetailStore = defineStore('detailStore', {
                 });
                 this.loading = false;
             },
-
-            getJobs() {
+            loadJobs() {
                 this.jobs = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
@@ -139,7 +138,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            getPrimarys() {
+            loadPrimarys() {
                 this.primarys = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
