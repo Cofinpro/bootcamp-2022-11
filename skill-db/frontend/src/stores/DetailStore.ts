@@ -93,6 +93,7 @@ export const useDetailStore = defineStore('detailStore', {
                     }).then(() => {
                     errorStore.toggleHasError();
                 }).catch((error) => {
+                    console.log(error);
                     errorStore.catchPostPatchError(error);
                 });
                 this.loading = false;

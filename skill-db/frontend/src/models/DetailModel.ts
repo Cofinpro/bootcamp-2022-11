@@ -7,7 +7,7 @@ export class DetailModel {
     private degree: string;
     private jobTitle: string;
     private primarySkill: string;
-    private technologies: string[];
+    private skills: string[];
     private references: string;
     private phoneNumber: string;
     private email: string;
@@ -22,7 +22,7 @@ export class DetailModel {
         this.jobTitle = '';
         this.degree = '';
         this.primarySkill = '';
-        this.technologies = [];
+        this.skills = [];
         this.references = '';
         this.phoneNumber = '';
         this.email = '';
@@ -93,12 +93,12 @@ export class DetailModel {
         this.primarySkill = value;
     }
 
-    public getTechnologies(): string[] {
-        return this.technologies;
+    public getSkills(): string[] {
+        return this.skills;
     }
 
-    public setTechnologies(value: string[]) {
-        this.technologies = value;
+    public setSkills(value: string[]) {
+        this.skills = value;
     }
 
     public getReferences(): string {
@@ -165,7 +165,7 @@ interface DetailObject {
     degree: string,
     jobTitle: string,
     primarySkill: string,
-    technologies: string[],
+    skills: string[],
     references: string,
     phoneNumber: string,
     email: string
@@ -180,10 +180,9 @@ export class ConvertToDetailModelForOutput {
         detailModel.setDegree(object?.degree.toString());
         detailModel.setJobTitle(object?.jobTitle.toString());
         detailModel.setPrimarySkill(object?.primarySkill.toString());
-        detailModel.setTechnologies(object?.technologies);
+        detailModel.setSkills(object?.skills);
         detailModel.setReferences(object?.references.toString());
         detailModel.setPhoneNumber(object?.phoneNumber);
-        detailModel.setEmail(object?.email.toString());
         return detailModel;
     }
 

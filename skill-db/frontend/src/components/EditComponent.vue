@@ -49,7 +49,7 @@
       <v-row class="skillRow pt-5">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete v-model="detailStore.details"
+            <v-autocomplete v-model="skills"
                             label="Skills"
                             :items="detailStore.skills"
                             multiple
@@ -63,7 +63,7 @@
               Technologie nicht gefunden?
             </v-btn>
             <v-text-field v-if="showAddTechnology"
-                          v-model="newTechnologies"
+                          v-model="newSkills"
                           placeholder="Füge mehrere Skills hinzu, indem du sie mit Kommata [','] separierst."
                           @keydown.enter="addSkills"/>
 
@@ -116,7 +116,7 @@ export default {
     oldPicture: {type: String, required: false}
   },
   components: {UploadImageButton},
-  setup(props: { update: Boolean; }) {
+  setup(props) {
     const detailStore = useDetailStore();
     const errorStore = useErrorStore();
     detailStore.loadJobs();
@@ -178,14 +178,12 @@ export default {
     },
     async updateProfile() {
       const editDetails = ConvertToDetailModelForOutput.toDetail(this);
-      const detailStore = useDetailStore();
-      const errorStore = useErrorStore();
-      const id = this.detail.getId();
+      const id = this.detailStore.details.getId();
       if (this.picToDelete) {
         await this.deleteProfilePicture();
       }
-      await detailStore.updateProfile(editDetails, id, this.profilePicUri);
-      if ((!errorStore.hasError || errorStore.allowed)) {
+      await this.detailStore.updateProfile(editDetails, id, this.profilePicUri);
+      if ((!this.errorStore.hasError || this.errorStore.allowed)) {
         await router.push({name: 'userDetails', params: {id}});
       }
     },
