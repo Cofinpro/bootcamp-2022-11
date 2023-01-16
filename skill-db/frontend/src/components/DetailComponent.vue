@@ -1,4 +1,5 @@
 <template>
+  <div class="pt-md-14">
   <div style="float: right">
     <dropdown-button :functions="dropdownFunctions"/>
     <delete-profile-dialog v-model="toDelete" :functions="dialogFunctions"/>
@@ -6,7 +7,7 @@
   </div>
   <v-container class="pr-0 pl-2 pl-sm-2 pl-md-4">
     <v-row class="pl-n6">
-      <v-col cols="12" lg="4" md="5" sm="12" class="d-flex justify-md-center">
+      <v-col cols="12" lg="4" md="4" sm="12" class="d-flex justify-md-center">
         <img v-if="detailStore.profilePic" v-bind:src="detailStore.profilePic" alt="Profilbild" class="profilePic mr-3">
         <v-avatar  v-else color="primary" size="170" rounded="0">
         <span class="text-h3">{{ detailStore.details.getFirstName()[0] }}{{
@@ -14,7 +15,7 @@
           }}</span>
         </v-avatar>
       </v-col>
-      <v-col cols="12" lg="8" md="7" sm="12" class="pa-0 pl-md-3 pl-sm-0 pr-0">
+      <v-col cols="12" lg="8" md="8" sm="12" class="pa-0 pl-md-3 pl-sm-0 pr-0">
         <v-container class="pa-2 pr-0">
           <v-row>
             <v-col cols="12" lg="12" md="12" sm="12">
@@ -23,28 +24,28 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col cols="12" lg="8" md="7" sm="12" align-self="start">
-              <p>
+            <v-col cols="12" lg="8" md="8" sm="12" align-self="start">
+              <p class="text-no-wrap">
                 <v-icon class="mr-3" size="small" color="#BDBDBD">
                   mdi-email
                 </v-icon>
                 {{ detailStore.details.getEmail() }}
               </p>
-              <p class="mt-3">
+              <p class="mt-3 text-no-wrap">
                 <v-icon class="mr-3" size="small" color="#BDBDBD">
                   mdi-crown-outline
                 </v-icon>
                 {{ detailStore.details.getPrimarySkill() }}
               </p>
             </v-col>
-            <v-col cols="12" lg="4" md="5" sm="12" align-self="end">
-              <p>
-                <v-icon class="mr-3" size="small" color="#BDBDBD">
+            <v-col cols="12" lg="4" md="4" sm="12" align-self="end" class="pr-0">
+              <p class="text-no-wrap">
+                <v-icon class="mr-3 text-no-wrap" size="small" color="#BDBDBD">
                   mdi-phone
                 </v-icon>
                 {{ detailStore.details.getPhoneNumber() }}
               </p>
-              <p class="mt-3">
+              <p class="mt-3 text-no-wrap">
                 <v-icon class="mr-3" size="small" color="#BDBDBD">
                   mdi-cake-variant-outline
                 </v-icon>
@@ -56,7 +57,7 @@
       </v-col>
     </v-row>
 
-    <v-row class="pt-8 pl-md-6 d-md-flex justify-md-center">
+    <v-row class="pt-8 pl-md-6 d-md-flex justify-md-center align-content-stretch">
       <v-col cols="12" lg="4" md="5" sm="12" class="d-md-flex flex-column align-md-center align-sm-start pa-sm-3 pl-2 ">
         <v-card class="ml-n5" style="border: 1px solid lightgray" max-width="275" min-width="275">
           <p class="block_title pa-1">
@@ -93,6 +94,7 @@
       </v-col>
     </v-row>
   </v-container>
+  </div>
 </template>
 
 <script lang="ts">
