@@ -144,7 +144,7 @@ export class ConvertToDetailModel {
         detailModel.setDegree(object?.degree.toString());
         detailModel.setJobTitle(object?.jobTitle.toString());
         detailModel.setPrimarySkill(object?.primaryExpertise.toString());
-        detailModel.setTechnologies(object?.skills);
+        detailModel.setSkills(object?.skills);
         detailModel.setReferences(object?.referenceText.toString());
         detailModel.setPhoneNumber(object?.phoneNumber.toString());
         detailModel.setEmail(object?.email.toString());

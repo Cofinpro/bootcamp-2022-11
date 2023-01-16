@@ -56,7 +56,7 @@
           Skills
         </p>
         <div class="d-flex flex-wrap">
-          <div v-for="skill in detailStore.details.getTechnologies()" class="pa-1">
+          <div v-for="skill in detailStore.details.getSkills()" class="pa-1">
             <v-chip>{{ skill }}</v-chip>
           </div>
         </div>

@@ -144,7 +144,7 @@ export default {
       jobTitle = detailStore.details.getJobTitle();
       phoneNumber = detailStore.details.getPhoneNumber();
       primarySkill = detailStore.details.getPrimarySkill();
-      skills = detailStore.details.getTechnologies();
+      skills = detailStore.details.getSkills();
       references = detailStore.details.getReferences();
     }
     return {
