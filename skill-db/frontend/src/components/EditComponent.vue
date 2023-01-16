@@ -102,7 +102,7 @@
   </v-container>
 </template>
 
-<script lang="ts"> /*TODO should be TypeScript*/
+<script lang="ts">
 import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
@@ -253,11 +253,6 @@ export default {
   min-height: 234px;
 }
 
-
-.uploadBtn {
-  width: 200px;
-}
-
 img {
   height: 200px;
   width: 200px;
@@ -273,9 +268,6 @@ img {
     grid-template-rows: 1fr 1fr;
   }
 
-  .headline {
-    margin-left: -10px;
-  }
 
   .skillsAndDegree {
     margin-left: 0;
@@ -286,12 +278,6 @@ img {
   .header {
     display: grid;
     grid-template-rows: 0.5fr 1fr;
-  }
-
-  .headline {
-    grid-row: 2;
-    margin-left: -10px;
-    margin-bottom: 10px;
   }
 
   .skillsAndDegree {
