@@ -129,8 +129,13 @@ export default {
     let phoneNumber = '';
     let primarySkill = '';
     let jobTitle='';
-    let technologies = [] as string[];
+    let skills = [] as string[];
     let references = '';
+    let newSkills = '';
+    let showAddTechnology = false;
+    let picToDelete = false;
+    let profilePicUri= '';
+    let oldPic= '';
     if (props.update) {
       firstName = detailStore.details.getFirstName();
       lastName = detailStore.details.getLastName();
@@ -139,7 +144,7 @@ export default {
        jobTitle = detailStore.details.getJobTitle();
        phoneNumber = detailStore.details.getPhoneNumber();
        primarySkill = detailStore.details.getPrimarySkill();
-       technologies = detailStore.details.getTechnologies();
+       skills = detailStore.details.getTechnologies();
        references = detailStore.details.getReferences();
     }
     return {
@@ -152,17 +157,13 @@ export default {
       jobTitle,
       phoneNumber,
       primarySkill,
-      technologies,
+      skills,
       references,
-    }
-  },
-  data() {
-    return {
-      newTechnologies: '',
-      showAddTechnology: false,
-      picToDelete: false,
-      profilePicUri: '',
-      oldPic: ''
+      newSkills,
+      showAddTechnology,
+      picToDelete,
+      profilePicUri,
+      oldPic
     }
   },
   methods: {
@@ -215,7 +216,7 @@ export default {
         let skills = this.newTechnologies.trim().split(',');
 
         this.givenTechnologies = this.givenTechnologies.concat(skills);
-        this.technologies = this.technologies.concat(skills);
+        this.skills = this.skills.concat(skills);
       }
 
       this.newTechnologies = '';
