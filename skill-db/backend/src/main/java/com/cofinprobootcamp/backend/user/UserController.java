@@ -3,7 +3,6 @@ package com.cofinprobootcamp.backend.user;
 import com.cofinprobootcamp.backend.approval.*;
 import com.cofinprobootcamp.backend.approval.dto.LockOperationsOutDTO;
 import com.cofinprobootcamp.backend.approval.dto.RoleOperationsOutDTO;
-import com.cofinprobootcamp.backend.auth.CustomJwtAuthenticationToken;
 import com.cofinprobootcamp.backend.exceptions.LockStatusChangePendingException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.RoleChangePendingException;
@@ -12,8 +11,6 @@ import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -71,7 +68,7 @@ public class UserController {
     @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_ROLE_BY_NAME')")
     public void changeRole(@PathVariable String id, @PathVariable String roleName) throws RoleChangePendingException{
         PendingOperation<User> method = () -> userService.changeRole(id, roleName);
-        boolean isApproved = checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_ROLE_BY_NAME", id, StandardRoles.ADMIN, id, roleName);
+        boolean isApproved = approvalService.checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_ROLE_BY_NAME", id, StandardRoles.ADMIN, id, roleName);
         if (!isApproved) {
             throw new RoleChangePendingException();
         }
@@ -81,7 +78,7 @@ public class UserController {
     @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_LOCK')")
     public void lockUser(@PathVariable String id) {
         PendingOperation<User> method = () -> userService.lockUser(id);
-        boolean isApproved = checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_LOCK", id, StandardRoles.ADMIN, id);
+        boolean isApproved = approvalService.checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_LOCK", id, StandardRoles.ADMIN, id);
         if (!isApproved) {
             throw new LockStatusChangePendingException();
         }
@@ -99,52 +96,4 @@ public class UserController {
         return approvalService.getAllLockOperations();
     }
 
-    /**
-     * Checks whether the given operation (can be any function wrapped inside an
-     * instance of {@link PendingOperation}) may be evaluated and executed or not.
-     * In particular, the verification uses the "4-eyes principle" to ensure that
-     * only operations are approved that were called by different authorized users
-     * on the same resource with the same parameters by implementing a custom
-     * {@link OperationApprovalManager}.
-     * <br>
-     * This is a custom specialization for the "/users" endpoint that supports
-     * handling operation with and on {@link User} objects specifically.
-     *
-     * @param method        An instance of {@link PendingOperation} that holds the method to be
-     *                      executed eventually through this endpoint call
-     * @param methodPostfix A {@link String} representing the unique endpoint method calling
-     *                      this function
-     * @param userIdToEdit  A {@link String} representing the {@link User} to be edited or returned
-     *                      by {@code method}
-     * @param roleToCheck   An instance of {@link StandardRoles} that determines for which user
-     *                      roles that check should apply
-     * @param params        An array of parameters that will be passed to the method (of type
-     *                      {@link Object})
-     * @return {@code true}, if the operation was approved and successfully executed,
-     * else {@code false}
-     */
-    private boolean checkOperationWithFourEyesPrinciple(PendingOperation<User> method,
-                                                        String methodPostfix,
-                                                        String userIdToEdit,
-                                                        StandardRoles roleToCheck,
-                                                        Object... params) {
-        UserOutDTO user = userService.getUserByOuterId(userIdToEdit);
-        OperationApprovalManager<PendingOperation<User>> methodManager = pendingOperation -> {
-            pendingOperation.resolve();
-            return true;
-        };
-        if (!user.role().identifier().equals(roleToCheck.name())) {
-            return methodManager.approve(method);
-        }
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isApproved = false;
-        if (authentication instanceof CustomJwtAuthenticationToken customAuth) {
-            isApproved = approvalService.presentForApproval(method,
-                    methodManager,
-                    methodPostfix,
-                    customAuth.getOuterId(),
-                    params);
-        }
-        return isApproved;
-    }
 }

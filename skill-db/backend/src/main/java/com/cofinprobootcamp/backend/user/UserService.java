@@ -109,6 +109,11 @@ public class UserService {
         return profileOuterId;
     }
 
+    public Long getIdByOuterId(String outerId) {
+        User user = userRepository.findFirstByOuterId(outerId).orElseThrow(UserNotFoundException::new);
+        return user.getId();
+    }
+
     public boolean hasUserAProfile(String outerId) {
         return getUserByOuterId(outerId).profileId() != null;
     }
@@ -126,11 +131,6 @@ public class UserService {
         User user = userRepository.findFirstByOuterId(id).orElseThrow(UserNotFoundException::new);
         user.setLocked(!user.isLocked());
         return userRepository.saveAndFlush(user);
-    }
-
-    public Long getIdByOuterId(String outerId) {
-        User user = userRepository.findFirstByOuterId(outerId).orElseThrow(UserNotFoundException::new);
-        return user.getId();
     }
 
     private void tryToSetUniqueOuterId(User user) {

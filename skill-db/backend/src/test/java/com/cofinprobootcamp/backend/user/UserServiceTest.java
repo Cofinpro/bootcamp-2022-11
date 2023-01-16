@@ -115,9 +115,7 @@ class UserServiceTest {
         assertThat(userService.getUserByUsername(user.getUsername()).getUsername()).isEqualTo(user.getUsername());
 
         Mockito.when(userRepository.findByUsername("a")).thenReturn(Optional.empty());
-        assertThrows(UsernameNotFoundException.class, () -> {
-            userService.getUserByUsername("a");
-        });
+        assertThrows(UsernameNotFoundException.class, () -> userService.getUserByUsername("a"));
     }
 
     @Test
@@ -139,8 +137,24 @@ class UserServiceTest {
 
         Mockito.when(userRepository.findFirstByOuterId(outerId)).thenReturn(Optional.of(user));
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
-        userService.changeRole(outerId, StandardRoles.ADMIN.name());
+        userService.changeRole(outerId, StandardRoles.ADMIN.toString());
         Mockito.verify(userRepository, Mockito.times(1)).saveAndFlush(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue().getRole()).isEqualTo(StandardRoles.ADMIN);
+    }
+
+    @Test
+    void lockUser() {
+        String outerId = "00000";
+        User user = User.builder()
+                .outerId(outerId)
+                .role(StandardRoles.USER)
+                .username("aaa@bbb.cc")
+                .build();
+
+        Mockito.when(userRepository.findFirstByOuterId(outerId)).thenReturn(Optional.of(user));
+        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
+        userService.lockUser(outerId);
+        Mockito.verify(userRepository, Mockito.times(1)).saveAndFlush(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue().isLocked()).isTrue();
     }
 }

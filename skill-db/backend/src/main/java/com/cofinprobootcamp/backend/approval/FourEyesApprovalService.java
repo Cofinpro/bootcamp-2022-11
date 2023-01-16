@@ -2,9 +2,14 @@ package com.cofinprobootcamp.backend.approval;
 
 import com.cofinprobootcamp.backend.approval.dto.LockOperationsOutDTO;
 import com.cofinprobootcamp.backend.approval.dto.RoleOperationsOutDTO;
+import com.cofinprobootcamp.backend.auth.CustomJwtAuthenticationToken;
 import com.cofinprobootcamp.backend.exceptions.InternalOperationFailedException;
+import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.user.User;
 import com.cofinprobootcamp.backend.user.UserService;
+import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,9 +42,9 @@ public class FourEyesApprovalService<T> {
      * @param operationParams An array of parameters that were passed to the operation
      * @return {@code true}, if the operation was approved and executed, {@code false} otherwise
      */
-    public boolean presentForApproval(
-            PendingOperation<?> pendingOperation,
-            OperationApprovalManager<PendingOperation<T>> approvalManager,
+    private boolean presentForApproval(
+            PendingOperation<User> pendingOperation,
+            OperationApprovalManager<PendingOperation<User>> approvalManager,
             String operationId,
             String operationSourceId,
             Object... operationParams) {
@@ -49,7 +54,7 @@ public class FourEyesApprovalService<T> {
                     && storedOperation.getParameters().equals(createParamsString(operationParams))
                     && !storedOperation.getUserId().equals(operationSourceId)
             ) {
-                isApproved = approvalManager.approve((PendingOperation<T>) pendingOperation);
+                isApproved = approvalManager.approve((PendingOperation<User>) pendingOperation);
                 deleteStoredOperationById(storedOperation.getId());
             }
         }
@@ -116,5 +121,54 @@ public class FourEyesApprovalService<T> {
             builder.append(";");
         }
         return builder.toString();
+    }
+
+    /**
+     * Checks whether the given operation (can be any function wrapped inside an
+     * instance of {@link PendingOperation}) may be evaluated and executed or not.
+     * In particular, the verification uses the "4-eyes principle" to ensure that
+     * only operations are approved that were called by different authorized users
+     * on the same resource with the same parameters by implementing a custom
+     * {@link OperationApprovalManager}.
+     * <br>
+     * This is a custom specialization for the "/users" endpoint that supports
+     * handling operation with and on {@link User} objects specifically.
+     *
+     * @param method        An instance of {@link PendingOperation} that holds the method to be
+     *                      executed eventually through this endpoint call
+     * @param methodPostfix A {@link String} representing the unique endpoint method calling
+     *                      this function
+     * @param userIdToEdit  A {@link String} representing the {@link User} to be edited or returned
+     *                      by {@code method}
+     * @param roleToCheck   An instance of {@link StandardRoles} that determines for which user
+     *                      roles that check should apply
+     * @param params        An array of parameters that will be passed to the method (of type
+     *                      {@link Object})
+     * @return {@code true}, if the operation was approved and successfully executed,
+     * else {@code false}
+     */
+    public boolean checkOperationWithFourEyesPrinciple(PendingOperation<User> method,
+                                                       String methodPostfix,
+                                                       String userIdToEdit,
+                                                       StandardRoles roleToCheck,
+                                                       Object... params) {
+        UserOutDTO user = userService.getUserByOuterId(userIdToEdit);
+        OperationApprovalManager<PendingOperation<User>> methodManager = pendingOperation -> {
+            pendingOperation.resolve();
+            return true;
+        };
+        if (!user.role().identifier().equals(roleToCheck.name())) {
+            return methodManager.approve(method);
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isApproved = false;
+        if (authentication instanceof CustomJwtAuthenticationToken customAuth) {
+            isApproved = presentForApproval(method,
+                    methodManager,
+                    methodPostfix,
+                    customAuth.getOuterId(),
+                    params);
+        }
+        return isApproved;
     }
 }
