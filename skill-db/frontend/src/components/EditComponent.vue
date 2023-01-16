@@ -152,7 +152,8 @@ export default {
       jobTitle,
       phoneNumber,
       primarySkill,
-
+      technologies,
+      references,
     }
   },
   data() {
