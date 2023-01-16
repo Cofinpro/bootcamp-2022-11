@@ -63,7 +63,7 @@
           <p class="block_title pa-1">
             Skills
           </p>
-          <div class="d-flex flex-wrap justify-space-between">
+          <div class="d-flex flex-wrap justify-start">
             <div v-for="skill in detailStore.details.getTechnologies()" class="pa-2">
               <v-chip>{{ skill }}</v-chip>
             </div>
