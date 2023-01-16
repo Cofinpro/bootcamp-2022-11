@@ -38,7 +38,6 @@ export const useOverviewStore = defineStore('OverviewStore', {
                         element.setProfilePic(URL.createObjectURL(response.data));
                     }
                 }).catch((error) => {
-                    console.log(error);
                     errorStore.catchDownloadImageError(error);
                 })
             }

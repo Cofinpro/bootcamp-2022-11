@@ -37,11 +37,10 @@
       <v-row class="skillRow">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete v-model="technologies"
+            <v-autocomplete v-model="technologies" label="Skills"
                             :items="givenTechnologies"
                             multiple auto-select-first
-                            chips closable-chips
-            label="Skills"/>
+                            chips closable-chips/>
 
             <v-btn class="mb-5" size="small" elevation="0"
                    v-if="!showAddTechnology" @click="showAddTechnology=true">
@@ -57,30 +56,22 @@
         </v-col>
 
         <v-col>
-          <v-text-field class="references" v-model="references" label="Referenzen"
+          <v-textarea class="references" v-model="references" label="Referenzen"
                         :rules="[v => v.length > 0 || 'Erforderlich!']"/>
         </v-col>
       </v-row>
 
       <div class="buttons d-flex justify-end">
-        <v-btn v-if="update === 'false'" class="mt-10"
+        <v-btn  class="mt-10"
                :style="!isFilled ? {
                   color: '#BDBDBD !important',
                   border: '1px dashed #BBBBBB !important',
                 } : ''"
                :disabled="!isFilled"
                @click="submitProfile()" elevation="0">
-          Profil erstellen
+          {{ update ? "Änderungen speichern" : "Profil erstellen" }}
         </v-btn>
-        <v-btn v-if="update === 'true'" class="mt-10"
-               :style="!isFilled ? {
-                  color: '#BDBDBD !important',
-                  border: '1px dashed #BBBBBB !important',
-                } : ''"
-               :disabled="!isFilled"
-               @click="submitProfile()" elevation="0">
-          Änderungen speichern
-        </v-btn>
+
         <v-btn class="mt-10 ml-lg-5 ml-md-5"
                @click="leave" elevation="0">
           Abbrechen
@@ -132,7 +123,7 @@ export default {
     this.jobs = detailStore.jobs;
     this.primaries = detailStore.primarys;
 
-    if (this.update === 'true') {
+    if (this.update) {
       this.firstName = this.detail.getFirstName();
       this.lastName = this.detail.getLastName();
       this.degree = this.detail.getDegree();
@@ -150,12 +141,11 @@ export default {
     async submitProfile() {
       const detailStore = useDetailStore();
       const errorStore = useErrorStore();
-      console.log(this.isFilled);
-      if (this.update === 'true') {
+      if (this.update) {
         const editDetails = ConvertToDetailModelForOutput.toDetail(this);
         const id = this.detail.getId();
         await detailStore.updateProfile(editDetails, id, this.profilePicUri);
-        if (!errorStore.hasError) {
+        if ((!errorStore.hasError || errorStore.allowed)) {
           await router.push({name: 'userDetails', params: {id}});
         }
       } else {
@@ -176,7 +166,7 @@ export default {
       this.profilePicUri = base64String;
     },
     leave() {
-      if (this.update === 'true') {
+      if (this.update) {
         const id = this.detail.getId();
         router.push({name: 'userDetails', params: {id}});
       } else {
@@ -230,6 +220,15 @@ export default {
   display: flex;
 }
 
+.references {
+  min-height: 234px;
+}
+
+
+.uploadBtn {
+  width: 200px;
+}
+
 .headline {
   margin-left: 20px;
 }
@@ -277,7 +276,6 @@ img {
 
   .buttons {
     flex-direction: column;
-
   }
 }
 </style>

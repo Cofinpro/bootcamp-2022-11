@@ -7,6 +7,7 @@ export const useErrorStore = defineStore(
     {
         state: () => ({
             hasError: Boolean(false),
+            allowed: Boolean(false),
             errorText: '',
             authStore: useAuthStore(),
             errorMessages: {
@@ -70,10 +71,13 @@ export const useErrorStore = defineStore(
                     } else if (error.response.status === 403) {
                         this.authStore.logout();
                         this.errorText = this.errorMessages.notAllowed;
+                    } else if (error.response.status === 409) {
+                        this.errorText = 'Der Nutzer hat bereits ein Profil!';
                     } else if (error.response.status === 404) {
                         this.errorText = `${error.response.data.message}`;
                     } else if (error.response.status === 502) {
                         this.errorText = this.errorMessages.mailNotSent;
+                        this.allowed = true;
                     } else {
                         this.errorText = this.errorMessages.unknownError;
                     }
@@ -110,7 +114,16 @@ export const useErrorStore = defineStore(
 
             catchDownloadImageError(error: AxiosError) {
                 this.hasError = true;
-                this.errorText = this.errorMessages.unknownError
+                if (error.response == undefined) {
+                    this.errorText = this.errorMessages.unknownError;
+                } else {
+                    if (error.response.status === 401) {
+                        this.authStore.logout();
+                        this.errorText = this.errorMessages.unauthorized;
+                    } else {
+                        this.errorText = error.message;
+                    }
+                }
             },
 
             catchGetError(error: AxiosError, id: String) {
@@ -210,6 +223,21 @@ export const useErrorStore = defineStore(
                     }
                 }
             },
+
+            catchTokenError(error: AxiosError) {
+                this.hasError = true;
+                if (error.response == undefined) {
+                    this.errorText = this.errorMessages.unknownError;
+                } else {
+                    if (error.response.status === 401) {
+                        if (error.response.data.cause.causeExceptionName === "UserIsLockedException") {
+                            this.errorText = error.response.data.message.toString();
+                        }
+                    } else if (error.response.status === 500) {
+                        this.errorText = this.errorMessages.internalServerError;
+                    }
+                }
+            }
 
         }
     }
