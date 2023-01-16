@@ -43,6 +43,7 @@
 import ChipWithInfotext from "@/components/ChipWithInfotext.vue";
 import {useUserStore} from "@/stores/UserStore";
 import type {UserModel} from "@/models/UserModel";
+import {useErrorStore} from "@/stores/ErrorStore";
 export default {
   name: "UserDetails",
   components: { ChipWithInfotext },
@@ -67,8 +68,11 @@ export default {
     },
     async toggleLock(user: UserModel): Promise<void> {
       const userStore = useUserStore();
+      const errorStore = useErrorStore();
       await userStore.lockUser(user.getId());
-      user.setLocked(!user.getLocked());
+      if (!errorStore.hasError) {
+        user.setLocked(!user.getLocked());
+      }
     }
   }
 }

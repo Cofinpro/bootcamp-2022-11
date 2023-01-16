@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import {ConvertToUserModel, UserModel} from "@/models/UserModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
+import {AxiosError} from "axios";
 
 export const useUserStore = defineStore('userStore', {
     state: () => ({
@@ -73,8 +74,12 @@ export const useUserStore = defineStore('userStore', {
         async changeRole(newRole: String, id: String) {
             this.loading = true;
             const errorStore = useErrorStore()
-            await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then(() =>{
-                errorStore.toggleHasError();
+            await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then((response) =>{
+                if(response.status === 202) {
+                    throw new AxiosError(response.data.message, String(response.status));
+                } else {
+                    errorStore.toggleHasError();
+                }
             }).catch((error) => {
                 errorStore.catchPostPatchError(error);
             });
@@ -84,8 +89,12 @@ export const useUserStore = defineStore('userStore', {
         async lockUser(userId: String) {
             this.loading = true;
             const errorStore = useErrorStore()
-            await axiosInstance.patch(`/api/v1/users/${userId}/lock`).then(() =>{
-                errorStore.toggleHasError();
+            await axiosInstance.patch(`/api/v1/users/${userId}/lock`).then((response) =>{
+                if(response.status === 202) {
+                    throw new AxiosError(response.data.message, String(response.status));
+                } else {
+                    errorStore.toggleHasError();
+                }
             }).catch((error) => {
                 errorStore.catchPostPatchError(error);
             });
