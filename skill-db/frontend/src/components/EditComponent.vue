@@ -49,23 +49,9 @@
       <v-row class="skillRow pt-5">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete v-model="skills"
-                            label="Skills"
-                            :items="detailStore.skills"
-                            multiple
-                            auto-select-first
-                            chips
-                            closable-chips/>
 
-            <v-btn v-if="!showAddTechnology"
-                   class="mb-5" size="small" elevation="0"
-                   @click="showAddTechnology=true">
-              Technologie nicht gefunden?
-            </v-btn>
-            <v-text-field v-if="showAddTechnology"
-                          v-model="newSkills"
-                          placeholder="Füge mehrere Skills hinzu, indem du sie mit Kommata [','] separierst."
-                          @keydown.enter="addSkills"/>
+           <SkillInput :skills-in="detailStore.details.getSkills()"
+           v-on:updateSkills="(value) => {this.skills = value;}"/>
 
             <v-text-field v-model="degree"
                           label="Abschluss"
@@ -108,14 +94,21 @@ import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
 import UploadImageButton from "@/components/UploadImageButton.vue";
+import SkillInput from "@/components/SkillInput.vue";
 
 export default {
   name: "EditComponent",
   props: {
-    update: {type: Boolean, required: true},
-    oldPicture: {type: String, required: false}
+    update: {
+      type: Boolean,
+      required: true
+    },
+    oldPicture: {
+      type: String,
+      required: false
+    }
   },
-  components: {UploadImageButton},
+  components: {SkillInput, UploadImageButton},
   setup(props) {
     const detailStore = useDetailStore();
     const errorStore = useErrorStore();
