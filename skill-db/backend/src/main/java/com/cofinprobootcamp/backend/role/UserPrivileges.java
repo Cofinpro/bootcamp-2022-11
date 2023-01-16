@@ -113,11 +113,17 @@ public enum UserPrivileges {
     USERS_GET_ALL(
             "Der Nutzer ist dazu berechtigt, sich eine Übersicht aller bestehenden Nutzer anzeigen zu lassen."
     ),
-    USERS_BY_ID_PATCH_ROLE_BY_ID(
+    USERS_BY_ID_PATCH_ROLE_BY_NAME(
             "Der Nutzer ist dazu berechtigt, die Rolle aller bestehenden Nutzer zu ändern."
     ),
     USERS_BY_ID_PATCH_LOCK(
             "Der Nutzer ist dazu berechtigt, einen bestehenden Nutzer zu sperren oder zu entsperren."
+    ),
+    USERS_GET_ALL_PENDING_ROLE(
+            "Der Nutzer ist dazu berechtigt, sich eine Übersicht aller ausstehenden Rollenänderungen anzeigen zu lassen."
+    ),
+    USERS_GET_ALL_PENDING_LOCK(
+            "Der Nutzer ist dazu berechtigt, sich eine Übersicht aller ausstehenden Sperrungen anzeigen zu lassen."
     ),
 
     /*

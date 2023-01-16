@@ -1,5 +1,7 @@
 package com.cofinprobootcamp.backend.approval;
 
+import com.cofinprobootcamp.backend.approval.dto.LockOperationsOutDTO;
+import com.cofinprobootcamp.backend.approval.dto.RoleOperationsOutDTO;
 import com.cofinprobootcamp.backend.exceptions.InternalOperationFailedException;
 import com.cofinprobootcamp.backend.user.User;
 import com.cofinprobootcamp.backend.user.UserService;
@@ -60,6 +62,20 @@ public class FourEyesApprovalService<T> {
 
     public List<StoredOperation> getAllStoredOperations() {
         return operationRepository.findAll();
+    }
+
+    public List<RoleOperationsOutDTO> getAllRoleOperations() {
+        List<StoredOperation> operations = operationRepository.findAllByOperationPathContains("ROLE");
+        return operations.stream()
+                .map(StoredOperationDirector::roleOperationsFromStoredOperations)
+                .toList();
+    }
+
+    public List<LockOperationsOutDTO> getAllLockOperations() {
+        List<StoredOperation> operations = operationRepository.findAllByOperationPathContains("LOCK");
+        return operations.stream()
+                .map(StoredOperationDirector::lockOperationsFromStoredOperations)
+                .toList();
     }
 
     public StoredOperation createStoredOperation(String operationPath, String userId, Object... params) {

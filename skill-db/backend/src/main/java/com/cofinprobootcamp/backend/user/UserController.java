@@ -1,8 +1,8 @@
 package com.cofinprobootcamp.backend.user;
 
-import com.cofinprobootcamp.backend.approval.FourEyesApprovalService;
-import com.cofinprobootcamp.backend.approval.OperationApprovalManager;
-import com.cofinprobootcamp.backend.approval.PendingOperation;
+import com.cofinprobootcamp.backend.approval.*;
+import com.cofinprobootcamp.backend.approval.dto.LockOperationsOutDTO;
+import com.cofinprobootcamp.backend.approval.dto.RoleOperationsOutDTO;
 import com.cofinprobootcamp.backend.auth.CustomJwtAuthenticationToken;
 import com.cofinprobootcamp.backend.exceptions.LockStatusChangePendingException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
@@ -67,11 +67,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PatchMapping(path = "/{id}/{roleId}")
-    @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_ROLE_BY_ID')")
-    public void changeRole(@PathVariable String id, @PathVariable String roleId) throws RoleChangePendingException{
-        PendingOperation<User> method = () -> userService.changeRole(id, roleId);
-        boolean isApproved = checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_ROLE_BY_ID", id, StandardRoles.ADMIN, id, roleId);
+    @PatchMapping(path = "/{id}/{roleName}")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_ROLE_BY_NAME')")
+    public void changeRole(@PathVariable String id, @PathVariable String roleName) throws RoleChangePendingException{
+        PendingOperation<User> method = () -> userService.changeRole(id, roleName);
+        boolean isApproved = checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_ROLE_BY_NAME", id, StandardRoles.ADMIN, id, roleName);
         if (!isApproved) {
             throw new RoleChangePendingException();
         }
@@ -85,6 +85,18 @@ public class UserController {
         if (!isApproved) {
             throw new LockStatusChangePendingException();
         }
+    }
+
+    @GetMapping(path = "/pending/role")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_GET_ALL_PENDING_ROLE')")
+    public List<RoleOperationsOutDTO> getAllRoleOperations() {
+        return approvalService.getAllRoleOperations();
+    }
+
+    @GetMapping(path = "/pending/lock")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_GET_ALL_PENDING_LOCK')")
+    public List<LockOperationsOutDTO> getAllLockOperations() {
+        return approvalService.getAllLockOperations();
     }
 
     /**

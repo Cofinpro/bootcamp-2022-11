@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface StoredOperationRepository extends JpaRepository<StoredOperation, Long> {
     List<StoredOperation> findAllByOperationPathAndUserAndParameters(String operationPath, User user, String params);
+    List<StoredOperation> findAllByOperationPathContains(String operationPath);
+
 }
