@@ -128,24 +128,24 @@ export default {
     let birthdate = '';
     let phoneNumber = '';
     let primarySkill = '';
-    let jobTitle='';
+    let jobTitle = '';
     let skills = [] as string[];
     let references = '';
     let newSkills = '';
     let showAddTechnology = false;
     let picToDelete = false;
-    let profilePicUri= '';
-    let oldPic= '';
+    let profilePicUri = '';
+    let oldPic = '';
     if (props.update) {
       firstName = detailStore.details.getFirstName();
       lastName = detailStore.details.getLastName();
       degree = detailStore.details.getDegree();
       birthdate = detailStore.details.getBirthDate();
-       jobTitle = detailStore.details.getJobTitle();
-       phoneNumber = detailStore.details.getPhoneNumber();
-       primarySkill = detailStore.details.getPrimarySkill();
-       skills = detailStore.details.getTechnologies();
-       references = detailStore.details.getReferences();
+      jobTitle = detailStore.details.getJobTitle();
+      phoneNumber = detailStore.details.getPhoneNumber();
+      primarySkill = detailStore.details.getPrimarySkill();
+      skills = detailStore.details.getTechnologies();
+      references = detailStore.details.getReferences();
     }
     return {
       detailStore,
