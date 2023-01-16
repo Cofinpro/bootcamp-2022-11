@@ -101,7 +101,7 @@ export default {
   components: { DropdownButton, DeleteProfileDialog },
   setup() {
     const detailStore = useDetailStore();
-    const id = String(useRoute().params.id);
+    const id = useRoute().params.id.toString();
     detailStore.loadDetailsById(id);
 
     const locked = ref(false);

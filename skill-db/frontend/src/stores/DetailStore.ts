@@ -7,17 +7,18 @@ export const useDetailStore = defineStore('detailStore', {
         state: () => ({
             details: new DetailModel(),
             loading: Boolean(false),
-            skills: [] as String[],
-            jobs: [] as String[],
-            primarys: [] as String[],
+            skills: [] as string[],
+            jobs: [] as string[],
+            primarys: [] as string[],
             profilePic: '',
         }),
         actions: {
-            async loadDetailsById(id: String) {
+            async loadDetailsById(id: string) {
                 this.loading = true;
                 let profilePicId = null
                 const errorStore = useErrorStore();
                 await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
+                    console.log(response);
                     this.details = ConvertToDetailModel.toDetail(response.data);
                     profilePicId = response.data.profilePicId
                 }).catch((error) => {
@@ -40,7 +41,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            deleteDetailsByID(id: String) {
+            deleteDetailsByID(id: string) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axiosInstance.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
@@ -49,7 +50,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async createProfile(edits: DetailModel, profilePicUri: String) {
+            async createProfile(edits: DetailModel, profilePicUri: string) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 await axiosInstance.post(`/api/v1/profiles/`,
@@ -74,7 +75,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async updateProfile(edits: DetailModel, id: String, profilePicUri: String) {
+            async updateProfile(edits: DetailModel, id: string, profilePicUri: string) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 await axiosInstance.patch(`/api/v1/profiles/${id}`,
@@ -97,7 +98,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async deleteProfilePictureByProfileId(id: String) {
+            async deleteProfilePictureByProfileId(id: string) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 await axiosInstance.delete(`/api/v1/images/${id}`)
@@ -129,7 +130,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axiosInstance.get(`/api/v1/job-titles/`).then((response) => {
-                    response.data.forEach((element: String) => {
+                    response.data.forEach((element: string) => {
                         this.jobs.push(element)
                     })
                 }).catch((error) => {
@@ -143,7 +144,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axiosInstance.get(`/api/v1/profiles/expertises`).then((response) => {
-                    response.data.forEach((element: String) => {
+                    response.data.forEach((element: string) => {
                         this.primarys.push(element)
                     })
                 }).catch((error) => {

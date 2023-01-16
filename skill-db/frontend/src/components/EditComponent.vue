@@ -49,7 +49,7 @@
       <v-row class="skillRow pt-5">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="skillsAndDegree d-flex flex-column">
-            <v-autocomplete v-model="technologies"
+            <v-autocomplete v-model="detailStore.details"
                             label="Skills"
                             :items="detailStore.skills"
                             multiple
@@ -111,30 +111,52 @@ import UploadImageButton from "@/components/UploadImageButton.vue";
 
 export default {
   name: "EditComponent",
-  props: ['detail', 'update', 'oldPicture'],
+  props: {
+    update: {type: Boolean, required: true},
+    oldPicture: {type: String, required: false}
+  },
   components: {UploadImageButton},
-  setup() {
-     const detailStore = useDetailStore();
-     const errorStore = useErrorStore();
-     detailStore.loadJobs();
-     detailStore.loadPrimarys();
-     detailStore.loadSkills();
-     return{
-       detailStore,
-       errorStore
-     }
+  setup(props: { update: Boolean; }) {
+    const detailStore = useDetailStore();
+    const errorStore = useErrorStore();
+    detailStore.loadJobs();
+    detailStore.loadPrimarys();
+    detailStore.loadSkills();
+    let firstName = '';
+    let lastName = '';
+    let degree = '';
+    let birthdate = '';
+    let phoneNumber = '';
+    let primarySkill = '';
+    let jobTitle='';
+    let technologies = [] as string[];
+    let references = '';
+    if (props.update) {
+      firstName = detailStore.details.getFirstName();
+      lastName = detailStore.details.getLastName();
+      degree = detailStore.details.getDegree();
+      birthdate = detailStore.details.getBirthDate();
+       jobTitle = detailStore.details.getJobTitle();
+       phoneNumber = detailStore.details.getPhoneNumber();
+       primarySkill = detailStore.details.getPrimarySkill();
+       technologies = detailStore.details.getTechnologies();
+       references = detailStore.details.getReferences();
+    }
+    return {
+      detailStore,
+      errorStore,
+      firstName,
+      lastName,
+      degree,
+      birthdate,
+      jobTitle,
+      phoneNumber,
+      primarySkill,
+
+    }
   },
   data() {
     return {
-      firstName: '',
-      lastName: '',
-      degree: '',
-      birthdate: '',
-      phoneNumber: '',
-      jobTitle: '',
-      primarySkill: '',
-      technologies: [],
-      references: '',
       newTechnologies: '',
       showAddTechnology: false,
       picToDelete: false,
@@ -142,22 +164,6 @@ export default {
       oldPic: ''
     }
   },
-
-  created() {
-    if (this.update) {
-      this.firstName = this.detail.getFirstName();
-      this.lastName = this.detail.getLastName();
-      this.degree = this.detail.getDegree();
-      this.birthdate = this.detail.getBirthDate();
-      this.phoneNumber = this.detail.getPhoneNumber();
-      this.jobTitle = this.detail.getJobTitle();
-      this.primarySkill = this.detail.getPrimarySkill();
-      this.technologies = this.detail.getTechnologies();
-      this.references = this.detail.getReferences();
-      this.oldPic = this.oldPicture;
-    }
-  },
-
   methods: {
     async createProfile() {
       const detailStore = useDetailStore();
