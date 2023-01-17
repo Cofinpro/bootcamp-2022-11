@@ -58,7 +58,7 @@ import AlertWithTooltip from "@/components/UserComponents/AlertWithTooltip.vue";
 
 export default {
   name: "UserComponent",
-  components: {AlertWithTooltip, ChipWithInfotext },
+  components: {AlertWithTooltip, ChipWithInfotext},
   data() {
     let errorStore = useErrorStore();
     let userStore = useUserStore();
@@ -71,11 +71,11 @@ export default {
   },
   methods: {
     roleColor(roleShortName: string): string {
-      if(roleShortName === 'ADMIN') {
+      if (roleShortName === 'ADMIN') {
         return '#ec7b1a';
-      } else if(roleShortName === 'HR') {
+      } else if (roleShortName === 'HR') {
         return '#9bc3ee';
-      } else if(roleShortName === 'USER'){
+      } else if (roleShortName === 'USER') {
         return '#3a3a3a';
       } else {
         return 'black';
@@ -88,7 +88,7 @@ export default {
         user.setLocked(!user.getLocked());
       }
       await this.userStore.loadPendingLockUsers();
-
+      //TODO: Lock doesn't close, but is grey
     }
   }
 }
@@ -99,6 +99,7 @@ export default {
 .v-icon {
   margin-left: 40%;
 }
+
 .locked {
   color: lightgray;
 }
