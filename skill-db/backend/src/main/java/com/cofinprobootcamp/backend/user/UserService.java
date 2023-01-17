@@ -84,9 +84,9 @@ public class UserService {
         return UserDirector.EntityToUserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
     }
 
-    public UserOutDTO getUserById(Long id) {
+    public User getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
-        return UserDirector.EntityToUserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
+        return userOptional.orElseThrow(UserNotFoundException::new);
     }
 
     public User getUserByUsername(String email) {
@@ -109,12 +109,17 @@ public class UserService {
         return profileOuterId;
     }
 
+    public Long getIdByOuterId(String outerId) {
+        User user = userRepository.findFirstByOuterId(outerId).orElseThrow(UserNotFoundException::new);
+        return user.getId();
+    }
+
     public boolean hasUserAProfile(String outerId) {
         return getUserByOuterId(outerId).profileId() != null;
     }
 
-    public User changeRole(String id, String roleIdentifier) throws UserNotFoundException {
-        StandardRoles role = StandardRoles.fromIdentifier(roleIdentifier);
+    public User changeRole(String id, String roleName) throws UserNotFoundException {
+        StandardRoles role = StandardRoles.fromDisplayName(roleName);
         User user = userRepository.findFirstByOuterId(id).orElseThrow(UserNotFoundException::new);
         if (!user.getRole().equals(role)) {
             user.setRole(role);

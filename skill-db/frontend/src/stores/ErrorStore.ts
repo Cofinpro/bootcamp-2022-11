@@ -48,7 +48,7 @@ export const useErrorStore = defineStore(
             catchImportError(error: AxiosError) {
                 this.catchPostPatchError(error);
                 if (this.errorText === this.errorMessages.unknownError) {
-                    const colNameNotFound = `${error.response.data.message
+                    const colNameNotFound = `${error.response?.data.message
                         .toString()
                         .split(",")[0]
                         .split(' ')[2]}`
@@ -58,24 +58,28 @@ export const useErrorStore = defineStore(
 
             catchPostPatchError(error: AxiosError) {
                 this.hasError = true;
-                if (error.response == undefined) {
+                if (error.response == undefined && error.code !== '202') {
                     this.errorText = this.errorMessages.unknownError;
                 } else {
-                    if (error.response.status === 400) {
+                    //http status 202 isn't recognized as error in UserStore -> custom AxiosError
+                    if (error.code === '202') {
+                        this.errorText = error.message;
+                        this.allowed = true;
+                    } else if (error.response?.status === 400) {
                         this.handle400forProfile(error);
-                    } else if (error.response.status === 401) {
+                    } else if (error.response?.status === 401) {
                         this.authStore.logout();
                         this.errorText = this.errorMessages.unauthorized;
-                    } else if (error.response.status === 500) {
+                    } else if (error.response?.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;
-                    } else if (error.response.status === 403) {
+                    } else if (error.response?.status === 403) {
                         this.authStore.logout();
                         this.errorText = this.errorMessages.notAllowed;
-                    } else if (error.response.status === 409) {
+                    } else if (error.response?.status === 409) {
                         this.errorText = 'Der Nutzer hat bereits ein Profil!';
-                    } else if (error.response.status === 404) {
-                        this.errorText = `${error.response.data.message}`;
-                    } else if (error.response.status === 502) {
+                    } else if (error.response?.status === 404) {
+                        this.errorText = `${error.response?.data.message}`;
+                    } else if (error.response?.status === 502) {
                         this.errorText = this.errorMessages.mailNotSent;
                         this.allowed = true;
                     } else {
@@ -85,7 +89,7 @@ export const useErrorStore = defineStore(
             },
 
             handle400forProfile(error: AxiosError) {
-                const message: string = error.response.data.message.toString();
+                const message: string = error.response?.data.message.toString();
                 if (message === 'Der Nutzer hat bereits ein Profil!') {
                     this.errorText = message;
                 } else if (message.includes('VALIDATION')) {
@@ -230,8 +234,8 @@ export const useErrorStore = defineStore(
                     this.errorText = this.errorMessages.unknownError;
                 } else {
                     if (error.response.status === 401) {
-                        if (error.response.data.cause.causeExceptionName === "UserIsLockedException") {
-                            this.errorText = error.response.data.message.toString();
+                        if (error.response?.data.cause.causeExceptionName === "UserIsLockedException") {
+                            this.errorText = error.response?.data.message.toString();
                         }
                     } else if (error.response.status === 500) {
                         this.errorText = this.errorMessages.internalServerError;

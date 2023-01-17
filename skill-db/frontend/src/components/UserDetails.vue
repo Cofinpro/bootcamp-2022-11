@@ -8,7 +8,7 @@
         <th class="text-left">
           Email
         </th>
-        <th class="text-center">
+        <th class="text-left">
           Rolle
         </th>
         <th class="text-center">
@@ -23,16 +23,44 @@
           {{ user.getEmail() }}
         </td>
 
-        <td class="d-flex justify-center ma-1">
+        <td class="d-flex justify-left align-center ma-1">
           <ChipWithInfotext :tooltip="user.getRole().getDescription()"
                            :content="user.getRole().getDisplayName()"
                            :color="roleColor(user.getRole().getIdentifier())"/>
+
+          <div v-for="op in userStore.roleOperations">
+            <v-tooltip>
+              <template v-slot:activator="{ props }">
+                <v-icon v-bind="props" v-if="op.getTarget() === user.getId()"
+                        color="red">
+                  mdi-alert-rhombus
+                </v-icon>
+              </template>
+              <span> {{ `Rolle: ${op.getParam()}, von: ${op.getInitiator()}` }}</span>
+            </v-tooltip>
+          </div>
+
         </td>
         <td>
+          <div class="d-flex justify-start">
           <v-icon @click="toggleLock(user)"
                   :class="{ locked: user.getLocked(), notLocked: !user.getLocked()}">
             {{ user.getLocked() ? 'mdi-lock' : 'mdi-lock-open' }}
           </v-icon>
+
+          <div v-for="op in userStore.lockOperations">
+            <v-tooltip>
+              <template v-slot:activator="{ props }">
+                <v-icon v-bind="props" v-if="op.getTarget() === user.getId()"
+                        color="red">
+                  mdi-alert-rhombus
+                </v-icon>
+              </template>
+              <span> {{ `von: ${op.getInitiator()}` }}</span>
+            </v-tooltip>
+          </div>
+          </div>
+
         </td>
       </tr>
     </v-table>
@@ -43,12 +71,15 @@
 import ChipWithInfotext from "@/components/ChipWithInfotext.vue";
 import {useUserStore} from "@/stores/UserStore";
 import type {UserModel} from "@/models/UserModel";
+import {useErrorStore} from "@/stores/ErrorStore";
 export default {
   name: "UserDetails",
   components: { ChipWithInfotext },
   setup() {
     const userStore = useUserStore();
     userStore.loadUsers();
+    userStore.getPendingRoleChanges();
+    userStore.getPendingLockChanges();
     return {
       userStore
     }
@@ -67,8 +98,11 @@ export default {
     },
     async toggleLock(user: UserModel): Promise<void> {
       const userStore = useUserStore();
+      const errorStore = useErrorStore();
       await userStore.lockUser(user.getId());
-      user.setLocked(!user.getLocked());
+      if (!errorStore.hasError) {
+        user.setLocked(!user.getLocked());
+      }
     }
   }
 }

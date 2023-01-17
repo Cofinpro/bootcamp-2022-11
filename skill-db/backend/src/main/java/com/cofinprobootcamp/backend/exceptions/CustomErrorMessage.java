@@ -10,7 +10,10 @@ public class CustomErrorMessage {
 
     private record ErrorCause(String causeExceptionName, String causeMessage) {
         ErrorCause(Throwable cause) {
-            this(cause.getClass().getSimpleName(), cause.getMessage());
+            this(
+                    cause.getClass().getSimpleName(),
+                    cause.getMessage()
+            );
         }
     }
 
@@ -23,6 +26,6 @@ public class CustomErrorMessage {
     public CustomErrorMessage(String message, String webRequestDescription, Throwable cause) {
         this.message = message;
         this.webRequestDescription = webRequestDescription;
-        this.cause = new ErrorCause(cause);
+        this.cause = cause != null ? new ErrorCause(cause) : null;
     }
 }

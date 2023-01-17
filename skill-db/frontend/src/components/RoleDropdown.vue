@@ -65,8 +65,9 @@ export default {
       const userStore = useUserStore();
       for (const selected of nextUsers) {
         this.users.forEach(user => {
-          if(user.getEmail() === selected.split("(")[0].trim()) {
-            userStore.changeRole(role.getIdentifier(), user.getId());
+          if(user.getEmail() === selected.split("(")[0].trim()
+              && user.getRole().getIdentifier() !== role.getIdentifier()) {
+            userStore.changeRole(user.getId(), role.getDisplayName());
           }
         })
 
