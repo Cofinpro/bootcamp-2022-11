@@ -68,8 +68,16 @@ public class UserController {
     @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_ROLE_BY_NAME')")
     public void changeRole(@PathVariable String id, @PathVariable String roleName) throws RoleChangePendingException{
         PendingOperation<User> method = () -> userService.changeRole(id, roleName);
-        boolean isApproved = approvalService.checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_ROLE_BY_NAME", id, StandardRoles.ADMIN, id, roleName);
+        boolean isApproved = approvalService
+                .checkOperationWithFourEyesPrinciple(
+                        method,
+                        "USERS_BY_ID_PATCH_ROLE_BY_NAME",
+                        id,
+                        StandardRoles.ADMIN,
+                        id,
+                        roleName);
         if (!isApproved) {
+            //TODO: Theoretisch keine exception sondern in response schreiben
             throw new RoleChangePendingException();
         }
     }
