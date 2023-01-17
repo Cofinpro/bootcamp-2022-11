@@ -1,8 +1,8 @@
 <template>
-  <v-autocomplete :v-model="skills"
+  <v-autocomplete v-model="skills"
                   label="Skills"
                   :items="detailStore.skills"
-                  @update:modelValue="this.$emit('updateSkills',this.skills)"
+                  @update:modelValue="onInput"
                   multiple
                   auto-select-first
                   chips
@@ -24,7 +24,7 @@ import {useDetailStore} from "@/stores/DetailStore";
 
 export default {
   name: "SkillInput",
-  emits: ['updateSkills'],
+  emits: ['update:skills'],
   props: {
     skillsIn:{
       value: [] as string[],
@@ -36,7 +36,7 @@ export default {
       detailStore: useDetailStore(),
       showAddSkills: false,
       newSkills: '',
-      skills: props.skillsIn
+      skills: props.skillsIn.sort()
     }
   },
   methods: {
@@ -50,6 +50,10 @@ export default {
 
       this.newSkills = '';
       this.showAddSkills = false;
+      this.onInput();
+    },
+    onInput() {
+      this.$emit('update:skills',this.skills)
     },
     toggleShowAddSkills() {
       this.showAddSkills=true

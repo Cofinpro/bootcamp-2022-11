@@ -31,7 +31,7 @@
           <div class="d-flex flex-column">
 
             <SkillInput :skills-in="detailStore.details.getSkills()"
-                        v-on:updateSkills="(value) => {this.skills = value;}"/>
+                        @update:skills="(value) => {this.skills=value;}"/>
 
             <v-text-field v-model="degree"
                           label="Abschluss"

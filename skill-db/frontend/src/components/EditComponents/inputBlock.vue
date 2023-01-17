@@ -15,7 +15,7 @@
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
     <v-autocomplete v-model="jobTitle"
-                    @change="this.$emit('update:jobTitle',this.jobTitle)"
+                    @update:modelValue="this.$emit('update:jobTitle',this.jobTitle)"
                     label="Jobprofil"
                     :rules="[v => v.length > 0 || 'Erforderlich!']"
                     :items="detailStore.jobs"/>
@@ -23,7 +23,7 @@
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
     <v-autocomplete v-model="primarySkill"
-                    @change="this.$emit('update:primarySkill',this.primarySkill)"
+                    @update:modelValue="this.$emit('update:primarySkill',this.primarySkill)"
                     label="Primärkompetenz"
                     :rules="[v => v.length > 0 || 'Erforderlich!']"
                     :items="detailStore.primarys"/>
