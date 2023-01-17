@@ -35,8 +35,11 @@
       Aktuell sind keine Profile hinterlegt.
     </h3>
     <v-row class="d-flex">
-      <v-col v-for="card in overviewStore.cards" :key="card.getId()"
-             cols="12" xl="2" lg="3" md="4" sm="6">
+      <v-col v-for="card in overviewStore.cards"
+             :key="card.getId()"
+             cols="12" xl="2" lg="3" md="4" sm="6" xs="6"
+             class="d-flex flex-sm-column align-center justify-center"
+      >
         <OverviewCard :id="card.getId()"
                       :name="card.getName()"
                       :job-title="card.getJobTitle()"

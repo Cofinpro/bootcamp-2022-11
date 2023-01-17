@@ -7,7 +7,7 @@
   <v-navigation-drawer elevation="0"
                        v-model="drawer" order="1"
                        :scrim="false"
-                       :permanent="$vuetify.display.smAndUp">
+                       :permanent="$vuetify.display.mdAndUp">
     <v-list nav dense>
       <v-list-item class="logo d-flex justify-center">
         <img src="@/assets/images/Skill_DB_Logo.svg" width="180" alt="Cofinpro logo">
@@ -97,5 +97,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+a {
+  text-decoration: none;
+  color: grey;
+}
+
+.logo {
+  margin-top: 40%;
+  margin-bottom: 30px;
+}
+
+.v-list-item {
+  display: flex;
+  justify-content: start;
+}
 </style>
