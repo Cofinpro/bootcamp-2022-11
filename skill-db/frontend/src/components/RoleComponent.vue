@@ -1,0 +1,133 @@
+<template>
+  <v-container>
+    <h2>Rollenübersicht</h2>
+    <h3>Übersicht über alle vorhandenen Rollen</h3>
+    <v-table>
+
+      <thead>
+      <tr>
+        <th class="text-left">
+          Name
+        </th>
+        <th class="text-left">
+          Beschreibung
+        </th>
+        <th class="text-center">
+          Rolle vergeben
+        </th>
+      </tr>
+      </thead>
+
+      <tr v-for="role in roles"
+          :key="role.getIdentifier()">
+
+        <td class="d-flex justify-center pa-2 pt-3"
+            v-if="isDefined(role)">
+          <v-chip :color="roleColor(role.getIdentifier())">
+            {{ role.getDisplayName() }}
+          </v-chip>
+        </td>
+
+        <td class="description pa-2"
+            v-if="isDefined(role)">
+          {{ role.getDescription() }}
+        </td>
+
+        <td class="d-flex justify-center"
+            v-if="isDefined(role)">
+          <v-icon color="#BDBDBD"
+                  @click="prepareSelectDropdown(role)">
+            mdi-pencil
+          </v-icon>
+        </td>
+
+      </tr>
+
+      <v-overlay v-model="edit">
+        <role-dropdown @clicked="trySubmit"
+                       :role="roleHere"
+                       :selected-users="selectedUsers"
+                       :all-users="allUsers"/>
+      </v-overlay>
+
+    </v-table>
+  </v-container>
+</template>
+
+<script lang="ts">
+import {useRoleStore} from "@/stores/RoleStore";
+import {RoleModel} from "@/models/RoleModel";
+import {useUserStore} from "@/stores/UserStore";
+import RoleDropdown from "@/components/RoleComponents/RoleDropdown.vue";
+import type {UserModel} from "@/models/UserModel";
+
+export default {
+  name: "RoleComponent",
+  components: { RoleDropdown },
+  data() {
+    let roleStore = useRoleStore();
+    roleStore.loadAllRoles();
+    let roles = roleStore.allRoles;
+
+    return {
+      edit: false,
+      roleHere: RoleModel,
+      selectedUsers: [] as UserModel[],
+      allUsers: [] as UserModel[],
+      userStore: useUserStore(),
+      roles
+    }
+  },
+  methods: {
+    roleColor(roleShortName: string) {
+      if (roleShortName === 'ADMIN') {
+        return '#ec7b1a';
+      } else if (roleShortName === 'HR') {
+        return '#9bc3ee';
+      } else if (roleShortName === 'USER') {
+        return '#3a3a3a';
+      } else {
+        return 'red';
+      }
+    },
+
+    isDefined(role: RoleModel) {
+      return role.getIdentifier() !== 'UNDEFINED';
+    },
+
+    async prepareSelectDropdown(role: RoleModel) {
+      this.selectedUsers = [] as UserModel[];
+      if (this.isDefined(role)) {
+        await this.userStore.loadUsersByRoleId(role.getIdentifier());
+        this.selectedUsers = this.userStore.users;
+        this.userStore.users = [] as UserModel[];
+      }
+      this.userStore.loadUsers();
+      this.allUsers = this.userStore.users;
+
+      this.edit = true;
+      this.roleHere = role;
+    },
+
+    async trySubmit(selectedUsersWithRole: string[]) {
+      const role = this.roleHere;
+      for (const selected of selectedUsersWithRole) {
+        for (const user of this.allUsers) {
+          if(user.getEmail() === selected.split("(")[0].trim()
+              && user.getRole().getIdentifier() !== role.getIdentifier()) {
+            await this.userStore.changeRole(user.getId(), role.getDisplayName());
+          }
+        }
+      }
+      this.edit = false;
+    },
+  },
+}
+</script>
+
+<style scoped>
+
+.description {
+  font-size: small;
+}
+</style>
