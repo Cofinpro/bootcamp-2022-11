@@ -201,4 +201,14 @@ public enum StandardRoles {
                 .findFirst()
                 .orElse(StandardRoles.UNDEFINED);
     }
+
+    public static StandardRoles fromDisplayName(String name) {
+        if (name == null || name.isBlank()) {
+            return StandardRoles.UNDEFINED;
+        }
+        return Arrays.stream(values)
+                .filter(expertises -> expertises.displayName.equals(name))
+                .findFirst()
+                .orElse(StandardRoles.UNDEFINED);
+    }
 }
