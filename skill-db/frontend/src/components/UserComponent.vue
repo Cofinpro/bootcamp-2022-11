@@ -57,7 +57,7 @@ import {useErrorStore} from "@/stores/ErrorStore";
 import AlertWithTooltip from "@/components/UserComponents/AlertWithTooltip.vue";
 
 export default {
-  name: "UserDetails",
+  name: "UserComponent",
   components: {AlertWithTooltip, ChipWithInfotext },
   data() {
     let errorStore = useErrorStore();
@@ -86,7 +86,7 @@ export default {
       if (!this.errorStore.hasError) {
         user.setLocked(!user.getLocked());
       }
-      await this.userStore.getPendingLockUsers();
+      await this.userStore.loadPendingLockUsers();
 
     }
   }

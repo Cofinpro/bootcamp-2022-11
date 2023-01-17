@@ -1,12 +1,12 @@
 <template>
-  <UserDetails/>
+  <UserComponent/>
 </template>
 
 <script lang="ts">
-import UserDetails from "@/components/UserComponent.vue";
+import UserComponent from "@/components/UserComponent.vue";
 export default {
   name: "UserOverView",
-  components: { UserDetails },
+  components: { UserComponent },
 }
 </script>
 
