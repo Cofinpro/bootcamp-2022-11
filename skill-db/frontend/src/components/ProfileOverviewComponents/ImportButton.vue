@@ -7,17 +7,18 @@
          v-if="isAdminOrHR"
          ref="fileInput"
          style="display: none"
-         @change="uploadCSV"
+         @change="emitToParentAndReset"
          accept="text/csv"/>
 </template>
 
 <script type="ts">
-import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
+import ButtonWithTooltip from "@/components/ProfileOverviewComponents/ButtonWithTooltip.vue";
 import {useBlobStore} from "@/stores/BlobStore";
 import {useOverviewStore} from "@/stores/OverviewStore";
 
 export default {
   name: "ImportButton",
+  emits: {'upload:csv': {type: File}},
   components: {ButtonWithTooltip},
   computed: {
     isAdminOrHR() {
@@ -26,12 +27,9 @@ export default {
     }
   },
   methods: {
-    async uploadCSV(event) {
-      const blobStore = useBlobStore();
-      await blobStore.postCSV(this.$refs.fileInput.files[0]);
+    async emitToParentAndReset(event) {
+      this.$emit('upload:csv',this.$refs.fileInput.files[0])
       this.$refs.fileInput.value = null;
-      const overviewStore = useOverviewStore();
-      overviewStore.loadOverview();
     },
   },
 }

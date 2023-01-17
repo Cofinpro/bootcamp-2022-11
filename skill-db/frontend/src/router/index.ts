@@ -75,7 +75,8 @@ const router = createRouter({
 /**
  * Checks before each request (except to "/login") if the refreshToken is still valid.
  * In case the token is not valid anymore, the user will be redirected to the login page and
- * has to log in again.
+ * has to log in again. Also checks if user is Admin to find out if user can access routes containing
+ * /admin
  */
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();

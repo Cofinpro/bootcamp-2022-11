@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import ButtonWithTooltip from "@/components/ButtonWithTooltip.vue";
+import ButtonWithTooltip from "@/components/ProfileOverviewComponents/ButtonWithTooltip.vue";
 import {useUserStore} from "@/stores/UserStore";
 
 export default {
