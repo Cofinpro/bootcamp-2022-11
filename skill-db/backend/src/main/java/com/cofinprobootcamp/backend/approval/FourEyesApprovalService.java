@@ -42,7 +42,7 @@ public class FourEyesApprovalService<T> {
      * @param operationParams An array of parameters that were passed to the operation
      * @return {@code true}, if the operation was approved and executed, {@code false} otherwise
      */
-    private boolean presentForApproval(
+    public boolean presentForApproval(
             PendingOperation<User> pendingOperation,
             OperationApprovalManager<PendingOperation<User>> approvalManager,
             String operationId,
