@@ -61,7 +61,6 @@ public class FourEyesApprovalService<T> {
         if (!isApproved) {
             createStoredOperation(operationId, operationSourceId, operationParams);
         }
-        System.out.printf("Approval status: %b%n", isApproved);
         return isApproved;
     }
 
