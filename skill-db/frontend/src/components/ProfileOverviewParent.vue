@@ -20,6 +20,7 @@
     </div>
   </div>
 
+
   <div v-if="false" class="activeFilter">
     <h5>Aktive Filter:</h5>
     <div class="mt-2">
