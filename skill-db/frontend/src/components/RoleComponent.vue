@@ -79,7 +79,7 @@ export default {
     }
   },
   methods: {
-    roleColor(roleShortName: string) {
+    roleColor(roleShortName: string): string {
       if (roleShortName === 'ADMIN') {
         return '#ec7b1a';
       } else if (roleShortName === 'HR') {
@@ -91,11 +91,11 @@ export default {
       }
     },
 
-    isDefined(role: RoleModel) {
+    isDefined(role: RoleModel): boolean {
       return role.getIdentifier() !== 'UNDEFINED';
     },
 
-    async prepareSelectDropdown(role: RoleModel) {
+    async prepareSelectDropdown(role: RoleModel): Promise<void> {
       this.selectedUsers = [] as UserModel[];
       if (this.isDefined(role)) {
         await this.userStore.loadUsersByRoleId(role.getIdentifier());
@@ -109,7 +109,7 @@ export default {
       this.roleHere = role;
     },
 
-    async trySubmit(selectedUsersWithRole: string[]) {
+    async trySubmit(selectedUsersWithRole: string[]): Promise<void> {
       const role = this.roleHere;
       for (const selected of selectedUsersWithRole) {
         for (const user of this.allUsers) {

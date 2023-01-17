@@ -36,11 +36,11 @@
 
         <td>
           <div class="d-flex justify-start">
-          <v-icon @click="toggleLock(user)"
-                  :class="{ locked: user.getLocked()}">
-            {{ user.getLocked() ? 'mdi-lock' : 'mdi-lock-open' }}
-          </v-icon>
-          <AlertWithTooltip :user="user" operation-type="lockUser" :operations="userStore.lockUserOperations"/>
+            <v-icon @click="toggleLock(user)"
+                    :class="{ locked: user.getLocked()}">
+              {{ user.getLocked() ? 'mdi-lock' : 'mdi-lock-open' }}
+            </v-icon>
+            <AlertWithTooltip :user="user" operation-type="lockUser" :operations="userStore.lockUserOperations"/>
           </div>
         </td>
 
@@ -70,7 +70,7 @@ export default {
     }
   },
   methods: {
-    roleColor(roleShortName: String): String {
+    roleColor(roleShortName: string): string {
       if(roleShortName === 'ADMIN') {
         return '#ec7b1a';
       } else if(roleShortName === 'HR') {
@@ -81,6 +81,7 @@ export default {
         return 'black';
       }
     },
+
     async toggleLock(user: UserModel): Promise<void> {
       await this.userStore.lockUser(user.getId());
       if (!this.errorStore.hasError) {
