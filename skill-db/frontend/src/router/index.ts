@@ -28,7 +28,7 @@ const router = createRouter({
             }
         },
         {
-            path: '/details/new',
+            path: '/detail/new',
             name: 'new',
             component: NewView,
             meta: {

@@ -12,7 +12,7 @@
     <div class="d-flex justify-space-between">
       <ImportButton @upload:csv="uploadCSV"/>
       <ExportButton @download:xlsx="downloadXLSX"/>
-      <CreateButton/>
+      <CreateButton @create:Profile="$router.push('/detail/new')"/>
       <ButtonWithTooltip v-if="false"
                          tooltip="Filter"
                          icon="mdi-filter"

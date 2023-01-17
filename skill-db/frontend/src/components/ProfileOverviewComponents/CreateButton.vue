@@ -2,7 +2,7 @@
   <ButtonWithTooltip :disabled="hasProfile"
                      tooltip="Neues Profil erstellen"
                      icon="mdi-plus-thick"
-                     @clicked="$router.push(`/details/new`)"/>
+                     @clicked="$emit('create:Profile')"/>
 </template>
 
 <script lang="ts">
@@ -11,6 +11,7 @@ import {useUserStore} from "@/stores/UserStore";
 
 export default {
   name: "CreateButton",
+  emits: {'create:Profile':{type:null}},
   components: { ButtonWithTooltip },
   setup() {
     const userStore = useUserStore();

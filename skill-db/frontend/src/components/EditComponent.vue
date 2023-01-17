@@ -84,7 +84,7 @@ export default {
     }
   },
   components: {LeaveButton, InputBlock, ConfirmButton, SkillInput, UploadImageButton},
-  setup(props) {
+  data(props) {
     const detailStore = useDetailStore();
     const errorStore = useErrorStore();
     detailStore.loadSkills();

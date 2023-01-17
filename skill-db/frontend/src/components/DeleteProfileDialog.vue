@@ -20,7 +20,7 @@ export default {
       type: Array,
       required: true,
     }
-  },
+  },XX
 }
 </script>
 
