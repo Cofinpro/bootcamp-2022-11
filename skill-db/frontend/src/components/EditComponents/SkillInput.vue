@@ -36,7 +36,7 @@ export default {
       detailStore: useDetailStore(),
       showAddSkills: false,
       newSkills: '',
-      skills: props.skillsIn
+      skills: props.skillsIn.sort()
     }
   },
   methods: {
