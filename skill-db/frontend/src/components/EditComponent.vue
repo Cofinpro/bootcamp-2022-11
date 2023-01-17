@@ -31,7 +31,7 @@
           <div class="d-flex flex-column">
 
             <SkillInput :skills-in="detailStore.details.getSkills()"
-                        v-on:updateSkills="(value) => {this.skills = value;}"/>
+                        @update:skills="updateSkills"/>
 
             <v-text-field v-model="degree"
                           label="Abschluss"
@@ -144,6 +144,10 @@ export default {
       if (!errorStore.hasError) {
         await router.push('/');
       }
+    },
+    updateSkills(value) {
+      console.log(value);
+      this.skills=value;
     },
     async updateProfile() {
       const editDetails = ConvertToDetailModelForOutput.toDetail(this);
