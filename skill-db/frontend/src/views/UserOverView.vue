@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import UserDetails from "@/components/UserDetails.vue";
+import UserDetails from "@/components/UserComponent.vue";
 export default {
   name: "UserOverView",
   components: { UserDetails },

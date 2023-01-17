@@ -11,8 +11,8 @@ export const useUserStore = defineStore('userStore', {
         loading: Boolean(false),
         hasProfile: Boolean(false),
         profileId: String,
-        roleOperations: [] as OperationsModel[],
-        lockOperations: [] as OperationsModel[],
+        roleChangeOperations: [] as OperationsModel[],
+        lockUserOperations: [] as OperationsModel[],
     }),
     actions: {
         loadUsers(): void {
@@ -78,13 +78,13 @@ export const useUserStore = defineStore('userStore', {
             this.loading = true;
             const errorStore = useErrorStore();
             await axiosInstance.get(`/api/v1/users/pending/role`).then((response) => {
-                if(this.roleOperations.length > 0) {
+                if(this.roleChangeOperations.length > 0) {
                     // reloads the list of users every time the method gets called,
                     // in case the list is not empty
-                    this.roleOperations = [];
+                    this.roleChangeOperations = [];
                 }
                 response.data.forEach((element: object) => {
-                    this.roleOperations.push(ConvertToOperationsModel.toOperationsModel(element));
+                    this.roleChangeOperations.push(ConvertToOperationsModel.toOperationsModel(element));
                 });
             }).catch((error) => {
                 errorStore.catchGetAllError(error);
@@ -96,13 +96,13 @@ export const useUserStore = defineStore('userStore', {
             this.loading = true;
             const errorStore = useErrorStore();
             await axiosInstance.get(`/api/v1/users/pending/lock`).then((response) => {
-                if(this.lockOperations.length > 0) {
+                if(this.lockUserOperations.length > 0) {
                     // reloads the list of users every time the method gets called,
                     // in case the list is not empty
-                    this.lockOperations = [];
+                    this.lockUserOperations = [];
                 }
                 response.data.forEach((element: object) => {
-                    this.lockOperations.push(ConvertToOperationsModel.toOperationsModel(element));
+                    this.lockUserOperations.push(ConvertToOperationsModel.toOperationsModel(element));
                 });
             }).catch((error) => {
                 errorStore.catchGetAllError(error);

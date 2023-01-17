@@ -18,45 +18,33 @@
       </thead>
       <tr v-for="user in userStore.users"
           :key="user.getEmail()"
-          :class="{ locked: user.getLocked(), notLocked: !user.getLocked()}">
+          :class="{ locked: user.getLocked()}">
         <td>
           {{ user.getEmail() }}
         </td>
 
         <td class="d-flex justify-left align-center ma-1">
           <ChipWithInfotext :tooltip="user.getRole().getDescription()"
-                           :content="user.getRole().getDisplayName()"
-                           :color="roleColor(user.getRole().getIdentifier())"/>
-
-          <div v-for="op in userStore.roleOperations">
-            <v-tooltip>
-              <template v-slot:activator="{ props }">
-                <v-icon v-bind="props" v-if="op.getTarget() === user.getId()"
-                        color="red">
-                  mdi-alert-rhombus
-                </v-icon>
-              </template>
-              <span> {{ `Rolle: ${op.getParam()}, von: ${op.getInitiator()}` }}</span>
-            </v-tooltip>
-          </div>
+                            :content="user.getRole().getDisplayName()"
+                            :color="roleColor(user.getRole().getIdentifier())"/>
 
         </td>
         <td>
           <div class="d-flex justify-start">
           <v-icon @click="toggleLock(user)"
-                  :class="{ locked: user.getLocked(), notLocked: !user.getLocked()}">
+                  :class="{ locked: user.getLocked()}">
             {{ user.getLocked() ? 'mdi-lock' : 'mdi-lock-open' }}
           </v-icon>
 
-          <div v-for="op in userStore.lockOperations">
+          <div v-for="operation in userStore.lockUserOperations">
             <v-tooltip>
               <template v-slot:activator="{ props }">
-                <v-icon v-bind="props" v-if="op.getTarget() === user.getId()"
+                <v-icon v-bind="props" v-if="operation.getTarget() === user.getId()"
                         color="red">
                   mdi-alert-rhombus
                 </v-icon>
               </template>
-              <span> {{ `von: ${op.getInitiator()}` }}</span>
+              <span> {{ `von: ${operation.getInitiator()}` }}</span>
             </v-tooltip>
           </div>
           </div>
