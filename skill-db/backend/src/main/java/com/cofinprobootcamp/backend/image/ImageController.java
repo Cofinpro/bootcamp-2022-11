@@ -40,7 +40,7 @@ public class ImageController {
         }
     }
     @DeleteMapping("/{profileId}")
-    @PreAuthorize("hasPermission(#profileId, 'void',@authorityPrefix + 'IMAGES_DELETE_BY_ID')")
+    @PreAuthorize("hasPermission(#profileId, 'void', @authorityPrefix + 'IMAGES_DELETE_BY_ID')")
     public void resetImage(@PathVariable String profileId)
             throws ProfileNotFoundException, MailNotSentException {
         imageService.resetImage(profileId);

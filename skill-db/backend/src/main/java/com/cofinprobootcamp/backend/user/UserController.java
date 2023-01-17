@@ -1,6 +1,12 @@
 package com.cofinprobootcamp.backend.user;
 
+import com.cofinprobootcamp.backend.approval.*;
+import com.cofinprobootcamp.backend.approval.dto.LockOperationsOutDTO;
+import com.cofinprobootcamp.backend.approval.dto.RoleOperationsOutDTO;
+import com.cofinprobootcamp.backend.exceptions.LockStatusChangePendingException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
+import com.cofinprobootcamp.backend.exceptions.RoleChangePendingException;
+import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
 import org.springframework.http.HttpStatus;
@@ -14,9 +20,11 @@ import java.util.List;
 @RequestMapping(path = "/api/v1/users")
 public class UserController {
     private final UserService userService;
+    private final FourEyesApprovalService<User> approvalService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, FourEyesApprovalService<User> approvalService) {
         this.userService = userService;
+        this.approvalService = approvalService;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -56,15 +64,44 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PatchMapping(path = "/{id}/{roleId}")
-    @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_ROLE_BY_ID')")
-    public void changeRole(@PathVariable String id, @PathVariable String roleId){
-        userService.changeRole(id, roleId);
+    @PatchMapping(path = "/{id}/{roleName}")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_ROLE_BY_NAME')")
+    public void changeRole(@PathVariable String id, @PathVariable String roleName) throws RoleChangePendingException{
+        PendingOperation<User> method = () -> userService.changeRole(id, roleName);
+        boolean isApproved = approvalService
+                .checkOperationWithFourEyesPrinciple(
+                        method,
+                        "USERS_BY_ID_PATCH_ROLE_BY_NAME",
+                        id,
+                        StandardRoles.ADMIN,
+                        id,
+                        roleName);
+        if (!isApproved) {
+            //TODO: Theoretisch keine exception sondern in response schreiben
+            throw new RoleChangePendingException();
+        }
     }
 
     @PatchMapping(path = "/{id}/lock")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_BY_ID_PATCH_LOCK')")
-    public void lockUser(@PathVariable String id){
-        userService.lockUser(id);
+    public void lockUser(@PathVariable String id) {
+        PendingOperation<User> method = () -> userService.lockUser(id);
+        boolean isApproved = approvalService.checkOperationWithFourEyesPrinciple(method, "USERS_BY_ID_PATCH_LOCK", id, StandardRoles.ADMIN, id);
+        if (!isApproved) {
+            throw new LockStatusChangePendingException();
+        }
     }
+
+    @GetMapping(path = "/pending/role")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_GET_ALL_PENDING_ROLE')")
+    public List<RoleOperationsOutDTO> getAllRoleOperations() {
+        return approvalService.getAllRoleOperations();
+    }
+
+    @GetMapping(path = "/pending/lock")
+    @PreAuthorize("hasAuthority(@authorityPrefix + 'USERS_GET_ALL_PENDING_LOCK')")
+    public List<LockOperationsOutDTO> getAllLockOperations() {
+        return approvalService.getAllLockOperations();
+    }
+
 }
