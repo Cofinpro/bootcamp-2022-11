@@ -3,6 +3,7 @@
     <h2>Nutzerübersicht</h2>
     <h3>Übersicht über alle vorhandenen Nutzer</h3>
     <v-table>
+
       <thead>
       <tr>
         <th class="text-left">
@@ -16,9 +17,11 @@
         </th>
       </tr>
       </thead>
+
       <tr v-for="user in userStore.users"
           :key="user.getEmail()"
           :class="{ locked: user.getLocked()}">
+
         <td>
           {{ user.getEmail() }}
         </td>
@@ -27,29 +30,20 @@
           <ChipWithInfotext :tooltip="user.getRole().getDescription()"
                             :content="user.getRole().getDisplayName()"
                             :color="roleColor(user.getRole().getIdentifier())"/>
+          <AlertWithTooltip :user="user" operation-type="changeRole" :operations="userStore.roleChangeOperations"/>
 
         </td>
+
         <td>
           <div class="d-flex justify-start">
           <v-icon @click="toggleLock(user)"
                   :class="{ locked: user.getLocked()}">
             {{ user.getLocked() ? 'mdi-lock' : 'mdi-lock-open' }}
           </v-icon>
-
-          <div v-for="operation in userStore.lockUserOperations">
-            <v-tooltip>
-              <template v-slot:activator="{ props }">
-                <v-icon v-bind="props" v-if="operation.getTarget() === user.getId()"
-                        color="red">
-                  mdi-alert-rhombus
-                </v-icon>
-              </template>
-              <span> {{ `von: ${operation.getInitiator()}` }}</span>
-            </v-tooltip>
+          <AlertWithTooltip :user="user" operation-type="lockUser" :operations="userStore.lockUserOperations"/>
           </div>
-          </div>
-
         </td>
+
       </tr>
     </v-table>
   </v-container>
@@ -60,16 +54,19 @@ import ChipWithInfotext from "@/components/ChipWithInfotext.vue";
 import {useUserStore} from "@/stores/UserStore";
 import type {UserModel} from "@/models/UserModel";
 import {useErrorStore} from "@/stores/ErrorStore";
+import AlertWithTooltip from "@/components/UserComponents/AlertWithTooltip.vue";
+
 export default {
   name: "UserDetails",
-  components: { ChipWithInfotext },
-  setup() {
-    const userStore = useUserStore();
+  components: {AlertWithTooltip, ChipWithInfotext },
+  data() {
+    let errorStore = useErrorStore();
+    let userStore = useUserStore();
     userStore.loadUsers();
-    userStore.getPendingRoleChanges();
-    userStore.getPendingLockChanges();
+    userStore.loadPendingRoleChanges();
+    userStore.loadPendingLockUsers();
     return {
-      userStore
+      userStore, errorStore
     }
   },
   methods: {
@@ -81,16 +78,16 @@ export default {
       } else if(roleShortName === 'USER'){
         return '#3a3a3a';
       } else {
-        return 'red';
+        return 'black';
       }
     },
     async toggleLock(user: UserModel): Promise<void> {
-      const userStore = useUserStore();
-      const errorStore = useErrorStore();
-      await userStore.lockUser(user.getId());
-      if (!errorStore.hasError) {
+      await this.userStore.lockUser(user.getId());
+      if (!this.errorStore.hasError) {
         user.setLocked(!user.getLocked());
       }
+      await this.userStore.getPendingLockUsers();
+
     }
   }
 }

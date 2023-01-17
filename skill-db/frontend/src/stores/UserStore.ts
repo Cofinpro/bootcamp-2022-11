@@ -74,7 +74,7 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async getPendingRoleChanges() {
+        async loadPendingRoleChanges() {
             this.loading = true;
             const errorStore = useErrorStore();
             await axiosInstance.get(`/api/v1/users/pending/role`).then((response) => {
@@ -92,7 +92,7 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async getPendingLockChanges() {
+        async loadPendingLockUsers() {
             this.loading = true;
             const errorStore = useErrorStore();
             await axiosInstance.get(`/api/v1/users/pending/lock`).then((response) => {

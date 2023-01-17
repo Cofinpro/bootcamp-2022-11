@@ -1,5 +1,5 @@
 <template>
-  <div v-for="operation in userStore.roleChangeOperations">
+  <div v-for="operation in operations">
     <v-tooltip>
       <template v-slot:activator="{ props }">
         <v-icon v-bind="props"
@@ -8,28 +8,36 @@
           mdi-alert-rhombus
         </v-icon>
       </template>
-      <span> {{ `Rolle: ${operation.getParam()}, von: ${operation.getInitiator()}` }}</span>
+      <span>
+        {{ operationType === "changeRole" ?
+          `Rolle: ${operation.getParam()}, von: ${operation.getInitiator()}` :  `von: ${operation.getInitiator()}` }}
+      </span>
     </v-tooltip>
   </div>
 </template>
 
 <script lang="ts">
-import {useUserStore} from "@/stores/UserStore";
 import {UserModel} from "@/models/UserModel";
+import type {OperationsModel} from "@/models/OperationsModel";
 
 export default {
   name: "AlertWithTooltip",
   props: {
-    user: UserModel,
-  },
-  data() {
-    return {
-      userStore: useUserStore(),
+    user: {
+      required: true,
+      type: UserModel
+    },
+    operationType: {
+      required: true,
+      type: String
+    },
+    operations: {
+      required: true,
+      type: [] as OperationsModel[]
     }
-  }
+  },
 }
 </script>
 
 <style scoped>
-
 </style>
