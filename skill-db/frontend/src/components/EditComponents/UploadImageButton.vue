@@ -4,13 +4,23 @@
         type="file"
         ref="imageInput"
         class="hidden"
-        accept="image/png, image/jpg, image/jpeg"/>
+        accept="image/png, image/jpg, image/jpeg"
+        @input="convertImageAndEmitToParent"/>
+
     <img class="image"
          v-if="imageDataUri"
-         alt="Profilbild" :src="imageDataUri"/>
-    <img class="image" v-else-if="oldPicture" alt="Profilbild" :src="oldPicture"/>
-    <img class="image" v-else alt="Profilbild" src="@/assets/images/dummy_profilePicture.png"/>
-    <v-btn v-if="(oldPicture || imageDataUri)"
+         alt="Profilbild"
+         :src="imageDataUri"/>
+    <img class="image"
+         v-else-if="oldPic"
+         alt="Profilbild"
+         :src="oldPic"/>
+    <img class="image"
+         v-else
+         alt="Profilbild"
+         src="@/assets/images/dummy_profilePicture.png"/>
+
+    <v-btn v-if="(oldPic || imageDataUri)"
            class="uploadBtn  d-flex justify-center button"
            elevation="0"
            width="200"
@@ -33,11 +43,15 @@ import {useErrorStore} from "@/stores/ErrorStore";
 
 export default {
   name: "UploadImageButton",
-  data() {
+  props: {
+    oldPicture: String,
+  },
+  data(props) {
     return {
       errorStore: useErrorStore(),
       maxUploadSize: 20000000, // Angabe in bytes, entspricht 20 MB
       imageDataUri: null,
+      oldPic: props.oldPicture
     }
   },
   methods: {
@@ -51,32 +65,40 @@ export default {
       this.$refs.imageInput.click();
     },
     deleteProfilePicture() {
+      if (this.oldPicture && !this.imageDataUri) {
+        //image is persisted
+        this.imageDataUri ='';
+        this.$refs.imageInput.value='';
+        this.convertImageAndEmitToParent();
+        this.$emit('toggleDelete', true);
+      }
+      //image is not persisted yet, local deleting sufficient
+      this.oldPic='';
       this.imageDataUri ='';
       this.$refs.imageInput.value='';
-      this.uploadImage();
-      this.$emit('delete');
+      this.$emit('toggleDelete', true);
+      this.convertImageAndEmitToParent();
     },
-    async uploadImage() {
+    async convertImageAndEmitToParent() {
+      console.log(this.oldPic)
       const fileInput = this.$refs.imageInput;
       if (fileInput && fileInput.value) {
         const file = fileInput.files[0];
-
         if (!(file instanceof Blob) || !this.isPermissibleSize(file)) {
           this.errorStore.catchUploadImageError(new Error('Falsche Größe: max. 20 MB zulässig!'));
           return;
         }
-
         const image = new Image();
         image.onload = () => {
           if (!this.isInPortraitMode(image)) {
             this.errorStore.catchUploadImageError(new Error('Falsches Format: Nur Hochformat zulässig!'));
             return;
           }
-
           const reader = new FileReader();
           reader.onload = event => {
             this.imageDataUri = event.target.result;
             this.$emit('upload', this.imageDataUri);
+            this.$emit('toggleDelete', false)
           }
           reader.readAsDataURL(file);
         };
@@ -88,16 +110,6 @@ export default {
       }
     }
   },
-
-  props: {
-    oldPicture: String,
-  },
-
-  mounted() {
-    if (this.$refs.imageInput) {
-      this.$refs.imageInput.addEventListener('input', this.uploadImage)
-    }
-  }
 }
 </script>
 

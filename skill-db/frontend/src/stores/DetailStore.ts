@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ConvertToDetailModel, DetailModel} from "@/models/DetailModel";
+import {ConvertResponseToDetailModel, DetailModel} from "@/models/DetailModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 
@@ -7,18 +7,19 @@ export const useDetailStore = defineStore('detailStore', {
         state: () => ({
             details: new DetailModel(),
             loading: Boolean(false),
-            skills: [] as String[],
-            jobs: [] as String[],
-            primarys: [] as String[],
+            skills: [] as string[],
+            jobs: [] as string[],
+            primarys: [] as string[],
             profilePic: '',
         }),
         actions: {
-            async loadDetailsById(id: String) {
+            async loadDetailsById(id: string) {
                 this.loading = true;
                 let profilePicId = null
                 const errorStore = useErrorStore();
                 await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
-                    this.details = ConvertToDetailModel.toDetail(response.data);
+                    console.log(response);
+                    this.details = ConvertResponseToDetailModel.toDetail(response.data);
                     profilePicId = response.data.profilePicId
                 }).catch((error) => {
                     errorStore.catchGetError(error, id);
@@ -40,7 +41,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            deleteDetailsByID(id: String) {
+            deleteDetailsByID(id: string) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axiosInstance.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
@@ -49,8 +50,8 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async createProfile(edits: DetailModel, profilePicUri: String) {
-                this.loading = true;
+            async createProfile(edits: DetailModel, profilePicUri: string) {
+                this.loading = true
                 const errorStore = useErrorStore();
                 await axiosInstance.post(`/api/v1/profiles/`,
                     {
@@ -60,7 +61,7 @@ export const useDetailStore = defineStore('detailStore', {
                         'degree': edits.getDegree(),
                         'primaryExpertise': edits.getPrimarySkill(),
                         'referenceText': edits.getReferences(),
-                        'skills': edits.getTechnologies(),
+                        'skills': edits.getSkills(),
                         'phoneNumber': edits.getPhoneNumber(),
                         'email': localStorage.getItem('username'),
                         'birthDate': edits.getBirthDate(),
@@ -74,7 +75,7 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async updateProfile(edits: DetailModel, id: String, profilePicUri: String) {
+            async updateProfile(edits: DetailModel, id: string, profilePicUri: string) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 await axiosInstance.patch(`/api/v1/profiles/${id}`,
@@ -85,29 +86,34 @@ export const useDetailStore = defineStore('detailStore', {
                         'degree': edits.getDegree(),
                         'primaryExpertise': edits.getPrimarySkill(),
                         'referenceText': edits.getReferences(),
-                        'skills': edits.getTechnologies(),
+                        'skills': edits.getSkills(),
                         'phoneNumber': edits.getPhoneNumber(),
                         'birthDate': edits.getBirthDate(),
                         'profilePic': profilePicUri,
                     }).then(() => {
                     errorStore.toggleHasError();
                 }).catch((error) => {
+                    console.log(error);
                     errorStore.catchPostPatchError(error);
                 });
                 this.loading = false;
             },
 
-            async deleteProfilePictureByProfileId(id: String) {
+            async deleteProfilePictureByProfileId(id: string) {
                 this.loading = true;
                 const errorStore = useErrorStore();
                 await axiosInstance.delete(`/api/v1/images/${id}`)
+                    .then((response) => {
+                        console.log(response);
+                    })
                     .catch((error) => {
+                        console.log(error)
                         errorStore.catchDeleteError(error, id);
                     })
                 this.loading = false;
             },
 
-            getSkills() {
+            loadSkills() {
                 this.skills = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
@@ -120,13 +126,12 @@ export const useDetailStore = defineStore('detailStore', {
                 });
                 this.loading = false;
             },
-
-            getJobs() {
+            loadJobs() {
                 this.jobs = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axiosInstance.get(`/api/v1/job-titles/`).then((response) => {
-                    response.data.forEach((element: String) => {
+                    response.data.forEach((element: string) => {
                         this.jobs.push(element)
                     })
                 }).catch((error) => {
@@ -135,12 +140,12 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            getPrimarys() {
+            loadPrimarys() {
                 this.primarys = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
                 axiosInstance.get(`/api/v1/profiles/expertises`).then((response) => {
-                    response.data.forEach((element: String) => {
+                    response.data.forEach((element: string) => {
                         this.primarys.push(element)
                     })
                 }).catch((error) => {

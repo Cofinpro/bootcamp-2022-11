@@ -1,17 +1,17 @@
 export class DetailModel {
-    private id: String;
-    private firstName: String;
-    private lastName: String;
+    private id: string;
+    private firstName: string;
+    private lastName: string;
     private age: number;
-    private birthdate: String;
-    private degree: String;
-    private jobTitle: String;
-    private primarySkill: String;
-    private technologies: String[];
-    private references: String;
-    private phoneNumber: String;
-    private email: String;
-    private ownerId: String;
+    private birthdate: string;
+    private degree: string;
+    private jobTitle: string;
+    private primarySkill: string;
+    private skills: string[];
+    private references: string;
+    private phoneNumber: string;
+    private email: string;
+    private ownerId: string;
 
     constructor() {
         this.id = '';
@@ -22,42 +22,42 @@ export class DetailModel {
         this.jobTitle = '';
         this.degree = '';
         this.primarySkill = '';
-        this.technologies = [];
+        this.skills = [];
         this.references = '';
         this.phoneNumber = '';
         this.email = '';
         this.ownerId = '';
     }
 
-    public getDegree(): String {
+    public getDegree(): string {
         return this.degree;
     }
 
-    public setDegree(value: String) {
+    public setDegree(value: string) {
         this.degree = value;
     }
 
-    public getId(): String {
+    public getId(): string {
         return this.id;
     }
 
-    public setId(value: String) {
+    public setId(value: string) {
         this.id = value;
     }
 
-    public getFirstName(): String {
+    public getFirstName(): string {
         return this.firstName;
     }
 
-    public setFirstName(value: String) {
+    public setFirstName(value: string) {
         this.firstName = value;
     }
 
-    public getLastName(): String {
+    public getLastName(): string {
         return this.lastName;
     }
 
-    public setLastName(value: String) {
+    public setLastName(value: string) {
         this.lastName = value;
     }
 
@@ -69,91 +69,91 @@ export class DetailModel {
         this.age = value;
     }
 
-    public setBirthDate(value: String) {
+    public setBirthDate(value: string) {
         this.birthdate = value;
     }
 
-    public getBirthDate(): String {
+    public getBirthDate(): string {
         return this.birthdate;
     }
 
-    public getJobTitle(): String {
+    public getJobTitle(): string {
         return this.jobTitle;
     }
 
-    public setJobTitle(value: String) {
+    public setJobTitle(value: string) {
         this.jobTitle = value;
     }
 
-    public getPrimarySkill(): String {
+    public getPrimarySkill(): string {
         return this.primarySkill;
     }
 
-    public setPrimarySkill(value: String) {
+    public setPrimarySkill(value: string) {
         this.primarySkill = value;
     }
 
-    public getTechnologies(): String[] {
-        return this.technologies;
+    public getSkills(): string[] {
+        return this.skills;
     }
 
-    public setTechnologies(value: String[]) {
-        this.technologies = value;
+    public setSkills(value: string[]) {
+        this.skills = value;
     }
 
-    public getReferences(): String {
+    public getReferences(): string {
         return this.references;
     }
 
-    public setReferences(value: String) {
+    public setReferences(value: string) {
         this.references = value;
     }
 
-    public getPhoneNumber(): String {
+    public getPhoneNumber(): string {
         return this.phoneNumber;
     }
 
-    public setPhoneNumber(value: String) {
+    public setPhoneNumber(value: string) {
         this.phoneNumber = value;
     }
 
-    public getEmail(): String {
+    public getEmail(): string {
         return this.email;
     }
 
-    public setEmail(value: String) {
+    public setEmail(value: string) {
         this.email = value;
     }
 
-    getOwnerId(): String {
+    getOwnerId(): string {
         return this.ownerId;
     }
 
-    setOwnerId(value: String) {
+    setOwnerId(value: string) {
         this.ownerId = value;
     }
 }
 
-export class ConvertToDetailModel {
+export class ConvertResponseToDetailModel {
     public static toDetail(object: any): DetailModel {
         const detailModel = new DetailModel();
-        detailModel.setId(String(object?.id));
-        detailModel.setFirstName(String(object?.firstName));
-        detailModel.setLastName(String(object?.lastName));
-        detailModel.setBirthDate(this.convertDateFormatFromISO(String(object?.birthDate)));
-        detailModel.setDegree(String(object?.degree));
-        detailModel.setJobTitle(String(object?.jobTitle));
-        detailModel.setPrimarySkill(String(object?.primaryExpertise));
-        detailModel.setTechnologies(object?.skills);
-        detailModel.setReferences(object?.referenceText);
-        detailModel.setPhoneNumber(object?.phoneNumber);
-        detailModel.setEmail(object?.email);
+        detailModel.setId(object?.id.toString());
+        detailModel.setFirstName(object?.firstName.toString());
+        detailModel.setLastName(object?.lastName.toString());
+        detailModel.setBirthDate(this.convertDateFormatFromISO(object?.birthDate.toString()));
+        detailModel.setDegree(object?.degree.toString());
+        detailModel.setJobTitle(object?.jobTitle.toString());
+        detailModel.setPrimarySkill(object?.primaryExpertise.toString());
+        detailModel.setSkills(object?.skills);
+        detailModel.setReferences(object?.referenceText.toString());
+        detailModel.setPhoneNumber(object?.phoneNumber.toString());
+        detailModel.setEmail(object?.email.toString());
         detailModel.setAge(object?.age);
-        detailModel.setOwnerId(object?.ownerId);
+        detailModel.setOwnerId(object?.ownerId.toString());
         return detailModel;
     }
 
-    private static convertDateFormatFromISO(date: String): String {
+    private static convertDateFormatFromISO(date: string): string {
         return `${date.split('-')[2]}.${date.split('-')[1]}.${date.split('-')[0]}`
     }
 }
@@ -165,7 +165,7 @@ interface DetailObject {
     degree: string,
     jobTitle: string,
     primarySkill: string,
-    technologies: string[],
+    skills: string[],
     references: string,
     phoneNumber: string,
     email: string
@@ -174,20 +174,19 @@ interface DetailObject {
 export class ConvertToDetailModelForOutput {
     public static toDetail(object: DetailObject): DetailModel {
         const detailModel = new DetailModel();
-        detailModel.setFirstName(String(object?.firstName));
-        detailModel.setLastName(String(object?.lastName));
-        detailModel.setBirthDate(this.convertDateToISO(object?.birthdate));
-        detailModel.setDegree(String(object?.degree));
-        detailModel.setJobTitle(String(object?.jobTitle));
-        detailModel.setPrimarySkill(String(object?.primarySkill));
-        detailModel.setTechnologies(object?.technologies);
-        detailModel.setReferences(object?.references);
-        detailModel.setPhoneNumber(String(object?.phoneNumber));
-        detailModel.setEmail(String(object?.email));
+        detailModel.setFirstName(object?.firstName.toString());
+        detailModel.setLastName(object?.lastName.toString());
+        detailModel.setBirthDate(this.convertDateToISO(object?.birthdate.toString()));
+        detailModel.setDegree(object?.degree.toString());
+        detailModel.setJobTitle(object?.jobTitle.toString());
+        detailModel.setPrimarySkill(object?.primarySkill.toString());
+        detailModel.setSkills(object?.skills);
+        detailModel.setReferences(object?.references.toString());
+        detailModel.setPhoneNumber(object?.phoneNumber);
         return detailModel;
     }
 
-    private static convertDateToISO(date: String): String {
+    private static convertDateToISO(date: string): string {
         return `${date.split(".")[2]}-${date.split(".")[1]}-${date.split(".")[0]}`;
     }
 }

@@ -8,7 +8,9 @@
                 } : ''"
              min-width="40px" width="40px" height="35px"
              v-bind="props" @click="$emit('clicked')">
-        <v-icon size="large"> {{ icon }} </v-icon>
+        <v-icon size="large">
+          {{ icon }}
+        </v-icon>
       </v-btn>
     </template>
     <span> {{ tooltip }}</span>

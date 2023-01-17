@@ -1,7 +1,6 @@
 <template>
   <v-container v-show="! detailStore.loading">
-    <h1>Neues Profil erstellen</h1>
-    <h2>Hier kannst du ein neues Profil anlegen!</h2>
+    <h1>Neues Profil</h1>
 
     <EditComponent :update=false />
   </v-container>
