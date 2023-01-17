@@ -31,7 +31,8 @@ public class ProfileController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "")
     @PreAuthorize("hasPermission(#profileInDTO, @authorityPrefix + 'PROFILES_POST_NEW')")
-    public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO) throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException {
+    public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO)
+            throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException {
         User user = userService.getUserByUsername(profileInDTO.email());
         Profile profile = profileService.createProfile(profileInDTO, user);
         userService.assignProfileToUser(user, profile);
@@ -54,7 +55,8 @@ public class ProfileController {
      */
     @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, 'void', @authorityPrefix + 'PROFILES_DELETE_BY_ID')")
-    public void deleteProfileById(@PathVariable String id) throws ProfileNotFoundException {
+    public void deleteProfileById(@PathVariable String id)
+            throws ProfileNotFoundException {
         Profile profile = profileService.getProfileByOuterId(id); // Find profile by its outerId
         userService.detachProfileFromUser(profile.getOwner().getId());
         profileService.deleteProfileByOuterId(id);
@@ -66,7 +68,8 @@ public class ProfileController {
      */
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, 'ProfileDetailsOutDTO', @authorityPrefix + 'PROFILES_GET_BY_ID')")
-    public ProfileDetailsOutDTO getProfile(@PathVariable String id) throws ProfileNotFoundException {
+    public ProfileDetailsOutDTO getProfile(@PathVariable String id)
+            throws ProfileNotFoundException {
         return profileService.getProfileDTOById(id);
     }
 
@@ -86,7 +89,7 @@ public class ProfileController {
      */
     @GetMapping(path = "/expertises")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_EXPERTISES_GET_ALL')")
-    public List<String> getAllExpertises() { // makes more sense to have this as an endpoint under profiles, where content is actually stored
+    public List<String> getAllExpertises() {
         return profileService.getAllExpertises();
     }
 
@@ -118,12 +121,11 @@ public class ProfileController {
      * @throws ProfileAlreadyExistsException as in createprofile
      * @throws CSVFormatException if columns in csv can not be read
      */
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path="/import",  consumes="multipart/form-data")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_IMPORT_POST_NEW')")
-    public void importFromCSV(@RequestParam("file") MultipartFile file)
+    public void importFromCSV(@RequestParam("file") MultipartFile file, HttpServletResponse response)
             throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException, ImageFormatNotAllowedException {
         CSVReader reader = new CSVReader(file, profileService, userService);
-        reader.readProfileFromFile();
+        reader.readProfileFromFile(response);
     }
 }

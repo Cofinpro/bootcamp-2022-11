@@ -11,8 +11,10 @@ import org.apache.commons.csv.*;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.*;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -37,46 +39,43 @@ public class CSVReader {
 
     /**
      * reads csv from file, validates content and, if content is valid creates profile objects in database.
-     * @throws IOException (not rly)
-     * @throws JobTitleNotFoundException from createprofile function
+     *
+     * @throws IOException                   (not rly)
+     * @throws JobTitleNotFoundException     from createprofile function
      * @throws ProfileAlreadyExistsException from createprofile function
-     * @throws CSVFormatException if csv is not formatted correctly
-     * @throws CSVArgumentNotValidException if csv records contain nonvalid elements
+     * @throws CSVFormatException            if csv is not formatted correctly
+     * @throws CSVArgumentNotValidException  if csv records contain nonvalid elements
      */
-    public void readProfileFromFile() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException, ImageFormatNotAllowedException {
+    public void readProfileFromFile(HttpServletResponse response)
+            throws IOException, ImageFormatNotAllowedException {
         String content = new String(file.getBytes(), Charset.defaultCharset());
-        CSVFormat format = CSVFormat.EXCEL
-                .builder()
-                .setHeader()
-                .setDelimiter(';')
-                .setSkipHeaderRecord(true)
-                .build();
+        CSVFormat format = buildCSVFormat();
         int lineCount = 1;
-        try {
-            for (CSVRecord record : CSVParser.parse(content, format)) {
-                ProfileCreateInDTO inDTO = new ProfileCreateInDTO(
-                        record.get("Email"),
-                        record.get("Vorname"),
-                        record.get("Nachname"),
-                        record.get("JobTitel"),
-                        record.get("Abschluss"),
-                        record.get("Primaerkompetenz"),
-                        record.get("Referenzen"),
-                        Arrays.stream(record.get("Skills").split(",")).toList(),
-                        record.get("Telefonnummer"),
-                        record.get("Geburtsdatum"),
-                        null
+        for (CSVRecord record : CSVParser.parse(content, format)) {
+            try {
+                saveProfileFromRecord(record, lineCount);
+            } catch (ProfileAlreadyExistsException e) {
+                handleExceptionsWithoutThrowing(response,
+                        String.format("Das Profil in Zeile %d existiert bereits! }", lineCount)
                 );
-                validate(inDTO, lineCount);
-                User user = userService.getUserByUsername(inDTO.email());
-                Profile profile = profileService.createProfile(inDTO, user);
-                userService.assignProfileToUser(user, profile);
-                lineCount++;
+            } catch (JobTitleNotFoundException e) {
+                handleExceptionsWithoutThrowing(response,
+                        String.format("Der Jobtitel des Profils in Zeile %d existiert nicht!}", lineCount)
+                );
+            } catch (CSVArgumentNotValidException e) {
+
+                handleExceptionsWithoutThrowing(response,
+                        String.format("Zeile %d: %s", lineCount, e.getViolations().toString().replaceAll("(\\[|])", ""))
+                );
             }
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            throw new CSVFormatException(e.getMessage());
+            lineCount++;
         }
+    }
+
+    private void handleExceptionsWithoutThrowing(HttpServletResponse response, String message) throws IOException {
+        response.setStatus(400);
+        response.setContentType(MediaType.APPLICATION_JSON.toString());
+        response.getOutputStream().write(message.getBytes());
     }
 
     private void validate(ProfileCreateInDTO inDTO, int lineCount) {
@@ -90,7 +89,37 @@ public class CSVReader {
                             .toList(),
                     lineCount);
         }
+    }
 
+    private Profile saveProfileFromRecord(CSVRecord record, int lineCount)
+            throws ProfileAlreadyExistsException, ImageFormatNotAllowedException, JobTitleNotFoundException {
+        ProfileCreateInDTO inDTO = new ProfileCreateInDTO(
+                record.get("Email"),
+                record.get("Vorname"),
+                record.get("Nachname"),
+                record.get("JobTitel"),
+                record.get("Abschluss"),
+                record.get("Primaerkompetenz"),
+                record.get("Referenzen"),
+                Arrays.stream(record.get("Skills").split(",")).toList(),
+                record.get("Telefonnummer"),
+                record.get("Geburtsdatum"),
+                null
+        );
+        validate(inDTO, lineCount);
+        User user = userService.getUserByUsername(inDTO.email());
+        Profile profile = profileService.createProfile(inDTO, user);
+        userService.assignProfileToUser(user, profile);
+        return profile;
+    }
+
+    private CSVFormat buildCSVFormat() {
+        return CSVFormat.EXCEL
+                .builder()
+                .setHeader()
+                .setDelimiter(';')
+                .setSkipHeaderRecord(true)
+                .build();
     }
 
 }

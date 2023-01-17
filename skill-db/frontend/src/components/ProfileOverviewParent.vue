@@ -77,7 +77,7 @@ export default {
     async uploadCSV(file: File) {
       const blobStore = useBlobStore();
       await blobStore.postCSV(file);
-      this.overviewStore.loadOverview();
+      await this.overviewStore.loadOverview();
     },
     async downloadXLSX() {
       const blobStore = useBlobStore();

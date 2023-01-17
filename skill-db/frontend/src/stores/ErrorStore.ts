@@ -46,13 +46,18 @@ export const useErrorStore = defineStore(
             },
 
             catchImportError(error: AxiosError) {
-                this.catchPostPatchError(error);
-                if (this.errorText === this.errorMessages.unknownError) {
-                    const colNameNotFound = `${error.response?.data.message
-                        .toString()
-                        .split(",")[0]
-                        .split(' ')[2]}`
-                    this.errorText = `Spalte \"${colNameNotFound}\" wurde in der CSV Datei nicht gefunden!`;
+                if (error.response.data.message) {
+                    this.catchPostPatchError(error);
+                    if (this.errorText === this.errorMessages.unknownError && error.response.data.message.contains('Mapping')) {
+                        const colNameNotFound = `${error.response.data.message
+                            .toString()
+                            .split(",")[0]
+                            .split(' ')[2]}`
+                        this.errorText = `Spalte \"${colNameNotFound}\" wurde in der CSV Datei nicht gefunden!`;
+                    }
+                } else {
+                    this.hasError = true;
+                    this.errorText = error.response.data;
                 }
             },
 
