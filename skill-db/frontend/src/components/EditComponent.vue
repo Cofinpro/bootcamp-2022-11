@@ -9,7 +9,7 @@
               :old-picture="oldPic"
               v-on:toggleDelete="onToggleDelete"/>
         </div>
-        <v-row class="pl-md-6 pl-3 pt-6 pt-sm-6">
+        <v-row class="pl-md-6 pl-3 pt-6 pt-sm-3">
           <InputBlock :date-in="birthdate"
                       :phone-number-in="phoneNumber"
                       :primary-skill-in="primarySkill"
@@ -30,7 +30,7 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="d-flex flex-column">
 
-            <SkillInput :skills-in="detailStore.details.getSkills()"
+            <SkillInput :skills-in="skills"
                         @update:skills="(value) => {this.skills=value;}"/>
 
             <v-text-field v-model="degree"
