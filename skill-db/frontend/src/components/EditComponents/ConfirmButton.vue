@@ -5,7 +5,7 @@
                   border: '1px dashed #BBBBBB !important',
                 } : ''"
          :disabled="!isValid"
-         @click="update? updateProfile() : createProfile()"
+         @click="this.$emit('submit')"
          elevation="0">
     {{ update ? "Änderungen speichern" : "Profil erstellen" }}
   </v-btn>
@@ -23,14 +23,6 @@ export default {
       type: Boolean,
       required: true,
     },
-    methods: {
-      updateProfile() {
-        this.$emit('updateProfile');
-      },
-      createProfile() {
-        this.$emit('createProfile');
-      },
-    }
   }
 }
 </script>

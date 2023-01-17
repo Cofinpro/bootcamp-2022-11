@@ -2,7 +2,7 @@
   <v-autocomplete :v-model="skills"
                   label="Skills"
                   :items="detailStore.skills"
-                  @update:modelValue="onInput"
+                  @update:modelValue="this.$emit('updateSkills',this.skills)"
                   multiple
                   auto-select-first
                   chips
@@ -24,6 +24,7 @@ import {useDetailStore} from "@/stores/DetailStore";
 
 export default {
   name: "SkillInput",
+  emits: ['updateSkills'],
   props: {
     skillsIn:{
       value: [] as string[],
@@ -49,9 +50,6 @@ export default {
 
       this.newSkills = '';
       this.showAddSkills = false;
-    },
-    onInput() {
-      this.$emit('updateSkills',this.skills)
     },
     toggleShowAddSkills() {
       this.showAddSkills=true

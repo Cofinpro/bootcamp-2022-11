@@ -10,39 +10,19 @@
               v-on:toggleDelete="onToggleDelete"/>
         </div>
         <v-row class="pl-md-6 pl-3 pt-6 pt-sm-6">
-          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-            <v-text-field v-model="firstName"
-                          label="Vorname"
-                          :rules="[v => v.length > 0 || 'Erforderlich!']"/>
-          </v-col>
-          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-            <v-text-field v-model="lastName"
-                          label="Nachname"
-                          :rules="[v => v.length > 0 || 'Erforderlich']"/>
-          </v-col>
-          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-            <v-autocomplete v-model="jobTitle"
-                            label="Jobprofil"
-                            :rules="[v => v.length > 0 || 'Erforderlich!']"
-                            :items="detailStore.jobs"/>
-          </v-col>
-          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-            <v-autocomplete v-model="primarySkill"
-                            label="Primärkompetenz"
-                            :rules="[v => v.length > 0 || 'Erforderlich!']"
-                            :items="detailStore.primarys"/>
-          </v-col>
-          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-            <v-text-field v-model="phoneNumber"
-                          label="Telefonnummer"
-                          :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
-          </v-col>
-          <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-            <v-text-field v-model="birthdate"
-                          label="Geburtsdatum"
-                          :rules="[ date => checkDateFormat(date) ||
-                          'Datum muss im Format TT.MM.JJJJ eingegeben werden!']"/>
-          </v-col>
+          <InputBlock :date-in="birthdate"
+                      :phone-number-in="phoneNumber"
+                      :primary-skill-in="primarySkill"
+                      :job-title-in="jobTitle"
+                      :last-name-in="lastName"
+                      :first-name-in="firstName"
+                      @update:firstName="(value) => {this.firstName = value}"
+                      @update:lastName="(value) => {this.lastName = value}"
+                      @update:jobTitle="(value) => {this.jobTitle = value}"
+                      @update:primarySkill="(value) => {this.primarySkill = value}"
+                      @update:phoneNumber="(value) => {this.phoneNumber = value}"
+                      @update:birthDate="(value) => {this.birthdate = value}"
+          />
         </v-row>
       </div>
 
@@ -50,8 +30,8 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="d-flex flex-column">
 
-           <SkillInput :skills-in="detailStore.details.getSkills()"
-           v-on:updateSkills="(value) => {this.skills = value;}"/>
+            <SkillInput :skills-in="detailStore.details.getSkills()"
+                        v-on:updateSkills="(value) => {this.skills = value;}"/>
 
             <v-text-field v-model="degree"
                           label="Abschluss"
@@ -71,14 +51,10 @@
 
         <ConfirmButton :update="update"
                        :is-valid="isValid"
-                        @updateProfile="updateProfile()"
-                        @createProfile="createProfile()"/>
+                       @submit="update ? updateProfile() : createProfile()"
+        />
 
-        <v-btn class="mt-10 ml-lg-5 ml-md-5"
-               @click="leave"
-               elevation="0">
-          Abbrechen
-        </v-btn>
+        <LeaveButton @click="leave"></LeaveButton>
       </div>
     </v-form>
   </v-container>
@@ -92,6 +68,8 @@ import {useErrorStore} from "@/stores/ErrorStore";
 import UploadImageButton from "@/components/EditComponents/UploadImageButton.vue";
 import SkillInput from "@/components/EditComponents/SkillInput.vue";
 import ConfirmButton from "@/components/EditComponents/ConfirmButton.vue";
+import InputBlock from "@/components/EditComponents/inputBlock.vue";
+import LeaveButton from "@/components/EditComponents/LeaveButton.vue";
 
 export default {
   name: "EditComponent",
@@ -105,13 +83,13 @@ export default {
       required: false
     }
   },
-  components: {ConfirmButton, SkillInput, UploadImageButton},
+  components: {LeaveButton, InputBlock, ConfirmButton, SkillInput, UploadImageButton},
   setup(props) {
     const detailStore = useDetailStore();
     const errorStore = useErrorStore();
-    detailStore.loadJobs();
-    detailStore.loadPrimarys();
     detailStore.loadSkills();
+    detailStore.loadPrimarys();
+    detailStore.loadJobs();
     let firstName = '';
     let lastName = '';
     let degree = '';
@@ -136,6 +114,7 @@ export default {
       primarySkill = detailStore.details.getPrimarySkill();
       skills = detailStore.details.getSkills();
       references = detailStore.details.getReferences();
+      oldPic = detailStore.profilePic;
     }
     return {
       detailStore,
@@ -192,7 +171,7 @@ export default {
     },
     leave() {
       if (this.update) {
-        const id = this.detail.getId();
+        const id = this.detailStore.details.getId();
         router.push({name: 'userDetails', params: {id}});
       } else {
         router.push('/');
@@ -212,11 +191,9 @@ export default {
     checkDateFormat(date) {
       const regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/;
       if (!regex.test(date)) return false;
-
       const currentDate = new Date();
       const [day, month, year] = date.split('.');
       const inputDate = new Date(Date.UTC(year, month - 1, day));
-
       return inputDate <= currentDate;
     },
     checkPhoneNumberFormat(number) {

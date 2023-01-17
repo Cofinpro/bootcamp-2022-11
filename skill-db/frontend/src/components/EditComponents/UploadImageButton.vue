@@ -12,15 +12,15 @@
          alt="Profilbild"
          :src="imageDataUri"/>
     <img class="image"
-         v-else-if="oldPicture"
+         v-else-if="oldPic"
          alt="Profilbild"
-         :src="oldPicture"/>
+         :src="oldPic"/>
     <img class="image"
          v-else
          alt="Profilbild"
          src="@/assets/images/dummy_profilePicture.png"/>
 
-    <v-btn v-if="(oldPicture || imageDataUri)"
+    <v-btn v-if="(oldPic || imageDataUri)"
            class="uploadBtn  d-flex justify-center button"
            elevation="0"
            width="200"
@@ -43,11 +43,15 @@ import {useErrorStore} from "@/stores/ErrorStore";
 
 export default {
   name: "UploadImageButton",
-  data() {
+  props: {
+    oldPicture: String,
+  },
+  data(props) {
     return {
       errorStore: useErrorStore(),
       maxUploadSize: 20000000, // Angabe in bytes, entspricht 20 MB
       imageDataUri: null,
+      oldPic: props.oldPicture
     }
   },
   methods: {
@@ -69,11 +73,14 @@ export default {
         this.$emit('toggleDelete', true);
       }
       //image is not persisted yet, local deleting sufficient
+      this.oldPic='';
       this.imageDataUri ='';
       this.$refs.imageInput.value='';
+      this.$emit('toggleDelete', true);
       this.convertImageAndEmitToParent();
     },
     async convertImageAndEmitToParent() {
+      console.log(this.oldPic)
       const fileInput = this.$refs.imageInput;
       if (fileInput && fileInput.value) {
         const file = fileInput.files[0];
@@ -102,10 +109,6 @@ export default {
         this.$emit('upload',undefined)
       }
     }
-  },
-
-  props: {
-    oldPicture: String,
   },
 }
 </script>

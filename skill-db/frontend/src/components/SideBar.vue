@@ -1,8 +1,8 @@
 <template>
   <v-app-bar elevation="0"
              order="0"
-             v-if="$vuetify.display.sm">
-    <v-app-bar-nav-icon @click="toggleDrawer()" v-if="$vuetify.display.sm"/>
+             v-if="$vuetify.display.smAndDown">
+    <v-app-bar-nav-icon @click="toggleDrawer()"/>
   </v-app-bar>
   <v-navigation-drawer elevation="0"
                        v-model="drawer" order="1"
