@@ -11,8 +11,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -52,8 +54,8 @@ class CSVReaderTest {
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         User user = new User();
         Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
-
-        csvReader.readProfileFromFile();
+        HttpServletResponse response = new MockHttpServletResponse();
+        csvReader.readProfileFromFile(response);
 
         Mockito.verify(profileService,Mockito.times(1))
                 .createProfile(dtoArgumentCaptor.capture(), userArgumentCaptor.capture());
@@ -70,8 +72,8 @@ class CSVReaderTest {
         assertThat(userArgumentCaptor.getValue()).isEqualTo(user);
     }
     @Test
-    @DisplayName("Error path for reading Single profile Unit test")
-    void readProfileFromFileSadPath() throws IOException, JobTitleNotFoundException {
+    @DisplayName("Error path for reading Single profile Unit test. Checks that response status is set to 400")
+    void readProfileFromFileSadPath() throws IOException, JobTitleNotFoundException, ImageFormatNotAllowedException {
         String email = "markus.kremer@cofinpro.de";
         String name = "Markus";
         String surname = "";
@@ -89,11 +91,12 @@ class CSVReaderTest {
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         User user = new User();
         Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
-
-        assertThrows(CSVArgumentNotValidException.class, () ->{csvReader.readProfileFromFile();});
+        HttpServletResponse httpServletResponse = new MockHttpServletResponse();
+        Mockito.verify(httpServletResponse,Mockito.times(1))
+                .setStatus(400);
     }
     @Test
-    @DisplayName("Error path for reading wrongly formated csv")
+    @DisplayName("Error path for reading wrongly formated csv. Checks that response status is set to 400")
     void readProfileFromFileSadPath2() throws IOException, JobTitleNotFoundException {
         String email = "markus.kremer@cofinpro.de";
         String name = "Markus";
@@ -113,6 +116,8 @@ class CSVReaderTest {
         User user = new User();
         Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
 
-        assertThrows(CSVFormatException.class, () ->{csvReader.readProfileFromFile();});
+        HttpServletResponse httpServletResponse = new MockHttpServletResponse();
+        Mockito.verify(httpServletResponse,Mockito.times(1))
+                .setStatus(400);
     }
 }

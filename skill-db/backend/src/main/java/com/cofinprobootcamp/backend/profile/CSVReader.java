@@ -63,7 +63,6 @@ public class CSVReader {
                         String.format("Der Jobtitel des Profils in Zeile %d existiert nicht!}", lineCount)
                 );
             } catch (CSVArgumentNotValidException e) {
-
                 handleExceptionsWithoutThrowing(response,
                         String.format("Zeile %d: %s", lineCount, e.getViolations().toString().replaceAll("(\\[|])", ""))
                 );
