@@ -29,7 +29,7 @@
         <td class="d-flex justify-left align-center ma-1">
           <ChipWithInfotext :tooltip="user.getRole().getDescription()"
                             :content="user.getRole().getDisplayName()"
-                            :color="roleColor(user.getRole().getIdentifier())"/>
+                            :color="user.getRole().getColor()"/>
           <AlertWithTooltip :user="user"
                             operation-type="changeRole"
                             :operations="userStore.roleChangeOperations"/>
@@ -77,18 +77,6 @@ export default {
     }
   },
   methods: {
-    roleColor(roleShortName: string): string {
-      if (roleShortName === 'ADMIN') {
-        return '#ec7b1a';
-      } else if (roleShortName === 'HR') {
-        return '#9bc3ee';
-      } else if (roleShortName === 'USER') {
-        return '#3a3a3a';
-      } else {
-        return 'black';
-      }
-    },
-
     async toggleLock(user: UserModel): Promise<void> {
       await this.userStore.lockUser(user.getId());
       if (!this.errorStore.hasError) {

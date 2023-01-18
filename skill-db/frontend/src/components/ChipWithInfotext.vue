@@ -9,8 +9,10 @@
 
   <v-overlay v-model="info" absolute>
 
-  <v-card class="d-flex justify-space-between" elevation="2"
-          :style="{ borderColor: color }">
+  <v-card class="d-flex justify-space-between"
+          elevation="2"
+          :style="{ borderColor: color }"
+          min-width="300" max-width="400">
     <v-card-text>
       {{ tooltip }}
     </v-card-text>
@@ -52,8 +54,6 @@ export default {
 <style scoped>
 
 .v-card {
-  max-width: 400px;
-  min-width: 300px;
   margin-top: 20vh;
   margin-left: 20vw;
   margin-right: 2vw;

@@ -23,7 +23,7 @@
 
         <td class="d-flex justify-center pa-2 pt-3"
             v-if="isDefined(role)">
-          <v-chip :color="roleColor(role.getIdentifier())">
+          <v-chip :color="role.getColor()">
             {{ role.getDisplayName() }}
           </v-chip>
         </td>
@@ -79,18 +79,6 @@ export default {
     }
   },
   methods: {
-    roleColor(roleShortName: string): string {
-      if (roleShortName === 'ADMIN') {
-        return '#ec7b1a';
-      } else if (roleShortName === 'HR') {
-        return '#9bc3ee';
-      } else if (roleShortName === 'USER') {
-        return '#3a3a3a';
-      } else {
-        return 'black';
-      }
-    },
-
     isDefined(role: RoleModel): boolean {
       return role.getIdentifier() !== 'UNDEFINED';
     },
