@@ -30,17 +30,24 @@
           <ChipWithInfotext :tooltip="user.getRole().getDescription()"
                             :content="user.getRole().getDisplayName()"
                             :color="roleColor(user.getRole().getIdentifier())"/>
-          <AlertWithTooltip :user="user" operation-type="changeRole" :operations="userStore.roleChangeOperations"/>
-
+          <AlertWithTooltip :user="user"
+                            operation-type="changeRole"
+                            :operations="userStore.roleChangeOperations"/>
         </td>
 
         <td>
           <div class="d-flex justify-start">
             <v-icon @click="toggleLock(user)"
-                    :class="{ locked: user.getLocked()}">
-              {{ user.getLocked() ? 'mdi-lock' : 'mdi-lock-open' }}
+                    v-if="user.getLocked()">
+              mdi-lock
             </v-icon>
-            <AlertWithTooltip :user="user" operation-type="lockUser" :operations="userStore.lockUserOperations"/>
+            <v-icon @click="toggleLock(user)"
+                    v-else>
+              mdi-lock-open
+            </v-icon>
+            <AlertWithTooltip :user="user"
+                              operation-type="lockUser"
+                              :operations="userStore.lockUserOperations"/>
           </div>
         </td>
 
@@ -60,13 +67,13 @@ export default {
   name: "UserComponent",
   components: {AlertWithTooltip, ChipWithInfotext},
   data() {
-    let errorStore = useErrorStore();
     let userStore = useUserStore();
     userStore.loadUsers();
     userStore.loadPendingRoleChanges();
     userStore.loadPendingLockUsers();
     return {
-      userStore, errorStore
+      userStore,
+      errorStore: useErrorStore()
     }
   },
   methods: {
@@ -88,7 +95,6 @@ export default {
         user.setLocked(!user.getLocked());
       }
       await this.userStore.loadPendingLockUsers();
-      //TODO: Lock doesn't close, but is grey
     }
   }
 }
@@ -97,7 +103,7 @@ export default {
 <style scoped>
 
 .v-icon {
-  margin-left: 40%;
+  margin-left: 30%;
 }
 
 .locked {

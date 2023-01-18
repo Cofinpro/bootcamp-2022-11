@@ -80,10 +80,13 @@ export default {
 .v-card {
   margin-top: 20vh;
   margin-left: 20vw;
-  width: 500px;
+  margin-right: 2vw;
+  max-width: 600px;
+  min-width: 200px;
 }
 
 .v-select {
-  min-width: 400px;
+  max-width: 500px;
+  min-width: 200px;
 }
 </style>

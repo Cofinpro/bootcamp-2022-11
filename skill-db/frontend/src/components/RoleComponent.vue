@@ -44,7 +44,7 @@
       </tr>
 
       <v-overlay v-model="edit">
-        <role-dropdown @clicked="trySubmit"
+        <role-dropdown @clicked="submit"
                        :role="roleHere"
                        :selected-users="selectedUsers"
                        :all-users="allUsers"/>
@@ -87,7 +87,7 @@ export default {
       } else if (roleShortName === 'USER') {
         return '#3a3a3a';
       } else {
-        return 'red';
+        return 'black';
       }
     },
 
@@ -102,14 +102,14 @@ export default {
         this.selectedUsers = this.userStore.users;
         this.userStore.users = [] as UserModel[];
       }
-      this.userStore.loadUsers();
+      await this.userStore.loadUsers();
       this.allUsers = this.userStore.users;
 
       this.edit = true;
       this.roleHere = role;
     },
 
-    async trySubmit(selectedUsersWithRole: string[]): Promise<void> {
+    async submit(selectedUsersWithRole: string[]): Promise<void> {
       const role = this.roleHere;
       for (const selected of selectedUsersWithRole) {
         for (const user of this.allUsers) {

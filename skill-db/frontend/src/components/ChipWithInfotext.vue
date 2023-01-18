@@ -6,7 +6,9 @@
       mdi-information
     </v-icon>
   </v-chip>
+
   <v-overlay v-model="info" absolute>
+
   <v-card class="d-flex justify-space-between" elevation="2"
           :style="{ borderColor: color }">
     <v-card-text>
@@ -18,16 +20,26 @@
       </v-icon>
     </v-card-actions>
   </v-card>
+
   </v-overlay>
 </template>
 
 <script>
 export default {
-  name: "ChipWithTooltip",
+  name: "ChipWithInfotext",
   props: {
-    tooltip: String,
-    content: String,
-    color: String
+    tooltip: {
+      required: true,
+      type: String
+    },
+    content: {
+      required: true,
+      type: String
+    },
+    color: {
+      required: true,
+      type: String
+    }
   },
   data() {
     return {
@@ -38,10 +50,13 @@ export default {
 </script>
 
 <style scoped>
+
 .v-card {
   max-width: 400px;
-  margin-top: 15vh;
-  margin-left: 50vw;
+  min-width: 300px;
+  margin-top: 20vh;
+  margin-left: 20vw;
+  margin-right: 2vw;
   border-top: 5px solid;
 }
 </style>
