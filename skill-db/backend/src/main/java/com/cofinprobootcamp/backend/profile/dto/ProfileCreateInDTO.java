@@ -5,6 +5,7 @@ import com.cofinprobootcamp.backend.config.Regex;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -46,6 +47,7 @@ public record ProfileCreateInDTO(
         @NotNull(message = "Primärkompetenz darf nicht leer sein!")
         String primaryExpertise,
         @NotNull(message = "Referenzen dürfen nicht leer sein!")
+        @Size(max = 5000, message = "Referenzen sind zu Lang! (Max. 5000 Zeichen)")
         String referenceText,
         List<@NotBlank(message = "Skills dürfen nicht leer sein!") String> skills,
         @NotBlank(message = "Telefonnummer darf nicht leer sein!")
