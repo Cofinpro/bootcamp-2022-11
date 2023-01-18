@@ -50,11 +50,11 @@ export default {
     },
     selectedUsers: {
       required: true,
-      type: [] as UserModel[],
+      type: Array,
     },
     allUsers: {
       required: true,
-      type: [] as UserModel[],
+      type: Array,
     }
   },
   data(props) {

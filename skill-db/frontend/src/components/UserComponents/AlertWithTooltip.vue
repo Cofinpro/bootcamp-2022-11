@@ -33,7 +33,7 @@ export default {
     },
     operations: {
       required: true,
-      type: [] as OperationsModel[]
+      type: Array
     }
   },
 }
