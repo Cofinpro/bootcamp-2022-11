@@ -21,7 +21,7 @@
          src="@/assets/images/dummy_profilePicture.png"/>
 
     <v-btn v-if="(oldPic || imageDataUri)"
-           class="uploadBtn  d-flex justify-center button"
+           class="d-flex justify-center button mb-2"
            elevation="0"
            width="200"
            size="small"
@@ -126,9 +126,6 @@ export default {
   display: block;
 }
 
-.uploadBtn {
-  margin-top: -5px;
-}
 
 .upload-text {
   display: none;
