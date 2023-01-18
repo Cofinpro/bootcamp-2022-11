@@ -1,4 +1,4 @@
-<template>
+<template v-show="!detailStore.loading">
   <div class="pt-md-14">
 
     <div style="float: right">
@@ -6,7 +6,7 @@
                        :delete-function="deleteFunction"
                        :edit-function="editFunction"
                        :lock-function="lockFunction"/>
-      <dropdown-button v-else
+      <dropdown-button v-else-if="auth"
                        :delete-function="deleteFunction"
                        :edit-function="editFunction"/>
     </div>
@@ -83,27 +83,40 @@
 
 <script lang="ts">
 import DropdownButton from "@/components/DetailComponents/DropdownButton.vue";
-import DeleteProfileDialog from "@/components/DetailComponents/DeleteProfileDialog.vue";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useRoute} from "vue-router";
-import {ref} from "vue";
 import router from "@/router";
 import {useUserStore} from "@/stores/UserStore";
-import SettingsButton from "@/components/DetailComponents/SettingsButton.vue";
 import InfoWithIcon from "@/components/DetailComponents/InfoWithIcon.vue";
 import InfoInCard from "@/components/DetailComponents/InfoInCard.vue";
 import ProfilePic from "@/components/DetailComponents/ProfilePic.vue";
 
 export default {
   name: "DetailComponent",
-  components: { InfoWithIcon, InfoInCard, ProfilePic,
-    SettingsButton, DropdownButton, DeleteProfileDialog },
-  setup() {
+  components: { InfoWithIcon, InfoInCard, ProfilePic, DropdownButton },
+  async mounted() {
+      const role = window.localStorage.getItem('role');
+      if (role === "ROLE_HR") {
+        this.auth = true;
+      } else if (role === "ROLE_USER") {
+        let userStore = useUserStore();
+        const userId = window.localStorage.getItem('user_id');
+        await userStore.checkForExistingUserProfile(userId);
+        if (!userStore.hasProfile) {
+          this.auth = false;
+        } else {
+          const profileId = String(this.$route.params.id);
+          await userStore.getProfileIdFromUser(userId);
+          this.auth = (String(userStore.profileId) === profileId);
+        }
+      } else {
+        this.auth = false;
+      }
+  },
+  data() {
     const detailStore = useDetailStore();
     const id = useRoute().params.id.toString();
     detailStore.loadDetailsById(id);
-
-    const locked = ref(false);
 
     const role = window.localStorage.getItem('role');
     const editFunction = {name: 'Bearbeiten', method: enterEdit};
@@ -115,12 +128,10 @@ export default {
     }
 
     function lockProfile(): void {
-      console.log("lockProfile");
       const userStore = useUserStore();
       detailStore.loadDetailsById(id);
       const userId = detailStore.details.getOwnerId();
       userStore.lockUser(userId);
-      locked.value = true;
     }
 
     function deleteProfile(): void {
@@ -130,7 +141,7 @@ export default {
 
     return {
       deleteFunction, editFunction, lockFunction, role,
-      detailStore, locked
+      detailStore, auth: false
     };
   }
 }
