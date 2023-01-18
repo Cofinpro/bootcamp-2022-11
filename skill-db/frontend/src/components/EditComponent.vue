@@ -9,7 +9,7 @@
               :old-picture="oldPic"
               v-on:toggleDelete="onToggleDelete"/>
         </div>
-        <v-row class="pl-md-6 pl-3 pt-6 pt-sm-3">
+        <v-row class="pl-md-6 pl-3 pt-12 pt-sm-12 pt-md-2">
           <InputBlock :date-in="birthdate"
                       :phone-number-in="phoneNumber"
                       :primary-skill-in="primarySkill"

@@ -6,7 +6,7 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script lang="ts" >
 import EditComponent from "@/components/EditComponent.vue";
 import {useDetailStore} from "@/stores/DetailStore";
 
