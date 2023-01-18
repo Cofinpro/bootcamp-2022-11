@@ -56,11 +56,11 @@ public class CSVReader {
                 saveProfileFromRecord(record, lineCount);
             } catch (ProfileAlreadyExistsException e) {
                 handleExceptionsWithoutThrowing(response,
-                        String.format("Das Profil in Zeile %d existiert bereits! }", lineCount)
+                        String.format("Das Profil in Zeile %d existiert bereits! ", lineCount)
                 );
             } catch (JobTitleNotFoundException e) {
                 handleExceptionsWithoutThrowing(response,
-                        String.format("Der Jobtitel des Profils in Zeile %d existiert nicht!}", lineCount)
+                        String.format("Der Jobtitel des Profils in Zeile %d existiert nicht! ", lineCount)
                 );
             } catch (CSVArgumentNotValidException e) {
                 handleExceptionsWithoutThrowing(response,
