@@ -1,4 +1,4 @@
-<template>
+<template v-show="!detailStore.loading">
   <v-container>
     <v-form @submit.prevent>
 
@@ -147,7 +147,8 @@ export default {
     },
     async updateProfile() {
       const editDetails = ConvertToDetailModelForOutput.toDetail(this);
-      const id = this.detailStore.details.getId();
+      console.log(this.$route.params.id)
+      const id = this.$route.params.id;
       if (this.picToDelete) {
         await this.deleteProfilePicture();
       }
@@ -171,7 +172,8 @@ export default {
     },
     leave() {
       if (this.update) {
-        const id = this.detailStore.details.getId();
+        console.log(this.$route.params.id)
+        const id = this.$route.params.id;
         router.push({name: 'userDetails', params: {id}});
       } else {
         router.push('/');
