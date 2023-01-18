@@ -5,17 +5,17 @@ import axiosInstance from "@/axios";
 import {useErrorStore} from "@/stores/ErrorStore";
 
 export const useAuthStore = defineStore('auth', {
-    state: () =>({
+    state: () => ({
         loggedIn: false,
         username: "",
         role: "",
     }),
 
     actions: {
-        login(user: LoginRequest): void{
+        async login(user: LoginRequest): Promise<void> {
             localStorage.clear();
             const errorStore = useErrorStore();
-            axiosInstance.post("/api/v1/token", user).then((result) => {
+            await axiosInstance.post("/api/v1/token", user).then((result) => {
                 localStorage.setItem("access_token", result.data.tokens["access_token"]);
                 localStorage.setItem("refresh_token", result.data.tokens["refresh_token"]);
                 localStorage.setItem("username", result.data.username);
@@ -29,12 +29,12 @@ export const useAuthStore = defineStore('auth', {
                 errorStore.catchTokenError(error);
             });
         },
-        logout(): void{
-           localStorage.clear();
-           this.loggedIn = false;
-           this.username = "";
-           this.role = "";
-           router.push("/login");
+        logout(): void {
+            localStorage.clear();
+            this.loggedIn = false;
+            this.username = "";
+            this.role = "";
+            router.push("/login");
         },
         async isLoggedIn(): Promise<boolean> {
             const refreshToken = localStorage.getItem("refresh_token");
@@ -60,7 +60,7 @@ export const useAuthStore = defineStore('auth', {
                     return false;
                 })
         },
-        isAdmin(): boolean{
+        isAdmin(): boolean {
             return localStorage.getItem('role') === 'ROLE_ADMIN'
         }
     }

@@ -3,12 +3,14 @@ export class RoleModel {
     private displayName: String;
     private description: String;
     private user: String[];
+    private color: String;
 
     constructor() {
         this.identifier = '';
         this.displayName = '';
         this.description = '';
         this.user = [];
+        this.color = '';
     }
 
     getIdentifier(): String {
@@ -42,15 +44,32 @@ export class RoleModel {
     setUser(value: []) {
         this.user = value;
     }
+
+    getColor(): String {
+        return this.color;
+    }
+
+    setColor() {
+        if (this.identifier === 'ADMIN') {
+            this.color = '#ec7b1a';
+        } else if (this.identifier === 'HR') {
+            this.color = '#9bc3ee';
+        } else if (this.identifier === 'USER') {
+            this.color = '#3a3a3a';
+        } else {
+            this.color = 'black';
+        }
+    }
 }
 
-export class ConvertToRoleModel{
+export class ConvertToRoleModel {
     public static toRole(object: any): RoleModel {
         const roleModel = new RoleModel();
         roleModel.setIdentifier(String(object?.identifier));
         roleModel.setDisplayName(String(object?.displayName));
         roleModel.setDescription(String(object?.detailedDescription));
         //roleModel.setUser(Array(object?.users));
+        roleModel.setColor();
         return roleModel;
     }
 }

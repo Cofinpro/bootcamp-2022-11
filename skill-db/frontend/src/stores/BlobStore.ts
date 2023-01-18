@@ -7,7 +7,7 @@ export const useBlobStore = defineStore('blobStore',{
         blob: new Blob(),
     }),
     actions: {
-        async getExcel() {
+        async getExcel(): Promise<void> {
             await axiosInstance({
                 url: '/api/v1/profiles/export',
                 method: 'get',
@@ -19,7 +19,7 @@ export const useBlobStore = defineStore('blobStore',{
                 errorStore.catchExportError(error);
             })
         },
-        async postCSV(file: File) {
+        async postCSV(file: File): Promise<void> {
             const formData = new FormData();
             formData.append('file', file);
             await axiosInstance({

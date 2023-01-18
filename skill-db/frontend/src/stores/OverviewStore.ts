@@ -33,8 +33,7 @@ export const useOverviewStore = defineStore('OverviewStore', {
                 }).then((response) => {
                     if (response.data.size === 0) {
                         element.setProfilePic('');
-                    }
-                    else{
+                    } else {
                         element.setProfilePic(URL.createObjectURL(response.data));
                     }
                 }).catch((error) => {

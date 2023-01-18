@@ -1,23 +1,13 @@
 <template>
-  <RoleDetails :roles="roles"/>
+  <RoleComponent/>
 </template>
 
 <script lang="ts">
-import RoleDetails from "@/components/RoleDetails.vue";
-import {useRoleStore} from "@/stores/RoleStore";
+import RoleComponent from "@/components/RoleComponent.vue";
 
 export default {
   name: "RoleOverView",
-  components: { RoleDetails },
-  setup() {
-    const roleStore = useRoleStore();
-    roleStore.loadAllRoles();
-    const roles = roleStore.allRoles;
-
-    return {
-      roles
-    };
-  },
+  components: { RoleComponent },
 }
 </script>
 
