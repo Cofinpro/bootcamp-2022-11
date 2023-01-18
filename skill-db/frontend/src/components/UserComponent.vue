@@ -12,7 +12,7 @@
         <th class="text-left">
           Rolle
         </th>
-        <th class="text-center">
+        <th class="text-left">
           Sperrstatus
         </th>
       </tr>
@@ -91,7 +91,7 @@ export default {
 <style scoped>
 
 .v-icon {
-  margin-left: 30%;
+  margin-left: 20%;
 }
 
 .locked {
