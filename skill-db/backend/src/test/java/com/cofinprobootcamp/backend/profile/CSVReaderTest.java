@@ -11,11 +11,15 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.DelegatingServletOutputStream;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -28,6 +32,8 @@ class CSVReaderTest {
     private UserService userService;
     @Mock
     private MultipartFile file;
+    @Mock
+    private HttpServletResponse response;
     private CSVReader csvReader;
     @BeforeEach
     void initialize() {
@@ -54,7 +60,6 @@ class CSVReaderTest {
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         User user = new User();
         Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
-        HttpServletResponse response = new MockHttpServletResponse();
         csvReader.readProfileFromFile(response);
 
         Mockito.verify(profileService,Mockito.times(1))
@@ -73,7 +78,8 @@ class CSVReaderTest {
     }
     @Test
     @DisplayName("Error path for reading Single profile Unit test. Checks that response status is set to 400")
-    void readProfileFromFileSadPath() throws IOException, JobTitleNotFoundException, ImageFormatNotAllowedException {
+    void readProfileFromFileSadPath()
+            throws IOException, JobTitleNotFoundException, ImageFormatNotAllowedException,CSVFormatException {
         String email = "markus.kremer@cofinpro.de";
         String name = "Markus";
         String surname = "";
@@ -91,13 +97,16 @@ class CSVReaderTest {
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         User user = new User();
         Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
-        HttpServletResponse httpServletResponse = new MockHttpServletResponse();
-        Mockito.verify(httpServletResponse,Mockito.times(1))
+        ServletOutputStream outputStream = new DelegatingServletOutputStream(new ByteArrayOutputStream());
+        Mockito.when(response.getOutputStream()).thenReturn(outputStream);
+        csvReader.readProfileFromFile(response);
+        Mockito.verify(response,Mockito.times(1))
                 .setStatus(400);
     }
     @Test
     @DisplayName("Error path for reading wrongly formated csv. Checks that response status is set to 400")
-    void readProfileFromFileSadPath2() throws IOException, JobTitleNotFoundException {
+    void readProfileFromFileSadPath2()
+            throws IOException, JobTitleNotFoundException, ImageFormatNotAllowedException, CSVFormatException {
         String email = "markus.kremer@cofinpro.de";
         String name = "Markus";
         String surname = "";
@@ -115,9 +124,6 @@ class CSVReaderTest {
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         User user = new User();
         Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
-
-        HttpServletResponse httpServletResponse = new MockHttpServletResponse();
-        Mockito.verify(httpServletResponse,Mockito.times(1))
-                .setStatus(400);
+        assertThrows(CSVFormatException.class, ()->csvReader.readProfileFromFile(response));
     }
 }

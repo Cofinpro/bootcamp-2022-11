@@ -47,7 +47,7 @@ public class CSVReader {
      * @throws CSVArgumentNotValidException  if csv records contain nonvalid elements
      */
     public void readProfileFromFile(HttpServletResponse response)
-            throws IOException, ImageFormatNotAllowedException {
+            throws IOException, ImageFormatNotAllowedException, CSVFormatException {
         String content = new String(file.getBytes(), Charset.defaultCharset());
         CSVFormat format = buildCSVFormat();
         int lineCount = 1;
@@ -66,6 +66,8 @@ public class CSVReader {
                 handleExceptionsWithoutThrowing(response,
                         String.format("Zeile %d: %s", lineCount, e.getViolations().toString().replaceAll("(\\[|])", ""))
                 );
+            } catch (IllegalArgumentException e) {
+                throw new CSVFormatException(e.getMessage().split(",")[0]);
             }
             lineCount++;
         }
