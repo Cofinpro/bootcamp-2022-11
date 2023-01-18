@@ -1,7 +1,5 @@
 <template>
-  <div>
     <DetailComponent/>
-  </div>
 </template>
 
 <script lang="ts">

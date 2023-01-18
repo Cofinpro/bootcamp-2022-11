@@ -144,7 +144,9 @@ export class ConvertResponseToDetailModel {
         detailModel.setDegree(object?.degree.toString());
         detailModel.setJobTitle(object?.jobTitle.toString());
         detailModel.setPrimarySkill(object?.primaryExpertise.toString());
-        detailModel.setSkills(object?.skills);
+        detailModel.setSkills(object?.skills.slice().sort(function(a: string, b:string){
+            return (a > b) ? 1 : -1;
+        }));
         detailModel.setReferences(object?.referenceText.toString());
         detailModel.setPhoneNumber(object?.phoneNumber.toString());
         detailModel.setEmail(object?.email.toString());
