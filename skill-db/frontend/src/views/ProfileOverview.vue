@@ -6,11 +6,11 @@
 
 <script lang="ts">
 import {useOverviewStore} from "@/stores/OverviewStore";
-import ProfileOverviewParent from "@/components/ProfileOverviewParent.vue";
+import ProfileOverviewComponent from "@/components/ProfileOverviewComponent.vue";
 
 export default {
   name: "HomeView",
-  components: {ProfileOverviewParent},
+  components: {ProfileOverviewComponent},
   setup() {
     const overviewStore = useOverviewStore();
     overviewStore.loadOverview();

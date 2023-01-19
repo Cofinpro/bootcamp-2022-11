@@ -147,7 +147,6 @@ export default {
     },
     async updateProfile() {
       const editDetails = ConvertToDetailModelForOutput.toDetail(this);
-      console.log(this.$route.params.id)
       const id = this.$route.params.id;
       if (this.picToDelete) {
         await this.deleteProfilePicture();
@@ -172,7 +171,6 @@ export default {
     },
     leave() {
       if (this.update) {
-        console.log(this.$route.params.id)
         const id = this.$route.params.id;
         router.push({name: 'userDetails', params: {id}});
       } else {

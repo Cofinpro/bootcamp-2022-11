@@ -80,7 +80,6 @@ export default {
       this.convertImageAndEmitToParent();
     },
     async convertImageAndEmitToParent() {
-      console.log(this.oldPic)
       const fileInput = this.$refs.imageInput;
       if (fileInput && fileInput.value) {
         const file = fileInput.files[0];
