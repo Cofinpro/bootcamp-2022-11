@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@mdi/font": "^7.1.96",
+    "@pinia/testing": "^0.0.14",
     "@types/jsdom": "^20.0.1",
     "@types/node": "^18.11.9",
     "@vitejs/plugin-vue": "^3.2.0",

@@ -4,8 +4,8 @@ import {mount} from "@vue/test-utils";
 import leaveButton from "@/components/EditComponents/LeaveButton.vue";
 import ConfirmButton from "@/components/EditComponents/ConfirmButton.vue";
 import vuetify from "@/plugins/vuetify";
-//Tests that button contains correct content and emits submit event.
 
+//Tests that button contains correct content and emits submit event.
 describe('LeaveButton',() =>{
     it('LoginRenders', () =>{
         const wrapper = mount(leaveButton,
