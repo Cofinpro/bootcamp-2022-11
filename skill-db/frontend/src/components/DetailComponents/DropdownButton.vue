@@ -17,7 +17,7 @@
           {{ editFunction.name }}
         </v-list-item-title>
       </v-list-item>
-      <v-list-item v-if="lockFunction !== ''"
+      <v-list-item v-if="lockFunction"
                    @click="lockFunction.method(); toLock = !toLock;">
         <v-list-item-title>
           {{ lockFunction.name }}
@@ -60,7 +60,7 @@ export default {
       required: true,
     },
     lockFunction: {
-      default: '',
+      default: undefined,
       required: false
     },
     deleteFunction: {
