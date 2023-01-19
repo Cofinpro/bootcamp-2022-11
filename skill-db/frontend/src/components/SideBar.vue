@@ -21,15 +21,15 @@
           Profilübersicht
         </v-list-item>
       </RouterLink>
-      <!--TODO get id of user-->
-<!--      <RouterLink v-if="hasProfile" :to="{ name: 'userDetail', params: { id: getProfileId }}">
+      <RouterLink v-if="hasProfile"
+                  :to="{ name: 'userDetails', params: { id: getProfileId }}">
         <v-list-item link>
           <v-icon size="small" color="#BDBDBD" class="ml-8 mr-3">
             mdi-account-box-outline
           </v-icon>
           Dein Profil
         </v-list-item>
-      </RouterLink>-->
+      </RouterLink>
       <v-divider class="divider mt-10 mb-10" v-if="isAdmin"/>
 
       <RouterLink to="/admin/users" v-if="isAdmin">
@@ -63,13 +63,12 @@
   </v-navigation-drawer>
 </template>
 
-<script> /*TODO should be TypeScript*/
+<script lang="ts">
 import {useAuthStore} from "@/stores/auth";
+import {useUserStore} from "@/stores/UserStore";
 
 export default {
   name: "SideBar",
-  components: {},
-
   props: {
     id: Number,
   },
@@ -77,12 +76,23 @@ export default {
     isAdmin() {
       return window.localStorage.getItem('role') === 'ROLE_ADMIN';
     },
+    hasProfile() {
+      const userStore = useUserStore();
+      const userId = window.localStorage.getItem('user_id');
+      userStore.checkForExistingUserProfile(userId);
+      return userStore.hasProfile;
+    },
+    getProfileId() {
+      this.hasProfile; //to force reload
+      const userStore = useUserStore();
+      const userId = window.localStorage.getItem('user_id');
+      userStore.getProfileIdFromUser(userId);
+      return userStore.profileId;
+    }
   },
   data() {
-    const store = useAuthStore();
-
     return {
-      store,
+      store: useAuthStore(),
       drawer: null,
     }
   },
