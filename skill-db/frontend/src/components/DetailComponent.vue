@@ -127,11 +127,14 @@ export default {
       router.push({name: 'editView', params: {id: id}});
     }
 
-    function lockProfile(): void {
-      const userStore = useUserStore();
-      detailStore.loadDetailsById(id);
+    async function lockProfile(): Promise<void> {
+      await detailStore.loadDetailsById(id);
       const userId = detailStore.details.getOwnerId();
-      userStore.lockUser(userId);
+      const userStore = useUserStore();
+      await userStore.loadUserById(userId);
+      if (!userStore.user.getLocked()) {
+        await userStore.lockUser(userId);
+      }
     }
 
     function deleteProfile(): void {

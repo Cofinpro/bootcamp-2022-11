@@ -8,6 +8,7 @@ import {ConvertToOperationsModel, OperationsModel} from "@/models/OperationsMode
 export const useUserStore = defineStore('userStore', {
     state: () => ({
         users: [] as UserModel[],
+        user: new UserModel(),
         loading: Boolean(false),
         hasProfile: Boolean(false),
         profileId: String,
@@ -29,6 +30,16 @@ export const useUserStore = defineStore('userStore', {
                 })
             }).catch((error) => {
                 errorStore.catchGetAllError(error);
+            })
+        },
+
+        async loadUserById(id: string): Promise<void> {
+            this.loading = true;
+            const errorStore = useErrorStore();
+            await axiosInstance.get(`/api/v1/users/${id}`).then(response => {
+                this.user = ConvertToUserModel.toUserModel(response.data);
+            }).catch((error) => {
+                errorStore.catchGetProfileError(error, id);
             })
         },
 
