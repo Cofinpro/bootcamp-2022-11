@@ -1,6 +1,6 @@
 <template>
   <div v-show="!overviewStore.loading" >
-    <ProfileOverviewParent/>
+    <ProfileOverviewComponent/>
   </div>
 </template>
 
@@ -9,7 +9,7 @@ import {useOverviewStore} from "@/stores/OverviewStore";
 import ProfileOverviewComponent from "@/components/ProfileOverviewComponent.vue";
 
 export default {
-  name: "HomeView",
+  name: "ProfileOverView",
   components: {ProfileOverviewComponent},
   setup() {
     const overviewStore = useOverviewStore();
