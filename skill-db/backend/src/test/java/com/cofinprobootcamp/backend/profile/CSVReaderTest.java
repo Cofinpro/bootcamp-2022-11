@@ -12,14 +12,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.DelegatingServletOutputStream;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -42,7 +40,8 @@ class CSVReaderTest {
     }
     @Test
     @DisplayName("Happy path for reading Single profile Unit test")
-    void readProfileFromFileHappyPath() throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException, ImageFormatNotAllowedException {
+    void readProfileFromFileHappyPath()
+            throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException, ImageFormatNotAllowedException, ExpertiseNotFoundException {
         String email = "markus.kremer@cofinpro.de";
         String name = "Markus";
         String surname = "Kremer";
@@ -79,7 +78,7 @@ class CSVReaderTest {
     @Test
     @DisplayName("Error path for reading Single profile Unit test. Checks that response status is set to 400")
     void readProfileFromFileSadPath()
-            throws IOException, JobTitleNotFoundException, ImageFormatNotAllowedException,CSVFormatException {
+            throws IOException, ImageFormatNotAllowedException,CSVFormatException {
         String email = "markus.kremer@cofinpro.de";
         String name = "Markus";
         String surname = "";
@@ -93,8 +92,6 @@ class CSVReaderTest {
         String contentOfFile = "Email;Vorname;Nachname;JobTitel;Abschluss;Primaerkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
                 email + ";" + name + ";" + surname + ";" + jobTitle + ";" + degree + ";" + primary + ";"  + reference +";" + skills + ";" + phoneNumber + ";" + birthdate;
         Mockito.when(file.getBytes()).thenReturn(contentOfFile.getBytes());
-        ArgumentCaptor<ProfileCreateInDTO> dtoArgumentCaptor = ArgumentCaptor.forClass(ProfileCreateInDTO.class);
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         User user = new User();
         Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
         ServletOutputStream outputStream = new DelegatingServletOutputStream(new ByteArrayOutputStream());
@@ -106,7 +103,7 @@ class CSVReaderTest {
     @Test
     @DisplayName("Error path for reading wrongly formated csv. Checks that response status is set to 400")
     void readProfileFromFileSadPath2()
-            throws IOException, JobTitleNotFoundException, ImageFormatNotAllowedException, CSVFormatException {
+            throws IOException {
         String email = "markus.kremer@cofinpro.de";
         String name = "Markus";
         String surname = "";
@@ -120,8 +117,6 @@ class CSVReaderTest {
         String contentOfFile = "Email,Vorname;Nachname;JobTitel;Abschluss;Primaerkompetenz;Referenzen;Skills;Telefonnummer;Geburtsdatum\n" +
                 email + ";" + name + ";" + surname + ";" + jobTitle + ";" + degree + ";" + primary + ";"  + reference +";" + skills + ";" + phoneNumber + ";" + birthdate;
         Mockito.when(file.getBytes()).thenReturn(contentOfFile.getBytes());
-        ArgumentCaptor<ProfileCreateInDTO> dtoArgumentCaptor = ArgumentCaptor.forClass(ProfileCreateInDTO.class);
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         User user = new User();
         Mockito.when(userService.getUserByUsername(email)).thenReturn(user);
         assertThrows(CSVFormatException.class, ()->csvReader.readProfileFromFile(response));

@@ -22,9 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -49,9 +46,10 @@ public class ProfileService {
     }
 
     public Profile createProfile(ProfileCreateInDTO profileInDTO, User user)
-            throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException
+            throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException, ExpertiseNotFoundException
     {
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
+
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());
         Image profilePic = imageService.saveImage(profileInDTO.profilePic());
         Profile profile = ProfileDirector
@@ -71,7 +69,7 @@ public class ProfileService {
 
 
     public Profile updateProfile(ProfileUpdateInDTO profileInDTO, String outerId)
-            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException, ImageFormatNotAllowedException {
+            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException, ImageFormatNotAllowedException, ExpertiseNotFoundException {
         Profile current = profileRepository.findFirstByOuterId(outerId).orElseThrow(ProfileNotFoundException::new);
         JobTitle jobTitle = jobTitleService.findJobTitleIfExistsElseThrowException(profileInDTO.jobTitle());
         Set<Skill> skillSet = skillService.findSkillIfExistsElseCreateSkill(profileInDTO.skills());

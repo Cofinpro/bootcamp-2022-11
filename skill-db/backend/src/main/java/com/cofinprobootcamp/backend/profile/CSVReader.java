@@ -41,10 +41,8 @@ public class CSVReader {
      * reads csv from file, validates content and, if content is valid creates profile objects in database.
      *
      * @throws IOException                   (not rly)
-     * @throws JobTitleNotFoundException     from createprofile function
-     * @throws ProfileAlreadyExistsException from createprofile function
+     * @throws ImageFormatNotAllowedException from createProfile function
      * @throws CSVFormatException            if csv is not formatted correctly
-     * @throws CSVArgumentNotValidException  if csv records contain nonvalid elements
      */
     public void readProfileFromFile(HttpServletResponse response)
             throws IOException, ImageFormatNotAllowedException, CSVFormatException {
@@ -68,6 +66,10 @@ public class CSVReader {
                 );
             } catch (IllegalArgumentException e) {
                 throw new CSVFormatException(e.getMessage().split(",")[0]);
+            } catch (ExpertiseNotFoundException e) {
+                handleExceptionsWithoutThrowing(response,
+                        String.format("Die Primärkompetenz des Profils in Zeile %d existiert nicht! ", lineCount)
+                );
             }
             lineCount++;
         }
@@ -93,7 +95,7 @@ public class CSVReader {
     }
 
     private Profile saveProfileFromRecord(CSVRecord record, int lineCount)
-            throws ProfileAlreadyExistsException, ImageFormatNotAllowedException, JobTitleNotFoundException {
+            throws ProfileAlreadyExistsException, ImageFormatNotAllowedException, JobTitleNotFoundException, ExpertiseNotFoundException {
         ProfileCreateInDTO inDTO = new ProfileCreateInDTO(
                 record.get("Email"),
                 record.get("Vorname"),

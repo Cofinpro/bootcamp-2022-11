@@ -32,7 +32,7 @@ public class ProfileController {
     @PostMapping(path = "")
     @PreAuthorize("hasPermission(#profileInDTO, @authorityPrefix + 'PROFILES_POST_NEW')")
     public void createProfile(@RequestBody @Valid ProfileCreateInDTO profileInDTO)
-            throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException {
+            throws JobTitleNotFoundException, ProfileAlreadyExistsException, ImageFormatNotAllowedException, ExpertiseNotFoundException {
         User user = userService.getUserByUsername(profileInDTO.email());
         Profile profile = profileService.createProfile(profileInDTO, user);
         userService.assignProfileToUser(user, profile);
@@ -46,8 +46,8 @@ public class ProfileController {
     @PatchMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, @authorityPrefix + 'PROFILES_PATCH_BY_ID')")
     public void updateProfile(@PathVariable String id, @RequestBody @Valid ProfileUpdateInDTO profileInDTO)
-            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException, ImageFormatNotAllowedException {
-        Profile profile = profileService.updateProfile(profileInDTO, id);
+            throws ProfileNotFoundException, JobTitleNotFoundException, MailNotSentException, ImageFormatNotAllowedException, ExpertiseNotFoundException {
+        profileService.updateProfile(profileInDTO, id);
     }
 
     /**
@@ -98,7 +98,6 @@ public class ProfileController {
      *
      * @param response to get request
      * @throws IOException if response is not writable
-     * @throws IllegalAccessException should never be thrown!
      */
     @GetMapping("/export")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_EXPORT_GET_ALL')")
@@ -117,14 +116,13 @@ public class ProfileController {
      * @param file to import from.
      *             CSV in GERMAN format (aka semicolon separated values)
      * @throws IOException not
-     * @throws JobTitleNotFoundException as in createprofile
-     * @throws ProfileAlreadyExistsException as in createprofile
+     * @throws ImageFormatNotAllowedException as in createprofile
      * @throws CSVFormatException if columns in csv can not be read
      */
     @PostMapping(path="/import",  consumes="multipart/form-data")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_IMPORT_POST_NEW')")
     public void importFromCSV(@RequestParam("file") MultipartFile file, HttpServletResponse response)
-            throws IOException, JobTitleNotFoundException, ProfileAlreadyExistsException, CSVFormatException, ImageFormatNotAllowedException {
+            throws IOException, CSVFormatException, ImageFormatNotAllowedException {
         CSVReader reader = new CSVReader(file, profileService, userService);
         reader.readProfileFromFile(response);
     }
