@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.exceptions.ExpertiseNotFoundException;
 import com.cofinprobootcamp.backend.image.Image;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
@@ -16,7 +17,7 @@ public class ProfileDirector {
                                               User user,
                                               Set<Skill> skillSet,
                                               JobTitle jobTitle,
-                                              Image profilePic) {
+                                              Image profilePic) throws ExpertiseNotFoundException {
         return Profile.builder()
                 .firstName(profileInDTO.firstName())
                 .lastName(profileInDTO.lastName())
@@ -36,7 +37,7 @@ public class ProfileDirector {
                                               Profile current,
                                               Set<Skill> skillSet,
                                               JobTitle jobTitle,
-                                              Image image) {
+                                              Image image) throws ExpertiseNotFoundException {
         current.setFirstName(profileInDTO.firstName());
         current.setLastName(profileInDTO.lastName());
         current.setJobTitle(jobTitle);
@@ -50,12 +51,13 @@ public class ProfileDirector {
         return current;
     }
 
-    private static Expertises convertFromStringOrThrow(String fullName) {
+    private static Expertises convertFromStringOrThrow(String fullName)
+    throws ExpertiseNotFoundException {
         Expertises exp = Expertises.fromFullNameString(fullName);
         if (!exp.equals(Expertises.UNDEFINED)) {
             return exp;
         } else {
-            throw new RuntimeException("Invalid expertises type specified!"); // Custom exception would be desired here
+            throw new ExpertiseNotFoundException(); // Custom  would be desired here
         }
     }
 }

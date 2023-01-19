@@ -1,11 +1,9 @@
 package com.cofinprobootcamp.backend.profile.dto;
 
 import com.cofinprobootcamp.backend.config.Regex;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -41,6 +39,7 @@ public record ProfileUpdateInDTO(
         @NotNull(message = "Primärkompetenz darf nicht leer sein!")
         String primaryExpertise,
         @NotNull(message = "Referenzen dürfen nicht leer sein!")
+        @Size(max = 5000, message = "Referenzen dürfen maximal 5000 Zeichen lang sein!")
         String referenceText,
         List<@NotBlank(message = "Skills dürfen nicht leer sein!") String> skills,
         @NotBlank(message = "Telefonnummer darf nicht leer sein!")

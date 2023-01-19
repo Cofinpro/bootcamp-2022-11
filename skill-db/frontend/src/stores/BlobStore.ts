@@ -27,8 +27,11 @@ export const useBlobStore = defineStore('blobStore',{
                 method: 'post',
                 data: formData,
                 headers: { 'Content-Type': 'multipart/form-data' }
-            }).then().catch(error => {
+            }).then(response =>{
+                console.log(response);
+            }).catch(error => {
                 const errorStore = useErrorStore();
+                console.log(error);
                 errorStore.catchImportError(error);
             })
         },

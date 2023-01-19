@@ -17,10 +17,10 @@ public class SkillService {
         return skillInputs.stream()
                 .map(
                         name -> {
-                            if (skillRepository.findSkillByName(name).isPresent()) {
-                                return skillRepository.findSkillByName(name).get();
+                            if (skillRepository.findSkillByName(name.trim()).isPresent()) {
+                                return skillRepository.findSkillByName(name.trim()).get();
                             } else{
-                                return skillRepository.saveAndFlush(new Skill(name));
+                                return skillRepository.saveAndFlush(new Skill(name.trim()));
                             }}
                 )
                 .collect(Collectors.toSet());

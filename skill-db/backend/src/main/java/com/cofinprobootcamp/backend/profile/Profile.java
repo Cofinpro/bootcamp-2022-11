@@ -39,6 +39,7 @@ public class Profile {
     private String phoneNumber;
     private String degree;
     private Expertises primaryExpertise;
+    @Column(length = 5000)
     private String referenceText;
 
     @ManyToMany
