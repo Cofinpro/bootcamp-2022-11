@@ -2,12 +2,16 @@
 
   <v-menu :close-on-content-click="false">
     <template v-slot:activator="{ props }">
-      <v-btn class="pa-0" v-bind="props"
-             min-width="40px" width="40px"
-             height="35px" elevation="0">
-        <v-icon size="large">
-          mdi-cog
-        </v-icon>
+      <v-btn :disabled="disabled"
+             :style="disabled ? {
+             color: '#BDBDBD !important',
+             border: '1px dashed #BBBBBB !important'} : ''"
+      class="pa-0" v-bind="props"
+      min-width="40px" width="40px"
+      height="35px" elevation="0">
+      <v-icon size="large">
+        mdi-cog
+      </v-icon>
       </v-btn>
     </template>
 
@@ -57,14 +61,18 @@ export default {
   name: "DropdownButton",
   props: {
     editFunction: {
-      required: true,
+      required: false
     },
     lockFunction: {
       default: '',
       required: false
     },
     deleteFunction: {
-      required: true
+      required: false
+    },
+    disabled: {
+      required: false,
+      default: false
     }
   },
   setup() {

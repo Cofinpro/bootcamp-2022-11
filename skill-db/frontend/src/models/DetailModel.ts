@@ -146,7 +146,7 @@ export class ConvertResponseToDetailModel {
         detailModel.setPrimarySkill(object?.primaryExpertise.toString());
         detailModel.setSkills(object?.skills.sort((a: string, b: string) => {
             if (a.toLowerCase() < b.toLowerCase()) { return -1 }
-            if (a > b) { return 1 }
+            if (a.toLowerCase() > b.toLowerCase()) { return 1 }
             return 0
         }));
         detailModel.setReferences(object?.referenceText.toString());

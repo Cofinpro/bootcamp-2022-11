@@ -6,9 +6,10 @@
                        :delete-function="deleteFunction"
                        :edit-function="editFunction"
                        :lock-function="lockFunction"/>
-      <dropdown-button v-else-if="auth"
+      <dropdown-button v-else-if="authenticated"
                        :delete-function="deleteFunction"
                        :edit-function="editFunction"/>
+      <dropdown-button v-else :disabled="true"/>
     </div>
 
     <v-container class="pr-0 pl-2 pl-sm-2 pl-md-4">
@@ -97,20 +98,20 @@ export default {
   async mounted() {
       const role = window.localStorage.getItem('role');
       if (role === "ROLE_HR") {
-        this.auth = true;
+        this.authenticated = true;
       } else if (role === "ROLE_USER") {
         let userStore = useUserStore();
         const userId = window.localStorage.getItem('user_id');
         await userStore.checkForExistingUserProfile(userId);
         if (!userStore.hasProfile) {
-          this.auth = false;
+          this.authenticated = false;
         } else {
           const profileId = String(this.$route.params.id);
           await userStore.getProfileIdFromUser(userId);
-          this.auth = (String(userStore.profileId) === profileId);
+          this.authenticated = (String(userStore.profileId) === profileId);
         }
       } else {
-        this.auth = false;
+        this.authenticated = false;
       }
   },
   data() {
@@ -119,33 +120,32 @@ export default {
     detailStore.loadDetailsById(id);
 
     const role = window.localStorage.getItem('role');
-    const editFunction = {name: 'Bearbeiten', method: enterEdit};
-    const deleteFunction = {name: 'Löschen', method: deleteProfile};
-    const lockFunction = {name: 'Sperren', method: lockProfile};
+    const editFunction = {name: 'Bearbeiten', method: this.enterEdit};
+    const deleteFunction = {name: 'Löschen', method: this.deleteProfile};
+    const lockFunction = {name: 'Sperren', method: this.lockProfile};
 
-    function enterEdit(): void {
-      router.push({name: 'editView', params: {id: id}});
-    }
-
-    async function lockProfile(): Promise<void> {
-      await detailStore.loadDetailsById(id);
-      const userId = detailStore.details.getOwnerId();
+    return {
+      deleteFunction, editFunction, lockFunction, role, id,
+      detailStore, authenticated: false
+    };
+  },
+  methods: {
+    enterEdit(): void {
+      router.push({name: 'editView', params: {id: this.id}});
+    },
+    async lockProfile(): Promise<void> {
+      await this.detailStore.loadDetailsById(this.id);
+      const userId = this.detailStore.details.getOwnerId();
       const userStore = useUserStore();
       await userStore.loadUserById(userId);
       if (!userStore.user.getLocked()) {
         await userStore.lockUser(userId);
       }
-    }
-
-    function deleteProfile(): void {
-      detailStore.deleteDetailsByID(id);
+    },
+    deleteProfile(): void {
+      this.detailStore.deleteDetailsByID(this.id);
       router.push(`/`);
     }
-
-    return {
-      deleteFunction, editFunction, lockFunction, role,
-      detailStore, auth: false
-    };
   }
 }
 </script>
