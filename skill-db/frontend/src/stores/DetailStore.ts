@@ -18,7 +18,6 @@ export const useDetailStore = defineStore('detailStore', {
                 let profilePicId = null
                 const errorStore = useErrorStore();
                 await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
-                    console.log(response);
                     this.details = ConvertResponseToDetailModel.toDetail(response.data);
                     profilePicId = response.data.profilePicId
                 }).catch((error) => {
