@@ -1,6 +1,7 @@
 package com.cofinprobootcamp.backend.profile;
 
 import com.cofinprobootcamp.backend.enums.Expertises;
+import com.cofinprobootcamp.backend.exceptions.ExpertiseNotFoundException;
 import com.cofinprobootcamp.backend.image.Image;
 import com.cofinprobootcamp.backend.jobTitle.JobTitle;
 import com.cofinprobootcamp.backend.profile.dto.ProfileCreateInDTO;
@@ -9,7 +10,6 @@ import com.cofinprobootcamp.backend.skills.Skill;
 import com.cofinprobootcamp.backend.user.User;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.*;
 class ProfileDirectorTest {
 
     @Test
-    void createInDTOToEntity() {
+    void createInDTOToEntity() throws ExpertiseNotFoundException {
         ProfileCreateInDTO profileInDTO = new ProfileCreateInDTO(
                 "email@email.de",
                 "first",
@@ -50,7 +50,7 @@ class ProfileDirectorTest {
     }
 
     @Test
-    void updateInDTOToEntity() {
+    void updateInDTOToEntity() throws ExpertiseNotFoundException {
         ProfileUpdateInDTO inDTO = new ProfileUpdateInDTO(
                 "first",
         "last",
