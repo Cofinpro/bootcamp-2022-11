@@ -1,6 +1,6 @@
 <template>
   <div v-for="operation in operations">
-    <v-tooltip>
+    <v-tooltip location="end top">
       <template v-slot:activator="{ props }">
         <v-icon v-bind="props"
                 v-if="operation.getTarget() === user.getId()"
@@ -8,7 +8,7 @@
           mdi-alert-rhombus
         </v-icon>
       </template>
-      <span>
+      <span id="test_span">
         {{ operationType === "changeRole" ?
           `Rolle: ${operation.getParam()}, von: ${operation.getInitiator()}` :  `von: ${operation.getInitiator()}` }}
       </span>
@@ -18,7 +18,6 @@
 
 <script lang="ts">
 import {UserModel} from "@/models/UserModel";
-import type {OperationsModel} from "@/models/OperationsModel";
 
 export default {
   name: "AlertWithTooltip",
