@@ -58,20 +58,21 @@ export default {
     }
   },
   data(props) {
-    function attachRole(users: UserModel[]): string[] {
+    let selectedUsersWithRole = this.attachRole(props.selectedUsers);
+
+    return {
+      selectedUsersWithRole
+    }
+  },
+  methods: {
+    attachRole(users: UserModel[]): string[] {
       let namesAndRoles = [] as string[];
       users.forEach((user: UserModel) => {
         namesAndRoles.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`)
       });
       return namesAndRoles;
     }
-
-    let selectedUsersWithRole = attachRole(props.selectedUsers);
-
-    return {
-      selectedUsersWithRole, attachRole
-    }
-  },
+  }
 }
 </script>
 

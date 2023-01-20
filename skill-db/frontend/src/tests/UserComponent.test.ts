@@ -1,51 +1,98 @@
-import {beforeEach, describe, it, expect} from "vitest";
+import {describe, it, expect} from "vitest";
 
 import {mount} from "@vue/test-utils";
 import UserComponent from "@/components/UserComponent.vue";
 import vuetify from "@/plugins/vuetify";
 import {createTestingPinia} from "@pinia/testing";
 import {useUserStore} from "@/stores/UserStore";
+import {ConvertToUserModel} from "@/models/UserModel";
+import {ConvertToRoleModel} from "@/models/RoleModel";
+import {useErrorStore} from "@/stores/ErrorStore";
 
 describe('UserComponent',() => {
 
-    let wrapper = null;
+    it('not locked user, who is no admin, gets locked', async () => {
 
-    beforeEach(() => {
-        wrapper = mount(UserComponent,
+        const wrapper = mount(UserComponent,
             {
                 global:
-                    {plugins: [vuetify, createTestingPinia({
-                            createSpy: vitest.fn
-                        })]}
+                    {plugins: [vuetify, createTestingPinia()]}
             });
+
+        const errStore = useErrorStore();
+        const userStore = useUserStore();
+        const spy = vitest.spyOn(userStore, 'loadPendingLockUsers')
+
+        userStore.lockUser = vitest.fn(async () => {
+            if(user.getRole().getIdentifier() === 'ADMIN') {
+                useErrorStore().hasError = true;
+            }
+        });
+
+        const user = ConvertToUserModel.toUserModel({
+            role: ConvertToRoleModel.toRole({
+                displayName: 'Nutzer',
+                identifier: 'USER'
+            })
+        });
+        await wrapper.vm.toggleLock(user);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(errStore.hasError).toBeFalsy();
+        expect(user.getLocked()).toBeTruthy();
     });
 
-    it('Clicking on lock icon', async () => {
+    it('locked user, who is no admin, gets unlocked', async () => {
 
-        expect(wrapper.text()).contains('Email');
-        expect(wrapper.text()).contains('Rolle');
-        expect(wrapper.text()).contains('Sperrstatus');
+        const wrapper = mount(UserComponent,
+            {
+                global:
+                    {plugins: [vuetify, createTestingPinia()]}
+            });
 
-        /*const store = wrapper.vm.$data.userStore;
-        store.users = [ConvertToUserModel.toUserModel({
-            email: 'test@test.com',
+        const errStore = useErrorStore();
+        const userStore = useUserStore();
+        userStore.lockUser = vitest.fn(async () => {
+            if(user.getRole().getIdentifier() === 'ADMIN') {
+                useErrorStore().hasError = true;
+            }
+        });
+
+        const user = ConvertToUserModel.toUserModel({
+            locked: true,
             role: ConvertToRoleModel.toRole({
-                identifier: 'USER',
-                displayName: 'Nutzer'
+                displayName: 'Nutzer',
+                identifier: 'User'
             })
-        })];*/
+        });
+        await wrapper.vm.toggleLock(user);
+        expect(errStore.hasError).toBeFalsy();
+        expect(user.getLocked()).toBeFalsy();
+    });
 
-        const store = useUserStore();
-        await store.loadUsers();
-        console.log(store.users);
-        console.log(wrapper.text());
+    it('not locked admin does not get locked', async () => {
 
-        /*const icon = wrapper.find('.v-icon');
-        expect(icon.exists()).toBeTruthy();*/
+        const wrapper = mount(UserComponent,
+            {
+                global:
+                    {plugins: [vuetify, createTestingPinia()]}
+            });
 
-        /*const spy = vi.spyOn(wrapper,'toggleLock');
+        const errStore = useErrorStore();
+        const userStore = useUserStore();
+        userStore.lockUser = vitest.fn(async () => {
+            if(user.getRole().getIdentifier() === 'ADMIN') {
+                useErrorStore().hasError = true;
+            }
+        });
 
-        await icon.trigger('click');
-        expect(spy).toHaveBeenCalledTimes(1);*/
+        const user = ConvertToUserModel.toUserModel({
+            role: ConvertToRoleModel.toRole({
+                displayName: 'Administrator',
+                identifier: 'ADMIN'
+            })
+        });
+        await wrapper.vm.toggleLock(user);
+        expect(errStore.hasError).toBeTruthy();
+        expect(user.getLocked()).toBeFalsy();
     });
 });
