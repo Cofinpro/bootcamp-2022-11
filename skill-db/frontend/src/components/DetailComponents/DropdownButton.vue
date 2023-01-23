@@ -57,8 +57,9 @@
 
 <script lang="ts">
 import {useUserStore} from "@/stores/UserStore";
-import {computed, ComputedRef, ref} from "vue";
+import {computed, ref} from "vue";
 import {auth} from "./DropDownFunctions";
+import type {ComputedRef} from"vue";
 
 export default {
   name: "DropdownButton",

@@ -1,8 +1,8 @@
 import {ConvertToRoleModel, RoleModel} from "@/models/RoleModel";
 
 export class UserModel {
-    private id: String;
-    private email: String;
+    private id: string;
+    private email: string;
     private role: RoleModel;
     private locked: boolean;
     private emailConfirmed: boolean;
@@ -16,19 +16,19 @@ export class UserModel {
     }
 
 
-    getId(): String {
+    getId(): string {
         return this.id;
     }
 
-    setId(value: String) {
+    setId(value: string) {
         this.id = value;
     }
 
-    getEmail(): String {
+    getEmail(): string {
         return this.email;
     }
 
-    setEmail(value: String) {
+    setEmail(value: string) {
         this.email = value;
     }
 
