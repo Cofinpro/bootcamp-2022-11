@@ -10,7 +10,7 @@
 
   <v-btn v-if="!showAddSkills"
          class="mb-5" size="small" elevation="0"
-         @click="toggleShowAddSkills">
+         @click="showAddSkills = true">
     Skill nicht gefunden?
   </v-btn>
   <v-text-field v-if="showAddSkills"
@@ -21,47 +21,47 @@
 
 <script lang="ts">
 import {useDetailStore} from "@/stores/DetailStore";
+import {ref, defineEmits} from "vue";
 
 export default {
   name: "SkillInput",
-  emits: ['update:skills'],
   props: {
     skillsIn:{
       value: [] as string[],
       required: true,
     }
   },
-  data(props) {
+  setup(props, context) {
+    //definitions
+    const showAddSkills = ref(false);
+    const newSkills = ref('');
+    const skills = ref(props.skillsIn.sort());
+    const detailStore = useDetailStore();
+    defineEmits(['update:skills']);
+
+    //functions
+    function addSkills() {
+      if (newSkills.value.length > 0) {
+        const newSkillsArray = newSkills.value.trim().split(',');
+        detailStore.skills = detailStore.skills.concat(newSkillsArray);
+        skills.value = skills.value.concat(newSkillsArray);
+      }
+      newSkills.value = '';
+      showAddSkills.value = false;
+      onInput();
+    }
+
+    function onInput() {
+      context.emit('update:skills',skills)
+    }
     return {
-      detailStore: useDetailStore(),
-      showAddSkills: false,
-      newSkills: '',
-      skills: props.skillsIn.sort()
+      detailStore,
+      showAddSkills,
+      newSkills,
+      skills,
+      addSkills,
+      onInput
     }
   },
-  methods: {
-    addSkills() {
-      if (this.newSkills?.length > 0) {
-        let newSkillsArray = this.newSkills.trim().split(',');
-
-        this.detailStore.skills = this.detailStore.skills.concat(newSkillsArray);
-        this.skills = this.skills.concat(newSkillsArray);
-      }
-
-      this.newSkills = '';
-      this.showAddSkills = false;
-      this.onInput();
-    },
-    onInput() {
-      this.$emit('update:skills',this.skills)
-    },
-    toggleShowAddSkills() {
-      this.showAddSkills=true
-    },
-  }
 }
 </script>
-
-<style scoped>
-
-</style>
