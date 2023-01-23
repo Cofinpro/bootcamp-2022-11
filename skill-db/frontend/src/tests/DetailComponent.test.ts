@@ -37,7 +37,7 @@ describe('DetailComponent',() => {
         const spyLoadUser = vitest.spyOn(userStore, 'loadUserById');
         const spyLock = vitest.spyOn(userStore, 'lockUser');
 
-        await wrapper.vm.lockProfile();
+        await wrapper.vm.lockFunction.method();
 
         expect(spyLoadDetails).toBeCalledTimes(1);
         expect(spyLoadUser).toBeCalledTimes(1);
@@ -64,7 +64,7 @@ describe('DetailComponent',() => {
         const spyLoadUser = vitest.spyOn(userStore, 'loadUserById');
         const spyLock = vitest.spyOn(userStore, 'lockUser');
 
-        await wrapper.vm.lockProfile();
+        await wrapper.vm.lockFunction.method();
 
         expect(spyLoadDetails).toBeCalledTimes(1);
         expect(spyLoadUser).toBeCalledTimes(1);
