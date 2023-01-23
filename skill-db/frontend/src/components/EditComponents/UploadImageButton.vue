@@ -76,10 +76,8 @@ export default {
       }
     }
     async function convertImageAndEmitToParent() {
-      const fileInput = imageInput;
-      console.log(fileInput);
-      if (fileInput && fileInput.value) {
-        const file = fileInput.value.files[0];
+      if (imageInput && imageInput.value) {
+        const file = imageInput.value.files[0];
         if (!(file instanceof Blob) || ! isPermissibleSize(file)) {
           this.errorStore.catchUploadImageError(new Error('Falsche Größe: max. 20 MB zulässig!'));
           return;
