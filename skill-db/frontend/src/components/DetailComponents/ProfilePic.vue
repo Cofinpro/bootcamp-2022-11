@@ -7,8 +7,8 @@
             color="primary"
             size="170" rounded="0">
             <span class="text-h3">
-             {{ initials[0] }}
-             {{ initials[1] }}
+             {{ firstName[0] }}
+             {{ lastName[0] }}
             </span>
   </v-avatar>
 </template>
@@ -19,11 +19,16 @@ export default {
   props: {
     pic: {
       required: false,
-      default: ''
+      default: undefined
     },
-    initials: {
+    firstName: {
       required: false,
-      default: '',
+      default: undefined,
+      type: String
+    },
+    lastName: {
+      required: false,
+      default: undefined,
       type: String
     }
   }
