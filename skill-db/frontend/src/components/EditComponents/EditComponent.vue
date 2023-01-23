@@ -72,7 +72,7 @@ import LeaveButton from "@/components/EditComponents/LeaveButton.vue";
 import {checkDateFormat, checkLength, checkPhoneNumberFormat} from "@/components/EditComponents/ValidationService";
 import {EditComponentState} from "@/components/EditComponents/EditComponentState";
 import {computed, ref} from "vue";
-import {createProfile, updateProfile} from "./AxiosService";
+import {createProfile, updateProfile} from "./EditAxiosService";
 
 export default {
   name: "EditComponent",
