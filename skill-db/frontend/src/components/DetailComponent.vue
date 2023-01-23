@@ -58,19 +58,9 @@
         </v-col>
 
         <v-col cols="12" lg="8" md="7" sm="12" class="pl-md-2 pl-5 pr-0">
-          <div class="references pt-0 ">
-            <div class="block_title">
-              Referenzen
-            </div>
-            <div class="block_content">
-              <ul class="pl-6">
-                <li v-for="reference in detailStore.details.getReferences().split('\n')">
-                  <p>{{ reference }}</p>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <References :content="detailStore.details.getReferences()"/>
         </v-col>
+
       </v-row>
     </v-container>
   </div>
@@ -84,10 +74,11 @@ import InfoWithIcon from "@/components/DetailComponents/InfoWithIcon.vue";
 import InfoInCard from "@/components/DetailComponents/InfoInCard.vue";
 import ProfilePic from "@/components/DetailComponents/ProfilePic.vue";
 import {enterEdit, lockProfile, deleteProfile} from "@/components/DetailComponents/DropDownFunctions";
+import References from "@/components/DetailComponents/References.vue";
 
 export default {
   name: "DetailComponent",
-  components: { InfoWithIcon, InfoInCard, ProfilePic, DropdownButton },
+  components: {References, InfoWithIcon, InfoInCard, ProfilePic, DropdownButton },
   setup() {
     const detailStore = useDetailStore();
     const id = useRoute().params.id.toString();
@@ -104,16 +95,4 @@ export default {
 </script>
 
 <style scoped>
-
-.block_title {
-  font-weight: bold;
-  line-height: 20px;
-  letter-spacing: 2px;
-  font-family: "Poppins", sans-serif;
-}
-
-.block_content {
-  margin-top: 12px;
-  font-family: "Poppins", sans-serif;
-}
 </style>
