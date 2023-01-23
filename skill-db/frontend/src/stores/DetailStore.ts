@@ -43,7 +43,9 @@ export const useDetailStore = defineStore('detailStore', {
             async deleteDetailsByID(id: string): Promise<void> {
                 this.loading = true;
                 const errorStore = useErrorStore();
-                await axiosInstance.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
+                await axiosInstance.delete(`/api/v1/profiles/${id}`).then(() => {
+                    this.details = new DetailModel();
+                }).catch((error) => {
                     errorStore.catchDeleteError(error, id);
                 });
                 this.loading = false;

@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory} from 'vue-router';
-import HomeView from '../views/HomeView.vue';
 import DetailView from '../views/DetailView.vue'
 import NewView from '../views/NewView.vue'
 import EditView from '../views/EditView.vue'
@@ -7,6 +6,7 @@ import LoginView from "@/views/LoginView.vue";
 import UserOverView from "@/views/UserOverView.vue"
 import {useAuthStore} from "@/stores/auth";
 import RoleOverView from "@/views/RoleOverView.vue";
+import ProfileOverView from "@/views/ProfileOverView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +22,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: HomeView,
+            component: ProfileOverView,
             meta: {
                 title: 'Profilübersicht'
             }
