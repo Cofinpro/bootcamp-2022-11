@@ -16,16 +16,16 @@ describe('RoleComponent',() => {
                     {plugins: [vuetify, createTestingPinia()]}
             });
 
-        const admin = ConvertToRoleModel.toRole({
+        const admin = ConvertToRoleModel.toRoleModel({
             identifier: 'ADMIN'
         });
-        const hr = ConvertToRoleModel.toRole({
+        const hr = ConvertToRoleModel.toRoleModel({
             identifier: 'HR'
         });
-        const user = ConvertToRoleModel.toRole({
+        const user = ConvertToRoleModel.toRoleModel({
             identifier: 'USER'
         });
-        const undefined1 = ConvertToRoleModel.toRole({
+        const undefined1 = ConvertToRoleModel.toRoleModel({
             identifier: 'UNDEFINED'
         });
 
@@ -42,7 +42,7 @@ describe('RoleComponent',() => {
                     {plugins: [vuetify, createTestingPinia()]}
             });
 
-        const role = ConvertToRoleModel.toRole({
+        const role = ConvertToRoleModel.toRoleModel({
             identifier: 'ADMIN'
         });
         const userStore = useUserStore();
@@ -63,7 +63,7 @@ describe('RoleComponent',() => {
                     {plugins: [vuetify, createTestingPinia()]}
             });
 
-        const role = ConvertToRoleModel.toRole({
+        const role = ConvertToRoleModel.toRoleModel({
             identifier: 'UNDEFINED'
         });
         const userStore = useUserStore();
@@ -85,14 +85,14 @@ describe('RoleComponent',() => {
             });
 
         const selectedUsersWithRole = ['test@test.com (Admin)'];
-        wrapper.vm.roleHere = ConvertToRoleModel.toRole({
+        wrapper.vm.roleHere = ConvertToRoleModel.toRoleModel({
             identifier: 'ADMIN',
             displayName: 'Admin'
         });
         wrapper.vm.allUsers = [ConvertToUserModel.toUserModel({
             email: 'test@test.com',
             id: '1',
-            role: ConvertToRoleModel.toRole({
+            role: ConvertToRoleModel.toRoleModel({
                   identifier: 'ADMIN'
                 })
         })];
@@ -113,14 +113,14 @@ describe('RoleComponent',() => {
             });
 
         const selectedUsersWithRole = ['test@test.com (Admin)'];
-        wrapper.vm.roleHere = ConvertToRoleModel.toRole({
+        wrapper.vm.roleHere = ConvertToRoleModel.toRoleModel({
             identifier: 'ADMIN',
             displayName: 'Admin'
         });
         wrapper.vm.allUsers = [ConvertToUserModel.toUserModel({
             email: 'test@test.com',
             id: '1',
-            role: ConvertToRoleModel.toRole({
+            role: ConvertToRoleModel.toRoleModel({
                 identifier: 'USER'
             })
         })];

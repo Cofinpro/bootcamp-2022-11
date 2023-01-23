@@ -63,7 +63,7 @@ export class RoleModel {
 }
 
 export class ConvertToRoleModel {
-    public static toRole(object: any): RoleModel {
+    public static toRoleModel(object: any): RoleModel {
         const roleModel = new RoleModel();
         roleModel.setIdentifier(String(object?.identifier));
         roleModel.setDisplayName(String(object?.displayName));

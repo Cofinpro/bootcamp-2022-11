@@ -30,7 +30,7 @@ describe('UserComponent',() => {
         });
 
         const user = ConvertToUserModel.toUserModel({
-            role: ConvertToRoleModel.toRole({
+            role: ConvertToRoleModel.toRoleModel({
                 displayName: 'Nutzer',
                 identifier: 'USER'
             })
@@ -59,7 +59,7 @@ describe('UserComponent',() => {
 
         const user = ConvertToUserModel.toUserModel({
             locked: true,
-            role: ConvertToRoleModel.toRole({
+            role: ConvertToRoleModel.toRoleModel({
                 displayName: 'Nutzer',
                 identifier: 'User'
             })
@@ -86,7 +86,7 @@ describe('UserComponent',() => {
         });
 
         const user = ConvertToUserModel.toUserModel({
-            role: ConvertToRoleModel.toRole({
+            role: ConvertToRoleModel.toRoleModel({
                 displayName: 'Administrator',
                 identifier: 'ADMIN'
             })

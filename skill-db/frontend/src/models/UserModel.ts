@@ -62,7 +62,7 @@ export class ConvertToUserModel{
         const userModel = new UserModel();
         userModel.setId(String(object?.id));
         userModel.setEmail(String(object?.email));
-        userModel.setRole(ConvertToRoleModel.toRole(object?.role));
+        userModel.setRole(ConvertToRoleModel.toRoleModel(object?.role));
         userModel.setLocked(Boolean(object?.locked));
         userModel.setEmailConfirmed(Boolean(object?.emailConfirmed));
         return userModel;

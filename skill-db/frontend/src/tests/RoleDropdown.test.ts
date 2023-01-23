@@ -12,7 +12,7 @@ describe('RoleDropdown', () => {
         const wrapper = mount(RoleDropdown,
             {
                 props: {
-                    role: ConvertToRoleModel.toRole({
+                    role: ConvertToRoleModel.toRoleModel({
                         identifier: '',
                         displayName: 'Admin',
                         description: '',
@@ -20,7 +20,7 @@ describe('RoleDropdown', () => {
                         color: ''
                     }),
                     selectedUsers: [ConvertToUserModel.toUserModel({
-                        role: ConvertToRoleModel.toRole({
+                        role: ConvertToRoleModel.toRoleModel({
                             displayName: 'HR'
                         })
                     })],
@@ -47,19 +47,19 @@ describe('RoleDropdown', () => {
                     allUsers: [ConvertToUserModel.toUserModel({
                         id: '1',
                         email: 'test1@test.com',
-                        role: ConvertToRoleModel.toRole({
+                        role: ConvertToRoleModel.toRoleModel({
                             displayName: 'Admin'
                         })
                     }), ConvertToUserModel.toUserModel({
                         id: '2',
                         email: 'test2@test.com',
-                        role: ConvertToRoleModel.toRole({
+                        role: ConvertToRoleModel.toRoleModel({
                             displayName: 'HR'
                         })
                     }), ConvertToUserModel.toUserModel({
                         id: '3',
                         email: 'test3@test.com',
-                        role: ConvertToRoleModel.toRole({
+                        role: ConvertToRoleModel.toRoleModel({
                             displayName: 'Nutzer'
                         })
                     }), ConvertToUserModel.toUserModel({
