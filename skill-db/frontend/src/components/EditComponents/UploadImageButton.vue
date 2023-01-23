@@ -40,10 +40,11 @@
 
 <script>
 import {useErrorStore} from "@/stores/ErrorStore";
-import {ref, defineEmits, onMounted} from "vue";
+import {ref, onMounted} from "vue";
 
 export default {
   name: "UploadImageButton",
+  emits: ['toggleDelete', 'upload'],
   props: {
     oldPicture: String,
   },
@@ -52,8 +53,7 @@ export default {
     const MAX_UPLOAD_SIZE = 20000000;  // Angabe in bytes, entspricht 20 MB
     const imageDataUri = ref('');
     const oldPic = ref(props.oldPicture);
-    const imageInput = ref({});
-    const emit = defineEmits(['toggleDelete', 'upload'])
+    const imageInput = ref();
 
     onMounted(() => {
       console.log(imageInput.value)

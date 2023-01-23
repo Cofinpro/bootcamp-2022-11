@@ -1,4 +1,3 @@
-import {de} from "vuetify/locale";
 
 export class DetailModel{
     private id: string;
@@ -172,22 +171,3 @@ export interface MinimumDetailModelInterface {
     phoneNumber: string,
 }
 
-export class ConvertToDetailModelForOutput {
-    public static toDetail(object: MinimumDetailModelInterface): DetailModel {
-        const detailModel = new DetailModel();
-        detailModel.setFirstName(object.firstName.toString());
-        detailModel.setLastName(object.lastName.toString());
-        detailModel.setBirthDate(this.convertDateToISO(object.birthDate.toString()));
-        detailModel.setDegree(object.degree.toString());
-        detailModel.setJobTitle(object.jobTitle.toString());
-        detailModel.setPrimarySkill(object.primarySkill.toString());
-        detailModel.setSkills(object.skills);
-        detailModel.setReferences(object.references.toString());
-        detailModel.setPhoneNumber(object.phoneNumber);
-        return detailModel;
-    }
-
-    public static convertDateToISO(date: string): string {
-        return `${date.split(".")[2]}-${date.split(".")[1]}-${date.split(".")[0]}`;
-    }
-}

@@ -21,7 +21,7 @@
                       @update:jobTitle="(value) => {state.jobTitle = value}"
                       @update:primarySkill="(value) => {state.primarySkill = value}"
                       @update:phoneNumber="(value) => {state.phoneNumber = value}"
-                      @update:birthDate="(value) => {state.birthdate = value}"
+                      @update:birthDate="(value) => {state.birthDate = value}"
           />
         </v-row>
       </div>
@@ -51,7 +51,7 @@
 
         <ConfirmButton :update="update"
                        :is-valid="isValid"
-                       @submit="update ? updateProfile() : createProfile()"
+                       @submit="update ? updateProfile(state, state.profilePicUri,picToDelete) : createProfile(state,state.profilePicUri)"
         />
 
         <LeaveButton @click="leave"></LeaveButton>
@@ -61,7 +61,6 @@
 </template>
 
 <script lang="ts">
-import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
@@ -73,6 +72,7 @@ import LeaveButton from "@/components/EditComponents/LeaveButton.vue";
 import {checkDateFormat, checkLength, checkPhoneNumberFormat} from "@/components/EditComponents/ValidationService";
 import {EditComponentState} from "@/components/EditComponents/EditComponentState";
 import {computed, ref} from "vue";
+import {createProfile, updateProfile} from "./AxiosService";
 
 export default {
   name: "EditComponent",
@@ -116,33 +116,6 @@ export default {
       )
     }
 
-
-    async function createProfile() {
-      await detailStore.createProfile(state.value, state.value.profilePicUri);
-      if (!errorStore.hasError) {
-        await router.push('/');
-      }
-    }
-
-    async function updateProfile() {
-      const editDetails = ConvertToDetailModelForOutput.toDetail(state.value);
-      const id = detailStore.details.getId();
-      if (picToDelete) {
-        await deleteProfilePicture();
-      }
-      await detailStore.updateProfile(state.value, id, state.value.profilePicUri);
-      if ((!errorStore.hasError || errorStore.allowed)) {
-        await router.push({name: 'userDetails', params: {id}});
-      }
-    }
-
-    async function deleteProfilePicture() {
-      const detailStore = useDetailStore();
-      const id = detailStore.details.getId();
-      await detailStore.deleteProfilePictureByProfileId(id);
-      state.value.oldPic = '';
-    }
-
     function onToggleDelete(targetValue: boolean) {
       picToDelete.value = targetValue;
       state.value.oldPic = '';
@@ -155,6 +128,7 @@ export default {
 
 
     function leave() {
+      console.log(state);
       if (props.update) {
         const id = detailStore.details.getId();
         router.push({name: 'userDetails', params: {id}});

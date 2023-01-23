@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ConvertResponseToDetailModel, ConvertToDetailModelForOutput, DetailModel,type MinimumDetailModelInterface} from "@/models/DetailModel";
+import {ConvertResponseToDetailModel, DetailModel} from "@/models/DetailModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 
@@ -50,70 +50,8 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async createProfile(edits: MinimumDetailModelInterface, profilePicUri: string) {
-                this.loading = true
-                const errorStore = useErrorStore();
-                edits.birthDate = ConvertToDetailModelForOutput.convertDateToISO(edits.birthDate)
-                await axiosInstance.post(`/api/v1/profiles/`,
-                    {
-                        'firstName': edits.firstName,
-                        'lastName': edits.lastName,
-                        'jobTitle': edits.jobTitle,
-                        'degree': edits.degree,
-                        'primaryExpertise': edits.primarySkill,
-                        'referenceText': edits.references,
-                        'skills': edits.skills,
-                        'phoneNumber': edits.phoneNumber,
-                        'email': localStorage.getItem('username'),
-                        'birthDate': edits.birthDate,
-                        'profilePic': profilePicUri,
-                    }).then((response) => {
-                    errorStore.toggleHasError();
-                })
-                    .catch((error) => {
-                        errorStore.catchPostPatchError(error);
-                    });
-                this.loading = false;
-            },
 
-            async updateProfile(edits: MinimumDetailModelInterface, id: string, profilePicUri: string) {
-                this.loading = true;
-                const errorStore = useErrorStore();
-                edits.birthDate = ConvertToDetailModelForOutput.convertDateToISO(edits.birthDate)
-                await axiosInstance.patch(`/api/v1/profiles/${id}`,
-                    {
-                        'firstName': edits.firstName,
-                        'lastName': edits.lastName,
-                        'jobTitle': edits.jobTitle,
-                        'degree': edits.degree,
-                        'primaryExpertise': edits.primarySkill,
-                        'referenceText': edits.references,
-                        'skills': edits.skills,
-                        'phoneNumber': edits.phoneNumber,
-                        'birthDate': edits.birthDate,
-                        'profilePic': profilePicUri,
-                    }).then(() => {
-                    errorStore.toggleHasError();
-                }).catch((error) => {
-                    console.log(error);
-                    errorStore.catchPostPatchError(error);
-                });
-                this.loading = false;
-            },
 
-            async deleteProfilePictureByProfileId(id: string) {
-                this.loading = true;
-                const errorStore = useErrorStore();
-                await axiosInstance.delete(`/api/v1/images/${id}`)
-                    .then((response) => {
-                        console.log(response);
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                        errorStore.catchDeleteError(error, id);
-                    })
-                this.loading = false;
-            },
 
             loadSkills() {
                 this.skills = [];

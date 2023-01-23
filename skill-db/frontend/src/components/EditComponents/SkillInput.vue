@@ -21,10 +21,11 @@
 
 <script lang="ts">
 import {useDetailStore} from "@/stores/DetailStore";
-import {ref, defineEmits} from "vue";
+import {ref} from "vue";
 
 export default {
   name: "SkillInput",
+  emits: ['update:skills'],
   props: {
     skillsIn:{
       value: [] as string[],
@@ -37,7 +38,6 @@ export default {
     const newSkills = ref('');
     const skills = ref(props.skillsIn.sort());
     const detailStore = useDetailStore();
-    defineEmits(['update:skills']);
 
     //functions
     function addSkills() {

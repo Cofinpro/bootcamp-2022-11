@@ -27,5 +27,4 @@ export class EditComponentState implements MinimumDetailModelInterface {
         this.oldPic = oldPic;
         this.profilePicUri = '';
     }
-
 }
