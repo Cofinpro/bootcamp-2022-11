@@ -7,14 +7,10 @@ import {ConvertToRoleModel} from "@/models/RoleModel";
 import {createTestingPinia} from "@pinia/testing";
 import {useUserStore} from "@/stores/UserStore";
 import {ConvertToUserModel} from "@/models/UserModel";
+import {isDefined} from "@/components/RoleComponents/RoleDropdownFunctions";
 
 describe('RoleComponent',() => {
     it('isDefined() does as it should', async () => {
-        const wrapper = mount(RoleComponent,
-            {
-                global:
-                    {plugins: [vuetify, createTestingPinia()]}
-            });
 
         const admin = ConvertToRoleModel.toRoleModel({
             identifier: 'ADMIN'
@@ -29,10 +25,10 @@ describe('RoleComponent',() => {
             identifier: 'UNDEFINED'
         });
 
-        expect(wrapper.vm.isDefined(admin)).toBeTruthy();
-        expect(wrapper.vm.isDefined(hr)).toBeTruthy();
-        expect(wrapper.vm.isDefined(user)).toBeTruthy();
-        expect(wrapper.vm.isDefined(undefined1)).toBeFalsy();
+        expect(isDefined(admin)).toBeTruthy();
+        expect(isDefined(hr)).toBeTruthy();
+        expect(isDefined(user)).toBeTruthy();
+        expect(isDefined(undefined1)).toBeFalsy();
     });
 
     it('prepareSelectDropdown() with admin role does as it should', async () => {
@@ -97,9 +93,13 @@ describe('RoleComponent',() => {
                 })
         })];
         const userStore = useUserStore();
-        const spyChangeRole = vitest.spyOn(userStore, 'changeRole')
+        const spyChangeRole = vitest.spyOn(userStore, 'changeRole');
+        const args = {
+            selectedUsersWithRole: selectedUsersWithRole,
+            allUsers: wrapper.vm.allUsers,
+            role: wrapper.vm.roleHere};
 
-        await wrapper.vm.submit(selectedUsersWithRole);
+        await wrapper.vm.submit(args);
 
         expect(spyChangeRole).not.toBeCalled();
         expect(wrapper.vm.edit).toBeFalsy();
@@ -126,8 +126,12 @@ describe('RoleComponent',() => {
         })];
         const userStore = useUserStore();
         const spyChangeRole = vitest.spyOn(userStore, 'changeRole')
+        const args = {
+            selectedUsersWithRole: selectedUsersWithRole,
+            allUsers: wrapper.vm.allUsers,
+            role: wrapper.vm.roleHere};
 
-        await wrapper.vm.submit(selectedUsersWithRole);
+        await wrapper.vm.submit(args);
 
         expect(spyChangeRole).toBeCalledTimes(1);
         expect(spyChangeRole).toBeCalledWith('1', 'Admin');
