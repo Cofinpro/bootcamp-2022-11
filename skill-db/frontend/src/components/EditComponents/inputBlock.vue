@@ -1,50 +1,50 @@
 <template>
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-    <v-text-field v-model="firstName"
-                  @change="this.$emit('update:firstName',this.firstName)"
+    <v-text-field v-model="state.firstName"
+                  @change="this.$emit('update:firstName',state.firstName)"
                   label="Vorname"
                   class="test_firstName"
-                  :rules="[v => v.length > 0 || 'Erforderlich!']"/>
+                  :rules="[v => checkLength(v) || 'Erforderlich!']"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-    <v-text-field v-model="lastName"
-                  @change="this.$emit('update:lastName',this.lastName)"
+    <v-text-field v-model="state.lastName"
+                  @change="this.$emit('update:lastName',state.lastName)"
                   label="Nachname"
                   class="test_lastName"
-                  :rules="[v => v.length > 0 || 'Erforderlich']"/>
+                  :rules="[v => checkLength(v) || 'Erforderlich']"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-    <v-autocomplete v-model="jobTitle"
-                    @update:modelValue="this.$emit('update:jobTitle',this.jobTitle)"
+    <v-autocomplete v-model="state.jobTitle"
+                    @update:modelValue="this.$emit('update:jobTitle',state.jobTitle)"
                     label="Jobprofil"
                     class="test_jobTitle"
-                    :rules="[v => v.length > 0 || 'Erforderlich!']"
+                    :rules="[v => checkLength(v)|| 'Erforderlich!']"
                     :items="detailStore.jobs"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-    <v-autocomplete v-model="primarySkill"
-                    @update:modelValue="this.$emit('update:primarySkill',this.primarySkill)"
+    <v-autocomplete v-model="state.primarySkill"
+                    @update:modelValue="this.$emit('update:primarySkill',state.primarySkill)"
                     label="Primärkompetenz"
                     class="test_primarySkill"
-                    :rules="[v => v.length > 0 || 'Erforderlich!']"
+                    :rules="[v => checkLength(v)|| 'Erforderlich!']"
                     :items="detailStore.primarys"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-    <v-text-field v-model="phoneNumber"
+    <v-text-field v-model="state.phoneNumber"
                   class="test_phoneNumber"
-                  @change="this.$emit('update:phoneNumber',this.phoneNumber)"
+                  @change="this.$emit('update:phoneNumber',state.phoneNumber)"
                   label="Telefonnummer"
                   :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-    <v-text-field v-model="birthdate"
+    <v-text-field v-model="state.birthdate"
                   class="test_birthdate"
-                  @change="this.$emit('update:birthDate',this.birthdate)"
+                  @change="this.$emit('update:birthDate',state.birthdate)"
                   label="Geburtsdatum"
                   :rules="[ date => checkDateFormat(date) ||
                           'Datum muss im Format TT.MM.JJJJ eingegeben werden!']"/>
@@ -54,6 +54,9 @@
 
 <script lang="ts">
 import {useDetailStore} from "@/stores/DetailStore";
+import {inputBlockState} from "@/components/EditComponents/inputBlockState";
+import {ref} from "vue";
+import {checkDateFormat, checkLength, checkPhoneNumberFormat} from "@/components/EditComponents/ValidationService";
 
 export default {
   emits: [
@@ -90,31 +93,17 @@ export default {
       type: String
     },
   },
-  data(props) {
+  setup(props) {
+    const state = ref(new inputBlockState(
+        props.firstNameIn, props.lastNameIn, props.jobTitleIn, props.primarySkillIn, props.dateIn, props.phoneNumberIn
+    ));
     return {
-      firstName: props.firstNameIn,
-      lastName: props.lastNameIn,
-      jobTitle: props.jobTitleIn,
-      primarySkill: props.primarySkillIn,
-      phoneNumber: props.phoneNumberIn,
-      birthdate: props.dateIn,
+      state,
+      checkDateFormat,
+      checkLength,
+      checkPhoneNumberFormat,
       detailStore: useDetailStore(),
     };
-  },
-  methods: {
-    checkDateFormat(date: string): Boolean {
-      const regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/;
-      if (!regex.test(date)) return false;
-
-      const currentDate = new Date();
-      const [day, month, year] = date.split('.');
-      const inputDate = new Date(Date.UTC(year, month, day));
-
-      return inputDate <= currentDate;
-    },
-    checkPhoneNumberFormat(number: string): Boolean {
-      return /^[0-9]{11,13}$/.test(number);
-    },
   },
 }
 </script>

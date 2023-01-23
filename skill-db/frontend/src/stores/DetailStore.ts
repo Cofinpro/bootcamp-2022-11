@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ConvertResponseToDetailModel, DetailModel} from "@/models/DetailModel";
+import {ConvertResponseToDetailModel, ConvertToDetailModelForOutput, DetailModel,type MinimumDetailModelInterface} from "@/models/DetailModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 
@@ -50,21 +50,22 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async createProfile(edits: DetailModel, profilePicUri: string) {
+            async createProfile(edits: MinimumDetailModelInterface, profilePicUri: string) {
                 this.loading = true
                 const errorStore = useErrorStore();
+                edits.birthDate = ConvertToDetailModelForOutput.convertDateToISO(edits.birthDate)
                 await axiosInstance.post(`/api/v1/profiles/`,
                     {
-                        'firstName': edits.getFirstName(),
-                        'lastName': edits.getLastName(),
-                        'jobTitle': edits.getJobTitle(),
-                        'degree': edits.getDegree(),
-                        'primaryExpertise': edits.getPrimarySkill(),
-                        'referenceText': edits.getReferences(),
-                        'skills': edits.getSkills(),
-                        'phoneNumber': edits.getPhoneNumber(),
+                        'firstName': edits.firstName,
+                        'lastName': edits.lastName,
+                        'jobTitle': edits.jobTitle,
+                        'degree': edits.degree,
+                        'primaryExpertise': edits.primarySkill,
+                        'referenceText': edits.references,
+                        'skills': edits.skills,
+                        'phoneNumber': edits.phoneNumber,
                         'email': localStorage.getItem('username'),
-                        'birthDate': edits.getBirthDate(),
+                        'birthDate': edits.birthDate,
                         'profilePic': profilePicUri,
                     }).then((response) => {
                     errorStore.toggleHasError();
@@ -75,20 +76,21 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            async updateProfile(edits: DetailModel, id: string, profilePicUri: string) {
+            async updateProfile(edits: MinimumDetailModelInterface, id: string, profilePicUri: string) {
                 this.loading = true;
                 const errorStore = useErrorStore();
+                edits.birthDate = ConvertToDetailModelForOutput.convertDateToISO(edits.birthDate)
                 await axiosInstance.patch(`/api/v1/profiles/${id}`,
                     {
-                        'firstName': edits.getFirstName(),
-                        'lastName': edits.getLastName(),
-                        'jobTitle': edits.getJobTitle(),
-                        'degree': edits.getDegree(),
-                        'primaryExpertise': edits.getPrimarySkill(),
-                        'referenceText': edits.getReferences(),
-                        'skills': edits.getSkills(),
-                        'phoneNumber': edits.getPhoneNumber(),
-                        'birthDate': edits.getBirthDate(),
+                        'firstName': edits.firstName,
+                        'lastName': edits.lastName,
+                        'jobTitle': edits.jobTitle,
+                        'degree': edits.degree,
+                        'primaryExpertise': edits.primarySkill,
+                        'referenceText': edits.references,
+                        'skills': edits.skills,
+                        'phoneNumber': edits.phoneNumber,
+                        'birthDate': edits.birthDate,
                         'profilePic': profilePicUri,
                     }).then(() => {
                     errorStore.toggleHasError();
