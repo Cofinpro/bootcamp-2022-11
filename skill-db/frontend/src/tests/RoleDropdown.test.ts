@@ -38,34 +38,45 @@ describe('RoleDropdown', () => {
         expect(wrapper.emitted('clicked')).toBeTruthy();
     });
 
-    it('All users and their roles are in dropdown menu', async () => {
+    it('attachRole() attaches role', async () => {
         const wrapper = mount(RoleDropdown,
             {
                 props: {
                     role: new RoleModel(),
-                    selectedUsers: [new RoleModel()],
+                    selectedUsers: [new UserModel()],
                     allUsers: [ConvertToUserModel.toUserModel({
                         id: '1',
-                        email: 'test@test.com',
-                        role: new RoleModel()
+                        email: 'test1@test.com',
+                        role: ConvertToRoleModel.toRole({
+                            displayName: 'Admin'
+                        })
                     }), ConvertToUserModel.toUserModel({
                         id: '2',
                         email: 'test2@test.com',
                         role: ConvertToRoleModel.toRole({
                             displayName: 'HR'
                         })
+                    }), ConvertToUserModel.toUserModel({
+                        id: '3',
+                        email: 'test3@test.com',
+                        role: ConvertToRoleModel.toRole({
+                            displayName: 'Nutzer'
+                        })
+                    }), ConvertToUserModel.toUserModel({
+                        id: '4',
+                        email: 'test4@test.com',
+                        role: new RoleModel()
                     })]
                 },
                 global:
                     {plugins: [vuetify]}
             });
-        /*wrapper.vm.$props.allUsers?.forEach((user: UserModel) => {
-            ConvertToUserModel.toUserModel(user);
-        });
-        console.log(wrapper.vm.$props.allUsers);
         const attached = wrapper.vm.attachRole(wrapper.vm.$props.allUsers);
-        expect(attached[0]).toBe("test@test.com ()");
-        expect(attached[0]).toBe("test2@test.com (HR)");*/
-        expect(true).toBeTruthy();
+
+        expect(attached.length).toBe(4);
+        expect(attached).toContain("test1@test.com (Admin)");
+        expect(attached).toContain("test2@test.com (HR)");
+        expect(attached).toContain("test3@test.com (Nutzer)");
+        expect(attached).toContain("test4@test.com ()");
     });
 });
