@@ -9,6 +9,7 @@
       <dropdown-button v-else-if="authenticated"
                        :delete-function="deleteFunction"
                        :edit-function="editFunction"/>
+      <dropdown-button v-else :disabled="true"/>
     </div>
 
     <v-container class="pr-0 pl-2 pl-sm-2 pl-md-4">
