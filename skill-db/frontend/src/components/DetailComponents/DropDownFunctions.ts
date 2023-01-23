@@ -42,7 +42,7 @@ export async function lockProfile(id: string): Promise<void> {
     }
 }
 
-export async function deleteProfile(id: string): void {
+export async function deleteProfile(id: string): Promise<void> {
     const detailStore = useDetailStore();
     await detailStore.deleteDetailsByID(id);
     router.push(`/`);
