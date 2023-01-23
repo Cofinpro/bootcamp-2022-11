@@ -16,7 +16,7 @@
   <v-text-field v-if="showAddSkills"
                 v-model="newSkills"
                 placeholder="Füge mehrere Skills hinzu, indem du sie mit Kommata [','] separierst."
-                @keydown.enter="addSkills"/>
+                @keydown.enter="addSkills()"/>
 </template>
 
 <script lang="ts">

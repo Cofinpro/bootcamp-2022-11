@@ -7,7 +7,7 @@ import vuetify from "@/plugins/vuetify";
 
 //Tests that button contains correct content and emits submit event.
 describe('LeaveButton',() =>{
-    it('LoginRenders', () =>{
+    it('leave Button Renders', () =>{
         const wrapper = mount(leaveButton,
             {
                 global:

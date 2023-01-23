@@ -3,6 +3,7 @@
     <v-text-field v-model="firstName"
                   @change="this.$emit('update:firstName',this.firstName)"
                   label="Vorname"
+                  class="test_firstName"
                   :rules="[v => v.length > 0 || 'Erforderlich!']"/>
   </v-col>
 
@@ -10,6 +11,7 @@
     <v-text-field v-model="lastName"
                   @change="this.$emit('update:lastName',this.lastName)"
                   label="Nachname"
+                  class="test_lastName"
                   :rules="[v => v.length > 0 || 'Erforderlich']"/>
   </v-col>
 
@@ -17,6 +19,7 @@
     <v-autocomplete v-model="jobTitle"
                     @update:modelValue="this.$emit('update:jobTitle',this.jobTitle)"
                     label="Jobprofil"
+                    class="test_jobTitle"
                     :rules="[v => v.length > 0 || 'Erforderlich!']"
                     :items="detailStore.jobs"/>
   </v-col>
@@ -25,12 +28,14 @@
     <v-autocomplete v-model="primarySkill"
                     @update:modelValue="this.$emit('update:primarySkill',this.primarySkill)"
                     label="Primärkompetenz"
+                    class="test_primarySkill"
                     :rules="[v => v.length > 0 || 'Erforderlich!']"
                     :items="detailStore.primarys"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
     <v-text-field v-model="phoneNumber"
+                  class="test_phoneNumber"
                   @change="this.$emit('update:phoneNumber',this.phoneNumber)"
                   label="Telefonnummer"
                   :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
@@ -38,6 +43,7 @@
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
     <v-text-field v-model="birthdate"
+                  class="test_birthdate"
                   @change="this.$emit('update:birthDate',this.birthdate)"
                   label="Geburtsdatum"
                   :rules="[ date => checkDateFormat(date) ||

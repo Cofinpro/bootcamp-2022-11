@@ -50,7 +50,7 @@ export default {
     return {
       errorStore: useErrorStore(),
       maxUploadSize: 20000000, // Angabe in bytes, entspricht 20 MB
-      imageDataUri: null,
+      imageDataUri: undefined,
       oldPic: props.oldPicture
     }
   },
@@ -83,6 +83,7 @@ export default {
       console.log(this.oldPic)
       const fileInput = this.$refs.imageInput;
       if (fileInput && fileInput.value) {
+        console.log(fileInput.value)
         const file = fileInput.files[0];
         if (!(file instanceof Blob) || !this.isPermissibleSize(file)) {
           this.errorStore.catchUploadImageError(new Error('Falsche Größe: max. 20 MB zulässig!'));
