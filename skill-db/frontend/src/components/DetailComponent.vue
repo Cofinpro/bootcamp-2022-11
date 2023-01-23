@@ -18,7 +18,7 @@
           <ProfilePic v-if="detailStore.profilePic"
                       :pic="detailStore.profilePic"/>
           <ProfilePic v-else
-                      :initals="`${detailStore.details.getFirstName()[0]}${detailStore.details.getLastName()[0]}`"/>
+                      :initials="`${detailStore.details.getFirstName()[0]}${detailStore.details.getLastName()[0]}`"/>
         </v-col>
 
         <v-col cols="12" lg="8" md="8" sm="12" class="pa-0 pl-md-3 pl-sm-0 pr-0">
