@@ -2,7 +2,8 @@
   <div v-for="operation in operations">
     <v-tooltip location="end top">
       <template v-slot:activator="{ props }">
-        <v-icon v-bind="props"
+        <v-icon id = "test_alert"
+                v-bind="props"
                 v-if="operation.getTarget() === user.getId()"
                 color="red">
           mdi-alert-rhombus

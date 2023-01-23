@@ -14,15 +14,13 @@ describe('AlertWithTooltip',() =>{
                     user: new UserModel(),
                     operationType: "lockUser",
                     operations: [ConvertToOperationsModel.toOperationsModel({
-                        target: "",
-                        initiator: "initiator",
-                        roleId: ""
+                        target: ''
                     })]
                 },
                 global:
                     { plugins: [vuetify] }
             });
-        const icon = wrapper.findComponent('.v-icon');
+        const icon = wrapper.findComponent('#test_alert');
         expect(icon.exists()).toBeTruthy();
 
         //How to trigger hover and appearing of <span>?
@@ -38,14 +36,13 @@ describe('AlertWithTooltip',() =>{
                     operationType: "changeRole",
                     operations: [ConvertToOperationsModel.toOperationsModel({
                         target: "target",
-                        initiator: "initiator",
-                        roleId: ""
+                        initiator: "initiator"
                     })]
                 },
                 global:
                     { plugins: [vuetify] }
             });
-        const icon = wrapper.find('.v-icon');
+        const icon = wrapper.find('#test_alert');
         expect(icon.exists()).toBeFalsy();
     });
 })
