@@ -1,9 +1,9 @@
 export class RoleModel {
-    private identifier: String;
-    private displayName: String;
-    private description: String;
-    private user: String[];
-    private color: String;
+    private identifier: string;
+    private displayName: string;
+    private description: string;
+    private user: string[];
+    private color: string;
 
     constructor() {
         this.identifier = '';
@@ -13,31 +13,31 @@ export class RoleModel {
         this.color = '';
     }
 
-    getIdentifier(): String {
+    getIdentifier(): string {
         return this.identifier;
     }
 
-    setIdentifier(value: String) {
+    setIdentifier(value: string) {
         this.identifier = value;
     }
 
-    getDisplayName(): String {
+    getDisplayName(): string {
         return this.displayName;
     }
 
-    setDisplayName(value: String) {
+    setDisplayName(value: string) {
         this.displayName = value;
     }
 
-    getDescription(): String {
+    getDescription(): string {
         return this.description;
     }
 
-    setDescription(value: String) {
+    setDescription(value: string) {
         this.description = value;
     }
 
-    getUser(): String[] {
+    getUser(): string[] {
         return this.user;
     }
 
@@ -45,7 +45,7 @@ export class RoleModel {
         this.user = value;
     }
 
-    getColor(): String {
+    getColor(): string {
         return this.color;
     }
 

@@ -5,6 +5,7 @@
     "src/**/*",
     "src/**/*.ts",
     "src/**/**/*.ts",
+    "src/**/**/**/*.ts",
     "src/**/*.vue",
     "node_modules/vitest/globals.d.ts"
   ],

@@ -60,6 +60,7 @@ import {RoleModel} from "@/models/RoleModel";
 import {useUserStore} from "@/stores/UserStore";
 import RoleDropdown from "@/components/RoleComponents/RoleDropdown.vue";
 import type {UserModel} from "@/models/UserModel";
+import {useSubmit, isDefined} from "@/components/RoleComponents/RoleDropdownFunctions";
 
 export default {
   name: "RoleComponent",
@@ -75,17 +76,13 @@ export default {
       selectedUsers: [] as UserModel[],
       allUsers: [] as UserModel[],
       userStore: useUserStore(),
-      roles
+      roles, isDefined
     }
   },
   methods: {
-    isDefined(role: RoleModel): boolean {
-      return role.getIdentifier() !== 'UNDEFINED';
-    },
-
     async prepareSelectDropdown(role: RoleModel): Promise<void> {
       this.selectedUsers = [] as UserModel[];
-      if (this.isDefined(role)) {
+      if (isDefined(role)) {
         await this.userStore.loadUsersByRoleId(role.getIdentifier());
         this.selectedUsers = this.userStore.users;
         this.userStore.users = [] as UserModel[];
@@ -97,16 +94,8 @@ export default {
       this.roleHere = role;
     },
 
-    async submit(selectedUsersWithRole: string[]): Promise<void> {
-      const role = this.roleHere;
-      for (const selected of selectedUsersWithRole) {
-        for (const user of this.allUsers) {
-          if(user.getEmail() === selected.split("(")[0].trim()
-              && user.getRole().getIdentifier() !== role.getIdentifier()) {
-            await this.userStore.changeRole(user.getId(), role.getDisplayName());
-          }
-        }
-      }
+    async submit(args: any): Promise<void> {
+      await useSubmit(args);
       this.edit = false;
     },
   },

@@ -5,7 +5,7 @@
         {{ role.getDisplayName() }}
       </v-card-title>
       <v-card-actions>
-        <v-btn class="mr-2 mt-2" @click="this.$emit('clicked', selectedUsersWithRole)"
+        <v-btn class="mr-2 mt-2" @click="this.$emit('clicked', {selectedUsersWithRole, allUsers, role})"
                elevation="0" size="small">
           Bestätigen
         </v-btn>
