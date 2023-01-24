@@ -1,6 +1,6 @@
 <template>
   <v-chip @click="info = true"
-          :color="color">
+          :color="color" link>
     {{ content }}
     <v-icon class="ml-2" size="tiny">
       mdi-information
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import {ref} from "vue";
+
 export default {
   name: "ChipWithInfotext",
   props: {
@@ -43,9 +45,9 @@ export default {
       type: String
     }
   },
-  data() {
+  setup() {
     return {
-      info: false,
+      info: ref(false),
     }
   },
 }
