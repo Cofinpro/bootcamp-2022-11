@@ -66,7 +66,7 @@ import AlertWithTooltip from "@/components/UserComponents/AlertWithTooltip.vue";
 export default {
   name: "UserComponent",
   components: {AlertWithTooltip, ChipWithInfotext},
-  data() {
+  setup() {
     const userStore = useUserStore();
     userStore.loadUsers();
     userStore.loadPendingRoleChanges();
@@ -85,9 +85,6 @@ export default {
     return {
       userStore, toggleLock
     }
-  },
-  methods: {
-
   }
 }
 </script>
