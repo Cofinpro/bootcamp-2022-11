@@ -18,7 +18,7 @@
       </tr>
       </thead>
 
-      <tr v-for="role in roles"
+      <tr v-for="role in state.allRoles"
           :key="role.getIdentifier()">
 
         <td class="d-flex justify-center pa-2 pt-3">
@@ -33,18 +33,16 @@
 
         <td class="d-flex justify-center">
           <v-icon color="#BDBDBD"
-                  @click="prepareSelectDropdown(role)">
+                  @click="state.prepareSelectDropdown(role)">
             mdi-pencil
           </v-icon>
         </td>
 
       </tr>
 
-      <v-overlay v-model="edit">
+      <v-overlay v-model="state.edit">
         <role-dropdown @clicked="submit"
-                       :role="roleHere"
-                       :selected-users="selectedUsers"
-                       :all-users="allUsers"/>
+                       :state="state"/>
       </v-overlay>
 
     </v-table>
@@ -52,51 +50,23 @@
 </template>
 
 <script lang="ts">
-import {useRoleStore} from "@/stores/RoleStore";
-import {RoleModel} from "@/models/RoleModel";
-import {useUserStore} from "@/stores/UserStore";
 import RoleDropdown from "@/components/RoleComponents/RoleDropdown.vue";
-import type {UserModel} from "@/models/UserModel";
-import {useSubmit} from "@/components/RoleComponents/RoleDropdownFunctions";
 import {ref} from "vue";
+import {RoleComponentState} from "@/components/RoleComponents/RoleComponentState";
 
 export default {
   name: "RoleComponent",
   components: { RoleDropdown },
   setup() {
-    const userStore = useUserStore();
-    const roleStore = useRoleStore();
-    roleStore.loadAllRoles();
-    const roles = roleStore.allRoles;
+    const state = ref(new RoleComponentState());
+    state.value.loadAllRoles();
 
-    const edit = ref(false);
-    const selectedUsers = ref([] as UserModel[]);
-    const allUsers = ref([] as UserModel[]);
-    const roleHere = ref(new RoleModel());
-
-    async function prepareSelectDropdown(role: RoleModel): Promise<void> {
-      selectedUsers.value = [] as UserModel[];
-      if (role.isDefined()) {
-        await userStore.loadUsersByRoleId(role.getIdentifier());
-        selectedUsers.value = userStore.users;
-        userStore.users = [] as UserModel[];
-      }
-      await userStore.loadUsers();
-      allUsers.value = userStore.users;
-
-      edit.value = true;
-      roleHere.value = role;
-    }
-
-    async function submit(args: any): Promise<void> {
-      await useSubmit(args);
-      edit.value = false;
+    async function submit(): Promise<void> {
+      await state.value.useSubmit();
     }
 
     return {
-      edit, roleHere, roles,
-      selectedUsers, allUsers, userStore,
-      prepareSelectDropdown, submit
+      state, submit
     }
   }
 }
