@@ -67,23 +67,27 @@ export default {
   name: "UserComponent",
   components: {AlertWithTooltip, ChipWithInfotext},
   data() {
-    let userStore = useUserStore();
+    const userStore = useUserStore();
     userStore.loadUsers();
     userStore.loadPendingRoleChanges();
     userStore.loadPendingLockUsers();
+
+    const errorStore = useErrorStore();
+
+    async function toggleLock(user: UserModel): Promise<void> {
+      await userStore.lockUser(user.getId());
+      if (!errorStore.hasError) {
+        user.setLocked(!user.getLocked());
+      }
+      await userStore.loadPendingLockUsers();
+    }
+
     return {
-      userStore,
-      errorStore: useErrorStore()
+      userStore, toggleLock
     }
   },
   methods: {
-    async toggleLock(user: UserModel): Promise<void> {
-      await this.userStore.lockUser(user.getId());
-      if (!this.errorStore.hasError) {
-        user.setLocked(!user.getLocked());
-      }
-      await this.userStore.loadPendingLockUsers();
-    }
+
   }
 }
 </script>

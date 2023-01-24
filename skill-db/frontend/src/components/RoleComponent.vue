@@ -21,20 +21,17 @@
       <tr v-for="role in roles"
           :key="role.getIdentifier()">
 
-        <td class="d-flex justify-center pa-2 pt-3"
-            v-if="isDefined(role)">
+        <td class="d-flex justify-center pa-2 pt-3">
           <v-chip :color="role.getColor()">
             {{ role.getDisplayName() }}
           </v-chip>
         </td>
 
-        <td class="description pa-2"
-            v-if="isDefined(role)">
+        <td class="description pa-2">
           {{ role.getDescription() }}
         </td>
 
-        <td class="d-flex justify-center"
-            v-if="isDefined(role)">
+        <td class="d-flex justify-center">
           <v-icon color="#BDBDBD"
                   @click="prepareSelectDropdown(role)">
             mdi-pencil
@@ -60,56 +57,47 @@ import {RoleModel} from "@/models/RoleModel";
 import {useUserStore} from "@/stores/UserStore";
 import RoleDropdown from "@/components/RoleComponents/RoleDropdown.vue";
 import type {UserModel} from "@/models/UserModel";
+import {useSubmit, isDefined} from "@/components/RoleComponents/RoleDropdownFunctions";
+import {ref} from "vue";
 
 export default {
   name: "RoleComponent",
   components: { RoleDropdown },
-  data() {
+  setup() {
     let roleStore = useRoleStore();
     roleStore.loadAllRoles();
     let roles = roleStore.allRoles;
+    let userStore = useUserStore();
+    let edit = ref(false);
+    let selectedUsers = ref([] as UserModel[]);
+    let allUsers = ref([] as UserModel[]);
+    let roleHere = ref(new RoleModel());
+
+    async function prepareSelectDropdown(role: RoleModel): Promise<void> {
+      selectedUsers.value = [] as UserModel[];
+      if (isDefined(role)) {
+        await userStore.loadUsersByRoleId(role.getIdentifier());
+        selectedUsers.value = userStore.users;
+        userStore.users = [] as UserModel[];
+      }
+      await userStore.loadUsers();
+      allUsers.value = userStore.users;
+
+      edit.value = true;
+      roleHere.value = role;
+    }
+
+    async function submit(args: any): Promise<void> {
+      await useSubmit(args);
+      edit.value = false;
+    }
 
     return {
-      edit: false,
-      roleHere: RoleModel,
-      selectedUsers: [] as UserModel[],
-      allUsers: [] as UserModel[],
-      userStore: useUserStore(),
-      roles
+      edit, roleHere, roles,
+      selectedUsers, allUsers, userStore,
+      prepareSelectDropdown, submit
     }
-  },
-  methods: {
-    isDefined(role: RoleModel): boolean {
-      return role.getIdentifier() !== 'UNDEFINED';
-    },
-
-    async prepareSelectDropdown(role: RoleModel): Promise<void> {
-      this.selectedUsers = [] as UserModel[];
-      if (this.isDefined(role)) {
-        await this.userStore.loadUsersByRoleId(role.getIdentifier());
-        this.selectedUsers = this.userStore.users;
-        this.userStore.users = [] as UserModel[];
-      }
-      await this.userStore.loadUsers();
-      this.allUsers = this.userStore.users;
-
-      this.edit = true;
-      this.roleHere = role;
-    },
-
-    async submit(selectedUsersWithRole: string[]): Promise<void> {
-      const role = this.roleHere;
-      for (const selected of selectedUsersWithRole) {
-        for (const user of this.allUsers) {
-          if(user.getEmail() === selected.split("(")[0].trim()
-              && user.getRole().getIdentifier() !== role.getIdentifier()) {
-            await this.userStore.changeRole(user.getId(), role.getDisplayName());
-          }
-        }
-      }
-      this.edit = false;
-    },
-  },
+  }
 }
 </script>
 

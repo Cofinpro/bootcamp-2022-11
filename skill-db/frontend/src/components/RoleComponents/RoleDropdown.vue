@@ -5,7 +5,7 @@
         {{ role.getDisplayName() }}
       </v-card-title>
       <v-card-actions>
-        <v-btn class="mr-2 mt-2" @click="this.$emit('clicked', selectedUsersWithRole)"
+        <v-btn class="mr-2 mt-2" @click="this.$emit('clicked', {selectedUsersWithRole, allUsers, role})"
                elevation="0" size="small">
           Bestätigen
         </v-btn>
@@ -58,20 +58,21 @@ export default {
     }
   },
   data(props) {
-    function attachRole(users: UserModel[]): string[] {
+    let selectedUsersWithRole = this.attachRole(props.selectedUsers);
+
+    return {
+      selectedUsersWithRole
+    }
+  },
+  methods: {
+    attachRole(users: UserModel[]): string[] {
       let namesAndRoles = [] as string[];
       users.forEach((user: UserModel) => {
         namesAndRoles.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`)
       });
       return namesAndRoles;
     }
-
-    let selectedUsersWithRole = attachRole(props.selectedUsers);
-
-    return {
-      selectedUsersWithRole, attachRole
-    }
-  },
+  }
 }
 </script>
 
