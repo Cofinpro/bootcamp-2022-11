@@ -65,37 +65,34 @@
 
 </template>
 
-<script>
+<script lang="ts">
 import {useAuthStore} from "@/stores/auth";
 import {LoginRequest} from "@/models/LoginRequest";
 import ComicOfTheDay from "@/components/ComicOfTheDay.vue";
 import {useComicStore} from "@/stores/ComicStore";
+import {ref} from "vue";
 
 export default {
   name: "LoginView",
   components: {ComicOfTheDay},
   setup() {
-    const store = useAuthStore();
+    const authStore = useAuthStore();
     const comicStore = useComicStore();
     comicStore.loadComicOfTheDay();
     return {
-      store, comicStore
-    }
-  },
-  data() {
-    return {
-      userRequestLogin: new LoginRequest(),
-      visible: false,
-      valid: false,
+      authStore, comicStore,
+      visible: ref(false),
+      valid: ref(false),
       rules: {
         required: value => !!value || 'Erforderlich.',
         min: v => v.length >= 8 || 'Min. 8 Buchstaben',
       },
+      userRequestLogin: ref(new LoginRequest()),
     }
   },
   methods: {
     login() {
-      this.store.login(this.userRequestLogin);
+      this.authStore.login(this.userRequestLogin);
     },
   }
 }
