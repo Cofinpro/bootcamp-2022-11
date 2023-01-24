@@ -1,7 +1,7 @@
 import {describe, it, expect} from "vitest";
 
 import {mount} from "@vue/test-utils";
-import RoleComponent from "@/components/RoleComponent.vue";
+import RoleComponent from "@/components/RoleComponents/RoleComponent.vue";
 import vuetify from "@/plugins/vuetify";
 import {ConvertToRoleModel} from "@/models/RoleModel";
 import {createTestingPinia} from "@pinia/testing";

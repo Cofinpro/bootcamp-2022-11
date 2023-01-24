@@ -1,7 +1,7 @@
 import {describe, it, expect} from "vitest";
 
 import {mount} from "@vue/test-utils";
-import UserComponent from "@/components/UserComponent.vue";
+import UserComponent from "@/components/UserComponents/UserComponent.vue";
 import vuetify from "@/plugins/vuetify";
 import {createTestingPinia} from "@pinia/testing";
 import {useUserStore} from "@/stores/UserStore";

@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import SideBar from './components/SideBar.vue'
+import SideBar from './components/SideBarComponents/SideBar.vue'
 import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
 export default {
   components: { ErrorSnackbar, SideBar },

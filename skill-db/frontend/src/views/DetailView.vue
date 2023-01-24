@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import DetailComponent from "@/components/DetailComponent.vue";
+import DetailComponent from "@/components/DetailComponents/DetailComponent.vue";
 
 export default {
   name: "DetailView",

@@ -2,7 +2,7 @@ import {describe, it, expect} from "vitest";
 
 import {mount} from "@vue/test-utils";
 import vuetify from "@/plugins/vuetify";
-import DetailComponent from "@/components/DetailComponent.vue";
+import DetailComponent from "@/components/DetailComponents/DetailComponent.vue";
 import {createTestingPinia} from "@pinia/testing";
 import {useUserStore} from "@/stores/UserStore";
 import {useDetailStore} from "@/stores/DetailStore";

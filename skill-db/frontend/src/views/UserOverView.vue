@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import UserComponent from "@/components/UserComponent.vue";
+import UserComponent from "@/components/UserComponents/UserComponent.vue";
 
 export default {
   name: "UserOverView",
