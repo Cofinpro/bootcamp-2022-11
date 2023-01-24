@@ -9,7 +9,7 @@ import {useUserStore} from "@/stores/UserStore";
 
 describe('RoleComponentState', () => {
 
-    let roleState;
+    let roleState: RoleComponentState;
 
     beforeEach(() => {
         roleState = new RoleComponentState();
@@ -116,7 +116,7 @@ describe('RoleComponentState', () => {
         const userStore = useUserStore();
         const spyAllUsers = vi.spyOn(userStore, 'loadUsers');
 
-        await roleState.loadAllUsers(roleState.role);
+        await roleState.loadAllUsers();
 
         expect(spyAllUsers).toBeCalled();
     });

@@ -10,7 +10,7 @@ import RoleDropdown from "@/components/RoleComponents/RoleDropdown.vue";
 
 describe('RoleComponent',() => {
 
-    let roleState;
+    let roleState: RoleComponentState;
 
     beforeEach(() => {
         roleState = new RoleComponentState();

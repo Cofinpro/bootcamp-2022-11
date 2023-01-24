@@ -67,14 +67,14 @@ export class RoleComponentState {
     async loadUsersWithThisRole(role: RoleModel): Promise<void> {
         const userStore = useUserStore();
         await userStore.loadUsersByRoleId(role.getIdentifier());
-        this.selectedUsers = userStore.users;
+        this.selectedUsers = userStore.users as UserModel[];
         userStore.users = [] as UserModel[];
     }
 
     async loadAllUsers(): Promise<void> {
         const userStore = useUserStore();
         await userStore.loadUsers();
-        this.allUsers = userStore.users;
+        this.allUsers = userStore.users as UserModel[];
     }
 
     async useSubmit(): Promise<void> {
