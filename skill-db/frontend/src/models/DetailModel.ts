@@ -1,9 +1,10 @@
-export class DetailModel {
+
+export class DetailModel{
     private id: string;
     private firstName: string;
     private lastName: string;
     private age: number;
-    private birthdate: string;
+    private birthDate: string;
     private degree: string;
     private jobTitle: string;
     private primarySkill: string;
@@ -18,7 +19,7 @@ export class DetailModel {
         this.firstName = '';
         this.lastName = '';
         this.age = 0;
-        this.birthdate = '01.01.1970';
+        this.birthDate = '01.01.1970';
         this.jobTitle = '';
         this.degree = '';
         this.primarySkill = '';
@@ -70,11 +71,11 @@ export class DetailModel {
     }
 
     public setBirthDate(value: string) {
-        this.birthdate = value;
+        this.birthDate = value;
     }
 
     public getBirthDate(): string {
-        return this.birthdate;
+        return this.birthDate;
     }
 
     public getJobTitle(): string {
@@ -162,35 +163,15 @@ export class ConvertResponseToDetailModel {
     }
 }
 
-interface DetailObject {
+export interface MinimumDetailModelInterface {
     firstName: string,
     lastName: string,
-    birthdate: string,
+    birthDate: string,
     degree: string,
     jobTitle: string,
     primarySkill: string,
     skills: string[],
     references: string,
     phoneNumber: string,
-    email: string
 }
 
-export class ConvertToDetailModelForOutput {
-    public static toDetail(object: DetailObject): DetailModel {
-        const detailModel = new DetailModel();
-        detailModel.setFirstName(object?.firstName.toString());
-        detailModel.setLastName(object?.lastName.toString());
-        detailModel.setBirthDate(this.convertDateToISO(object?.birthdate.toString()));
-        detailModel.setDegree(object?.degree.toString());
-        detailModel.setJobTitle(object?.jobTitle.toString());
-        detailModel.setPrimarySkill(object?.primarySkill.toString());
-        detailModel.setSkills(object?.skills);
-        detailModel.setReferences(object?.references.toString());
-        detailModel.setPhoneNumber(object?.phoneNumber);
-        return detailModel;
-    }
-
-    private static convertDateToISO(date: string): string {
-        return `${date.split(".")[2]}-${date.split(".")[1]}-${date.split(".")[0]}`;
-    }
-}

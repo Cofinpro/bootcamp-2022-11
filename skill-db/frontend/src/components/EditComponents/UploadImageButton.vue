@@ -25,7 +25,7 @@
            elevation="0"
            width="200"
            size="small"
-    @click.prevent="deleteProfilePicture">
+           @click.prevent="deleteProfilePicture">
       Bild Löschen
     </v-btn>
     <div class="upload-text">
@@ -40,73 +40,84 @@
 
 <script>
 import {useErrorStore} from "@/stores/ErrorStore";
+import {ref, onMounted} from "vue";
 
 export default {
   name: "UploadImageButton",
+  emits: ['toggleDelete', 'upload'],
   props: {
     oldPicture: String,
   },
-  data(props) {
-    return {
-      errorStore: useErrorStore(),
-      maxUploadSize: 20000000, // Angabe in bytes, entspricht 20 MB
-      imageDataUri: null,
-      oldPic: props.oldPicture
-    }
-  },
-  methods: {
-    isPermissibleSize(file) {
-      return file.size <= this.maxUploadSize;
-    },
-    isInPortraitMode(image) {
-      return image.height > image.width;
-    },
-    async openFileDialog() {
-      this.$refs.imageInput.click();
-    },
-    deleteProfilePicture() {
-      if (this.oldPicture && !this.imageDataUri) {
+  setup(props, context) {
+    const errorStore = useErrorStore();
+    const MAX_UPLOAD_SIZE = 20000000;  // Angabe in bytes, entspricht 20 MB
+    const imageDataUri = ref('');
+    const oldPic = ref(props.oldPicture);
+    const imageInput = ref();
+
+
+    function deleteProfilePicture() {
+      if (oldPic.value && !imageDataUri) {
         //image is persisted
-        this.imageDataUri ='';
-        this.$refs.imageInput.value='';
-        this.convertImageAndEmitToParent();
-        this.$emit('toggleDelete', true);
+        imageDataUri.value = '';
+        imageInput.value = undefined;
+        convertImageAndEmitToParent();
+        context.emit('toggleDelete', true);
       }
       //image is not persisted yet, local deleting sufficient
-      this.oldPic='';
-      this.imageDataUri ='';
-      this.$refs.imageInput.value='';
-      this.$emit('toggleDelete', true);
-      this.convertImageAndEmitToParent();
-    },
-    async convertImageAndEmitToParent() {
-      const fileInput = this.$refs.imageInput;
-      if (fileInput && fileInput.value) {
-        const file = fileInput.files[0];
-        if (!(file instanceof Blob) || !this.isPermissibleSize(file)) {
+      else {
+        oldPic.value = '';
+        imageDataUri.value = '';
+        imageInput.value = undefined;
+        context.emit('toggleDelete', true);
+        convertImageAndEmitToParent();
+      }
+    }
+    async function convertImageAndEmitToParent() {
+      if (imageInput && imageInput.value) {
+        const file = imageInput.value.files[0];
+        if (!(file instanceof Blob) || ! isPermissibleSize(file)) {
           this.errorStore.catchUploadImageError(new Error('Falsche Größe: max. 20 MB zulässig!'));
           return;
         }
         const image = new Image();
         image.onload = () => {
-          if (!this.isInPortraitMode(image)) {
-            this.errorStore.catchUploadImageError(new Error('Falsches Format: Nur Hochformat zulässig!'));
+          if (!isInPortraitMode(image)) {
+            errorStore.catchUploadImageError(new Error('Falsches Format: Nur Hochformat zulässig!'));
             return;
           }
           const reader = new FileReader();
           reader.onload = event => {
-            this.imageDataUri = event.target.result;
-            this.$emit('upload', this.imageDataUri);
-            this.$emit('toggleDelete', false)
+            imageDataUri.value = event.target.result;
+            context.emit('upload', imageDataUri.value);
+            context.emit('toggleDelete', false)
           }
           reader.readAsDataURL(file);
         };
-
         image.src = URL.createObjectURL(file);
+      } else {
+        context.emit('upload', undefined)
       }
-      else{
-        this.$emit('upload',undefined)
-      }
+    }
+    async function openFileDialog() {
+      imageInput.value.click()
+    }
+    function isPermissibleSize(file) {
+      return file.size <= MAX_UPLOAD_SIZE;
+    }
+
+    function isInPortraitMode(image) {
+      return image.height > image.width;
+    }
+    return {
+      errorStore,
+      MAX_UPLOAD_SIZE,
+      imageDataUri,
+      oldPic,
+      imageInput,
+      deleteProfilePicture,
+      convertImageAndEmitToParent,
+      openFileDialog
     }
   },
 }
@@ -133,9 +144,6 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  /*color: #9bc3ee;
-  background-color: #ffffff;
-  border-radius: 5px;*/
 }
 
 .image {
