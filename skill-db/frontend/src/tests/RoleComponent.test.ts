@@ -7,7 +7,7 @@ import {ConvertToRoleModel} from "@/models/RoleModel";
 import {createTestingPinia} from "@pinia/testing";
 import {useUserStore} from "@/stores/UserStore";
 import {ConvertToUserModel} from "@/models/UserModel";
-import {isDefined} from "@/components/RoleComponents/RoleDropdownFunctions";
+import * as functions from "@/components/RoleComponents/RoleDropdownFunctions";
 
 describe('RoleComponent',() => {
     it('isDefined() does as it should', async () => {
@@ -25,10 +25,10 @@ describe('RoleComponent',() => {
             identifier: 'UNDEFINED'
         });
 
-        expect(isDefined(admin)).toBeTruthy();
-        expect(isDefined(hr)).toBeTruthy();
-        expect(isDefined(user)).toBeTruthy();
-        expect(isDefined(undefined1)).toBeFalsy();
+        expect(functions.isDefined(admin)).toBeTruthy();
+        expect(functions.isDefined(hr)).toBeTruthy();
+        expect(functions.isDefined(user)).toBeTruthy();
+        expect(functions.isDefined(undefined1)).toBeFalsy();
     });
 
     it('prepareSelectDropdown() with admin role does as it should', async () => {
@@ -92,8 +92,7 @@ describe('RoleComponent',() => {
                   identifier: 'ADMIN'
                 })
         })];
-        const userStore = useUserStore();
-        const spyChangeRole = vitest.spyOn(userStore, 'changeRole');
+        const spyChangeRole = vitest.spyOn(functions, 'changeRole');
         const args = {
             selectedUsersWithRole: selectedUsersWithRole,
             allUsers: wrapper.vm.allUsers,
@@ -124,8 +123,7 @@ describe('RoleComponent',() => {
                 identifier: 'USER'
             })
         })];
-        const userStore = useUserStore();
-        const spyChangeRole = vitest.spyOn(userStore, 'changeRole')
+        const spyChangeRole = vitest.spyOn(functions, 'changeRole');
         const args = {
             selectedUsersWithRole: selectedUsersWithRole,
             allUsers: wrapper.vm.allUsers,
@@ -133,7 +131,7 @@ describe('RoleComponent',() => {
 
         await wrapper.vm.submit(args);
 
-        expect(spyChangeRole).toBeCalledTimes(1);
+        expect(spyChangeRole).toBeCalledTimes(1); //don't understand why not working
         expect(spyChangeRole).toBeCalledWith('1', 'Admin');
         expect(wrapper.vm.edit).toBeFalsy();
     });

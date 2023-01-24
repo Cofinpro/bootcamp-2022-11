@@ -22,7 +22,7 @@ export async function useSubmit(args: any): Promise<void> {
     }
 }
 
-async function changeRole(id: string, newRole: string): Promise<void> {
+export async function changeRole(id: string, newRole: string): Promise<void> {
     const errorStore = useErrorStore()
     await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then((response) => {
         if (response.status === 202) {
