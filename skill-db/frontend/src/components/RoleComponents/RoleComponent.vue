@@ -64,10 +64,11 @@ export default {
   name: "RoleComponent",
   components: { RoleDropdown },
   setup() {
+    const userStore = useUserStore();
     const roleStore = useRoleStore();
     roleStore.loadAllRoles();
     const roles = roleStore.allRoles;
-    const userStore = useUserStore();
+
     const edit = ref(false);
     const selectedUsers = ref([] as UserModel[]);
     const allUsers = ref([] as UserModel[]);
