@@ -1,27 +1,27 @@
-<template v-show="!detailStore.loading">
-  <v-container>
+<template>
+  <v-container v-show="!detailStore.loading">
     <v-form @submit.prevent>
 
       <div class="d-md-flex flex-md-row mt-0 pt-0">
         <div class="pl-3">
           <upload-image-button
               v-on:upload="onUploadProfilePic"
-              :old-picture="oldPic"
+              :old-picture="state.oldPic"
               v-on:toggleDelete="onToggleDelete"/>
         </div>
         <v-row class="pl-md-6 pl-3 pt-12 pt-sm-12 pt-md-2">
-          <InputBlock :date-in="birthdate"
-                      :phone-number-in="phoneNumber"
-                      :primary-skill-in="primarySkill"
-                      :job-title-in="jobTitle"
-                      :last-name-in="lastName"
-                      :first-name-in="firstName"
-                      @update:firstName="(value) => {this.firstName = value}"
-                      @update:lastName="(value) => {this.lastName = value}"
-                      @update:jobTitle="(value) => {this.jobTitle = value}"
-                      @update:primarySkill="(value) => {this.primarySkill = value}"
-                      @update:phoneNumber="(value) => {this.phoneNumber = value}"
-                      @update:birthDate="(value) => {this.birthdate = value}"
+          <InputBlock :date-in="state.birthDate"
+                      :phone-number-in="state.phoneNumber"
+                      :primary-skill-in="state.primarySkill"
+                      :job-title-in="state.jobTitle"
+                      :last-name-in="state.lastName"
+                      :first-name-in="state.firstName"
+                      @update:firstName="(value) => {state.firstName = value}"
+                      @update:lastName="(value) => {state.lastName = value}"
+                      @update:jobTitle="(value) => {state.jobTitle = value}"
+                      @update:primarySkill="(value) => {state.primarySkill = value}"
+                      @update:phoneNumber="(value) => {state.phoneNumber = value}"
+                      @update:birthDate="(value) => {state.birthDate = value}"
           />
         </v-row>
       </div>
@@ -30,10 +30,10 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="d-flex flex-column">
 
-            <SkillInput :skills-in="skills"
-                        @update:skills="(value) => {this.skills=value;}"/>
+            <SkillInput :skills-in="state.skills"
+                        @update:skills="(value) => {state.skills=value;}"/>
 
-            <v-text-field v-model="degree"
+            <v-text-field v-model="state.degree"
                           label="Abschluss"
                           :rules="[v => v.length > 0 || 'Erforderlich']"/>
           </div>
@@ -41,7 +41,7 @@
 
         <v-col>
           <v-textarea class="references"
-                      v-model="references"
+                      v-model="state.references"
                       label="Referenzen"
                       :rules="[v => v.length > 0 || 'Erforderlich!']"/>
         </v-col>
@@ -51,7 +51,7 @@
 
         <ConfirmButton :update="update"
                        :is-valid="isValid"
-                       @submit="update ? updateProfile() : createProfile()"
+                       @submit="update ? updateProfile(state, state.profilePicUri,picToDelete) : createProfile(state,state.profilePicUri)"
         />
 
         <LeaveButton @click="leave"></LeaveButton>
@@ -61,7 +61,6 @@
 </template>
 
 <script lang="ts">
-import {ConvertToDetailModelForOutput} from "@/models/DetailModel";
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
@@ -70,6 +69,10 @@ import SkillInput from "@/components/EditComponents/SkillInput.vue";
 import ConfirmButton from "@/components/EditComponents/ConfirmButton.vue";
 import InputBlock from "@/components/EditComponents/inputBlock.vue";
 import LeaveButton from "@/components/EditComponents/LeaveButton.vue";
+import {checkDateFormat, checkLength, checkPhoneNumberFormat} from "@/components/EditComponents/ValidationService";
+import {EditComponentState} from "@/components/EditComponents/EditComponentState";
+import {computed, ref} from "vue";
+import {createProfile, updateProfile} from "./EditAxiosService";
 
 export default {
   name: "EditComponent",
@@ -84,133 +87,79 @@ export default {
     }
   },
   components: {LeaveButton, InputBlock, ConfirmButton, SkillInput, UploadImageButton},
-  data(props) {
+  setup(props) {
     const detailStore = useDetailStore();
     const errorStore = useErrorStore();
     detailStore.loadSkills();
     detailStore.loadPrimarys();
     detailStore.loadJobs();
-    let firstName = '';
-    let lastName = '';
-    let degree = '';
-    let birthdate = '';
-    let phoneNumber = '';
-    let primarySkill = '';
-    let jobTitle = '';
-    let skills = [] as string[];
-    let references = '';
-    let newSkills = '';
-    let showAddTechnology = false;
-    let picToDelete = false;
-    let profilePicUri = '';
-    let oldPic = '';
+    let picToDelete = ref(false);
+    const state = ref();
     if (props.update) {
-      firstName = detailStore.details.getFirstName();
-      lastName = detailStore.details.getLastName();
-      degree = detailStore.details.getDegree();
-      birthdate = detailStore.details.getBirthDate();
-      jobTitle = detailStore.details.getJobTitle();
-      phoneNumber = detailStore.details.getPhoneNumber();
-      primarySkill = detailStore.details.getPrimarySkill();
-      skills = detailStore.details.getSkills();
-      references = detailStore.details.getReferences();
-      oldPic = detailStore.profilePic;
+      state.value = new EditComponentState
+      (
+          detailStore.details.getFirstName(),
+          detailStore.details.getLastName(),
+          detailStore.details.getDegree(),
+          detailStore.details.getBirthDate(),
+          detailStore.details.getPhoneNumber(),
+          detailStore.details.getPrimarySkill(),
+          detailStore.details.getJobTitle(),
+          detailStore.details.getSkills(),
+          detailStore.details.getReferences(),
+          detailStore.profilePic
+      )
+    } else {
+      state.value = new EditComponentState
+      (
+          '', '', '', '', '', '', '', [''], '', ''
+      )
     }
-    return {
-      detailStore,
-      errorStore,
-      firstName,
-      lastName,
-      degree,
-      birthdate,
-      jobTitle,
-      phoneNumber,
-      primarySkill,
-      skills,
-      references,
-      newSkills,
-      showAddTechnology,
-      picToDelete,
-      profilePicUri,
-      oldPic
+
+    function onToggleDelete(targetValue: boolean) {
+      picToDelete.value = targetValue;
+      state.value.oldPic = '';
     }
-  },
-  methods: {
-    async createProfile() {
-      const detailStore = useDetailStore();
-      const errorStore = useErrorStore();
-      const newDetails = ConvertToDetailModelForOutput.toDetail(this);
-      await detailStore.createProfile(newDetails, this.profilePicUri);
-      if (!errorStore.hasError) {
-        await router.push('/');
-      }
-    },
-    async updateProfile() {
-      const editDetails = ConvertToDetailModelForOutput.toDetail(this);
-      const id = this.$route.params.id;
-      if (this.picToDelete) {
-        await this.deleteProfilePicture();
-      }
-      await this.detailStore.updateProfile(editDetails, id, this.profilePicUri);
-      if ((!this.errorStore.hasError || this.errorStore.allowed)) {
-        await router.push({name: 'userDetails', params: {id}});
-      }
-    },
-    async deleteProfilePicture() {
-      const detailStore = useDetailStore();
-      const id = this.detailStore.details.getId();
-      await detailStore.deleteProfilePictureByProfileId(id);
-      this.oldPic = '';
-    },
-    onToggleDelete(targetValue) {
-      this.picToDelete = targetValue;
-      this.oldPic = '';
-    },
-    onUploadProfilePic(base64String) {
-      this.profilePicUri = base64String;
-    },
-    leave() {
-      if (this.update) {
-        const id = this.$route.params.id;
+
+
+    function onUploadProfilePic(base64String: string) {
+      state.value.profilePicUri = base64String;
+    }
+
+
+    function leave() {
+      console.log(state);
+      if (props.update) {
+        const id = detailStore.details.getId();
         router.push({name: 'userDetails', params: {id}});
       } else {
         router.push('/');
       }
-    },
-    addSkills() {
-      if (this.newSkills?.length > 0) {
-        let skills = this.newSkills.trim().split(',');
+    }
 
-        this.givenTechnologies = this.givenTechnologies.concat(skills);
-        this.skills = this.skills.concat(skills);
-      }
+    const isValid = computed(() =>{
+      return (checkDateFormat(state.value.birthDate) &&
+          checkPhoneNumberFormat(state.value.phoneNumber) &&
+          checkLength(state.value.references) &&
+          checkLength(state.value.firstName) &&
+          checkLength(state.value.lastName) &&
+          checkLength(state.value.primarySkill) &&
+          checkLength(state.value.degree) &&
+          checkLength(state.value.jobTitle))
+      })
 
-      this.newTechnologies = '';
-      this.showAddTechnology = false;
-    },
-    checkDateFormat(date) {
-      const regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/;
-      if (!regex.test(date)) return false;
-      const currentDate = new Date();
-      const [day, month, year] = date.split('.');
-      const inputDate = new Date(Date.UTC(year, month - 1, day));
-      return inputDate <= currentDate;
-    },
-    checkPhoneNumberFormat(number) {
-      return /^[0-9]{11,13}$/.test(number);
-    },
-  },
-  computed: {
-    isValid() {
-      return (this.checkDateFormat(this.birthdate) &&
-          this.checkPhoneNumberFormat(this.phoneNumber) &&
-          this.references.length > 0 &&
-          this.jobTitle.length > 0 &&
-          this.primarySkill.length > 0 &&
-          this.lastName.length > 0 &&
-          this.firstName.length > 0 &&
-          this.degree.length > 0)
-    },
+    return {
+      detailStore,
+      errorStore,
+      state,
+      picToDelete,
+      createProfile,
+      updateProfile,
+      onToggleDelete,
+      onUploadProfilePic,
+      leave,
+      isValid
+    }
   }
 }
 </script>

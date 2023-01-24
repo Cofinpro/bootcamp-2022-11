@@ -12,6 +12,7 @@ export const useDetailStore = defineStore('detailStore', {
             primarys: [] as string[],
             profilePic: '',
         }),
+
         actions: {
             async loadDetailsById(id: string): Promise<void> {
                 this.loading = true;
@@ -48,69 +49,6 @@ export const useDetailStore = defineStore('detailStore', {
                 }).catch((error) => {
                     errorStore.catchDeleteError(error, id);
                 });
-                this.loading = false;
-            },
-
-            async createProfile(edits: DetailModel, profilePicUri: string): Promise<void> {
-                this.loading = true
-                const errorStore = useErrorStore();
-                await axiosInstance.post(`/api/v1/profiles/`,
-                    {
-                        'firstName': edits.getFirstName(),
-                        'lastName': edits.getLastName(),
-                        'jobTitle': edits.getJobTitle(),
-                        'degree': edits.getDegree(),
-                        'primaryExpertise': edits.getPrimarySkill(),
-                        'referenceText': edits.getReferences(),
-                        'skills': edits.getSkills(),
-                        'phoneNumber': edits.getPhoneNumber(),
-                        'email': localStorage.getItem('username'),
-                        'birthDate': edits.getBirthDate(),
-                        'profilePic': profilePicUri,
-                    }).then(() => {
-                    errorStore.toggleHasError();
-                })
-                    .catch((error) => {
-                        errorStore.catchPostPatchError(error);
-                    });
-                this.loading = false;
-            },
-
-            async updateProfile(edits: DetailModel, id: string, profilePicUri: string): Promise<void> {
-                this.loading = true;
-                const errorStore = useErrorStore();
-                await axiosInstance.patch(`/api/v1/profiles/${id}`,
-                    {
-                        'firstName': edits.getFirstName(),
-                        'lastName': edits.getLastName(),
-                        'jobTitle': edits.getJobTitle(),
-                        'degree': edits.getDegree(),
-                        'primaryExpertise': edits.getPrimarySkill(),
-                        'referenceText': edits.getReferences(),
-                        'skills': edits.getSkills(),
-                        'phoneNumber': edits.getPhoneNumber(),
-                        'birthDate': edits.getBirthDate(),
-                        'profilePic': profilePicUri,
-                    }).then(() => {
-                    errorStore.toggleHasError();
-                }).catch((error) => {
-                    console.log(error);
-                    errorStore.catchPostPatchError(error);
-                });
-                this.loading = false;
-            },
-
-            async deleteProfilePictureByProfileId(id: string): Promise<void> {
-                this.loading = true;
-                const errorStore = useErrorStore();
-                await axiosInstance.delete(`/api/v1/images/${id}`)
-                    .then((response) => {
-                        console.log(response);
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                        errorStore.catchDeleteError(error, id);
-                    })
                 this.loading = false;
             },
 
