@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-show="!detailStore.loading">
     <v-form @submit.prevent>
 
       <div class="d-md-flex flex-md-row mt-0 pt-0">

@@ -12,6 +12,7 @@ export const useDetailStore = defineStore('detailStore', {
             primarys: [] as string[],
             profilePic: '',
         }),
+
         actions: {
             async loadDetailsById(id: string): Promise<void> {
                 this.loading = true;
@@ -50,9 +51,6 @@ export const useDetailStore = defineStore('detailStore', {
                 });
                 this.loading = false;
             },
-
-
-
 
             async loadSkills(): Promise<void> {
                 this.skills = [];

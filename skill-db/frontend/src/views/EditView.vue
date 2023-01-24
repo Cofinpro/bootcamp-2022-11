@@ -3,9 +3,7 @@
 </template>
 
 <script lang="ts">
-import EditComponent from "@/components/EditComponent.vue";
-import {useDetailStore} from "@/stores/DetailStore";
-import {useRoute} from "vue-router";
+import EditComponent from "@/components/EditComponents/EditComponent.vue";
 
 export default {
   name: "EditView",
