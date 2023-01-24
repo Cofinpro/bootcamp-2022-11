@@ -8,7 +8,7 @@
    />
 </template>
 
-<script>
+<script lang="ts">
 import {useComicStore} from "@/stores/ComicStore";
 
 export default {

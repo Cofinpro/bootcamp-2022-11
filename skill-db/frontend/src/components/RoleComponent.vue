@@ -64,14 +64,14 @@ export default {
   name: "RoleComponent",
   components: { RoleDropdown },
   setup() {
-    let roleStore = useRoleStore();
+    const roleStore = useRoleStore();
     roleStore.loadAllRoles();
-    let roles = roleStore.allRoles;
-    let userStore = useUserStore();
-    let edit = ref(false);
-    let selectedUsers = ref([] as UserModel[]);
-    let allUsers = ref([] as UserModel[]);
-    let roleHere = ref(new RoleModel());
+    const roles = roleStore.allRoles;
+    const userStore = useUserStore();
+    const edit = ref(false);
+    const selectedUsers = ref([] as UserModel[]);
+    const allUsers = ref([] as UserModel[]);
+    const roleHere = ref(new RoleModel());
 
     async function prepareSelectDropdown(role: RoleModel): Promise<void> {
       selectedUsers.value = [] as UserModel[];

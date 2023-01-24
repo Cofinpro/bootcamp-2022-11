@@ -56,7 +56,7 @@ export default {
   setup() {
 
     const authStore = useAuthStore();
-    let drawer = ref();
+    let drawer = ref(true);
     const admin: ComputedRef<boolean> = computed(() => isAdmin());
     const profileId: ComputedRef<String> = computed(() => getProfileId());
     const profile: ComputedRef<boolean> = computed(() => hasProfile());
