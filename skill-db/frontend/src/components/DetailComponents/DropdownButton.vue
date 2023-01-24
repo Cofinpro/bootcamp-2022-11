@@ -2,8 +2,8 @@
 
   <v-menu :close-on-content-click="false">
     <template v-slot:activator="{ props }">
-      <v-btn :disabled="disabled"
-             :style="disabled ? {
+      <v-btn :disabled="authenticated<0"
+             :style="authenticated<0 ? {
              color: '#BDBDBD !important',
              border: '1px dashed #BBBBBB !important'} : ''"
       class="pa-0" v-bind="props"
@@ -16,20 +16,22 @@
     </template>
 
     <v-list>
-      <v-list-item @click="editFunction.method">
+      <v-list-item v-if="authenticated>-1"
+                   @click="this.$emit('edit')">
         <v-list-item-title>
-          {{ editFunction.name }}
+          Bearbeiten
         </v-list-item-title>
       </v-list-item>
-      <v-list-item v-if="lockFunction"
-                   @click="lockFunction.method(); toLock = !toLock;">
+      <v-list-item v-if="authenticated>1"
+                   @click="this.$emit('lock'); toLock = !toLock;">
         <v-list-item-title>
-          {{ lockFunction.name }}
+          Sperren
         </v-list-item-title>
       </v-list-item>
-      <v-list-item @click="toDelete = !toDelete">
+      <v-list-item v-if="authenticated>-1"
+                   @click="toDelete = !toDelete">
         <v-list-item-title>
-          {{ deleteFunction.name }}
+          Löschen
         </v-list-item-title>
       </v-list-item>
     </v-list>
@@ -40,7 +42,7 @@
       <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ml-1 mr-1" @click="deleteFunction.method">
+        <v-btn class="ml-1 mr-1" @click="this.$emit('delete')">
           Ja
         </v-btn>
         <v-btn class="ml-1 mr-1" @click="toDelete = !toDelete">
@@ -55,31 +57,26 @@
 
 <script lang="ts">
 import {useUserStore} from "@/stores/UserStore";
-import {ref} from "vue";
+import {computed, ref} from "vue";
+import {auth} from "./DropDownFunctions";
+import type {ComputedRef} from"vue";
 
 export default {
   name: "DropdownButton",
-  props: {
-    editFunction: {
-      required: false
-    },
-    lockFunction: {
-      default: undefined,
-      required: false
-    },
-    deleteFunction: {
-      required: false
-    },
-    disabled: {
-      required: false,
-      default: false
-    }
-  },
+  emits: [
+    'delete',
+    'edit',
+    'lock'
+  ],
   setup() {
+
+    const authenticated: ComputedRef<number> = computed(() => auth());
+
     return {
       userStore: useUserStore(),
       toDelete: ref(false),
-      toLock: ref(false)
+      toLock: ref(false),
+      authenticated: authenticated.value
     }
   },
 }

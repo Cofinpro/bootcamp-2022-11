@@ -21,7 +21,7 @@ export const useRoleStore = defineStore('roleStore', {
                     this.allRoles = [];
                 }
                 response.data.forEach((element: object) => {
-                    this.allRoles.push(ConvertToRoleModel.toRole(element))
+                    this.allRoles.push(ConvertToRoleModel.toRoleModel(element))
                 });
             }).catch((error) => {
                 errorStore.catchGetAllError(error);

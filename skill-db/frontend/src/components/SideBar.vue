@@ -2,7 +2,7 @@
   <v-app-bar elevation="0"
              order="0"
              v-if="$vuetify.display.smAndDown">
-    <v-app-bar-nav-icon @click="toggleDrawer()"/>
+    <v-app-bar-nav-icon @click="drawer = !drawer"/>
   </v-app-bar>
 
   <v-navigation-drawer elevation="0"
@@ -19,31 +19,33 @@
       <v-list-item link>
         <StyledLink to="/" icon="mdi-account-box-multiple-outline" text="Profilübersicht"/>
       </v-list-item>
-      <v-list-item link v-if="hasProfile">
-        <StyledLink :to="{ name: 'userDetails', params: { id: getProfileId }}" icon="mdi-account-box-outline" text="Dein Profil"/>
+      <v-list-item link v-if="profile">
+        <StyledLink :to="{ name: 'userDetails', params: { id: profileId }}" icon="mdi-account-box-outline" text="Dein Profil"/>
       </v-list-item>
 
-      <v-divider v-if="isAdmin" class="mt-10 mb-10"/>
+      <v-divider v-if="admin" class="mt-10 mb-10"/>
 
-      <v-list-item link v-if="isAdmin">
+      <v-list-item link v-if="admin">
         <StyledLink to="/admin/users" icon="mdi-account-group" text="Nutzerübersicht"/>
       </v-list-item>
-      <v-list-item link v-if="isAdmin">
+      <v-list-item link v-if="admin">
         <StyledLink to="/admin/roles" icon="mdi-shield-account" text="Rollenübersicht"/>
       </v-list-item>
 
     </v-list>
     <template v-slot:append>
-      <logout-button @click="logout"/>
+      <logout-button @click="authStore.logout()"/>
     </template>
   </v-navigation-drawer>
 </template>
 
 <script lang="ts">
 import {useAuthStore} from "@/stores/auth";
-import {useUserStore} from "@/stores/UserStore";
 import StyledLink from "@/components/SideBarComponents/StyledLink.vue"
 import LogoutButton from "@/components/SideBarComponents/LogoutButton.vue";
+import {computed, ref} from "vue";
+import type {ComputedRef} from "vue";
+import {isAdmin, getProfileId, hasProfile} from "@/components/SideBarComponents/SideBarFunctions";
 
 export default {
   name: "SideBar",
@@ -51,37 +53,18 @@ export default {
   props: {
     id: Number,
   },
-  computed: {
-    isAdmin() {
-      return window.localStorage.getItem('role') === 'ROLE_ADMIN';
-    },
-    hasProfile() {
-      const userStore = useUserStore();
-      const userId = window.localStorage.getItem('user_id');
-      userStore.checkForExistingUserProfile(userId);
-      return userStore.hasProfile;
-    },
-    getProfileId() {
-      this.hasProfile; //to force reload
-      const userStore = useUserStore();
-      const userId = window.localStorage.getItem('user_id');
-      userStore.getProfileIdFromUser(userId);
-      return userStore.profileId;
-    }
-  },
-  data() {
+  setup() {
+
+    const authStore = useAuthStore();
+    let drawer = ref();
+    const admin: ComputedRef<boolean> = computed(() => isAdmin());
+    const profileId: ComputedRef<String> = computed(() => getProfileId());
+    const profile: ComputedRef<boolean> = computed(() => hasProfile());
+
     return {
-      store: useAuthStore(),
-      drawer: null,
+      authStore, drawer,
+      admin, profileId, profile
     }
-  },
-  methods: {
-    logout() {
-      this.store.logout();
-    },
-    toggleDrawer() {
-      this.drawer = !this.drawer;
-    },
   }
 }
 </script>
