@@ -10,9 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -96,7 +93,6 @@ public class ImageService {
 
 
     public void deleteImageById(Long id) {
-        System.out.println(id);
         imageRepository.deleteById(id);
     }
 

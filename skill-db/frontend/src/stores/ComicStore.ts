@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import axios from "axios";
+import axiosInstance from "@/axios";
 
 export const useComicStore = defineStore('ComicStore', {
     state: () => ({
@@ -8,8 +8,8 @@ export const useComicStore = defineStore('ComicStore', {
         title: String(""),
     }),
     actions: {
-        loadComicOfTheDay(): void {
-            axios.get("/comic/info.0.json")
+        async loadComicOfTheDay(): Promise<void> {
+            await axiosInstance.get("/comic/info.0.json")
                 .then(res => res.data)
                 .then(data => {
                     this.source = data.img;

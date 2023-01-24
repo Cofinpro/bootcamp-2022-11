@@ -8,18 +8,19 @@ import {ConvertToOperationsModel, OperationsModel} from "@/models/OperationsMode
 export const useUserStore = defineStore('userStore', {
     state: () => ({
         users: [] as UserModel[],
+        user: new UserModel(),
         loading: Boolean(false),
         hasProfile: Boolean(false),
         profileId: String,
-        roleOperations: [] as OperationsModel[],
-        lockOperations: [] as OperationsModel[],
+        roleChangeOperations: [] as OperationsModel[],
+        lockUserOperations: [] as OperationsModel[],
     }),
     actions: {
-        loadUsers(): void {
+        async loadUsers(): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore();
-            axiosInstance.get("/api/v1/users").then(response => {
-                if(this.users.length > 0) {
+            await axiosInstance.get("/api/v1/users").then(response => {
+                if (this.users.length > 0) {
                     // reloads the list of users every time the method gets called,
                     // in case the list is not empty
                     this.users = [];
@@ -32,23 +33,21 @@ export const useUserStore = defineStore('userStore', {
             })
         },
 
-        async checkForExistingUserProfile(userId: String) {
+        async loadUserById(id: string): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore();
-            await axiosInstance.get(`api/v1/users/${userId}/profile/exists`).then(response => {
-                this.hasProfile = response.data;
-            }
-        ).catch((error) => {
-            errorStore.catchGetProfileError(error, userId);
-        });
-            this.loading = false;
+            await axiosInstance.get(`/api/v1/users/${id}`).then(response => {
+                this.user = ConvertToUserModel.toUserModel(response.data);
+            }).catch((error) => {
+                errorStore.catchGetProfileError(error, id);
+            })
         },
 
-        async getProfileIdFromUser(userId: String) {
+        async checkForExistingUserProfile(userId: string): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore();
-            await axiosInstance.get(`api/v1/users/${userId}/profile`).then(response => {
-                    this.profileId = response.data;
+            await axiosInstance.get(`/api/v1/users/${userId}/profile/exists`).then(response => {
+                    this.hasProfile = response.data;
                 }
             ).catch((error) => {
                 errorStore.catchGetProfileError(error, userId);
@@ -56,11 +55,23 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async loadUsersByRoleId(id: String) {
+        async getProfileIdFromUser(userId: string): Promise<void> {
+            this.loading = true;
+            const errorStore = useErrorStore();
+            await axiosInstance.get(`/api/v1/users/${userId}/profile`).then(response => {
+                    this.profileId = response.data;
+                }
+            ).catch((error) => {
+                errorStore.catchGetError(error, userId);
+            });
+            this.loading = false;
+        },
+
+        async loadUsersByRoleId(id: string): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore();
             await axiosInstance.get(`/api/v1/roles/${id}/users`).then((response) => {
-                if(this.users.length > 0) {
+                if (this.users.length > 0) {
                     // reloads the list of users every time the method gets called,
                     // in case the list is not empty
                     this.users = [];
@@ -74,17 +85,17 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async getPendingRoleChanges() {
+        async loadPendingRoleChanges(): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore();
             await axiosInstance.get(`/api/v1/users/pending/role`).then((response) => {
-                if(this.roleOperations.length > 0) {
+                if (this.roleChangeOperations.length > 0) {
                     // reloads the list of users every time the method gets called,
                     // in case the list is not empty
-                    this.roleOperations = [];
+                    this.roleChangeOperations = [];
                 }
                 response.data.forEach((element: object) => {
-                    this.roleOperations.push(ConvertToOperationsModel.toOperationsModel(element));
+                    this.roleChangeOperations.push(ConvertToOperationsModel.toOperationsModel(element));
                 });
             }).catch((error) => {
                 errorStore.catchGetAllError(error);
@@ -92,17 +103,17 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async getPendingLockChanges() {
+        async loadPendingLockUsers(): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore();
             await axiosInstance.get(`/api/v1/users/pending/lock`).then((response) => {
-                if(this.lockOperations.length > 0) {
+                if (this.lockUserOperations.length > 0) {
                     // reloads the list of users every time the method gets called,
                     // in case the list is not empty
-                    this.lockOperations = [];
+                    this.lockUserOperations = [];
                 }
                 response.data.forEach((element: object) => {
-                    this.lockOperations.push(ConvertToOperationsModel.toOperationsModel(element));
+                    this.lockUserOperations.push(ConvertToOperationsModel.toOperationsModel(element));
                 });
             }).catch((error) => {
                 errorStore.catchGetAllError(error);
@@ -110,11 +121,11 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async changeRole(id: String, newRole: String) {
+        async changeRole(id: string, newRole: string): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore()
-            await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then((response) =>{
-                if(response.status === 202) {
+            await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then((response) => {
+                if (response.status === 202) {
                     throw new AxiosError(response.data.message, String(response.status));
                 } else {
                     errorStore.toggleHasError();
@@ -125,11 +136,11 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async lockUser(userId: String) {
+        async lockUser(userId: string): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore()
-            await axiosInstance.patch(`/api/v1/users/${userId}/lock`).then((response) =>{
-                if(response.status === 202) {
+            await axiosInstance.patch(`/api/v1/users/${userId}/lock`).then((response) => {
+                if (response.status === 202) {
                     throw new AxiosError(response.data.message, String(response.status));
                 } else {
                     errorStore.toggleHasError();

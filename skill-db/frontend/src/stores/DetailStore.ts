@@ -13,12 +13,11 @@ export const useDetailStore = defineStore('detailStore', {
             profilePic: '',
         }),
         actions: {
-            async loadDetailsById(id: string) {
+            async loadDetailsById(id: string): Promise<void> {
                 this.loading = true;
                 let profilePicId = null
                 const errorStore = useErrorStore();
                 await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
-                    console.log(response);
                     this.details = ConvertResponseToDetailModel.toDetail(response.data);
                     profilePicId = response.data.profilePicId
                 }).catch((error) => {
@@ -41,10 +40,12 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            deleteDetailsByID(id: string) {
+            async deleteDetailsByID(id: string): Promise<void> {
                 this.loading = true;
                 const errorStore = useErrorStore();
-                axiosInstance.delete(`/api/v1/profiles/${id}`).then().catch((error) => {
+                await axiosInstance.delete(`/api/v1/profiles/${id}`).then(() => {
+                    this.details = new DetailModel();
+                }).catch((error) => {
                     errorStore.catchDeleteError(error, id);
                 });
                 this.loading = false;
@@ -53,11 +54,11 @@ export const useDetailStore = defineStore('detailStore', {
 
 
 
-            loadSkills() {
+            async loadSkills(): Promise<void> {
                 this.skills = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
-                axiosInstance.get(`/api/v1/skills`).then((response) => {
+                await axiosInstance.get(`/api/v1/skills`).then((response) => {
                     response.data.forEach((element: object) => {
                         this.skills.push(element.toString());
                     })
@@ -66,11 +67,11 @@ export const useDetailStore = defineStore('detailStore', {
                 });
                 this.loading = false;
             },
-            loadJobs() {
+            async loadJobs(): Promise<void> {
                 this.jobs = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
-                axiosInstance.get(`/api/v1/job-titles/`).then((response) => {
+                await axiosInstance.get(`/api/v1/job-titles/`).then((response) => {
                     response.data.forEach((element: string) => {
                         this.jobs.push(element)
                     })
@@ -80,11 +81,11 @@ export const useDetailStore = defineStore('detailStore', {
                 this.loading = false;
             },
 
-            loadPrimarys() {
+            async loadPrimarys(): Promise<void> {
                 this.primarys = [];
                 this.loading = true;
                 const errorStore = useErrorStore();
-                axiosInstance.get(`/api/v1/profiles/expertises`).then((response) => {
+                await axiosInstance.get(`/api/v1/profiles/expertises`).then((response) => {
                     response.data.forEach((element: string) => {
                         this.primarys.push(element)
                     })

@@ -55,9 +55,7 @@ export default {
     const oldPic = ref(props.oldPicture);
     const imageInput = ref();
 
-    onMounted(() => {
-      console.log(imageInput.value)
-    });
+
     function deleteProfilePicture() {
       if (oldPic.value && !imageDataUri) {
         //image is persisted
