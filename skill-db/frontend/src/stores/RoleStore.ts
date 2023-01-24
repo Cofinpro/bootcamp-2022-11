@@ -5,10 +5,8 @@ import axiosInstance from "@/axios";
 
 export const useRoleStore = defineStore('roleStore', {
     state: () => ({
-        details: new RoleModel(),
         allRoles: [] as RoleModel[],
         loading: Boolean(false),
-        user: [] as String[],
     }),
     actions: {
         async loadAllRoles(): Promise<void> {
