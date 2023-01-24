@@ -121,21 +121,6 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async changeRole(id: string, newRole: string): Promise<void> {
-            this.loading = true;
-            const errorStore = useErrorStore()
-            await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then((response) => {
-                if (response.status === 202) {
-                    throw new AxiosError(response.data.message, String(response.status));
-                } else {
-                    errorStore.toggleHasError();
-                }
-            }).catch((error) => {
-                errorStore.catchPostPatchError(error);
-            });
-            this.loading = false;
-        },
-
         async lockUser(userId: string): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore()

@@ -40,6 +40,7 @@
 <script lang="ts">
 import {RoleModel} from "@/models/RoleModel";
 import type {UserModel} from "@/models/UserModel";
+import {ref} from "vue";
 
 export default {
   name: "RoleDropdown",
@@ -69,7 +70,8 @@ export default {
     }
 
     return {
-      selectedUsersWithRole, attachRole
+      selectedUsersWithRole: ref(selectedUsersWithRole),
+      attachRole
     }
   }
 }
