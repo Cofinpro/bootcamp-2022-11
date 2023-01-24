@@ -4,6 +4,7 @@ export class RoleModel {
     private description: string;
     private user: string[];
     private color: string;
+    private defined: boolean;
 
     constructor() {
         this.identifier = '';
@@ -11,6 +12,7 @@ export class RoleModel {
         this.description = '';
         this.user = [];
         this.color = '';
+        this.defined = false;
     }
 
     getIdentifier(): string {
@@ -60,6 +62,14 @@ export class RoleModel {
             this.color = 'black';
         }
     }
+
+    isDefined(): boolean {
+        return this.defined;
+    }
+
+    setDefined() {
+        this.defined = (this.identifier !== 'UNDEFINED');
+    }
 }
 
 export class ConvertToRoleModel {
@@ -70,6 +80,7 @@ export class ConvertToRoleModel {
         roleModel.setDescription(String(object?.detailedDescription));
         //roleModel.setUser(Array(object?.users));
         roleModel.setColor();
+        roleModel.setDefined();
         return roleModel;
     }
 }

@@ -57,7 +57,7 @@ import {RoleModel} from "@/models/RoleModel";
 import {useUserStore} from "@/stores/UserStore";
 import RoleDropdown from "@/components/RoleComponents/RoleDropdown.vue";
 import type {UserModel} from "@/models/UserModel";
-import {useSubmit, isDefined} from "@/components/RoleComponents/RoleDropdownFunctions";
+import {useSubmit} from "@/components/RoleComponents/RoleDropdownFunctions";
 import {ref} from "vue";
 
 export default {
@@ -76,7 +76,7 @@ export default {
 
     async function prepareSelectDropdown(role: RoleModel): Promise<void> {
       selectedUsers.value = [] as UserModel[];
-      if (isDefined(role)) {
+      if (role.isDefined()) {
         await userStore.loadUsersByRoleId(role.getIdentifier());
         selectedUsers.value = userStore.users;
         userStore.users = [] as UserModel[];

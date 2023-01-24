@@ -4,10 +4,6 @@ import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 import {AxiosError} from "axios";
 
-export function isDefined(role: RoleModel): boolean {
-    return role.getIdentifier() !== 'UNDEFINED';
-}
-
 export async function useSubmit(args: any): Promise<void> {
     const selectedUsersWithRole: string[] = args.selectedUsersWithRole;
     const allUsers: UserModel[] = args.allUsers;
