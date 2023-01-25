@@ -50,7 +50,7 @@ public class UserController {
     @GetMapping(path = "/{id}/locked")
     @PreAuthorize("hasPermission(#id, 'String', @authorityPrefix + 'USERS_BY_ID_GET_LOCKED')")
     public boolean loadLockStatusByUserId(@PathVariable String id) throws UserNotFoundException {
-        return userService.getUserLockStatusByOuterId(id);
+        return userService.getUserByOuterId(id).locked();
     }
 
     @GetMapping(path = "/{id}/profile")
