@@ -21,8 +21,6 @@ export const useUserStore = defineStore('userStore', {
             const errorStore = useErrorStore();
             await axiosInstance.get("/api/v1/users").then(response => {
                 if (this.users.length > 0) {
-                    // reloads the list of users every time the method gets called,
-                    // in case the list is not empty
                     this.users = [];
                 }
                 response.data.forEach((element: object) => {
@@ -57,31 +55,11 @@ export const useUserStore = defineStore('userStore', {
             this.loading = false;
         },
 
-        async loadUsersByRoleId(id: string): Promise<void> {
-            this.loading = true;
-            const errorStore = useErrorStore();
-            await axiosInstance.get(`/api/v1/roles/${id}/users`).then((response) => {
-                if (this.users.length > 0) {
-                    // reloads the list of users every time the method gets called,
-                    // in case the list is not empty
-                    this.users = [];
-                }
-                response.data.forEach((element: object) => {
-                    this.users.push(ConvertToUserModel.toUserModel(element));
-                });
-            }).catch((error) => {
-                errorStore.catchGetRoleError(error, id);
-            });
-            this.loading = false;
-        },
-
         async loadPendingRoleChanges(): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore();
             await axiosInstance.get(`/api/v1/users/pending/role`).then((response) => {
                 if (this.roleChangeOperations.length > 0) {
-                    // reloads the list of users every time the method gets called,
-                    // in case the list is not empty
                     this.roleChangeOperations = [];
                 }
                 response.data.forEach((element: object) => {
@@ -98,8 +76,6 @@ export const useUserStore = defineStore('userStore', {
             const errorStore = useErrorStore();
             await axiosInstance.get(`/api/v1/users/pending/lock`).then((response) => {
                 if (this.lockUserOperations.length > 0) {
-                    // reloads the list of users every time the method gets called,
-                    // in case the list is not empty
                     this.lockUserOperations = [];
                 }
                 response.data.forEach((element: object) => {

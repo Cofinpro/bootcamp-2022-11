@@ -4,6 +4,7 @@ import {useUserStore} from "@/stores/UserStore";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 import {AxiosError} from "axios";
+import {ConvertToUserModel} from "@/models/UserModel";
 
 export class RoleComponentState {
     edit: boolean;
@@ -29,8 +30,6 @@ export class RoleComponentState {
         const errorStore = useErrorStore();
         await axiosInstance.get(`/api/v1/roles`).then((response) => {
             if(this.allRoles.length > 0) {
-                // reloads the list of users every time the method gets called,
-                // in case the list is not empty
                 this.allRoles = [];
             }
             response.data.forEach((element: object) => {
@@ -58,23 +57,28 @@ export class RoleComponentState {
         if (role.isDefined()) {
             await this.loadUsersWithThisRole(role);
         }
-        await this.loadAllUsers();
+        const userStore = useUserStore();
+        await userStore.loadUsers();
+        this.allUsers = userStore.users as UserModel[];
 
         this.edit = true;
         this.role = role;
     }
 
     async loadUsersWithThisRole(role: RoleModel): Promise<void> {
-        const userStore = useUserStore();
-        await userStore.loadUsersByRoleId(role.getIdentifier());
-        this.selectedUsers = userStore.users as UserModel[];
-        userStore.users = [] as UserModel[];
-    }
+        const id = role.getIdentifier();
 
-    async loadAllUsers(): Promise<void> {
-        const userStore = useUserStore();
-        await userStore.loadUsers();
-        this.allUsers = userStore.users as UserModel[];
+        const errorStore = useErrorStore();
+        await axiosInstance.get(`/api/v1/roles/${id}/users`).then((response) => {
+            if (this.selectedUsers.length > 0) {
+                this.selectedUsers = [];
+            }
+            response.data.forEach((element: object) => {
+                this.selectedUsers.push(ConvertToUserModel.toUserModel(element));
+            });
+        }).catch((error) => {
+            errorStore.catchGetRoleError(error, id);
+        });
     }
 
     async submit(): Promise<void> {
