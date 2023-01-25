@@ -66,7 +66,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import DropdownButton from "@/components/DetailComponents/DropdownButton.vue";
 import InfoWithIcon from "@/components/DetailComponents/InfoWithIcon.vue";
 import InfoInCard from "@/components/DetailComponents/InfoInCard.vue";
@@ -75,19 +75,7 @@ import {DetailComponentState} from "@/components/DetailComponents/DetailComponen
 import References from "@/components/DetailComponents/References.vue";
 import {ref} from "vue";
 
-export default {
-  name: "DetailComponent",
-  components: {References, InfoWithIcon, InfoInCard, ProfilePic, DropdownButton },
-  async setup() {
-    const state = ref(new DetailComponentState());
-    await state.value.loadDetailsById();
-
-    return {
-      state
-    };
-  },
-}
+const name = "DetailComponent";
+const state = ref(new DetailComponentState());
+await state.value.loadDetailsById();
 </script>
-
-<style scoped>
-</style>

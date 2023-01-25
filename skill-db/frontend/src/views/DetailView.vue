@@ -4,14 +4,8 @@
   </Suspense>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import DetailComponent from "@/components/DetailComponents/DetailComponent.vue";
 
-export default {
-  name: "DetailView",
-  components: { DetailComponent },
-}
+const name = "DetailView";
 </script>
-
-<style scoped>
-</style>

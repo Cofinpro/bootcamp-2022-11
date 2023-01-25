@@ -13,26 +13,24 @@
   </v-avatar>
 </template>
 
-<script>
-export default {
-  name: "ProfilePic",
-  props: {
-    pic: {
-      required: false,
-      default: undefined
-    },
-    firstName: {
-      required: false,
-      default: undefined,
-      type: String
-    },
-    lastName: {
-      required: false,
-      default: undefined,
-      type: String
-    }
+<script setup lang="ts">
+const name = "ProfilePic";
+const props = defineProps({
+  pic: {
+    required: false,
+    default: undefined
+  },
+  firstName: {
+    required: false,
+    default: undefined,
+    type: String
+  },
+  lastName: {
+    required: false,
+    default: undefined,
+    type: String
   }
-}
+});
 </script>
 
 <style scoped>

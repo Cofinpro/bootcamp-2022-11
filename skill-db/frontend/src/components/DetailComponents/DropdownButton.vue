@@ -52,32 +52,21 @@ x<template>
   <v-overlay v-model="toLock" absolute/>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {ref} from "vue";
+import {DetailComponentState} from "@/components/DetailComponents/DetailComponentState";
 
-export default {
-  name: "DropdownButton",
-  emits: [
-    'delete',
-    'edit',
-    'lock'
-  ],
-  props: {
-    state: {
-      required: true
-    }
-  },
-  async setup(props) {
-    await props.state.loadLockStatusByUserId();
-    return {
-      toDelete: ref(false),
-      toLock: ref(false)
-    }
-  },
-}
+const name = "DropdownButton";
+const props = defineProps({state: DetailComponentState});
+
+await props.state?.loadLockStatusByUserId();
+
+const toDelete = ref(false);
+const toLock = ref(false);
 </script>
 
 <style scoped>
+
 .v-btn--disabled {
   color: #BDBDBD !important;
   border: 1px dashed #BBBBBB !important;

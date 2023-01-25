@@ -19,29 +19,27 @@
 
 </template>
 
-<script>
-export default {
-  name: "InfoInCard",
-  props: {
-    info: {
-      required: true,
-      type: String
-    },
-    content: {
-      required: true
-    },
-    chips: {
-      required: false,
-      default: false,
-      type: Boolean
-    },
-    multiple: {
-      required: false,
-      default: false,
-      type: Boolean
-    }
+<script setup lang="ts">
+const name = "InfoInCard";
+const props = defineProps({
+  info: {
+    required: true,
+    type: String
+  },
+  content: {
+    required: true
+  },
+  chips: {
+    required: false,
+    default: false,
+    type: Boolean
+  },
+  multiple: {
+    required: false,
+    default: false,
+    type: Boolean
   }
-}
+});
 </script>
 
 <style scoped>
