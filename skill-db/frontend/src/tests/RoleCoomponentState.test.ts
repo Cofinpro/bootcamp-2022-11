@@ -121,23 +121,23 @@ describe('RoleComponentState', () => {
         expect(spyAllUsers).toBeCalled();
     });
 
-    it('in useSubmit() role is not changed, if not needed', async () => {
+    it('in submit() role is not changed, if not needed', async () => {
         roleState.selectedUsers = [roleState.allUsers[0]];
         roleState.attachRole();
         const spyChangeRole = vitest.spyOn(roleState, 'changeRole');
 
-        await roleState.useSubmit();
+        await roleState.submit();
 
         expect(spyChangeRole).not.toBeCalled();
         expect(roleState.edit).toBeFalsy();
     });
 
-    it('in useSubmit() role is changed, if needed', async () => {
+    it('in submit() role is changed, if needed', async () => {
         roleState.selectedUsers = [roleState.allUsers[1]];
         roleState.attachRole();
         const spyChangeRole = vitest.spyOn(roleState, 'changeRole');
 
-        await roleState.useSubmit();
+        await roleState.submit();
         console.log(roleState.selectedUsers);
 
         expect(spyChangeRole).toBeCalledTimes(1);
