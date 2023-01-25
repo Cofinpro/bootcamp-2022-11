@@ -76,8 +76,9 @@ describe('RoleComponentState', () => {
 
     it('prepareSelectDropdown() with defined role works correctly', async () => {
         createTestingPinia();
+        const userStore = useUserStore();
         const spyUsersWithRole = vi.spyOn(roleState, 'loadUsersWithThisRole');
-        const spyAllUsers = vi.spyOn(roleState, 'loadAllUsers');
+        const spyAllUsers = vi.spyOn(userStore, 'loadUsers');
 
         await roleState.prepareSelectDropdown(roleState.role);
 
@@ -89,9 +90,10 @@ describe('RoleComponentState', () => {
 
     it('prepareSelectDropdown() with undefined role works correctly', async () => {
         createTestingPinia();
+        const userStore = useUserStore();
         const role = new RoleModel();
         const spyUsersWithRole = vi.spyOn(roleState, 'loadUsersWithThisRole');
-        const spyAllUsers = vi.spyOn(roleState, 'loadAllUsers');
+        const spyAllUsers = vi.spyOn(userStore, 'loadUsers');
 
         await roleState.prepareSelectDropdown(role);
 
@@ -101,24 +103,14 @@ describe('RoleComponentState', () => {
         expect(roleState.role).toBe(role);
     });
 
-    it('loadUsersWithThisRole() calls userStore', async () => {
+    it('loadUsersWithThisRole() makes correct axios call', async () => {
         createTestingPinia();
-        const userStore = useUserStore();
-        const spyUsersWithRole = vi.spyOn(userStore, 'loadUsersByRoleId');
+        const id = roleState.role.getIdentifier();
+        const spyUsersWithRole = vi.spyOn(axiosInstance, 'get');
 
         await roleState.loadUsersWithThisRole(roleState.role);
 
-        expect(spyUsersWithRole).toBeCalledWith(roleState.role.getIdentifier());
-    });
-
-    it('loadAllUsers() calls userStore', async () => {
-        createTestingPinia();
-        const userStore = useUserStore();
-        const spyAllUsers = vi.spyOn(userStore, 'loadUsers');
-
-        await roleState.loadAllUsers();
-
-        expect(spyAllUsers).toBeCalled();
+        expect(spyUsersWithRole).toBeCalledWith(`/api/v1/roles/${id}/users`);
     });
 
     it('in submit() role is not changed, if not needed', async () => {
