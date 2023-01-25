@@ -77,7 +77,7 @@ export class RoleComponentState {
         this.allUsers = userStore.users as UserModel[];
     }
 
-    async useSubmit(): Promise<void> {
+    async submit(): Promise<void> {
         for (const selected of this.selectedUsersWithRole) {
             for (const user of this.allUsers) {
                 if(user.getEmail() === selected.split("(")[0].trim()
