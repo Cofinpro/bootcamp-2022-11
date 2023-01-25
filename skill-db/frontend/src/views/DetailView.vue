@@ -1,5 +1,7 @@
 <template>
+  <Suspense>
     <DetailComponent/>
+  </Suspense>
 </template>
 
 <script lang="ts">

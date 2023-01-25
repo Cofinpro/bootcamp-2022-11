@@ -2,33 +2,30 @@ x<template>
 
   <v-menu :close-on-content-click="false">
     <template v-slot:activator="{ props }">
-      <v-btn :disabled="authenticated<0"
-             :style="authenticated<0 ? {
-             color: '#BDBDBD !important',
-             border: '1px dashed #BBBBBB !important'} : ''"
-      class="pa-0" v-bind="props"
-      min-width="40px" width="40px"
-      height="35px" elevation="0">
-      <v-icon size="large">
-        mdi-cog
-      </v-icon>
+      <v-btn :disabled="state.auth()<0"
+             class="pa-0" v-bind="props"
+             min-width="40px" width="40px"
+             height="35px" elevation="0">
+        <v-icon size="large">
+          mdi-cog
+        </v-icon>
       </v-btn>
     </template>
 
     <v-list>
-      <v-list-item v-if="authenticated>-1"
-                   @click="this.$emit('edit')">
+      <v-list-item v-if="state.auth()>-1"
+                   @click="state.enterEdit()">
         <v-list-item-title>
           Bearbeiten
         </v-list-item-title>
       </v-list-item>
-      <v-list-item v-if="authenticated>1"
-                   @click="this.$emit('lock'); toLock = !toLock;">
+      <v-list-item v-if="state.auth()>1"
+                   @click="state.lockProfile(); toLock = !toLock;">
         <v-list-item-title>
-          Sperren
+          {{ state.ownerOfProfileIsLocked ? 'Entsperren' : 'Sperren' }}
         </v-list-item-title>
       </v-list-item>
-      <v-list-item v-if="authenticated>-1"
+      <v-list-item v-if="state.auth()>-1"
                    @click="toDelete = !toDelete">
         <v-list-item-title>
           Löschen
@@ -42,7 +39,7 @@ x<template>
       <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ml-1 mr-1" @click="this.$emit('delete')">
+        <v-btn class="ml-1 mr-1" @click="state.deleteProfile()">
           Ja
         </v-btn>
         <v-btn class="ml-1 mr-1" @click="toDelete = !toDelete">
@@ -56,9 +53,7 @@ x<template>
 </template>
 
 <script lang="ts">
-import {computed, ref} from "vue";
-import {DetailComponentState} from "./DetailComponentState";
-import type {ComputedRef} from"vue";
+import {ref} from "vue";
 
 export default {
   name: "DropdownButton",
@@ -67,18 +62,24 @@ export default {
     'edit',
     'lock'
   ],
-  setup() {
-    const state = new DetailComponentState();
-    const authenticated: ComputedRef<number> = computed(() => state.auth());
-
+  props: {
+    state: {
+      required: true
+    }
+  },
+  async setup(props) {
+    await props.state.setupLock();
     return {
       toDelete: ref(false),
-      toLock: ref(false),
-      authenticated: authenticated.value
+      toLock: ref(false)
     }
   },
 }
 </script>
 
 <style scoped>
+.v-btn--disabled {
+  color: #BDBDBD !important;
+  border: 1px dashed #BBBBBB !important;
+}
 </style>

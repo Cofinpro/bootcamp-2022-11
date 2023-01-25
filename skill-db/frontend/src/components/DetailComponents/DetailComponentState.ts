@@ -10,17 +10,20 @@ export class DetailComponentState {
 
     details: DetailModel;
     profilePic: string;
-    id: string;
+    profileId: string;
     role: string;
+    ownerOfProfileIsLocked: boolean;
 
     constructor() {
         this.details = new DetailModel();
         this.profilePic = '';
-        this.id = useRoute().params.id.toString();
+        this.profileId = useRoute().params.id.toString();
         this.role = window.localStorage.getItem('role');
+        this.ownerOfProfileIsLocked = true;
     }
 
-    async loadDetailsById(id: string): Promise<void> {
+    async loadDetailsById(): Promise<void> {
+        const id = this.profileId;
         let profilePicId = null;
         const errorStore = useErrorStore();
         await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
@@ -45,11 +48,26 @@ export class DetailComponentState {
         })
     }
 
+    async setupLock(): Promise<void> {
+        if (this.auth() > 1) {
+            await this.loadLockStatusByUserId();
+        }
+    }
+
+    async loadLockStatusByUserId(): Promise<void> {
+        const id = this.details.getOwnerId();
+        const errorStore = useErrorStore();
+        await axiosInstance.get(`/api/v1/users/${id}/locked`).then(response => {
+            this.ownerOfProfileIsLocked = Boolean(response.data);
+        }).catch((error) => {
+            errorStore.catchGetProfileError(error, id);
+        })
+    }
+
     auth(): number {
         if (this.role === "ROLE_ADMIN") {
             return 2;
-        }
-        if (this.role === "ROLE_HR") {
+        } else if (this.role === "ROLE_HR") {
             return 1;
         } else if (this.role === "ROLE_USER") {
             let userStore = useUserStore();
@@ -70,22 +88,20 @@ export class DetailComponentState {
     enterEdit(): void {
         const detailStore = useDetailStore();
         detailStore.details = this.details;
-        router.push({name: 'editView', params: {id: this.id}});
+        router.push({name: 'editView', params: {id: this.profileId}});
     }
 
     async lockProfile(): Promise<void> {
-        const userId = this.details.getOwnerId();
-
+        await this.loadLockStatusByUserId();
         const userStore = useUserStore();
-        await userStore.loadUserById(userId);
-        if (!userStore.user.getLocked()) {
-            await userStore.lockUser(userId);
-        }
+        const userId = this.details.getOwnerId();
+        await userStore.lockUser(userId);
+        await this.loadLockStatusByUserId();
     }
 
     async deleteProfile(): Promise<void> {
         const detailStore = useDetailStore();
-        await detailStore.deleteDetailsByID(this.id);
+        await detailStore.deleteDetailsByID(this.profileId);
         router.push(`/`);
     }
 }

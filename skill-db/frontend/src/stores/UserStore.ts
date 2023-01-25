@@ -33,16 +33,6 @@ export const useUserStore = defineStore('userStore', {
             })
         },
 
-        async loadUserById(id: string): Promise<void> {
-            this.loading = true;
-            const errorStore = useErrorStore();
-            await axiosInstance.get(`/api/v1/users/${id}`).then(response => {
-                this.user = ConvertToUserModel.toUserModel(response.data);
-            }).catch((error) => {
-                errorStore.catchGetProfileError(error, id);
-            })
-        },
-
         async checkForExistingUserProfile(userId: string): Promise<void> {
             this.loading = true;
             const errorStore = useErrorStore();

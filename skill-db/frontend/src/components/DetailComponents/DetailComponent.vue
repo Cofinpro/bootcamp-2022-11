@@ -1,11 +1,11 @@
 <template>
   <div class="pt-md-14">
 
-    <div style="float: right">
-      <dropdown-button @delete="state.deleteProfile()"
-                       @edit="state.enterEdit()"
-                       @lock="state.lockProfile()"/>
-    </div>
+    <Suspense>
+      <div style="float: right">
+        <dropdown-button :state = "state"/>
+      </div>
+    </Suspense>
 
     <v-container class="pr-0 pl-2 pl-sm-2 pl-md-4">
       <v-row class="pl-n6">
@@ -78,14 +78,14 @@ import {ref} from "vue";
 export default {
   name: "DetailComponent",
   components: {References, InfoWithIcon, InfoInCard, ProfilePic, DropdownButton },
-  setup() {
+  async setup() {
     const state = ref(new DetailComponentState());
-    state.value.loadDetailsById(state.value.id);
+    await state.value.loadDetailsById();
 
     return {
       state
     };
-  }
+  },
 }
 </script>
 
