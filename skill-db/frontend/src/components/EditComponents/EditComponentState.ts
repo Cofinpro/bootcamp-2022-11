@@ -1,6 +1,8 @@
 import type {MinimumDetailModelInterface} from "@/models/DetailModel";
+import InputBlock from "@/components/EditComponents/inputBlock.vue";
+import type {InputBlockState} from "@/components/EditComponents/inputBlockState";
 
-export class EditComponentState implements MinimumDetailModelInterface {
+export class EditComponentState implements MinimumDetailModelInterface, InputBlockState{
     firstName: string;
     lastName: string;
     degree: string;

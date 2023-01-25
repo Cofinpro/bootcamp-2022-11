@@ -10,19 +10,7 @@
               v-on:toggleDelete="onToggleDelete"/>
         </div>
         <v-row class="pl-md-6 pl-3 pt-12 pt-sm-12 pt-md-2">
-          <InputBlock :date-in="state.birthDate"
-                      :phone-number-in="state.phoneNumber"
-                      :primary-skill-in="state.primarySkill"
-                      :job-title-in="state.jobTitle"
-                      :last-name-in="state.lastName"
-                      :first-name-in="state.firstName"
-                      @update:firstName="(value) => {state.firstName = value}"
-                      @update:lastName="(value) => {state.lastName = value}"
-                      @update:jobTitle="(value) => {state.jobTitle = value}"
-                      @update:primarySkill="(value) => {state.primarySkill = value}"
-                      @update:phoneNumber="(value) => {state.phoneNumber = value}"
-                      @update:birthDate="(value) => {state.birthDate = value}"
-          />
+          <InputBlock v-model="state"/>
         </v-row>
       </div>
 
