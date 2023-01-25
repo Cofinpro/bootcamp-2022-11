@@ -28,18 +28,18 @@ public class UserController {
         this.approvalService = approvalService;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    /*@ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "")
     @PreAuthorize("hasPermission(#userIn, @authorityPrefix + 'USERS_POST_NEW')")
     public void createUser(@RequestBody @Valid UserCreateInDTO userIn) {
         userService.createUser(userIn);
-    }
+    }*/
 
-    @DeleteMapping(path = "/{id}")
+    /*@DeleteMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, 'void', @authorityPrefix + 'USERS_DELETE_BY_ID')")
     public void deleteUserById(@PathVariable String id) {
         userService.deleteUserByOuterId(id);
-    }
+    }*/
 
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, 'UserOutDTO', @authorityPrefix + 'USERS_GET_BY_ID')")
@@ -49,7 +49,7 @@ public class UserController {
 
     @GetMapping(path = "/{id}/locked")
     @PreAuthorize("hasPermission(#id, 'String', @authorityPrefix + 'USERS_BY_ID_GET_LOCKED')")
-    public boolean loadLockStatusByUserId(@PathVariable String id) throws UserNotFoundException {
+    public boolean getLockStatusByUserId(@PathVariable String id) throws UserNotFoundException {
         return userService.getUserByOuterId(id).locked();
     }
 

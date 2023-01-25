@@ -21,10 +21,10 @@ public class JobTitleController {
         return jobTitleService.getAllJobTitles();
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    /*@ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'JOB_TITLES_POST_NEW')")
     public void addJobTitle(@RequestBody String jobTitle) {
         jobTitleService.addNewJobTitle(jobTitle);
-    }
+    }*/
 }
