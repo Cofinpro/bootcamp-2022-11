@@ -1,4 +1,4 @@
-<template>
+x<template>
 
   <v-menu :close-on-content-click="false">
     <template v-slot:activator="{ props }">
@@ -56,9 +56,8 @@
 </template>
 
 <script lang="ts">
-import {useUserStore} from "@/stores/UserStore";
 import {computed, ref} from "vue";
-import {auth} from "./DropDownFunctions";
+import {DetailComponentState} from "./DetailComponentState";
 import type {ComputedRef} from"vue";
 
 export default {
@@ -69,11 +68,10 @@ export default {
     'lock'
   ],
   setup() {
-
-    const authenticated: ComputedRef<number> = computed(() => auth());
+    const state = new DetailComponentState();
+    const authenticated: ComputedRef<number> = computed(() => state.auth());
 
     return {
-      userStore: useUserStore(),
       toDelete: ref(false),
       toLock: ref(false),
       authenticated: authenticated.value
