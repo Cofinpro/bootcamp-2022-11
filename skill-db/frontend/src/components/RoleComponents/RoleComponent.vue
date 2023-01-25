@@ -41,7 +41,7 @@
       </tr>
 
       <v-overlay v-model="state.edit">
-        <role-dropdown @clicked="submit"
+        <role-dropdown @clicked="state.submit()"
                        :state="state"/>
       </v-overlay>
 
@@ -61,12 +61,8 @@ export default {
     const state = ref(new RoleComponentState());
     state.value.loadAllRoles();
 
-    async function submit(): Promise<void> {
-      await state.value.useSubmit();
-    }
-
     return {
-      state, submit
+      state
     }
   }
 }
