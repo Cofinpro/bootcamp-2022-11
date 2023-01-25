@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {DetailModel} from "@/models/DetailModel";
+import {ConvertResponseToDetailModel, DetailModel} from "@/models/DetailModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 
@@ -14,14 +14,30 @@ export const useDetailStore = defineStore('detailStore', {
         }),
 
         actions: {
-            async deleteDetailsByID(id: string): Promise<void> {
+            async loadDetailsById(id: string): Promise<void> {
                 this.loading = true;
+                let profilePicId = null;
                 const errorStore = useErrorStore();
-                await axiosInstance.delete(`/api/v1/profiles/${id}`).then(() => {
-                    this.details = new DetailModel();
+                await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
+                    this.details = ConvertResponseToDetailModel.toDetailModel(response.data);
+                    profilePicId = response.data.profilePicId;
                 }).catch((error) => {
-                    errorStore.catchDeleteError(error, id);
+                    errorStore.catchGetError(error, id);
                 });
+                await axiosInstance({
+                    url: `/api/v1/images/${profilePicId}`,
+                    method: 'get',
+                    responseType: 'blob'
+                }).then((response) => {
+                    if (response.data.size === 0) {
+                        this.profilePic = '';
+                    } else {
+                        this.profilePic = URL.createObjectURL(response.data);
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                    errorStore.catchDownloadImageError(error);
+                })
                 this.loading = false;
             },
 
@@ -51,7 +67,6 @@ export const useDetailStore = defineStore('detailStore', {
                 });
                 this.loading = false;
             },
-
             async loadPrimarys(): Promise<void> {
                 this.primarys = [];
                 this.loading = true;

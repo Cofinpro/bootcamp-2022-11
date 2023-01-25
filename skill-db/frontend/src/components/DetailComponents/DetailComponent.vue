@@ -76,5 +76,5 @@ import References from "@/components/DetailComponents/References.vue";
 import {ref} from "vue";
 
 const state = ref(new DetailComponentState());
-await state.value.loadDetailsById();
+await state.value.setupDetails();
 </script>

@@ -2,7 +2,7 @@ import router from "@/router";
 import {useUserStore} from "@/stores/UserStore";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useRoute} from "vue-router";
-import {ConvertResponseToDetailModel, DetailModel} from "@/models/DetailModel";
+import {DetailModel} from "@/models/DetailModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 
@@ -22,30 +22,11 @@ export class DetailComponentState {
         this.ownerOfProfileIsLocked = true;
     }
 
-    async loadDetailsById(): Promise<void> {
-        const id = this.profileId;
-        let profilePicId = null;
-        const errorStore = useErrorStore();
-        await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
-            this.details = ConvertResponseToDetailModel.toDetailModel(response.data);
-            profilePicId = response.data.profilePicId;
-        }).catch((error) => {
-            errorStore.catchGetError(error, id);
-        });
-        await axiosInstance({
-            url: `/api/v1/images/${profilePicId}`,
-            method: 'get',
-            responseType: 'blob'
-        }).then((response) => {
-            if (response.data.size === 0) {
-                this.profilePic = '';
-            } else {
-                this.profilePic = URL.createObjectURL(response.data);
-            }
-        }).catch((error) => {
-            console.log(error);
-            errorStore.catchDownloadImageError(error);
-        })
+    async setupDetails(): Promise<void> {
+        const detailStore = useDetailStore();
+        await detailStore.loadDetailsById(this.profileId);
+        this.details = detailStore.details;
+        this.profilePic = detailStore.profilePic;
     }
 
     async loadLockStatusByUserId(): Promise<void> {
@@ -82,9 +63,6 @@ export class DetailComponentState {
     }
 
     enterEdit(): void {
-        const detailStore = useDetailStore();
-        detailStore.details = this.details;
-        detailStore.profilePic = this.profilePic;
         router.push({name: 'editView', params: {id: this.profileId}});
     }
 
@@ -96,8 +74,13 @@ export class DetailComponentState {
     }
 
     async deleteProfile(): Promise<void> {
-        const detailStore = useDetailStore();
-        await detailStore.deleteDetailsByID(this.profileId);
+        const id = this.profileId;
+        const errorStore = useErrorStore();
+        await axiosInstance.delete(`/api/v1/profiles/${id}`).then(() => {
+            this.details = new DetailModel();
+        }).catch((error) => {
+            errorStore.catchDeleteError(error, id);
+        });
         router.push(`/`);
     }
 }

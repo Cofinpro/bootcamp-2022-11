@@ -22,19 +22,8 @@ describe('DetailComponentState',() => {
         state = new DetailComponentState();
     });
 
-    it('loadDetailsById() makes correct axios call', async () => {
-        createTestingPinia();
-        const id = '1';
-        const spyAxios = vitest.spyOn(axiosInstance, 'get');
-
-        await state.loadDetailsById(id);
-
-        expect(spyAxios).toBeCalledTimes(1);
-        expect(spyAxios).toBeCalledWith('/api/v1/profiles/1');
-
-    });
-
     it('loadLockStatusByUserId() works for admin', async () => {
+        createTestingPinia();
         const spyAxios = vitest.spyOn(axiosInstance, 'get');
         state.role = "ROLE_ADMIN";
         state.details.setOwnerId('1');
@@ -46,6 +35,7 @@ describe('DetailComponentState',() => {
     });
 
     it('loadLockStatusByUserId() works only for admin', async () => {
+        createTestingPinia();
         const spyAxios = vitest.spyOn(axiosInstance, 'get');
         state.role = "ROLE_USER";
 
@@ -104,4 +94,15 @@ describe('DetailComponentState',() => {
 
         expect(spyLoadUser).toBeCalledTimes(1);
     });
+
+    it('deleteProfile() makes correct axios call', async () => {
+        createTestingPinia();
+        const spyAxios = vitest.spyOn(axiosInstance, 'delete');
+
+        await state.deleteProfile();
+
+        expect(spyAxios).toBeCalledTimes(1);
+        expect(spyAxios).toBeCalledWith('/api/v1/profiles/1');
+
+    })
 });
