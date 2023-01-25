@@ -49,7 +49,7 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import router from "@/router";
 import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
@@ -62,95 +62,71 @@ import {checkDateFormat, checkLength, checkPhoneNumberFormat} from "@/components
 import {EditComponentState} from "@/components/EditComponents/EditComponentState";
 import {computed, ref} from "vue";
 import {createProfile, updateProfile} from "./EditAxiosService";
+import {components} from "vuetify/vuetify";
 
-export default {
-  name: "EditComponent",
-  props: {
-    update: {
-      type: Boolean,
-      required: true
-    },
-    oldPicture: {
-      type: String,
-      required: false
-    }
-  },
-  components: {LeaveButton, InputBlock, ConfirmButton, SkillInput, UploadImageButton},
-  setup(props) {
-    const detailStore = useDetailStore();
-    const errorStore = useErrorStore();
-    detailStore.loadSkills();
-    detailStore.loadPrimarys();
-    detailStore.loadJobs();
-    let picToDelete = ref(false);
-    const state = ref();
-    if (props.update) {
-      state.value = new EditComponentState
-      (
-          detailStore.details.getFirstName(),
-          detailStore.details.getLastName(),
-          detailStore.details.getDegree(),
-          detailStore.details.getBirthDate(),
-          detailStore.details.getPhoneNumber(),
-          detailStore.details.getPrimarySkill(),
-          detailStore.details.getJobTitle(),
-          detailStore.details.getSkills(),
-          detailStore.details.getReferences(),
-          detailStore.profilePic
-      )
-    } else {
-      state.value = new EditComponentState
-      (
-          '', '', '', '', '', '', '', [''], '', ''
-      )
-    }
+const props = defineProps({
+  update: Boolean,
+})
 
-    function onToggleDelete(targetValue: boolean) {
-      picToDelete.value = targetValue;
-      state.value.oldPic = '';
-    }
+const detailStore = useDetailStore();
+const errorStore = useErrorStore();
+detailStore.loadSkills();
+detailStore.loadPrimarys();
+detailStore.loadJobs();
+let picToDelete = ref(false);
+const state = ref();
+if (props.update) {
+  state.value = new EditComponentState
+  (
+      detailStore.details.getFirstName(),
+      detailStore.details.getLastName(),
+      detailStore.details.getDegree(),
+      detailStore.details.getBirthDate(),
+      detailStore.details.getPhoneNumber(),
+      detailStore.details.getPrimarySkill(),
+      detailStore.details.getJobTitle(),
+      detailStore.details.getSkills(),
+      detailStore.details.getReferences(),
+      detailStore.profilePic
+  )
+} else {
+  state.value = new EditComponentState
+  (
+      '', '', '', '', '', '', '', [''], '', ''
+  )
+}
+
+function onToggleDelete(targetValue: boolean) {
+  picToDelete.value = targetValue;
+  state.value.oldPic = '';
+}
 
 
-    function onUploadProfilePic(base64String: string) {
-      state.value.profilePicUri = base64String;
-    }
+function onUploadProfilePic(base64String: string) {
+  state.value.profilePicUri = base64String;
+}
 
 
-    function leave() {
-      console.log(state);
-      if (props.update) {
-        const id = detailStore.details.getId();
-        router.push({name: 'userDetails', params: {id}});
-      } else {
-        router.push('/');
-      }
-    }
-
-    const isValid = computed(() =>{
-      return (checkDateFormat(state.value.birthDate) &&
-          checkPhoneNumberFormat(state.value.phoneNumber) &&
-          checkLength(state.value.references) &&
-          checkLength(state.value.firstName) &&
-          checkLength(state.value.lastName) &&
-          checkLength(state.value.primarySkill) &&
-          checkLength(state.value.degree) &&
-          checkLength(state.value.jobTitle))
-      })
-
-    return {
-      detailStore,
-      errorStore,
-      state,
-      picToDelete,
-      createProfile,
-      updateProfile,
-      onToggleDelete,
-      onUploadProfilePic,
-      leave,
-      isValid
-    }
+function leave() {
+  console.log(state);
+  if (props.update) {
+    const id = detailStore.details.getId();
+    router.push({name: 'userDetails', params: {id}});
+  } else {
+    router.push('/');
   }
 }
+
+const isValid = computed(() => {
+  return (checkDateFormat(state.value.birthDate) &&
+      checkPhoneNumberFormat(state.value.phoneNumber) &&
+      checkLength(state.value.references) &&
+      checkLength(state.value.firstName) &&
+      checkLength(state.value.lastName) &&
+      checkLength(state.value.primarySkill) &&
+      checkLength(state.value.degree) &&
+      checkLength(state.value.jobTitle))
+})
 </script>
 
 <style scoped>
