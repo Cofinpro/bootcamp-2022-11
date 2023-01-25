@@ -37,19 +37,12 @@
   </v-card>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import {RoleComponentState} from "@/components/RoleComponents/RoleComponentState";
 
-export default {
-  name: "RoleDropdown",
-  props: {
-    state: {
-      required: true
-    }
-  },
-  setup(props) {
-    props.state.attachRole();
-  }
-}
+const name = "RoleDropdown";
+const props = defineProps({state: RoleComponentState});
+props.state?.attachRole();
 </script>
 
 <style scoped>

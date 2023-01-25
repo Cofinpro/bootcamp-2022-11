@@ -17,27 +17,22 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {UserModel} from "@/models/UserModel";
 
-export default {
-  name: "AlertWithTooltip",
-  props: {
-    user: {
-      required: true,
-      type: UserModel
-    },
-    operationType: {
-      required: true,
-      type: String
-    },
-    operations: {
-      required: true,
-      type: Array
-    }
+const name = "AlertWithTooltip";
+const props = defineProps({
+  user: {
+    required: true,
+    type: UserModel
   },
-}
+  operationType: {
+    required: true,
+    type: String
+  },
+  operations: {
+    required: true,
+    type: Array
+  }
+});
 </script>
-
-<style scoped>
-</style>

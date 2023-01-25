@@ -56,36 +56,27 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import ChipWithInfotext from "@/components/ChipWithInfotext.vue";
 import {useUserStore} from "@/stores/UserStore";
 import type {UserModel} from "@/models/UserModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import AlertWithTooltip from "@/components/UserComponents/AlertWithTooltip.vue";
 
-export default {
-  name: "UserComponent",
-  components: {AlertWithTooltip, ChipWithInfotext},
-  setup() {
-    const userStore = useUserStore();
-    userStore.loadUsers();
-    userStore.loadPendingRoleChanges();
-    userStore.loadPendingLockUsers();
+const name = "UserComponent";
+const userStore = useUserStore();
+userStore.loadUsers();
+userStore.loadPendingRoleChanges();
+userStore.loadPendingLockUsers();
 
-    const errorStore = useErrorStore();
+const errorStore = useErrorStore();
 
-    async function toggleLock(user: UserModel): Promise<void> {
-      await userStore.lockUser(user.getId());
-      if (!errorStore.hasError) {
-        user.setLocked(!user.getLocked());
-      }
-      await userStore.loadPendingLockUsers();
-    }
-
-    return {
-      userStore, toggleLock
-    }
+async function toggleLock(user: UserModel): Promise<void> {
+  await userStore.lockUser(user.getId());
+  if (!errorStore.hasError) {
+    user.setLocked(!user.getLocked());
   }
+  await userStore.loadPendingLockUsers();
 }
 </script>
 

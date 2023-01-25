@@ -49,23 +49,14 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import RoleDropdown from "@/components/RoleComponents/RoleDropdown.vue";
 import {ref} from "vue";
 import {RoleComponentState} from "@/components/RoleComponents/RoleComponentState";
 
-export default {
-  name: "RoleComponent",
-  components: { RoleDropdown },
-  setup() {
-    const state = ref(new RoleComponentState());
-    state.value.loadAllRoles();
-
-    return {
-      state
-    }
-  }
-}
+const name = "RoleComponent";
+const state = ref(new RoleComponentState());
+state.value.loadAllRoles();
 </script>
 
 <style scoped>

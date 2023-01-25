@@ -39,7 +39,7 @@
   </v-navigation-drawer>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {useAuthStore} from "@/stores/auth";
 import StyledLink from "@/components/SideBarComponents/StyledLink.vue"
 import LogoutButton from "@/components/SideBarComponents/LogoutButton.vue";
@@ -47,26 +47,14 @@ import {computed, ref} from "vue";
 import type {ComputedRef} from "vue";
 import {isAdmin, getProfileId, hasProfile} from "@/components/SideBarComponents/SideBarFunctions";
 
-export default {
-  name: "SideBar",
-  components: {LogoutButton, StyledLink },
-  props: {
-    id: Number,
-  },
-  setup() {
+const name = "SideBar";
+const props = defineProps({id: Number});
 
-    const authStore = useAuthStore();
-    let drawer = ref(true);
-    const admin: ComputedRef<boolean> = computed(() => isAdmin());
-    const profileId: ComputedRef<String> = computed(() => getProfileId());
-    const profile: ComputedRef<boolean> = computed(() => hasProfile());
-
-    return {
-      authStore, drawer,
-      admin, profileId, profile
-    }
-  }
-}
+const authStore = useAuthStore();
+let drawer = ref(true);
+const admin: ComputedRef<boolean> = computed(() => isAdmin());
+const profileId: ComputedRef<String> = computed(() => getProfileId());
+const profile: ComputedRef<boolean> = computed(() => hasProfile());
 </script>
 
 <style scoped>

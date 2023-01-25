@@ -9,11 +9,6 @@
     </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: "LogoutButton",
-}
+<script setup lang="ts">
+const name = "LogoutButton";
 </script>
-
-<style scoped>
-</style>

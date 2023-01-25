@@ -4,7 +4,7 @@
     <v-row>
 
       <v-col cols="12" class="d-lg-none">
-        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" :mobile="true" />
+        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" :mobile="true"/>
       </v-col>
 
       <v-col cols="12" lg="6" class="text-center mt-10">
@@ -36,15 +36,15 @@
                 >
                 </v-text-field>
                 <v-text-field class="align-content-sp"
-                    v-model="userRequestLogin.password"
-                    :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="visible ? 'text' : 'password'"
-                    variant="outlined"
-                    label="Passwort"
-                    @click:append-inner="visible = !visible"
-                    :rules="[rules.required, rules.min]"
-                    counter
-                    @keydown.enter="login"
+                              v-model="userRequestLogin.password"
+                              :append-inner-icon="visible ? 'mdi-eye' : 'mdi-eye-off'"
+                              :type="visible ? 'text' : 'password'"
+                              variant="outlined"
+                              label="Passwort"
+                              @click:append-inner="visible = !visible"
+                              :rules="[rules.required, rules.min]"
+                              counter
+                              @keydown.enter="login"
                 ></v-text-field>
                 <v-btn @click="login" class="mb-10 mt-10" block
                        :disabled="!valid" elevation="0">
@@ -57,7 +57,7 @@
       </v-col>
 
       <v-col cols="6" class="d-none d-lg-block">
-        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" :mobile="false" />
+        <ComicOfTheDay :source="comicStore.source" :alt="comicStore.description" :mobile="false"/>
       </v-col>
 
     </v-row>
@@ -65,35 +65,27 @@
 
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {useAuthStore} from "@/stores/auth";
 import {LoginRequest} from "@/models/LoginRequest";
 import ComicOfTheDay from "@/components/ComicOfTheDay.vue";
 import {useComicStore} from "@/stores/ComicStore";
 import {ref} from "vue";
 
-export default {
-  name: "LoginView",
-  components: {ComicOfTheDay},
-  setup() {
-    const authStore = useAuthStore();
-    const comicStore = useComicStore();
-    comicStore.loadComicOfTheDay();
-    return {
-      authStore, comicStore,
-      visible: ref(false),
-      valid: ref(false),
-      rules: {
-        required: value => !!value || 'Erforderlich.',
-        min: v => v.length >= 8 || 'Min. 8 Buchstaben',
-      },
-      userRequestLogin: ref(new LoginRequest()),
-    }
-  },
-  methods: {
-    login() {
-      this.authStore.login(this.userRequestLogin);
-    },
-  }
+const name = "LoginView";
+const authStore = useAuthStore();
+const comicStore = useComicStore();
+comicStore.loadComicOfTheDay();
+
+const visible = ref(false);
+const valid = ref(false);
+const rules = {
+  required: value => !!value || 'Erforderlich.',
+  min: v => v.length >= 8 || 'Min. 8 Buchstaben',
+};
+const userRequestLogin = ref(new LoginRequest());
+
+function login() {
+  authStore.login(userRequestLogin.value);
 }
 </script>
