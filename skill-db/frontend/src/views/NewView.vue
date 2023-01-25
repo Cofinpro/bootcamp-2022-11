@@ -6,20 +6,12 @@
   </v-container>
 </template>
 
-<script lang="ts" >
+<script setup lang="ts" >
 import EditComponent from "@/components/EditComponents/EditComponent.vue";
 import {useDetailStore} from "@/stores/DetailStore";
 
-export default {
-  name: "NewView",
-  components: { EditComponent },
-  setup() {
-    const detailStore = useDetailStore();
-    return {
-      detailStore,
-    }
-  },
-}
+const name = "NewView";
+const detailStore = useDetailStore();
 </script>
 
 <style scoped>

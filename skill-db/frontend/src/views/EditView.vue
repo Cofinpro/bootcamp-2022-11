@@ -2,14 +2,8 @@
     <EditComponent :update="true"/>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import EditComponent from "@/components/EditComponents/EditComponent.vue";
 
-export default {
-  name: "EditView",
-  components: { EditComponent },
-}
+const name = "EditView";
 </script>
-
-<style scoped>
-</style>

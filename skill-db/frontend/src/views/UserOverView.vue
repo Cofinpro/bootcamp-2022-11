@@ -2,14 +2,8 @@
   <UserComponent/>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import UserComponent from "@/components/UserComponents/UserComponent.vue";
 
-export default {
-  name: "UserOverView",
-  components: { UserComponent },
-}
+const name = "UserOverView";
 </script>
-
-<style scoped>
-</style>

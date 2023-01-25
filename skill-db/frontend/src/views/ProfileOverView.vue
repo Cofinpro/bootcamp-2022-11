@@ -4,24 +4,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {useOverviewStore} from "@/stores/OverviewStore";
 import ProfileOverviewComponent from "@/components/ProfileOverviewComponent.vue";
 
-export default {
-  name: "ProfileOverView",
-  components: {ProfileOverviewComponent},
-  setup() {
-    const overviewStore = useOverviewStore();
-    overviewStore.loadOverview();
-    return {
-      overviewStore
-    };
-  },
-}
+const name = "ProfileOverView";
+const overviewStore = useOverviewStore();
+overviewStore.loadOverview();
 </script>
-
-<style>
-
-
-</style>

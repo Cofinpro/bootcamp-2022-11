@@ -2,14 +2,8 @@
   <RoleComponent/>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import RoleComponent from "@/components/RoleComponents/RoleComponent.vue";
 
-export default {
-  name: "RoleOverView",
-  components: { RoleComponent },
-}
+const name = "RoleOverView";
 </script>
-
-<style scoped>
-</style>
