@@ -84,6 +84,11 @@ public class UserService {
         return UserDirector.EntityToUserOutDTO(userOptional.orElseThrow(UserNotFoundException::new));
     }
 
+    public boolean getUserLockStatusByOuterId(String outerId) {
+        UserOutDTO userDTO = getUserByOuterId(outerId);
+        return userDTO.locked();
+    }
+
     public User getUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.orElseThrow(UserNotFoundException::new);

@@ -6,6 +6,7 @@ import com.cofinprobootcamp.backend.approval.dto.RoleOperationsOutDTO;
 import com.cofinprobootcamp.backend.exceptions.LockStatusChangePendingException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.RoleChangePendingException;
+import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
 import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
@@ -44,6 +45,12 @@ public class UserController {
     @PreAuthorize("hasPermission(#id, 'UserOutDTO', @authorityPrefix + 'USERS_GET_BY_ID')")
     public UserOutDTO getUserById(@PathVariable String id) {
         return userService.getUserByOuterId(id);
+    }
+
+    @GetMapping(path = "/{id}/locked")
+    @PreAuthorize("hasPermission(#id, 'String', @authorityPrefix + 'USERS_BY_ID_GET_LOCKED')")
+    public boolean loadLockStatusByUserId(@PathVariable String id) throws UserNotFoundException {
+        return userService.getUserLockStatusByOuterId(id);
     }
 
     @GetMapping(path = "/{id}/profile")
