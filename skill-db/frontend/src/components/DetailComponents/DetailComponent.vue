@@ -75,7 +75,6 @@ import {DetailComponentState} from "@/components/DetailComponents/DetailComponen
 import References from "@/components/DetailComponents/References.vue";
 import {ref} from "vue";
 
-const name = "DetailComponent";
 const state = ref(new DetailComponentState());
 await state.value.loadDetailsById();
 </script>

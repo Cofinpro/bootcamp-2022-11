@@ -47,7 +47,6 @@ import {computed, ref} from "vue";
 import type {ComputedRef} from "vue";
 import {isAdmin, getProfileId, hasProfile} from "@/components/SideBarComponents/SideBarFunctions";
 
-const name = "SideBar";
 const props = defineProps({id: Number});
 
 const authStore = useAuthStore();

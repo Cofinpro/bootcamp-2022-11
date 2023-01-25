@@ -8,7 +8,3 @@
       </v-btn>
     </div>
 </template>
-
-<script setup lang="ts">
-const name = "LogoutButton";
-</script>

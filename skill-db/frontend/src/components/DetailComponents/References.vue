@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-const name = "References";
 const props = defineProps({
   content: {
     required: true,

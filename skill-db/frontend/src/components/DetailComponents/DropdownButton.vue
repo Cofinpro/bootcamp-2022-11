@@ -56,7 +56,6 @@ x<template>
 import {ref} from "vue";
 import {DetailComponentState} from "@/components/DetailComponents/DetailComponentState";
 
-const name = "DropdownButton";
 const props = defineProps({state: DetailComponentState});
 
 await props.state?.loadLockStatusByUserId();

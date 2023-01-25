@@ -63,7 +63,6 @@ import type {UserModel} from "@/models/UserModel";
 import {useErrorStore} from "@/stores/ErrorStore";
 import AlertWithTooltip from "@/components/UserComponents/AlertWithTooltip.vue";
 
-const name = "UserComponent";
 const userStore = useUserStore();
 userStore.loadUsers();
 userStore.loadPendingRoleChanges();

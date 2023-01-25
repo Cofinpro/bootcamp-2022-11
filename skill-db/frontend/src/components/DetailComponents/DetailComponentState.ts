@@ -84,6 +84,7 @@ export class DetailComponentState {
     enterEdit(): void {
         const detailStore = useDetailStore();
         detailStore.details = this.details;
+        detailStore.profilePic = this.profilePic;
         router.push({name: 'editView', params: {id: this.profileId}});
     }
 

@@ -26,31 +26,24 @@
   </v-overlay>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {ref} from "vue";
 
-export default {
-  name: "ChipWithInfotext",
-  props: {
-    tooltip: {
-      required: true,
-      type: String
-    },
-    content: {
-      required: true,
-      type: String
-    },
-    color: {
-      required: true,
-      type: String
-    }
+const props = defineProps({
+  tooltip: {
+    required: true,
+    type: String
   },
-  setup() {
-    return {
-      info: ref(false),
-    }
+  content: {
+    required: true,
+    type: String
   },
-}
+  color: {
+    required: true,
+    type: String
+  }
+});
+const info = ref(false);
 </script>
 
 <style scoped>

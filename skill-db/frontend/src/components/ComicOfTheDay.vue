@@ -4,26 +4,15 @@
       :max-height="mobile ? '' : '100vh'"
       :width="mobile ? '90vw' : ''"
       :src="source"
-      :alt="description"
-   />
+      :alt="description"/>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {useComicStore} from "@/stores/ComicStore";
 
-export default {
-  name: "ComicOfTheDay",
-  props: ['source', 'description', 'title', 'mobile'],
-  setup() {
-    const comicStore = useComicStore();
-    comicStore.loadComicOfTheDay();
-    return {
-      comicStore
-    }
-  },
-}
+const props = defineProps({
+  source: String, description: String, title: String, mobile: Boolean
+});
+const comicStore = useComicStore();
+comicStore.loadComicOfTheDay();
 </script>
-
-<style scoped>
-
-</style>

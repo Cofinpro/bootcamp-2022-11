@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-const name = "InfoWithIcon";
 const props = defineProps({
   icon: {
     required: true,

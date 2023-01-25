@@ -11,18 +11,8 @@
   </v-snackbar>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {useErrorStore} from "@/stores/ErrorStore";
 
-export default {
-  setup() {
-    return {
-      errorStore: useErrorStore()
-    }
-  }
-}
+const errorStore = useErrorStore();
 </script>
-
-<style scoped>
-
-</style>

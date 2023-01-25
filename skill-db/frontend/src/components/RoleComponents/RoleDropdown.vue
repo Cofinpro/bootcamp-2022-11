@@ -40,7 +40,6 @@
 <script setup lang="ts">
 import {RoleComponentState} from "@/components/RoleComponents/RoleComponentState";
 
-const name = "RoleDropdown";
 const props = defineProps({state: RoleComponentState});
 props.state?.attachRole();
 </script>

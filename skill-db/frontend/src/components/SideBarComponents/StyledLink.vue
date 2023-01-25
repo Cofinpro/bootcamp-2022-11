@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-const name = "StyledLink";
 const props = defineProps({
   to: {
     required: true,

@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-const name = "ProfilePic";
 const props = defineProps({
   pic: {
     required: false,

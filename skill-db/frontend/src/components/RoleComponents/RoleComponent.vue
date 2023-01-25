@@ -54,7 +54,6 @@ import RoleDropdown from "@/components/RoleComponents/RoleDropdown.vue";
 import {ref} from "vue";
 import {RoleComponentState} from "@/components/RoleComponents/RoleComponentState";
 
-const name = "RoleComponent";
 const state = ref(new RoleComponentState());
 state.value.loadAllRoles();
 </script>

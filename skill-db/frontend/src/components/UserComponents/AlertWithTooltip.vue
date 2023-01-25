@@ -20,7 +20,6 @@
 <script setup lang="ts">
 import {UserModel} from "@/models/UserModel";
 
-const name = "AlertWithTooltip";
 const props = defineProps({
   user: {
     required: true,

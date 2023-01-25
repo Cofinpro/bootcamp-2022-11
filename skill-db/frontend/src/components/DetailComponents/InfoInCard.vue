@@ -20,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-const name = "InfoInCard";
 const props = defineProps({
   info: {
     required: true,
