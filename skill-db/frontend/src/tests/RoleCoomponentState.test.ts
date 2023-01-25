@@ -138,7 +138,6 @@ describe('RoleComponentState', () => {
         const spyChangeRole = vitest.spyOn(roleState, 'changeRole');
 
         await roleState.submit();
-        console.log(roleState.selectedUsers);
 
         expect(spyChangeRole).toBeCalledTimes(1);
         expect(spyChangeRole).toBeCalledWith('2', 'Admin');

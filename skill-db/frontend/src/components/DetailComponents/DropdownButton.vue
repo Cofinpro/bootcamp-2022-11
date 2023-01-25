@@ -68,7 +68,7 @@ export default {
     }
   },
   async setup(props) {
-    await props.state.setupLock();
+    await props.state.loadLockStatusByUserId();
     return {
       toDelete: ref(false),
       toLock: ref(false)

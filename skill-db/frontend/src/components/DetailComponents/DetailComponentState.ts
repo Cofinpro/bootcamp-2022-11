@@ -48,20 +48,16 @@ export class DetailComponentState {
         })
     }
 
-    async setupLock(): Promise<void> {
-        if (this.auth() > 1) {
-            await this.loadLockStatusByUserId();
-        }
-    }
-
     async loadLockStatusByUserId(): Promise<void> {
-        const id = this.details.getOwnerId();
-        const errorStore = useErrorStore();
-        await axiosInstance.get(`/api/v1/users/${id}/locked`).then(response => {
-            this.ownerOfProfileIsLocked = Boolean(response.data);
-        }).catch((error) => {
-            errorStore.catchGetProfileError(error, id);
-        })
+        if (this.auth() > 1) {
+            const id = this.details.getOwnerId();
+            const errorStore = useErrorStore();
+            await axiosInstance.get(`/api/v1/users/${id}/locked`).then(response => {
+                this.ownerOfProfileIsLocked = Boolean(response.data);
+            }).catch((error) => {
+                errorStore.catchGetProfileError(error, id);
+            })
+        }
     }
 
     auth(): number {
@@ -92,7 +88,6 @@ export class DetailComponentState {
     }
 
     async lockProfile(): Promise<void> {
-        await this.loadLockStatusByUserId();
         const userStore = useUserStore();
         const userId = this.details.getOwnerId();
         await userStore.lockUser(userId);
