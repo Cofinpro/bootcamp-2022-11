@@ -27,7 +27,7 @@ export default {
   name: "SkillInput",
   emits: ['update:skills'],
   props: {
-    skillsIn:{
+    modelValue:{
       value: [] as string[],
       required: true,
     }
@@ -36,7 +36,7 @@ export default {
     //definitions
     const showAddSkills = ref(false);
     const newSkills = ref('');
-    const skills = ref(props.skillsIn.sort());
+    const skills = ref(props.modelValue.sort());
     const detailStore = useDetailStore();
 
     //functions
@@ -52,7 +52,7 @@ export default {
     }
 
     function onInput() {
-      context.emit('update:skills',skills)
+      context.emit('update:modelValue',skills)
     }
     return {
       detailStore,

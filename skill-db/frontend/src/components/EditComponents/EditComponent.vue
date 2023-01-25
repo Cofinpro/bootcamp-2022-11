@@ -18,8 +18,7 @@
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="d-flex flex-column">
 
-            <SkillInput :skills-in="state.skills"
-                        @update:skills="(value) => {state.skills=value;}"/>
+            <SkillInput v-model="state.skills"/>
 
             <v-text-field v-model="state.degree"
                           label="Abschluss"
@@ -39,7 +38,9 @@
 
         <ConfirmButton :update="update"
                        :is-valid="isValid"
-                       @submit="update ? updateProfile(state, state.profilePicUri,picToDelete) : createProfile(state,state.profilePicUri)"
+                       @submit="update ?
+                       updateProfile(state, state.profilePicUri,picToDelete)
+                       : createProfile(state,state.profilePicUri)"
         />
 
         <LeaveButton @click="leave"></LeaveButton>
