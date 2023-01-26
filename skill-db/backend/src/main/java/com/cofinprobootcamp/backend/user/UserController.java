@@ -6,6 +6,7 @@ import com.cofinprobootcamp.backend.approval.dto.RoleOperationsOutDTO;
 import com.cofinprobootcamp.backend.exceptions.LockStatusChangePendingException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import com.cofinprobootcamp.backend.exceptions.RoleChangePendingException;
+import com.cofinprobootcamp.backend.exceptions.UserNotFoundException;
 import com.cofinprobootcamp.backend.role.StandardRoles;
 import com.cofinprobootcamp.backend.user.dto.UserCreateInDTO;
 import com.cofinprobootcamp.backend.user.dto.UserOutDTO;
@@ -27,23 +28,29 @@ public class UserController {
         this.approvalService = approvalService;
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    /*@ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "")
     @PreAuthorize("hasPermission(#userIn, @authorityPrefix + 'USERS_POST_NEW')")
     public void createUser(@RequestBody @Valid UserCreateInDTO userIn) {
         userService.createUser(userIn);
-    }
+    }*/
 
-    @DeleteMapping(path = "/{id}")
+    /*@DeleteMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, 'void', @authorityPrefix + 'USERS_DELETE_BY_ID')")
     public void deleteUserById(@PathVariable String id) {
         userService.deleteUserByOuterId(id);
-    }
+    }*/
 
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, 'UserOutDTO', @authorityPrefix + 'USERS_GET_BY_ID')")
     public UserOutDTO getUserById(@PathVariable String id) {
         return userService.getUserByOuterId(id);
+    }
+
+    @GetMapping(path = "/{id}/locked")
+    @PreAuthorize("hasPermission(#id, 'String', @authorityPrefix + 'USERS_BY_ID_GET_LOCKED')")
+    public boolean getLockStatusByUserId(@PathVariable String id) throws UserNotFoundException {
+        return userService.getUserByOuterId(id).locked();
     }
 
     @GetMapping(path = "/{id}/profile")

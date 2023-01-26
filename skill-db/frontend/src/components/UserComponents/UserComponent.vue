@@ -32,22 +32,22 @@
                             :color="user.getRole().getColor()"/>
           <AlertWithTooltip :user="user"
                             operation-type="changeRole"
-                            :operations="userStore.roleChangeOperations"/>
+                            :operations="state.roleChangeOperations"/>
         </td>
 
         <td>
           <div class="d-flex justify-start">
-            <v-icon @click="toggleLock(user)"
+            <v-icon @click="state.toggleLock(user)"
                     v-if="user.getLocked()">
               mdi-lock
             </v-icon>
-            <v-icon @click="toggleLock(user)"
+            <v-icon @click="state.toggleLock(user)"
                     v-else>
               mdi-lock-open
             </v-icon>
             <AlertWithTooltip :user="user"
                               operation-type="lockUser"
-                              :operations="userStore.lockUserOperations"/>
+                              :operations="state.lockUserOperations"/>
           </div>
         </td>
 
@@ -56,40 +56,18 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import ChipWithInfotext from "@/components/ChipWithInfotext.vue";
+<script setup lang="ts">
+import ChipWithInfotext from "@/components/UserComponents/ChipWithInfotext.vue";
 import {useUserStore} from "@/stores/UserStore";
-import type {UserModel} from "@/models/UserModel";
-import {useErrorStore} from "@/stores/ErrorStore";
 import AlertWithTooltip from "@/components/UserComponents/AlertWithTooltip.vue";
+import {UserComponentState} from "@/components/UserComponents/UserComponentState";
 
-export default {
-  name: "UserComponent",
-  components: {AlertWithTooltip, ChipWithInfotext},
-  data() {
-    const userStore = useUserStore();
-    userStore.loadUsers();
-    userStore.loadPendingRoleChanges();
-    userStore.loadPendingLockUsers();
+const userStore = useUserStore();
+userStore.loadUsers();
 
-    const errorStore = useErrorStore();
-
-    async function toggleLock(user: UserModel): Promise<void> {
-      await userStore.lockUser(user.getId());
-      if (!errorStore.hasError) {
-        user.setLocked(!user.getLocked());
-      }
-      await userStore.loadPendingLockUsers();
-    }
-
-    return {
-      userStore, toggleLock
-    }
-  },
-  methods: {
-
-  }
-}
+const state = new UserComponentState();
+state.loadPendingRoleChanges();
+state.loadPendingUserLocks();
 </script>
 
 <style scoped>

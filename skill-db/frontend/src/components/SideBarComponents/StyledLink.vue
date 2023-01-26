@@ -7,26 +7,24 @@
   </RouterLink>
 </template>
 
-<script lang="ts">
-export default {
-  name: "StyledLink",
-  props: {
-    to: {
-      required: true,
-    },
-    icon: {
-      required: true,
-      type: String
-    },
-    text: {
-      required: true,
-      type: String
-    }
+<script setup lang="ts">
+const props = defineProps({
+  to: {
+    required: true,
+  },
+  icon: {
+    required: true,
+    type: String
+  },
+  text: {
+    required: true,
+    type: String
   }
-}
+});
 </script>
 
 <style scoped>
+
 a {
   text-decoration: none;
   color: grey;

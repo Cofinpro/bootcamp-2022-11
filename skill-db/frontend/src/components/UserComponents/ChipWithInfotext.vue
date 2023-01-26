@@ -1,6 +1,6 @@
 <template>
   <v-chip @click="info = true"
-          :color="color">
+          :color="color" link>
     {{ content }}
     <v-icon class="ml-2" size="tiny">
       mdi-information
@@ -26,29 +26,15 @@
   </v-overlay>
 </template>
 
-<script>
-export default {
-  name: "ChipWithInfotext",
-  props: {
-    tooltip: {
-      required: true,
-      type: String
-    },
-    content: {
-      required: true,
-      type: String
-    },
-    color: {
-      required: true,
-      type: String
-    }
-  },
-  data() {
-    return {
-      info: false,
-    }
-  },
-}
+<script setup lang="ts">
+import {ref} from "vue";
+
+const props = defineProps({
+  tooltip: String,
+  content: String,
+  color: String
+});
+const info = ref(false);
 </script>
 
 <style scoped>

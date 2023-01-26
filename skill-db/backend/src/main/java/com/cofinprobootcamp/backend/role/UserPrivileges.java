@@ -98,6 +98,9 @@ public enum UserPrivileges {
     USERS_GET_BY_ID$ANY(
             "Der Nutzer ist dazu berechtigt, einen beliebigen Nutzeraccount über dessen Kennung einzusehen."
     ),
+    USERS_BY_ID_GET_LOCKED(
+            "Der Nutzer ist dazu berechtigt, den Sperr-Zustand eines beliebigen Nutzeraccounts über dessen Kennung einzusehen."
+    ),
     USERS_BY_ID_GET_PROFILE$SELF(
             "Der Nutzer ist dazu berechtigt, die Kennung seines eigenen Profils abzurufen."
     ),

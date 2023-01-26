@@ -8,12 +8,3 @@
       </v-btn>
     </div>
 </template>
-
-<script lang="ts">
-export default {
-  name: "LogoutButton",
-}
-</script>
-
-<style scoped>
-</style>

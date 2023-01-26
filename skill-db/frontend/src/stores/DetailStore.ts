@@ -16,11 +16,11 @@ export const useDetailStore = defineStore('detailStore', {
         actions: {
             async loadDetailsById(id: string): Promise<void> {
                 this.loading = true;
-                let profilePicId = null
+                let profilePicId = null;
                 const errorStore = useErrorStore();
                 await axiosInstance.get(`/api/v1/profiles/${id}`).then((response) => {
                     this.details = ConvertResponseToDetailModel.toDetailModel(response.data);
-                    profilePicId = response.data.profilePicId
+                    profilePicId = response.data.profilePicId;
                 }).catch((error) => {
                     errorStore.catchGetError(error, id);
                 });
@@ -40,17 +40,6 @@ export const useDetailStore = defineStore('detailStore', {
                 })
                 this.loading = false;
             },
-
-            async deleteDetailsByID(id: string): Promise<void> {
-                this.loading = true;
-                const errorStore = useErrorStore();
-                await axiosInstance.delete(`/api/v1/profiles/${id}`).then(() => {
-                    this.details = new DetailModel();
-                }).catch((error) => {
-                    errorStore.catchDeleteError(error, id);
-                });
-                this.loading = false;
-            },
-        }
+        },
     }
 )
