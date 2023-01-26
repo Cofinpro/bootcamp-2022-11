@@ -1,23 +1,36 @@
-
-import {mount} from "@vue/test-utils";
+import {flushPromises, mount} from "@vue/test-utils";
 import vuetify from "@/plugins/vuetify";
 import skillInput from "@/components/EditComponents/SkillInput.vue";
 import {createTestingPinia} from "@pinia/testing";
 import {expect, describe, it} from "vitest";
+import {defineComponent, h, Suspense} from "vue";
+import SkillInput from "@/components/EditComponents/SkillInput.vue";
 
+const mountSuspense = async (options) => {
+    const wrapper = mount(defineComponent({
+        render() {
+            return h(Suspense, options.props, {
+                default: h(SkillInput),
+                fallback: h('div', 'fallback')
+            })
+        }
+    }), options)
+
+    await flushPromises()
+    return wrapper
+}
 describe('SkillInput', () => {
-    it('SkillInput Renders correctly', async  () => {
-        const wrapper = mount(skillInput,
-            {
-                props:{
-                    skillsIn: ['a','b']
-                },
-                global: {
-                     plugins: [vuetify, createTestingPinia()]
-                }
-            });
+    it('SkillInput Renders correctly', async () => {
+        const options = {
+            props: {
+                modelValue: ['a', 'b']
+            },
+            global: {
+                plugins: [vuetify, createTestingPinia()]
+            }
+        }
+        const wrapper = await mountSuspense(options);
         const v_inputs = 'input';
-        wrapper.vm.detailStore.skills = ['a','b'];
         expect(wrapper.text()).toContain('Skill nicht gefunden?');
         let button = wrapper.findComponent('.v-btn');
         let inputfields = wrapper.findAll(v_inputs)
@@ -28,14 +41,14 @@ describe('SkillInput', () => {
     it('Button clicked', async () => {
         const wrapper = mount(skillInput,
             {
-                props:{
-                    skillsIn: ['a','b']
+                props: {
+                    skillsIn: ['a', 'b']
                 },
                 global: {
                     plugins: [vuetify, createTestingPinia()]
                 }
             });
-        wrapper.vm.detailStore.skills = ['a','b'];
+        wrapper.vm.detailStore.skills = ['a', 'b'];
         let button = wrapper.getComponent('.v-btn');
         await button.trigger('click');
         button = wrapper.find('.v-btn');
@@ -48,29 +61,29 @@ describe('SkillInput', () => {
         expect(wrapper.vm.newSkills).toEqual('');
         expect(wrapper.text()).toContain('hallo');
         expect(wrapper.emitted('update:skills')).toBeTruthy();
-        expect(wrapper.vm.skills).toContain('hallo');
+        expect(wrapper.vm.availableSkills).toContain('hallo');
     });
 
-    it('addskills function test', ()=>{
+    it('addskills function test', () => {
         const wrapper = mount(skillInput,
             {
-                props:{
-                    skillsIn: ['a','b']
+                props: {
+                    modelValue: ['a', 'b']
                 },
                 global: {
                     plugins: [vuetify, createTestingPinia()]
                 }
             });
-        wrapper.vm.detailStore.skills = ['a','b'];
-        wrapper.vm.skills=['x','y'];
+        wrapper.vm.availableSkills = ['a', 'b'];
+        wrapper.vm.modelValue = ['x', 'y'];
         wrapper.vm.newSkills = 'c';
         wrapper.vm.addSkills();
-        expect(wrapper.vm.skills).toContain('c');
-        expect(wrapper.vm.skills).toContain('x');
-        expect(wrapper.vm.skills).toContain('y');
-        expect(wrapper.vm.detailStore.skills).toContain('c');
-        expect(wrapper.vm.detailStore.skills).toContain('a');
-        expect(wrapper.vm.detailStore.skills).toContain('b');
+        expect(wrapper.vm.modelValue).toContain('c');
+        expect(wrapper.vm.modelValue).toContain('x');
+        expect(wrapper.vm.modelValue).toContain('y');
+        expect(wrapper.vm.availableSkills).toContain('c');
+        expect(wrapper.vm.availableSkills).toContain('a');
+        expect(wrapper.vm.availableSkills).toContain('b');
         expect(wrapper.vm.newSkills).toEqual('');
         expect(wrapper.vm.showAddSkills).toBeFalsy();
     })

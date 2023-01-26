@@ -30,7 +30,7 @@ const props = defineProps<{
 //definitions
 const showAddSkills = ref(false);
 const newSkills = ref('');
-const skills = ref(props.modelValue.sort());
+const skills = ref(props.modelValue);
 let availableSkills = await loadAvailableSkills();
 
 //functions
