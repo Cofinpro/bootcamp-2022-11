@@ -24,7 +24,6 @@ export class DetailComponentState {
 
     async setupDetails(): Promise<void> {
         const detailStore = useDetailStore();
-        console.log(this.profileId);
         await detailStore.loadDetailsById(this.profileId);
         this.details = detailStore.details;
         this.profilePic = detailStore.profilePic;

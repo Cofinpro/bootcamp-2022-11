@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import ButtonWithTooltip from "@/components/ProfileOverviewComponents/ButtonWithTooltip.vue";
-import {computed, defineEmits, ref} from "vue";
+import {computed, ref} from "vue";
 const fileInput = ref();
 const emits = defineEmits(['upload:csv']);
 
