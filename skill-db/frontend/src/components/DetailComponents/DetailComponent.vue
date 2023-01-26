@@ -1,6 +1,5 @@
 <template>
   <div class="pt-md-14">
-
     <Suspense>
       <div style="float: right">
         <dropdown-button :state = "state"/>
@@ -73,8 +72,17 @@ import InfoInCard from "@/components/DetailComponents/InfoInCard.vue";
 import ProfilePic from "@/components/DetailComponents/ProfilePic.vue";
 import {DetailComponentState} from "@/components/DetailComponents/DetailComponentState";
 import References from "@/components/DetailComponents/References.vue";
-import {ref} from "vue";
-
-const state = ref(new DetailComponentState());
+import {computed, ref, watch} from "vue";
+import {useRoute, useRouter} from "vue-router";
+import {checkState} from "@/components/EditComponents/ValidationService";
+import {useDetailStore} from "@/stores/DetailStore";
+import router from "@/router";
+watch(useRoute(), (to) => {
+  if (String(to.path).includes('/detail')
+      && !String(to.path).includes('/edit')){
+    router.go(0);
+  }
+});
+let state = ref(new DetailComponentState(useRoute().params.id.toString()));
 await state.value.setupDetails();
 </script>

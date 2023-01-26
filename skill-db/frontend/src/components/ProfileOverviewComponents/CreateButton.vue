@@ -1,5 +1,5 @@
 <template>
-  <ButtonWithTooltip :disabled="userStore.hasProfile"
+  <ButtonWithTooltip :disabled="profileExists"
                      tooltip="Neues Profil erstellen"
                      icon="mdi-plus-thick"
                      @clicked="$emit('create:Profile')"/>
@@ -9,6 +9,7 @@
 import ButtonWithTooltip from "@/components/ProfileOverviewComponents/ButtonWithTooltip.vue";
 import {useUserStore} from "@/stores/UserStore";
 import {computed} from "vue";
+import {hasProfile} from "@/components/SideBarComponents/SideBarFunctions";
 
 export default {
   name: "CreateButton",
@@ -16,8 +17,12 @@ export default {
   components: { ButtonWithTooltip },
   setup() {
     const userStore = useUserStore();
+    const profileExists = computed(() => {
+      return hasProfile();
+    })
     return {
-      userStore
+      userStore,
+      profileExists
     }
   },
 }

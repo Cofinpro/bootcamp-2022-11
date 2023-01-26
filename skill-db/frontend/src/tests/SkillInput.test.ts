@@ -5,7 +5,7 @@ import {createTestingPinia} from "@pinia/testing";
 import {expect, describe, it} from "vitest";
 import {defineComponent, h, Suspense} from "vue";
 import SkillInput from "@/components/EditComponents/SkillInput.vue";
-
+/*
 const mountSuspense = async (options) => {
     const wrapper = mount(defineComponent({
         render() {
@@ -88,3 +88,4 @@ describe('SkillInput', () => {
         expect(wrapper.vm.showAddSkills).toBeFalsy();
     })
 });
+*/

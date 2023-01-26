@@ -3,6 +3,7 @@ import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 import router from "@/router";
+import {useUserStore} from "@/stores/UserStore";
 
 export async function createProfile(profile: MinimumDetailModelInterface, profilePicUri: string): Promise<void>{
     const detailStore = useDetailStore();
@@ -28,6 +29,8 @@ export async function createProfile(profile: MinimumDetailModelInterface, profil
             errorStore.catchPostPatchError(error);
         });
     detailStore.loading = false;
+    const userStore = useUserStore()
+    userStore.hasProfile = true;
     await router.push('/');
 }
 

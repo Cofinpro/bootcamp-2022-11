@@ -24,6 +24,4 @@ describe('Inputblock', () => {
         expect(checkDateFormat('30.01.199')).toBeFalsy();
         expect(checkDateFormat('30.01.1999')).toBeTruthy();
     });
-
-
 });

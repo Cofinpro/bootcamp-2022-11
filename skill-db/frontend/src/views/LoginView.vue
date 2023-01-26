@@ -27,9 +27,10 @@
                 Willkommen zurück!
               </v-card-subtitle>
 
-              <v-form v-model="valid">
+              <v-form v-model="valid" >
                 <v-text-field
                     label="Username"
+                    autocomplete="username"
                     v-model="userRequestLogin.username"
                     variant="outlined"
                     :rules="[rules.required]"/>
@@ -39,6 +40,7 @@
                               :type="visible ? 'text' : 'password'"
                               variant="outlined"
                               label="Passwort"
+                              autocomplete="current-password"
                               @click:append-inner="visible = !visible"
                               :rules="[rules.required, rules.min]"
                               counter

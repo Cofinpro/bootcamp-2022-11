@@ -6,11 +6,8 @@ import axiosInstance from "@/axios";
 export const useDetailStore = defineStore('detailStore', {
         state: () => ({
             details: new DetailModel(),
-            loading: Boolean(false),
-            skills: [] as string[],
-            jobs: [] as string[],
-            primarys: [] as string[],
             profilePic: '',
+            loading: Boolean(false),
         }),
 
         actions: {

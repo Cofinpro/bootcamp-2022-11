@@ -14,16 +14,17 @@ export class DetailComponentState {
     role: string;
     ownerOfProfileIsLocked: boolean;
 
-    constructor() {
+    constructor(profileId: string) {
         this.details = new DetailModel();
         this.profilePic = '';
-        this.profileId = useRoute().params.id.toString();
+        this.profileId = profileId;
         this.role = window.localStorage.getItem('role');
         this.ownerOfProfileIsLocked = true;
     }
 
     async setupDetails(): Promise<void> {
         const detailStore = useDetailStore();
+        console.log(this.profileId);
         await detailStore.loadDetailsById(this.profileId);
         this.details = detailStore.details;
         this.profilePic = detailStore.profilePic;
@@ -62,8 +63,8 @@ export class DetailComponentState {
         }
     }
 
-    enterEdit(): void {
-        router.push({name: 'editView', params: {id: this.profileId}});
+    async enterEdit(): Promise<void> {
+        await router.push({name: 'editView', params: {id: this.profileId}});
     }
 
     async lockProfile(): Promise<void> {
@@ -81,6 +82,8 @@ export class DetailComponentState {
         }).catch((error) => {
             errorStore.catchDeleteError(error, id);
         });
-        router.push(`/`);
+        const detailStore = useDetailStore();
+        detailStore.details = new DetailModel();
+        await router.push(`/`);
     }
 }

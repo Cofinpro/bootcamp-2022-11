@@ -11,30 +11,20 @@
          accept="text/csv"/>
 </template>
 
-<script type="ts">
+<script setup lang="ts">
 import ButtonWithTooltip from "@/components/ProfileOverviewComponents/ButtonWithTooltip.vue";
-import {useBlobStore} from "@/stores/BlobStore";
-import {useOverviewStore} from "@/stores/OverviewStore";
-import {computed} from "vue";
+import {computed, defineEmits, ref} from "vue";
+const fileInput = ref();
+const emits = defineEmits(['upload:csv']);
 
-export default {
-  name: "ImportButton",
-  emits: {'upload:csv': {type: File}},
-  components: {ButtonWithTooltip},
-  setup() {
-    const isAdminOrHR = computed(() => {
-      return (window.localStorage.getItem('role') === 'ROLE_ADMIN' ||
-          window.localStorage.getItem('role') === 'ROLE_HR');
-    });
+const isAdminOrHR = computed(() => {
+  return (window.localStorage.getItem('role') === 'ROLE_ADMIN' ||
+      window.localStorage.getItem('role') === 'ROLE_HR');
+});
 
-    async function emitToParentAndReset() {
-      context.emit('upload:csv', this.$refs.fileInput.files[0])
-      context.refs.fileInput.value = null;
-    }
-
-    return {
-      isAdminOrHR,
-    }
-  }
+async function emitToParentAndReset() {
+  emits('upload:csv', fileInput.value.files[0])
+  fileInput.value = null;
 }
+
 </script>
