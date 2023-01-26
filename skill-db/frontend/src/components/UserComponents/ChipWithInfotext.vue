@@ -30,18 +30,9 @@
 import {ref} from "vue";
 
 const props = defineProps({
-  tooltip: {
-    required: true,
-    type: String
-  },
-  content: {
-    required: true,
-    type: String
-  },
-  color: {
-    required: true,
-    type: String
-  }
+  tooltip: String,
+  content: String,
+  color: String
 });
 const info = ref(false);
 </script>

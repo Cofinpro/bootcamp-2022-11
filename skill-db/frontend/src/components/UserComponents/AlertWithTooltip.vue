@@ -10,8 +10,7 @@
         </v-icon>
       </template>
       <span id="test_span">
-        {{ operationType === "changeRole" ?
-          `Rolle: ${operation.getParam()}, von: ${operation.getInitiator()}` :  `von: ${operation.getInitiator()}` }}
+        {{ operationType === "changeRole" ? `Rolle: ${operation.getParam()}, von: ${operation.getInitiator()}` :  `von: ${operation.getInitiator()}` }}
       </span>
     </v-tooltip>
   </div>
@@ -21,17 +20,8 @@
 import {UserModel} from "@/models/UserModel";
 
 const props = defineProps({
-  user: {
-    required: true,
-    type: UserModel
-  },
-  operationType: {
-    required: true,
-    type: String
-  },
-  operations: {
-    required: true,
-    type: Array
-  }
+  user: UserModel,
+  operationType: String,
+  operations: Array
 });
 </script>
