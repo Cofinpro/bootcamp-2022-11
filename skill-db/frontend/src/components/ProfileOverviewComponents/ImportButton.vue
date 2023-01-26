@@ -1,6 +1,6 @@
 <template>
-   <ButtonWithTooltip v-if="isAdminOrHR"
-                      tooltip="Profil von csv importieren"
+  <ButtonWithTooltip v-if="isAdminOrHR"
+                     tooltip="Profil von csv importieren"
                      icon="mdi-file-upload-outline"
                      @clicked="$refs.fileInput.click()"/>
   <input type="file"
@@ -11,30 +11,20 @@
          accept="text/csv"/>
 </template>
 
-<script type="ts">
+<script setup lang="ts">
 import ButtonWithTooltip from "@/components/ProfileOverviewComponents/ButtonWithTooltip.vue";
-import {useBlobStore} from "@/stores/BlobStore";
-import {useOverviewStore} from "@/stores/OverviewStore";
+import {computed, ref} from "vue";
+const fileInput = ref();
+const emits = defineEmits(['upload:csv']);
 
-export default {
-  name: "ImportButton",
-  emits: {'upload:csv': {type: File}},
-  components: {ButtonWithTooltip},
-  computed: {
-    isAdminOrHR() {
-      return (window.localStorage.getItem('role') === 'ROLE_ADMIN' ||
-          window.localStorage.getItem('role') === 'ROLE_HR');
-    }
-  },
-  methods: {
-    async emitToParentAndReset(event) {
-      this.$emit('upload:csv',this.$refs.fileInput.files[0])
-      this.$refs.fileInput.value = null;
-    },
-  },
+const isAdminOrHR = computed(() => {
+  return (window.localStorage.getItem('role') === 'ROLE_ADMIN' ||
+      window.localStorage.getItem('role') === 'ROLE_HR');
+});
+
+async function emitToParentAndReset() {
+  emits('upload:csv', fileInput.value.files[0])
+  fileInput.value = null;
 }
+
 </script>
-
-<style scoped>
-
-</style>

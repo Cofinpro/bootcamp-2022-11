@@ -55,7 +55,6 @@ const router = createRouter({
             path: '/detail/edit/:id',
             name: 'editView',
             component: EditView,
-            props: true,
             meta: {
                 title: 'Bearbeite dein Profil'
             }
@@ -64,7 +63,6 @@ const router = createRouter({
             path: '/detail/:id',
             name: 'userDetails',
             component: DetailView,
-            props: true,
             meta: {
                 title: 'Profil-Detailansicht'
             }

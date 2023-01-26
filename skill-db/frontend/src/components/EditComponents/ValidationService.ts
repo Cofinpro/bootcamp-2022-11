@@ -1,3 +1,5 @@
+import {EditComponentState} from "@/components/EditComponents/EditComponentState";
+
 export function checkDateFormat(date: string): Boolean {
     const regex = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/;
     if (!regex.test(date)) return false;
@@ -15,4 +17,15 @@ export function checkPhoneNumberFormat(number: string): Boolean {
 
 export function checkLength(value: string): Boolean {
     return value.length > 0;
+}
+
+export function checkState(stateValue: EditComponentState): Boolean {
+    return (checkDateFormat(stateValue.birthDate) &&
+        checkPhoneNumberFormat(stateValue.phoneNumber) &&
+        checkLength(stateValue.references) &&
+        checkLength(stateValue.firstName) &&
+        checkLength(stateValue.lastName) &&
+        checkLength(stateValue.primarySkill) &&
+        checkLength(stateValue.degree) &&
+        checkLength(stateValue.jobTitle))
 }

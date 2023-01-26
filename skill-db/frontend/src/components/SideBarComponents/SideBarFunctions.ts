@@ -5,16 +5,20 @@ export function isAdmin(): boolean {
 }
 
 export function getProfileId(): String {
-    hasProfile(); //to force reload after id changed
-    const userStore = useUserStore();
-    const userId = window.localStorage.getItem('user_id');
-    userStore.getProfileIdFromUser(userId);
-    return userStore.profileId.toString();
+    if (useUserStore().hasProfile) {
+        const userStore = useUserStore();
+        const userId = window.localStorage.getItem('user_id');
+        userStore.getProfileIdFromUser(userId);
+        return userStore.profileId.toString();
+    }
 }
 
 export function hasProfile(): boolean {
-    const userStore = useUserStore();
-    const userId = window.localStorage.getItem('user_id');
-    userStore.checkForExistingUserProfile(userId);
-    return userStore.hasProfile;
+    if (window.localStorage.getItem('user_id')) {
+        const userStore = useUserStore();
+        const userId = window.localStorage.getItem('user_id');
+        userStore.checkForExistingUserProfile(userId);
+        return userStore.hasProfile;
+    }
+   return false;
 }

@@ -1,8 +1,8 @@
 <template>
   <v-autocomplete v-model="skills"
                   label="Skills"
-                  :items="detailStore.skills"
-                  @update:modelValue="onInput"
+                  :items="availableSkills"
+                  @update:modelValue="emit('update:modelValue', skills)"
                   multiple
                   auto-select-first
                   chips
@@ -19,49 +19,29 @@
                 @keydown.enter="addSkills()"/>
 </template>
 
-<script lang="ts">
-import {useDetailStore} from "@/stores/DetailStore";
+<script setup lang="ts">
 import {ref} from "vue";
+import {loadAvailableSkills} from "@/components/EditComponents/EditAxiosService";
 
-export default {
-  name: "SkillInput",
-  emits: ['update:skills'],
-  props: {
-    skillsIn:{
-      value: [] as string[],
-      required: true,
-    }
-  },
-  setup(props, context) {
-    //definitions
-    const showAddSkills = ref(false);
-    const newSkills = ref('');
-    const skills = ref(props.skillsIn.sort());
-    const detailStore = useDetailStore();
+const emit = defineEmits(['update:modelValue'])
+const props = defineProps<{
+  modelValue: Array<string>,
+}>()
+//definitions
+const showAddSkills = ref(false);
+const newSkills = ref('');
+const skills = ref(props.modelValue);
+let availableSkills = await loadAvailableSkills();
 
-    //functions
-    function addSkills() {
-      if (newSkills.value.length > 0) {
-        const newSkillsArray = newSkills.value.trim().split(',');
-        detailStore.skills = detailStore.skills.concat(newSkillsArray);
-        skills.value = skills.value.concat(newSkillsArray);
-      }
-      newSkills.value = '';
-      showAddSkills.value = false;
-      onInput();
-    }
-
-    function onInput() {
-      context.emit('update:skills',skills)
-    }
-    return {
-      detailStore,
-      showAddSkills,
-      newSkills,
-      skills,
-      addSkills,
-      onInput
-    }
-  },
+//functions
+function addSkills() {
+  if (newSkills.value.length > 0) {
+    const newSkillsArray = newSkills.value.trim().split(',');
+    availableSkills = availableSkills.concat(newSkillsArray);
+    skills.value = skills.value.concat(newSkillsArray);
+  }
+  newSkills.value = '';
+  showAddSkills.value = false;
+  emit('update:modelValue', skills);
 }
 </script>

@@ -10,7 +10,7 @@
       Searchbar
     </v-card>
     <div class="d-flex justify-space-between">
-      <ImportButton @upload:csv="uploadCSV"/>
+      <ImportButton @upload:csv="postCSVAndReload"/>
       <ExportButton @download:xlsx="downloadXLSX"/>
       <CreateButton @create:Profile="$router.push('/detail/new')"/>
       <ButtonWithTooltip v-if="false"
@@ -50,50 +50,25 @@
   </v-container>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import OverviewCard from "@/components/ProfileOverviewComponents/OverviewCard.vue";
 import ButtonWithTooltip from "@/components/ProfileOverviewComponents/ButtonWithTooltip.vue";
 import {useOverviewStore} from "@/stores/OverviewStore";
 import ExportButton from "@/components/ProfileOverviewComponents/ExportButton.vue";
 import ImportButton from "@/components/ProfileOverviewComponents/ImportButton.vue";
 import CreateButton from "@/components/ProfileOverviewComponents/CreateButton.vue";
-import {useBlobStore} from "@/stores/BlobStore";
 import {useErrorStore} from "@/stores/ErrorStore";
+import {downloadXLSX, postCSVAndReload} from "@/components/ProfileOverviewComponents/ImportExportService";
 
-export default {
-  components: {ExportButton, ImportButton, CreateButton, OverviewCard, ButtonWithTooltip},
-  setup() {
-    const overviewStore = useOverviewStore();
-    overviewStore.loadOverview();
-    return {
-      overviewStore
-    };
-  },
-  methods: {
-    filterProfiles() {
-      console.log("Start filtering.");
-    },
-    async uploadCSV(file: File) {
-      const blobStore = useBlobStore();
-      await blobStore.postCSV(file);
-      await this.overviewStore.loadOverview();
-    },
-    async downloadXLSX() {
-      const blobStore = useBlobStore();
-      const errorStore = useErrorStore();
-      await blobStore.getExcel();
-      if (! errorStore.hasError) {
-        const downloadUrl = window.URL.createObjectURL(blobStore.blob);
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.setAttribute('download', 'profile.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      }
-    },
-  }
+const overviewStore = useOverviewStore();
+overviewStore.loadOverview();
+
+function filterProfiles() {
+  console.log("Start filtering.");
 }
+
+
+
 </script>
 
 <style>

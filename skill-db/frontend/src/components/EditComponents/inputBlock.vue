@@ -1,7 +1,7 @@
 <template>
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
     <v-text-field v-model="state.firstName"
-                  @change="this.$emit('update:firstName',state.firstName)"
+                  @change="this.$emit('update:modelValue',state)"
                   label="Vorname"
                   class="test_firstName"
                   :rules="[v => checkLength(v) || 'Erforderlich!']"/>
@@ -9,7 +9,7 @@
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
     <v-text-field v-model="state.lastName"
-                  @change="this.$emit('update:lastName',state.lastName)"
+                  @change="this.$emit('update:modelValue',state)"
                   label="Nachname"
                   class="test_lastName"
                   :rules="[v => checkLength(v) || 'Erforderlich']"/>
@@ -17,34 +17,34 @@
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
     <v-autocomplete v-model="state.jobTitle"
-                    @update:modelValue="this.$emit('update:jobTitle',state.jobTitle)"
+                    @update:modelValue="this.$emit('update:modelValue',state)"
                     label="Jobprofil"
                     class="test_jobTitle"
                     :rules="[v => checkLength(v)|| 'Erforderlich!']"
-                    :items="detailStore.jobs"/>
+                    :items="jobs"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
     <v-autocomplete v-model="state.primarySkill"
-                    @update:modelValue="this.$emit('update:primarySkill',state.primarySkill)"
+                    @update:modelValue="this.$emit('update:modelValue',state)"
                     label="Primärkompetenz"
                     class="test_primarySkill"
                     :rules="[v => checkLength(v)|| 'Erforderlich!']"
-                    :items="detailStore.primarys"/>
+                    :items="primarys"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
     <v-text-field v-model="state.phoneNumber"
                   class="test_phoneNumber"
-                  @change="this.$emit('update:phoneNumber',state.phoneNumber)"
+                  @change="this.$emit('update:modelValue',state)"
                   label="Telefonnummer"
                   :rules="[ number => checkPhoneNumberFormat(number) || 'Min. 11 max. 13 Ziffern']"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
-    <v-text-field v-model="state.birthdate"
+    <v-text-field v-model="state.birthDate"
                   class="test_birthdate"
-                  @change="this.$emit('update:birthDate',state.birthdate)"
+                  @change="this.$emit('update:modelValue',state)"
                   label="Geburtsdatum"
                   :rules="[ date => checkDateFormat(date) ||
                           'Datum muss im Format TT.MM.JJJJ eingegeben werden!']"/>
@@ -52,60 +52,19 @@
 
 </template>
 
-<script lang="ts">
-import {useDetailStore} from "@/stores/DetailStore";
-import {inputBlockState} from "@/components/EditComponents/inputBlockState";
+<script setup lang="ts">
+import {InputBlockState} from "@/components/EditComponents/inputBlockState";
 import {ref} from "vue";
 import {checkDateFormat, checkLength, checkPhoneNumberFormat} from "@/components/EditComponents/ValidationService";
+import {loadJobs, loadPrimarys} from "@/components/EditComponents/EditAxiosService";
 
-export default {
-  emits: [
-    'update:firstName',
-    'update:lastName',
-    'update:jobTitle',
-    'update:primarySkill',
-    'update:phoneNumber',
-    'update:birthDate'
-  ],
-  props: {
-    firstNameIn: {
-      required: true,
-      type: String
-    },
-    lastNameIn: {
-      required: true,
-      type: String
-    },
-    jobTitleIn: {
-      required: true,
-      type: String
-    },
-    primarySkillIn: {
-      required: true,
-      type: String
-    },
-    phoneNumberIn: {
-      required: true,
-      type: String
-    },
-    dateIn: {
-      required: true,
-      type: String
-    },
-  },
-  setup(props) {
-    const state = ref(new inputBlockState(
-        props.firstNameIn, props.lastNameIn, props.jobTitleIn, props.primarySkillIn, props.dateIn, props.phoneNumberIn
-    ));
-    return {
-      state,
-      checkDateFormat,
-      checkLength,
-      checkPhoneNumberFormat,
-      detailStore: useDetailStore(),
-    };
-  },
-}
+const emit = defineEmits(['update:modelValue'])
+const props = defineProps<{
+  modelValue: InputBlockState
+}>();
+const state = ref(props.modelValue);
+const jobs = await loadJobs();
+const primarys = await loadPrimarys();
 </script>
 
 <style scoped>
