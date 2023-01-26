@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import ChipWithInfotext from "@/components/ChipWithInfotext.vue";
+import ChipWithInfotext from "@/components/UserComponents/ChipWithInfotext.vue";
 import {useUserStore} from "@/stores/UserStore";
 import type {UserModel} from "@/models/UserModel";
 import {useErrorStore} from "@/stores/ErrorStore";
