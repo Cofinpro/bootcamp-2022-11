@@ -25,7 +25,7 @@ export async function createProfile(profile: MinimumDetailModelInterface, profil
         errorStore.toggleHasError();
     })
         .catch((error) => {
-            errorStore.catchPostPatchError(error);
+            errorStore.catchAllAxiosErrors(error, 'PostPatch',  '');
         });
     detailStore.loading = false;
     await router.push('/');
@@ -54,7 +54,7 @@ export async function updateProfile(edits: MinimumDetailModelInterface, profileP
         errorStore.toggleHasError();
     }).catch((error) => {
         console.log(error);
-        errorStore.catchPostPatchError(error);
+        errorStore.catchAllAxiosErrors(error, 'PostPatch', '');
     });
     detailStore.loading = false;
     await router.push(`/detail/${detailStore.details.getId()}`)
@@ -70,7 +70,7 @@ async function deleteProfilePicture() {
         })
         .catch((error) => {
             console.log(error)
-            errorStore.catchDeleteError(error, id);
+            errorStore.catchAllAxiosErrors(error, 'Delete', id);
         })
 }
 

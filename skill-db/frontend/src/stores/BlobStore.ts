@@ -16,7 +16,7 @@ export const useBlobStore = defineStore('blobStore',{
                 this.blob = response.data;
             }).catch((error) => {
                 const errorStore = useErrorStore();
-                errorStore.catchExportError(error);
+                errorStore.catchAllAxiosErrors(error, 'Export', '');
             })
         },
         async postCSV(file: File): Promise<void> {
@@ -32,7 +32,7 @@ export const useBlobStore = defineStore('blobStore',{
             }).catch(error => {
                 const errorStore = useErrorStore();
                 console.log(error);
-                errorStore.catchImportError(error);
+                errorStore.catchAllAxiosErrors(error, 'Import','');
             })
         },
     }

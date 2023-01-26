@@ -18,7 +18,7 @@ export const useOverviewStore = defineStore('OverviewStore', {
                     this.cards.push(ConvertToOverviewCard.toOverviewCard(element))
                 }
             }).catch((error) => {
-                errorStore.catchGetAllError(error);
+                errorStore.catchAllAxiosErrors(error, 'GetAll', '');
             });
             await this.loadAllProfilePics();
             this.loading = false;
@@ -37,7 +37,7 @@ export const useOverviewStore = defineStore('OverviewStore', {
                         element.setProfilePic(URL.createObjectURL(response.data));
                     }
                 }).catch((error) => {
-                    errorStore.catchDownloadImageError(error);
+                    errorStore.catchAllAxiosErrors(error, 'DownloadImage', '');
                 })
             }
         },

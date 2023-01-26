@@ -22,7 +22,7 @@ export const useDetailStore = defineStore('detailStore', {
                     this.details = ConvertResponseToDetailModel.toDetailModel(response.data);
                     profilePicId = response.data.profilePicId;
                 }).catch((error) => {
-                    errorStore.catchGetError(error, id);
+                    errorStore.catchAllAxiosErrors(error, 'GetId', id);
                 });
                 await axiosInstance({
                     url: `/api/v1/images/${profilePicId}`,
@@ -36,7 +36,7 @@ export const useDetailStore = defineStore('detailStore', {
                     }
                 }).catch((error) => {
                     console.log(error);
-                    errorStore.catchDownloadImageError(error);
+                    errorStore.catchAllAxiosErrors(error, 'DownloadImage', '');
                 })
                 this.loading = false;
             },
@@ -50,7 +50,7 @@ export const useDetailStore = defineStore('detailStore', {
                         this.skills.push(element.toString());
                     })
                 }).catch((error) => {
-                    errorStore.catchSkillsJobsPrimariesError(error, 'skills');
+                    errorStore.catchAllAxiosErrors(error, 'Skills', '');
                 });
                 this.loading = false;
             },
@@ -63,7 +63,7 @@ export const useDetailStore = defineStore('detailStore', {
                         this.jobs.push(element)
                     })
                 }).catch((error) => {
-                    errorStore.catchSkillsJobsPrimariesError(error, 'Jobtitel');
+                    errorStore.catchAllAxiosErrors(error, 'Jobtitel', '');
                 });
                 this.loading = false;
             },
@@ -76,7 +76,7 @@ export const useDetailStore = defineStore('detailStore', {
                         this.primarys.push(element)
                     })
                 }).catch((error) => {
-                    errorStore.catchSkillsJobsPrimariesError(error, 'Primärkompetenz');
+                    errorStore.catchAllAxiosErrors(error, 'Primärkompetenz', '');
                 });
                 this.loading = false;
             },

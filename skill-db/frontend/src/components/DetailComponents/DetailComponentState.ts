@@ -36,7 +36,7 @@ export class DetailComponentState {
             await axiosInstance.get(`/api/v1/users/${id}/locked`).then(response => {
                 this.ownerOfProfileIsLocked = Boolean(response.data);
             }).catch((error) => {
-                errorStore.catchGetProfileError(error, id);
+                errorStore.catchAllAxiosErrors(error, 'GetProfile', id);
             })
         }
     }
@@ -79,7 +79,7 @@ export class DetailComponentState {
         await axiosInstance.delete(`/api/v1/profiles/${id}`).then(() => {
             this.details = new DetailModel();
         }).catch((error) => {
-            errorStore.catchDeleteError(error, id);
+            errorStore.catchAllAxiosErrors(error, 'Delete', id);
         });
         router.push(`/`);
     }
