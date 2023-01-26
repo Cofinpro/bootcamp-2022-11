@@ -10,34 +10,18 @@
         </v-icon>
       </template>
       <span id="test_span">
-        {{ operationType === "changeRole" ?
-          `Rolle: ${operation.getParam()}, von: ${operation.getInitiator()}` :  `von: ${operation.getInitiator()}` }}
+        {{ operationType === "changeRole" ? `Rolle: ${operation.getParam()}, von: ${operation.getInitiator()}` :  `von: ${operation.getInitiator()}` }}
       </span>
     </v-tooltip>
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {UserModel} from "@/models/UserModel";
 
-export default {
-  name: "AlertWithTooltip",
-  props: {
-    user: {
-      required: true,
-      type: UserModel
-    },
-    operationType: {
-      required: true,
-      type: String
-    },
-    operations: {
-      required: true,
-      type: Array
-    }
-  },
-}
+const props = defineProps({
+  user: UserModel,
+  operationType: String,
+  operations: Array
+});
 </script>
-
-<style scoped>
-</style>

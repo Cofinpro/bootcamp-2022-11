@@ -1,15 +1,9 @@
 <template>
+  <Suspense>
     <DetailComponent/>
+  </Suspense>
 </template>
 
-<script lang="ts">
-import DetailComponent from "@/components/DetailComponent.vue";
-
-export default {
-  name: "DetailView",
-  components: { DetailComponent },
-}
+<script setup lang="ts">
+import DetailComponent from "@/components/DetailComponents/DetailComponent.vue";
 </script>
-
-<style scoped>
-</style>

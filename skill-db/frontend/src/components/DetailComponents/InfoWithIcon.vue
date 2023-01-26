@@ -7,21 +7,15 @@
   </p>
 </template>
 
-<script>
-export default {
-  name: "InfoWithIcon",
-  props: {
-    icon: {
-      required: true,
-      type: String
-    },
-    info: {
-      required: true,
-      type: String
-    }
+<script setup lang="ts">
+const props = defineProps({
+  icon: {
+    required: true,
+    type: String
+  },
+  info: {
+    required: true,
+    type: String
   }
-}
+});
 </script>
-
-<style scoped>
-</style>

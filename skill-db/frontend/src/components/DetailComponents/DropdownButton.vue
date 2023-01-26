@@ -1,34 +1,31 @@
-<template>
+x<template>
 
   <v-menu :close-on-content-click="false">
     <template v-slot:activator="{ props }">
-      <v-btn :disabled="authenticated<0"
-             :style="authenticated<0 ? {
-             color: '#BDBDBD !important',
-             border: '1px dashed #BBBBBB !important'} : ''"
-      class="pa-0" v-bind="props"
-      min-width="40px" width="40px"
-      height="35px" elevation="0">
-      <v-icon size="large">
-        mdi-cog
-      </v-icon>
+      <v-btn :disabled="state.auth()<0"
+             class="pa-0" v-bind="props"
+             min-width="40px" width="40px"
+             height="35px" elevation="0">
+        <v-icon size="large">
+          mdi-cog
+        </v-icon>
       </v-btn>
     </template>
 
     <v-list>
-      <v-list-item v-if="authenticated>-1"
-                   @click="this.$emit('edit')">
+      <v-list-item v-if="state.auth()>-1"
+                   @click="state.enterEdit()">
         <v-list-item-title>
           Bearbeiten
         </v-list-item-title>
       </v-list-item>
-      <v-list-item v-if="authenticated>1"
-                   @click="this.$emit('lock'); toLock = !toLock;">
+      <v-list-item v-if="state.auth()>1"
+                   @click="state.lockProfile(); toLock = !toLock;">
         <v-list-item-title>
-          Sperren
+          {{ state.ownerOfProfileIsLocked ? 'Entsperren' : 'Sperren' }}
         </v-list-item-title>
       </v-list-item>
-      <v-list-item v-if="authenticated>-1"
+      <v-list-item v-if="state.auth()>-1"
                    @click="toDelete = !toDelete">
         <v-list-item-title>
           Löschen
@@ -42,7 +39,7 @@
       <v-card-text>Willst du dieses Profil wirklich löschen?</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn class="ml-1 mr-1" @click="this.$emit('delete')">
+        <v-btn class="ml-1 mr-1" @click="state.deleteProfile()">
           Ja
         </v-btn>
         <v-btn class="ml-1 mr-1" @click="toDelete = !toDelete">
@@ -55,32 +52,22 @@
   <v-overlay v-model="toLock" absolute/>
 </template>
 
-<script lang="ts">
-import {useUserStore} from "@/stores/UserStore";
-import {computed, ref} from "vue";
-import {auth} from "./DropDownFunctions";
-import type {ComputedRef} from"vue";
+<script setup lang="ts">
+import {ref} from "vue";
+import {DetailComponentState} from "@/components/DetailComponents/DetailComponentState";
 
-export default {
-  name: "DropdownButton",
-  emits: [
-    'delete',
-    'edit',
-    'lock'
-  ],
-  setup() {
+const props = defineProps({state: DetailComponentState});
 
-    const authenticated: ComputedRef<number> = computed(() => auth());
+await props.state?.loadLockStatusByUserId();
 
-    return {
-      userStore: useUserStore(),
-      toDelete: ref(false),
-      toLock: ref(false),
-      authenticated: authenticated.value
-    }
-  },
-}
+const toDelete = ref(false);
+const toLock = ref(false);
 </script>
 
 <style scoped>
+
+.v-btn--disabled {
+  color: #BDBDBD !important;
+  border: 1px dashed #BBBBBB !important;
+}
 </style>

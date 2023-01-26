@@ -2,10 +2,10 @@
   <v-card elevation="2">
     <div class="d-flex justify-space-between">
       <v-card-title>
-        {{ role.getDisplayName() }}
+        {{ state.role.getDisplayName() }}
       </v-card-title>
       <v-card-actions>
-        <v-btn class="mr-2 mt-2" @click="this.$emit('clicked', {selectedUsersWithRole, allUsers, role})"
+        <v-btn class="mr-2 mt-2" @click="this.$emit('clicked')"
                elevation="0" size="small">
           Bestätigen
         </v-btn>
@@ -14,8 +14,8 @@
 
     <v-card-item class="d-flex flex-column justify-space-between">
 
-      <v-select v-model="selectedUsersWithRole"
-                :items="attachRole(allUsers)"
+      <v-select v-model="state.selectedUsersWithRole"
+                :items="state.allUsersWithRole"
                 label="Wähle Nutzer"
                 multiple
                 class="ml-5 mr-5"
@@ -27,7 +27,7 @@
           </v-chip>
           <span v-if="index === 1"
                 class="grey--text text-caption">
-                    (+{{ selectedUsersWithRole.length - 1 }} mehr)
+                    (+{{ state.selectedUsersWithRole.length - 1 }} mehr)
                   </span>
         </template>
 
@@ -37,43 +37,11 @@
   </v-card>
 </template>
 
-<script lang="ts">
-import {RoleModel} from "@/models/RoleModel";
-import type {UserModel} from "@/models/UserModel";
+<script setup lang="ts">
+import {RoleComponentState} from "@/components/RoleComponents/RoleComponentState";
 
-export default {
-  name: "RoleDropdown",
-  props: {
-    role: {
-      required: true,
-      type: RoleModel,
-    },
-    selectedUsers: {
-      required: true,
-      type: Array,
-    },
-    allUsers: {
-      required: true,
-      type: Array,
-    }
-  },
-  data(props) {
-    let selectedUsersWithRole = this.attachRole(props.selectedUsers);
-
-    return {
-      selectedUsersWithRole
-    }
-  },
-  methods: {
-    attachRole(users: UserModel[]): string[] {
-      let namesAndRoles = [] as string[];
-      users.forEach((user: UserModel) => {
-        namesAndRoles.push(`${user.getEmail()} (${user.getRole().getDisplayName()})`)
-      });
-      return namesAndRoles;
-    }
-  }
-}
+const props = defineProps({state: RoleComponentState});
+props.state?.attachRole();
 </script>
 
 <style scoped>

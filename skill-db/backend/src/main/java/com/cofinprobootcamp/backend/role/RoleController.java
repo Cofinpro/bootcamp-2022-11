@@ -28,11 +28,11 @@ public class RoleController {
      * @param identifier The unique short name of the role for internal identification
      * @return A {@code RoleDetailsOutDTO} containing any relevant information about the role, if it exists
      */
-    @GetMapping(path = "{identifier}")
+    /*@GetMapping(path = "{identifier}")
     @PreAuthorize("hasPermission(#identifier, 'RoleDetailsOutDTO', @authorityPrefix + 'ROLES_GET_BY_ID')")
     public RoleDetailsOutDTO getRoleById(@PathVariable String identifier) {
         return roleService.getRoleByIdentifier(identifier);
-    }
+    }*/
 
     /**
      * Endpoint to find all available roles.

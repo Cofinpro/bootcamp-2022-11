@@ -13,16 +13,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "References",
-  props: {
-    content: {
-      required: true,
-      type: String
-    }
+<script setup lang="ts">
+const props = defineProps({
+  content: {
+    required: true,
+    type: String
   }
-}
+});
 </script>
 
 <style scoped>

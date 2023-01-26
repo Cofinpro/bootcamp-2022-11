@@ -61,7 +61,6 @@ import {useBlobStore} from "@/stores/BlobStore";
 import {useErrorStore} from "@/stores/ErrorStore";
 
 export default {
-  name: "OverviewParent",
   components: {ExportButton, ImportButton, CreateButton, OverviewCard, ButtonWithTooltip},
   setup() {
     const overviewStore = useOverviewStore();
