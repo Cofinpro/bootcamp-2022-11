@@ -5,24 +5,26 @@
       <div class="d-md-flex flex-md-row mt-0 pt-0">
         <div class="pl-3">
           <upload-image-button
-              v-on:upload="onUploadProfilePic"
+              @upload="onUploadProfilePic"
               :old-picture="state.oldPic"
-              v-on:toggleDelete="onToggleDelete"/>
+              @toggleDelete="onToggleDelete"/>
         </div>
         <v-row class="pl-md-6 pl-3 pt-12 pt-sm-12 pt-md-2">
-          <InputBlock v-model="state"/>
+          <Suspense>
+            <InputBlock v-model="state"/>
+          </Suspense>
         </v-row>
       </div>
 
       <v-row class="pt-5">
         <v-col cols="12" lg="6" md="6" sm="12">
           <div class="d-flex flex-column">
-
-            <SkillInput v-model="state.skills"/>
-
+            <Suspense>
+              <SkillInput v-model="state.skills"/>
+            </Suspense>
             <v-text-field v-model="state.degree"
                           label="Abschluss"
-                          :rules="[v => v.length > 0 || 'Erforderlich']"/>
+                          :rules="[v => checkLength(v) || 'Erforderlich']"/>
           </div>
         </v-col>
 
@@ -30,7 +32,7 @@
           <v-textarea class="references"
                       v-model="state.references"
                       label="Referenzen"
-                      :rules="[v => v.length > 0 || 'Erforderlich!']"/>
+                      :rules="[v => checkLength(v) || 'Erforderlich!']"/>
         </v-col>
       </v-row>
 
@@ -39,7 +41,7 @@
         <ConfirmButton :update="update"
                        :is-valid="isValid"
                        @submit="update ?
-                       updateProfile(state, state.profilePicUri,picToDelete)
+                        updateProfile(state, state.profilePicUri,picToDelete)
                        : createProfile(state,state.profilePicUri)"
         />
 
@@ -58,42 +60,29 @@ import SkillInput from "@/components/EditComponents/SkillInput.vue";
 import ConfirmButton from "@/components/EditComponents/ConfirmButton.vue";
 import InputBlock from "@/components/EditComponents/inputBlock.vue";
 import LeaveButton from "@/components/EditComponents/LeaveButton.vue";
-import {checkDateFormat, checkLength, checkPhoneNumberFormat} from "@/components/EditComponents/ValidationService";
-import {EditComponentState} from "@/components/EditComponents/EditComponentState";
+import {
+  checkLength,
+  checkState
+} from "@/components/EditComponents/ValidationService";
+import {
+  emptyEditComponentState,
+  storeToEditComponentState
+} from "@/components/EditComponents/EditComponentState";
 import {computed, ref} from "vue";
 import {createProfile, updateProfile} from "./EditAxiosService";
-import {components} from "vuetify/vuetify";
 
 const props = defineProps({
   update: Boolean,
-})
+});
 
 const detailStore = useDetailStore();
 const errorStore = useErrorStore();
-detailStore.loadSkills();
-detailStore.loadPrimarys();
-detailStore.loadJobs();
 let picToDelete = ref(false);
 const state = ref();
 if (props.update) {
-  state.value = new EditComponentState
-  (
-      detailStore.details.getFirstName(),
-      detailStore.details.getLastName(),
-      detailStore.details.getDegree(),
-      detailStore.details.getBirthDate(),
-      detailStore.details.getPhoneNumber(),
-      detailStore.details.getPrimarySkill(),
-      detailStore.details.getJobTitle(),
-      detailStore.details.getSkills(),
-      detailStore.details.getReferences(),
-      detailStore.profilePic
-  )
+  state.value = storeToEditComponentState();
 } else {
-  state.value = new EditComponentState
-  (
-      '', '', '', '', '', '', '', [''], '', ''
-  )
+  state.value = emptyEditComponentState();
 }
 
 function onToggleDelete(targetValue: boolean) {
@@ -118,14 +107,7 @@ function leave() {
 }
 
 const isValid = computed(() => {
-  return (checkDateFormat(state.value.birthDate) &&
-      checkPhoneNumberFormat(state.value.phoneNumber) &&
-      checkLength(state.value.references) &&
-      checkLength(state.value.firstName) &&
-      checkLength(state.value.lastName) &&
-      checkLength(state.value.primarySkill) &&
-      checkLength(state.value.degree) &&
-      checkLength(state.value.jobTitle))
+  return checkState(state.value)
 })
 </script>
 

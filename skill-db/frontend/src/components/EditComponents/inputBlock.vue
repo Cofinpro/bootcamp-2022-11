@@ -21,7 +21,7 @@
                     label="Jobprofil"
                     class="test_jobTitle"
                     :rules="[v => checkLength(v)|| 'Erforderlich!']"
-                    :items="detailStore.jobs"/>
+                    :items="jobs"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
@@ -30,7 +30,7 @@
                     label="Primärkompetenz"
                     class="test_primarySkill"
                     :rules="[v => checkLength(v)|| 'Erforderlich!']"
-                    :items="detailStore.primarys"/>
+                    :items="primarys"/>
   </v-col>
 
   <v-col cols="12" lg="6" md="6" sm="12" class="pa-0 pr-3">
@@ -53,17 +53,18 @@
 </template>
 
 <script setup lang="ts">
-import {useDetailStore} from "@/stores/DetailStore";
 import {InputBlockState} from "@/components/EditComponents/inputBlockState";
 import {ref} from "vue";
 import {checkDateFormat, checkLength, checkPhoneNumberFormat} from "@/components/EditComponents/ValidationService";
+import {loadJobs, loadPrimarys} from "@/components/EditComponents/EditAxiosService";
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps<{
   modelValue: InputBlockState
 }>();
 const state = ref(props.modelValue);
-const detailStore = useDetailStore();
+const jobs = await loadJobs();
+const primarys = await loadPrimarys();
 </script>
 
 <style scoped>

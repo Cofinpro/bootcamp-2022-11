@@ -74,6 +74,45 @@ async function deleteProfilePicture() {
         })
 }
 
+export async function loadAvailableSkills(): Promise<string[]> {
+    let availableSkills: string[] = [];
+    const errorStore = useErrorStore();
+    await axiosInstance.get(`/api/v1/skills`).then((response) => {
+        response.data.forEach((element: object) => {
+            availableSkills.push(element.toString());
+        })
+    }).catch((error) => {
+        errorStore.catchSkillsJobsPrimariesError(error, 'skills');
+    });
+    return availableSkills;
+}
+
+export async function loadJobs(): Promise<string[]> {
+    let jobs: string[] = [];
+    const errorStore = useErrorStore();
+    await axiosInstance.get(`/api/v1/job-titles/`).then((response) => {
+        response.data.forEach((element: string) => {
+            jobs.push(element)
+        })
+    }).catch((error) => {
+        errorStore.catchSkillsJobsPrimariesError(error, 'Jobtitel');
+    });
+    return jobs;
+}
+
+export async function loadPrimarys(): Promise<string[]> {
+    let primarys: string[] = [];
+    const errorStore = useErrorStore();
+    await axiosInstance.get(`/api/v1/profiles/expertises`).then((response) => {
+        response.data.forEach((element: string) => {
+            primarys.push(element)
+        })
+    }).catch((error) => {
+        errorStore.catchSkillsJobsPrimariesError(error, 'Primärkompetenz');
+    });
+    return primarys;
+}
+
 function convertDateToISO(date: string): string {
     return `${date.split(".")[2]}-${date.split(".")[1]}-${date.split(".")[0]}`;
 }

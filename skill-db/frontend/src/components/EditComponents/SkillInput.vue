@@ -1,7 +1,7 @@
 <template>
   <v-autocomplete v-model="skills"
                   label="Skills"
-                  :items="detailStore.skills"
+                  :items="availableSkills"
                   @update:modelValue="emit('update:modelValue', skills)"
                   multiple
                   auto-select-first
@@ -20,24 +20,24 @@
 </template>
 
 <script setup lang="ts">
-import {useDetailStore} from "@/stores/DetailStore";
 import {ref} from "vue";
+import {loadAvailableSkills} from "@/components/EditComponents/EditAxiosService";
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps<{
-  modelValue: Array<string>
+  modelValue: Array<string>,
 }>()
 //definitions
 const showAddSkills = ref(false);
 const newSkills = ref('');
 const skills = ref(props.modelValue.sort());
-const detailStore = useDetailStore();
+let availableSkills = await loadAvailableSkills();
 
 //functions
 function addSkills() {
   if (newSkills.value.length > 0) {
     const newSkillsArray = newSkills.value.trim().split(',');
-    detailStore.skills = detailStore.skills.concat(newSkillsArray);
+    availableSkills = availableSkills.concat(newSkillsArray);
     skills.value = skills.value.concat(newSkillsArray);
   }
   newSkills.value = '';
