@@ -1,5 +1,7 @@
 <template>
-  <UserComponent/>
+  <Suspense>
+    <UserComponent/>
+  </Suspense>
 </template>
 
 <script setup lang="ts">
