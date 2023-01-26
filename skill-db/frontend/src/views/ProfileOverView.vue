@@ -6,9 +6,8 @@
 
 <script setup lang="ts">
 import {useOverviewStore} from "@/stores/OverviewStore";
-import ProfileOverviewComponent from "@/components/ProfileOverviewComponent.vue";
+import ProfileOverviewComponent from "@/components/ProfileOverviewComponents/ProfileOverviewComponent.vue";
 
-const name = "ProfileOverView";
 const overviewStore = useOverviewStore();
 overviewStore.loadOverview();
 </script>

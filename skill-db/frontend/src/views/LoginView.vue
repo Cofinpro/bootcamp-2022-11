@@ -72,7 +72,6 @@ import ComicOfTheDay from "@/components/ComicOfTheDay.vue";
 import {useComicStore} from "@/stores/ComicStore";
 import {ref} from "vue";
 
-const name = "LoginView";
 const authStore = useAuthStore();
 const comicStore = useComicStore();
 comicStore.loadComicOfTheDay();

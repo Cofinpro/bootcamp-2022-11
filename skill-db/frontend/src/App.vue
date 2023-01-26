@@ -10,18 +10,14 @@
   </v-app>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import SideBar from './components/SideBarComponents/SideBar.vue'
 import ErrorSnackbar from "@/components/ErrorSnackbar.vue";
-export default {
-  components: { ErrorSnackbar, SideBar },
-  watch: {
-    '$route' (to, from) {
-      document.title = to.meta.title || 'Website'
-    }
-  }
-}
-</script>
+import {watch} from "vue";
+import {useRoute} from "vue-router";
 
-<style scoped>
-</style>
+const route = useRoute();
+watch(route, (to) => {
+  document.title = to.meta.title || 'Website';
+});
+</script>

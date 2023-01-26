@@ -10,7 +10,6 @@
 import EditComponent from "@/components/EditComponents/EditComponent.vue";
 import {useDetailStore} from "@/stores/DetailStore";
 
-const name = "NewView";
 const detailStore = useDetailStore();
 </script>
 
