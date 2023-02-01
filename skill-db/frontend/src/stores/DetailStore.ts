@@ -6,11 +6,8 @@ import axiosInstance from "@/axios";
 export const useDetailStore = defineStore('detailStore', {
         state: () => ({
             details: new DetailModel(),
-            loading: Boolean(false),
-            skills: [] as string[],
-            jobs: [] as string[],
-            primarys: [] as string[],
             profilePic: '',
+            loading: Boolean(false),
         }),
 
         actions: {
@@ -38,46 +35,6 @@ export const useDetailStore = defineStore('detailStore', {
                     console.log(error);
                     errorStore.catchAllAxiosErrors(error, 'DownloadImage', '');
                 })
-                this.loading = false;
-            },
-
-            async loadSkills(): Promise<void> {
-                this.skills = [];
-                this.loading = true;
-                const errorStore = useErrorStore();
-                await axiosInstance.get(`/api/v1/skills`).then((response) => {
-                    response.data.forEach((element: object) => {
-                        this.skills.push(element.toString());
-                    })
-                }).catch((error) => {
-                    errorStore.catchAllAxiosErrors(error, 'Skills', '');
-                });
-                this.loading = false;
-            },
-            async loadJobs(): Promise<void> {
-                this.jobs = [];
-                this.loading = true;
-                const errorStore = useErrorStore();
-                await axiosInstance.get(`/api/v1/job-titles/`).then((response) => {
-                    response.data.forEach((element: string) => {
-                        this.jobs.push(element)
-                    })
-                }).catch((error) => {
-                    errorStore.catchAllAxiosErrors(error, 'Jobtitel', '');
-                });
-                this.loading = false;
-            },
-            async loadPrimarys(): Promise<void> {
-                this.primarys = [];
-                this.loading = true;
-                const errorStore = useErrorStore();
-                await axiosInstance.get(`/api/v1/profiles/expertises`).then((response) => {
-                    response.data.forEach((element: string) => {
-                        this.primarys.push(element)
-                    })
-                }).catch((error) => {
-                    errorStore.catchAllAxiosErrors(error, 'Primärkompetenz', '');
-                });
                 this.loading = false;
             },
         },

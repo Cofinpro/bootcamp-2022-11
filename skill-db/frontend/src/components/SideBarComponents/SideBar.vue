@@ -52,8 +52,8 @@ const props = defineProps({id: Number});
 const authStore = useAuthStore();
 let drawer = ref(true);
 const admin: ComputedRef<boolean> = computed(() => isAdmin());
-const profileId: ComputedRef<String> = computed(() => getProfileId());
 const profile: ComputedRef<boolean> = computed(() => hasProfile());
+const profileId: ComputedRef<String> = computed(() => getProfileId());
 </script>
 
 <style scoped>

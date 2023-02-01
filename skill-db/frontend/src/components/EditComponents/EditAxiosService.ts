@@ -3,6 +3,7 @@ import {useDetailStore} from "@/stores/DetailStore";
 import {useErrorStore} from "@/stores/ErrorStore";
 import axiosInstance from "@/axios";
 import router from "@/router";
+import {useUserStore} from "@/stores/UserStore";
 
 export async function createProfile(profile: MinimumDetailModelInterface, profilePicUri: string): Promise<void>{
     const detailStore = useDetailStore();
@@ -28,6 +29,8 @@ export async function createProfile(profile: MinimumDetailModelInterface, profil
             errorStore.catchAllAxiosErrors(error, 'PostPatch',  '');
         });
     detailStore.loading = false;
+    const userStore = useUserStore()
+    userStore.hasProfile = true;
     await router.push('/');
 }
 
@@ -72,6 +75,45 @@ async function deleteProfilePicture() {
             console.log(error)
             errorStore.catchAllAxiosErrors(error, 'Delete', id);
         })
+}
+
+export async function loadAvailableSkills(): Promise<string[]> {
+    let availableSkills: string[] = [];
+    const errorStore = useErrorStore();
+    await axiosInstance.get(`/api/v1/skills`).then((response) => {
+        response.data.forEach((element: object) => {
+            availableSkills.push(element.toString());
+        })
+    }).catch((error) => {
+        errorStore.catchSkillsJobsPrimariesError(error, 'skills');
+    });
+    return availableSkills;
+}
+
+export async function loadJobs(): Promise<string[]> {
+    let jobs: string[] = [];
+    const errorStore = useErrorStore();
+    await axiosInstance.get(`/api/v1/job-titles/`).then((response) => {
+        response.data.forEach((element: string) => {
+            jobs.push(element)
+        })
+    }).catch((error) => {
+        errorStore.catchSkillsJobsPrimariesError(error, 'Jobtitel');
+    });
+    return jobs;
+}
+
+export async function loadPrimarys(): Promise<string[]> {
+    let primarys: string[] = [];
+    const errorStore = useErrorStore();
+    await axiosInstance.get(`/api/v1/profiles/expertises`).then((response) => {
+        response.data.forEach((element: string) => {
+            primarys.push(element)
+        })
+    }).catch((error) => {
+        errorStore.catchSkillsJobsPrimariesError(error, 'Primärkompetenz');
+    });
+    return primarys;
 }
 
 function convertDateToISO(date: string): string {

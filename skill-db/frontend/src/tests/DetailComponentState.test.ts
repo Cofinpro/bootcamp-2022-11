@@ -19,7 +19,7 @@ describe('DetailComponentState',() => {
     let state: DetailComponentState;
 
     beforeEach( () => {
-        state = new DetailComponentState();
+        state = new DetailComponentState('1');
     });
 
     it('loadLockStatusByUserId() works for admin', async () => {

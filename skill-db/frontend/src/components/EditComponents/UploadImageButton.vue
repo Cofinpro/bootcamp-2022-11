@@ -38,88 +38,77 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import {useErrorStore} from "@/stores/ErrorStore";
 import {ref} from "vue";
 
-export default {
-  name: "UploadImageButton",
-  emits: ['toggleDelete', 'upload'],
-  props: {
-    oldPicture: String,
-  },
-  setup(props, context) {
-    const errorStore = useErrorStore();
-    const MAX_UPLOAD_SIZE = 20000000;  // Angabe in bytes, entspricht 20 MB
-    const imageDataUri = ref('');
-    const oldPic = ref(props.oldPicture);
-    const imageInput = ref();
+
+const emit = defineEmits(['toggleDelete', 'upload'])
+const props = defineProps({
+  oldPicture: String
+})
+const errorStore = useErrorStore();
+const MAX_UPLOAD_SIZE = 20000000;  // Angabe in bytes, entspricht 20 MB
+const imageDataUri = ref('');
+const oldPic = ref(props.oldPicture);
+const imageInput = ref();
 
 
-    function deleteProfilePicture() {
-      if (oldPic.value && !imageDataUri) {
-        //image is persisted
-        imageDataUri.value = '';
-        imageInput.value = undefined;
-        convertImageAndEmitToParent();
-        context.emit('toggleDelete', true);
-      }
-      //image is not persisted yet, local deleting sufficient
-      else {
-        oldPic.value = '';
-        imageDataUri.value = '';
-        imageInput.value = undefined;
-        context.emit('toggleDelete', true);
-        convertImageAndEmitToParent();
-      }
-    }
-    async function convertImageAndEmitToParent() {
-      if (imageInput && imageInput.value) {
-        const file = imageInput.value.files[0];
-        if (!(file instanceof Blob) || ! isPermissibleSize(file)) {
-          errorStore.catchError(new Error('Falsche Größe: max. 20 MB zulässig!'));
-          return;
-        }
-        const image = new Image();
-        image.onload = () => {
-          if (!isInPortraitMode(image)) {
-            errorStore.catchError(new Error('Falsches Format: Nur Hochformat zulässig!'));
-            return;
-          }
-          const reader = new FileReader();
-          reader.onload = event => {
-            imageDataUri.value = event.target.result;
-            context.emit('upload', imageDataUri.value);
-            context.emit('toggleDelete', false)
-          }
-          reader.readAsDataURL(file);
-        };
-        image.src = URL.createObjectURL(file);
-      } else {
-        context.emit('upload', undefined)
-      }
-    }
-    async function openFileDialog() {
-      imageInput.value.click()
-    }
-    function isPermissibleSize(file) {
-      return file.size <= MAX_UPLOAD_SIZE;
-    }
+function deleteProfilePicture() {
+  if (oldPic.value && !imageDataUri) {
+    //image is persisted
+    imageDataUri.value = '';
+    imageInput.value = undefined;
+    convertImageAndEmitToParent();
+    emit('toggleDelete', true);
+  }
+  //image is not persisted yet, local deleting sufficient
+  else {
+    oldPic.value = '';
+    imageDataUri.value = '';
+    imageInput.value = undefined;
+    emit('toggleDelete', true);
+    convertImageAndEmitToParent();
+  }
+}
 
-    function isInPortraitMode(image) {
-      return image.height > image.width;
+async function convertImageAndEmitToParent() {
+  if (imageInput && imageInput.value) {
+    const file = imageInput.value.files[0];
+    if (!(file instanceof Blob) || !isPermissibleSize(file)) {
+      errorStore.catchError(new Error('Falsche Größe: max. 20 MB zulässig!'));
+      return;
     }
-    return {
-      errorStore,
-      MAX_UPLOAD_SIZE,
-      imageDataUri,
-      oldPic,
-      imageInput,
-      deleteProfilePicture,
-      convertImageAndEmitToParent,
-      openFileDialog
-    }
-  },
+    const image = new Image();
+    image.onload = () => {
+      if (!isInPortraitMode(image)) {
+        errorStore.catchError(new Error('Falsches Format: Nur Hochformat zulässig!'));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = event => {
+        imageDataUri.value = event.target.result;
+        emit('upload', imageDataUri.value);
+        emit('toggleDelete', false)
+      }
+      reader.readAsDataURL(file);
+    };
+    image.src = URL.createObjectURL(file);
+  } else {
+    emit('upload', undefined)
+  }
+}
+
+async function openFileDialog() {
+  imageInput.value.click()
+}
+
+function isPermissibleSize(file) {
+  return file.size <= MAX_UPLOAD_SIZE;
+}
+
+function isInPortraitMode(image) {
+  return image.height > image.width;
 }
 </script>
 
