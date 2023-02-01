@@ -12,7 +12,3 @@ export default {
   name: "LeaveButton",
 }
 </script>
-
-<style scoped>
-
-</style>
