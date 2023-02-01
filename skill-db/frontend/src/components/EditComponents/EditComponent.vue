@@ -99,7 +99,7 @@ function onUploadProfilePic(base64String: string) {
 function leave() {
   console.log(state);
   if (props.update) {
-    const id = detailStore.details.getId();
+    const id = router.currentRoute.value.params.id.toString();
     router.push({name: 'userDetails', params: {id}});
   } else {
     router.push('/');
