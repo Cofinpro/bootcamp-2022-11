@@ -20,7 +20,7 @@ public class ExcelGenerator {
     private final XSSFSheet sheet;
 
     /**
-     * @param profileList profiles to be exportet to excel
+     * @param profileList profiles to be exported to excel
      */
     public ExcelGenerator(List<ProfileDetailsOutDTO> profileList) {
         this.profileList = profileList;
@@ -29,7 +29,8 @@ public class ExcelGenerator {
     }
 
     /**
-     * writes header of excel workbook from ProfiledetailsOutDTO Class
+     * Writes header of Excel workbook from ProfileDetailsOutDTO Class
+     *
      * @return workbook for testing purposes
      */
     public Workbook writeHeader() {
@@ -56,7 +57,8 @@ public class ExcelGenerator {
     }
 
     /**
-     * Writes data into excel workbook from ProfileDetailsOutDTO List
+     * Writes data into Excel workbook from ProfileDetailsOutDTO List
+     *
      * @return Workbook for testing purposes
      */
     public Workbook writeContent() {
@@ -80,8 +82,6 @@ public class ExcelGenerator {
             createCell(row, 8, profile.lastName(), style);
             createCell(row, 9, profile.birthDate(), style);
             createCell(row, 10, profile.age(), style);
-
-
         }
         for (int i = 0; i < 10; i++) {
             sheet.autoSizeColumn(i);
@@ -90,8 +90,9 @@ public class ExcelGenerator {
     }
 
     /**
-     * Helper function for creation of cells with a fitting celltype.
+     * Helper function for creation of cells with a fitting cell type.
      * might have to be expanded if new data types are added
+     *
      * @param row Row object
      * @param columnCount integer describing col to write in
      * @param valueOfCell value to write
@@ -99,9 +100,9 @@ public class ExcelGenerator {
      */
     private void createCell(Row row, int columnCount, Object valueOfCell, CellStyle style) {
         if (valueOfCell instanceof Integer) {
-            //if Over 25000 profiles exists, they will not be displayed correctly because every
-            // int cell style will be interpreted as seperate style!
-            // (and excel can only handle 25000 styles)
+            // if Over 25000 profiles exists, they will not be displayed correctly because every
+            // int cell style will be interpreted as separate style!
+            // (and Excel can only handle 25000 styles)
             Cell cell = row.createCell(columnCount, CellType.NUMERIC);
             cell.setCellStyle(style);
             cell.setCellValue((Integer) valueOfCell);
@@ -122,7 +123,7 @@ public class ExcelGenerator {
 
     /**
      * @param outputStream outputstream to which excel should be written
-     * @throws IOException if something goes wrong with outputstream!
+     * @throws IOException if something goes wrong with outputStream!
      */
     public void createExcel(OutputStream outputStream)
             throws IOException {

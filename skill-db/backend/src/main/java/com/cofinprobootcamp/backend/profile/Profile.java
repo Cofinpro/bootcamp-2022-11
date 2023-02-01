@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Set;
 
-//TODO: jobtitle als enum oder datenbank damit wir ein drop-down draus machen können?
 @Entity
 @Getter
 @Setter
@@ -51,7 +50,7 @@ public class Profile {
     private Set<Skill> skillSet;
     private LocalDate birthDate;
 
-    @OneToOne //TODO: cascade types
+    @OneToOne
     @JoinColumn(unique = true)
     @Builder.Default
     private User owner = null; // Default value

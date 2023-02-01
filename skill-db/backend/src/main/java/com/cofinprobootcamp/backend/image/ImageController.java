@@ -1,6 +1,5 @@
 package com.cofinprobootcamp.backend.image;
 
-
 import com.cofinprobootcamp.backend.exceptions.MailNotSentException;
 import com.cofinprobootcamp.backend.exceptions.ProfileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Objects;
 
 
@@ -18,13 +18,16 @@ public class ImageController {
 
     private final ImageService imageService;
 
-
     @Autowired
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
-
     }
 
+    /**
+     * Endpoint to get an image from the database.
+     *
+     * @return A byte representation of the {@link Image}.
+     */
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'IMAGES_GET_BY_ID')")
     public ResponseEntity<byte[]> getImage(@PathVariable Long id) {

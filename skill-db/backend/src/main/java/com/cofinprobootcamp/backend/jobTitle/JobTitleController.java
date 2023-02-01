@@ -1,6 +1,4 @@
 package com.cofinprobootcamp.backend.jobTitle;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,16 +13,14 @@ public class JobTitleController {
         this.jobTitleService = jobTitleService;
     }
 
+    /**
+     * Endpoint to find all available job titles from the database.
+     *
+     * @return A {@link List} of {@link String} representations of each {@link JobTitle}.
+     */
     @GetMapping("")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'JOB_TITLES_GET_ALL')")
     public List<String> getJobTitles() {
         return jobTitleService.getAllJobTitles();
     }
-
-    /*@ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("")
-    @PreAuthorize("hasAuthority(@authorityPrefix + 'JOB_TITLES_POST_NEW')")
-    public void addJobTitle(@RequestBody String jobTitle) {
-        jobTitleService.addNewJobTitle(jobTitle);
-    }*/
 }

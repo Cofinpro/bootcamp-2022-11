@@ -12,11 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Role service.
- *
- * @version 2.0
- */
 @Service
 public class RoleService {
 

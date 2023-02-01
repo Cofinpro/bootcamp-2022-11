@@ -14,11 +14,11 @@ import org.hibernate.validator.constraints.Length;
  * This is plain data object representing the user of the skills platform,
  * i.e., it functions as their account information.
  * This class is an entity to be persisted into the database, the table
- * of persisted {@code User} objects is called "app_users".
+ * of persisted {@link User} objects is called "app_users".
  * <br>
- * {@code User} contains information about a user's email (unique identifier),
+ * {@link User} contains information about a user's email (unique identifier),
  * their status (locked or unlocked), their role (defining user rights) and
- * their profile (defined through class {@code Profile}.
+ * their profile (defined through class {@link Profile}.
  */
 @Getter
 @Setter
@@ -36,8 +36,6 @@ public class User {
     @Column(unique = true, nullable = false)
     String outerId;
 
-
-    //TODO: Schönere exception werfen falls email schon in use
     /**
      * The User entity's username. Is always an email address.
      */

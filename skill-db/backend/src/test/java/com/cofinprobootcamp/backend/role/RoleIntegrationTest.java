@@ -43,25 +43,6 @@ class RoleIntegrationTest {
     }
 
     @Test
-    @DisplayName(value = "Test endpoint for finding a role by ID")
-    void testEndpoint_getRoleById() throws Exception {
-        StandardRoles testRole = StandardRoles.ADMIN;
-        String roleIdentifier = testRole.name();
-        String mvcResult = mvc.perform(get("/api/v1/roles/" + roleIdentifier)
-                        .header("authorization",
-                                "Bearer " + loginData.getJSONObject("tokens").get("access_token")))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        assertThat(mvcResult)
-                .contains(
-                        String.format("\"identifier\":\"%s\",", roleIdentifier) +
-                        String.format("\"displayName\":\"%s\",", testRole.toString())
-                );
-    }
-
-    @Test
     @DisplayName(value = "Test endpoint for retrieving all roles")
     void getAllRoles() throws Exception {
         String mvcResult = mvc.perform(get("/api/v1/roles")

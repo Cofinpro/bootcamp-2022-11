@@ -6,11 +6,6 @@ import com.cofinprobootcamp.backend.role.dto.RoleOverviewOutDTO;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Role director
- *
- * @version 2.0
- */
 public class RoleDirector {
     public static RoleDetailsOutDTO roleDetailsViewFromEnumType(StandardRoles role) {
         return new RoleDetailsOutDTO(

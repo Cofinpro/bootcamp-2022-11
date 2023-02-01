@@ -14,6 +14,11 @@ public class SkillController {
         this.skillService = skillService;
     }
 
+    /**
+     * Endpoint to find all available skills from the database.
+     *
+     * @return A {@link List} of {@link String} representations of each {@link Skill}.
+     */
     @GetMapping("")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'SKILLS_GET_ALL')")
     public List<String> getSkills() {
