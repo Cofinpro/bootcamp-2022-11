@@ -44,7 +44,7 @@ export const useErrorStore = defineStore(
             catchAllAxiosErrors(error: AxiosError, source: string, id: string) {
                 this.hasError = true;
                 if(error.response === undefined) {
-                    this.handleUndefined();
+                    this.handleUndefined(error, source);
                 } else {
                     if (error.response.status === 400) {
                         this.handle400(error, source);
@@ -68,8 +68,8 @@ export const useErrorStore = defineStore(
 
             handleUndefined(error: AxiosError, source:string) {
                 this.errorText = this.errorMessages.unknownError;
-                if (source === 'Import' && error.response.data.message.contains('Mapping')) {
-                    const colNameNotFound = `${error.response.data.message
+                if (source === 'Import' && error.response?.data.message.contains('Mapping')) {
+                    const colNameNotFound = `${error.response?.data.message
                         .toString()
                         .split(",")[0]
                         .split(' ')[2]}`
