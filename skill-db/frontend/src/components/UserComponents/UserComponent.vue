@@ -66,8 +66,8 @@ const userStore = useUserStore();
 userStore.loadUsers();
 
 const state = new UserComponentState();
-state.loadPendingRoleChanges();
-state.loadPendingUserLocks();
+await state.loadPendingRoleChanges();
+await state.loadPendingUserLocks();
 </script>
 
 <style scoped>

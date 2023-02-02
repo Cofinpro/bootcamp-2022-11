@@ -26,7 +26,7 @@ export const useAuthStore = defineStore('auth', {
                 this.role = result.data.role;
                 router.push('/');
             }).catch((error) => {
-                errorStore.catchTokenError(error);
+                errorStore.catchAllAxiosErrors(error, 'Token', '');
             });
         },
         logout(): void {
@@ -55,7 +55,7 @@ export const useAuthStore = defineStore('auth', {
                     this.loggedIn = false;
                     return false;
                 }).catch((error) => {
-                    errorStore.catchTokenError(error);
+                    errorStore.catchAllAxiosErrors(error, 'Token', '');
                     this.loggedIn = false;
                     return false;
                 })

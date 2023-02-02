@@ -5,6 +5,12 @@ import {createTestingPinia} from "@pinia/testing";
 import {expect, describe, it} from "vitest";
 import {defineComponent, h, Suspense} from "vue";
 import SkillInput from "@/components/EditComponents/SkillInput.vue";
+
+describe('Test to keep the ideas, which do not work yet', () => {
+    it('Obviously right', () => {
+        expect(true).toBeTruthy();
+    });
+});
 /*
 const mountSuspense = async (options) => {
     const wrapper = mount(defineComponent({

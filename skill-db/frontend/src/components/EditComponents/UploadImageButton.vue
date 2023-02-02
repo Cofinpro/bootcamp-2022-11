@@ -40,7 +40,7 @@
 
 <script setup>
 import {useErrorStore} from "@/stores/ErrorStore";
-import {ref, onMounted} from "vue";
+import {ref} from "vue";
 
 
 const emit = defineEmits(['toggleDelete', 'upload'])
@@ -76,13 +76,13 @@ async function convertImageAndEmitToParent() {
   if (imageInput && imageInput.value) {
     const file = imageInput.value.files[0];
     if (!(file instanceof Blob) || !isPermissibleSize(file)) {
-      this.errorStore.catchUploadImageError(new Error('Falsche Größe: max. 20 MB zulässig!'));
+      errorStore.catchError(new Error('Falsche Größe: max. 20 MB zulässig!'));
       return;
     }
     const image = new Image();
     image.onload = () => {
       if (!isInPortraitMode(image)) {
-        errorStore.catchUploadImageError(new Error('Falsches Format: Nur Hochformat zulässig!'));
+        errorStore.catchError(new Error('Falsches Format: Nur Hochformat zulässig!'));
         return;
       }
       const reader = new FileReader();
@@ -110,7 +110,6 @@ function isPermissibleSize(file) {
 function isInPortraitMode(image) {
   return image.height > image.width;
 }
-
 </script>
 
 <style scoped>

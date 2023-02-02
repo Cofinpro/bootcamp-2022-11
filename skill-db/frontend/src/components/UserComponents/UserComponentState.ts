@@ -24,7 +24,7 @@ export class UserComponentState {
                 this.roleChangeOperations.push(ConvertToOperationsModel.toOperationsModel(element));
             });
         }).catch((error) => {
-            errorStore.catchGetAllError(error);
+            errorStore.catchAllAxiosErrors(error, 'GetAll', '');
         });
     }
 
@@ -38,7 +38,7 @@ export class UserComponentState {
                 this.lockUserOperations.push(ConvertToOperationsModel.toOperationsModel(element));
             });
         }).catch((error) => {
-            errorStore.catchGetAllError(error);
+            errorStore.catchAllAxiosErrors(error, 'GetAll', '');
         });
     }
 
