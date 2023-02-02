@@ -26,7 +26,9 @@ public class ProfileController {
     }
 
     /**
-     * @param profileInDTO creates profile in database if authorized (401.UNAUTHORIZED)
+     * Endpoint to create a profile in the database from the given information.
+     *
+     * @param profileInDTO The {@link ProfileCreateInDTO} representation of a profile.
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "")
@@ -39,9 +41,10 @@ public class ProfileController {
     }
 
     /**
-     * @param id           id of profile
-     * @param profileInDTO profile object with changes
-     *                     updates profile by Id
+     * Endpoint to update a profile, that already exists in the database.
+     *
+     * @param id           The id of the potentially existing {@link Profile}
+     * @param profileInDTO The {@link ProfileUpdateInDTO} representation of a {@link Profile} with changes
      */
     @PatchMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, @authorityPrefix + 'PROFILES_PATCH_BY_ID')")
@@ -51,20 +54,23 @@ public class ProfileController {
     }
 
     /**
-     * @param id delete profile by ID (This expects an outerId)
+     * Endpoint to delete a specific profile identified by outerId.
+     *
+     * @param id The outerId of a possibly existing {@link Profile}
      */
     @DeleteMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, 'void', @authorityPrefix + 'PROFILES_DELETE_BY_ID')")
     public void deleteProfileById(@PathVariable String id)
             throws ProfileNotFoundException {
-        Profile profile = profileService.getProfileByOuterId(id); // Find profile by its outerId
+        Profile profile = profileService.getProfileByOuterId(id);
         userService.detachProfileFromUser(profile.getOwner().getId());
         profileService.deleteProfileByOuterId(id);
     }
 
     /**
-     * @param id outer profile ID
-     * @return profile detail view
+     * Endpoint to get a profile by its outerId.
+     * @param id The outerId of a possible existing {@link Profile}
+     * @return A {@link ProfileDetailsOutDTO} representation of a {@link Profile}
      */
     @GetMapping(path = "/{id}")
     @PreAuthorize("hasPermission(#id, 'ProfileDetailsOutDTO', @authorityPrefix + 'PROFILES_GET_BY_ID')")
@@ -74,7 +80,8 @@ public class ProfileController {
     }
 
     /**
-     * @return get all overview DTOs
+     * Endpoint to get all short information of existing profiles to display in the overview.
+     * @return A {@link List} of {@link ProfileOverviewOutDTO} representations of a shorted {@link Profile}
      */
     @GetMapping(path = "")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_GET_ALL')")
@@ -83,9 +90,9 @@ public class ProfileController {
     }
 
     /**
-     * Fetches a list of all defined primary expertises from the server.
+     * Endpoint to get a list of all defined primary expertises from the database.
      *
-     * @return A list of unique {@code String}s representing the types of expertises
+     * @return A {@link List} of unique {@link String}s representing the types of expertises
      */
     @GetMapping(path = "/expertises")
     @PreAuthorize("hasAuthority(@authorityPrefix + 'PROFILES_EXPERTISES_GET_ALL')")
@@ -94,7 +101,7 @@ public class ProfileController {
     }
 
     /**
-     * generates excel and writes excel to responses outputstream
+     * Endpoint to generate an Excel file.
      *
      * @param response to get request
      * @throws IOException if response is not writable
@@ -112,11 +119,10 @@ public class ProfileController {
     }
 
     /**
-     *
-     * @param file to import from.
-     *             CSV in GERMAN format (aka semicolon separated values)
+     *Endpoint to import from a CSV file in GERMAN format (aka semicolon seperated values).
+     * @param file to import from
      * @throws IOException not
-     * @throws ImageFormatNotAllowedException as in createprofile
+     * @throws ImageFormatNotAllowedException as in createProfile
      * @throws CSVFormatException if columns in csv can not be read
      */
     @PostMapping(path="/import",  consumes="multipart/form-data")

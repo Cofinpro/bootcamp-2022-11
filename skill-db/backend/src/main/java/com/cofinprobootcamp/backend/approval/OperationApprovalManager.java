@@ -4,9 +4,7 @@ package com.cofinprobootcamp.backend.approval;
  * This interface represents a manager that is capable of evaluating and eventually approving
  * {@link PendingOperation}s of the given type.
  *
- * @author l-rehm
- * @version 1.0
- * @param <P> The type of {@code PendingOperation} to handle
+ * @param <P> The type of {@link PendingOperation} to handle
  */
 @FunctionalInterface
 public interface OperationApprovalManager<P extends PendingOperation<?> > {

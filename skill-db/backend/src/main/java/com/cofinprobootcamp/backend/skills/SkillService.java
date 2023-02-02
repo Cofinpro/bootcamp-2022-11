@@ -26,10 +26,6 @@ public class SkillService {
                 .collect(Collectors.toSet());
     }
 
-    /**
-     * Gets all available skills from the database.
-     * @return A {@link List} of {@link String} representations of each {@link Skill}.
-     */
     public List<String> getAllSkills() {
         return skillRepository
                 .findAll()

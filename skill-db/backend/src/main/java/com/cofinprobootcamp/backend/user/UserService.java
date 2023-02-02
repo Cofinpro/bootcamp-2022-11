@@ -72,7 +72,7 @@ public class UserService {
             if (deletedUsers != 1L) {
                 String msg = "Beim Löschen eines Nutzers trat ein schwerwiegendes Problem auf!";
                 throw new InternalOperationFailedException(msg,
-                        new Exception("The number of deleted users following delete operation on repository was not equal to 1"));
+                        new Exception("Die Anzahl gelöschter Nutzer ist nicht 1."));
             }
         } else {
             throw new UserNotFoundException();
