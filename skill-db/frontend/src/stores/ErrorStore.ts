@@ -26,228 +26,144 @@ export const useErrorStore = defineStore(
                 this.errorText = '';
             },
 
-            catchGetAllError(error: AxiosError) {
+            catchCustomAxios(error: AxiosError) {
                 this.hasError = true;
-                if (error.response == undefined) {
-                    this.errorText = this.errorMessages.unknownError;
-                } else {
-                    if (error.response.status === 401) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.unauthorized;
-                    } else if (error.response.status === 403) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.notAllowed;
-                    } else if (error.response.status === 500) {
-                        this.errorText = this.errorMessages.internalServerError;
-                    } else {
-                        this.errorText = this.errorMessages.unknownError;
-                    }
-                }
-            },
-
-            catchImportError(error: AxiosError) {
-                if (error.response.data.message) {
-                    this.catchPostPatchError(error);
-                    if (this.errorText === this.errorMessages.unknownError && error.response.data.message.contains('Mapping')) {
-                        const colNameNotFound = `${error.response.data.message
-                            .toString()
-                            .split(",")[0]
-                            .split(' ')[2]}`
-                        this.errorText = `Spalte \"${colNameNotFound}\" wurde in der CSV Datei nicht gefunden!`;
-                    }
-                } else {
-                    this.hasError = true;
-                    this.errorText = error.response.data;
-                }
-            },
-
-            catchPostPatchError(error: AxiosError) {
-                this.hasError = true;
-                if (error.response == undefined && error.code !== '202') {
-                    this.errorText = this.errorMessages.unknownError;
-                } else {
-                    //http status 202 isn't recognized as error in UserStore -> custom AxiosError
-                    if (error.code === '202') {
-                        this.errorText = error.message;
-                        this.allowed = true;
-                    } else if (error.response?.status === 400) {
-                        this.handle400forProfile(error);
-                    } else if (error.response?.status === 401) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.unauthorized;
-                    } else if (error.response?.status === 500) {
-                        this.errorText = this.errorMessages.internalServerError;
-                    } else if (error.response?.status === 403) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.notAllowed;
-                    } else if (error.response?.status === 409) {
-                        this.errorText = 'Der Nutzer hat bereits ein Profil!';
-                    } else if (error.response?.status === 404) {
-                        this.errorText = `${error.response?.data.message}`;
-                    } else if (error.response?.status === 502) {
-                        this.errorText = this.errorMessages.mailNotSent;
-                        this.allowed = true;
-                    } else {
-                        this.errorText = this.errorMessages.unknownError;
-                    }
-                }
-            },
-
-            handle400forProfile(error: AxiosError) {
-                const message: string = error.response?.data.message.toString();
-                if (message === 'Der Nutzer hat bereits ein Profil!') {
-                    this.errorText = message;
-                } else if (message.includes('VALIDATION')) {
-                    let innerMessage = message.split(/(\[|\])/)[2];
-                    this.errorText = innerMessage;
-                } else if (message === 'Datum nicht in passendem Format!') {
-                    this.errorText = message;
+                if (error.code === '202') {
+                    this.errorText = error.message;
+                    this.allowed = true;
                 } else {
                     this.errorText = this.errorMessages.unknownError;
                 }
             },
 
-            catchSkillsJobsPrimariesError(error: AxiosError, name: String) {
-                this.hasError = true;
-                if (error.response == undefined) {
-                    this.errorText = this.errorMessages.unknownError;
-                } else {
-                    this.errorText += ` ${name} wurde nicht korrekt vom Server erhalten!`
-                }
-            },
-
-            catchUploadImageError(error: Error) {
+            catchError (error: Error) {
                 this.hasError = true;
                 this.errorText = error == undefined ? this.errorMessages.unknownError : error.message;
             },
 
-            catchDownloadImageError(error: AxiosError) {
+            catchAllAxiosErrors(error: AxiosError, source: string, id: string) {
                 this.hasError = true;
-                if (error.response == undefined) {
-                    this.errorText = this.errorMessages.unknownError;
+                if(error.response === undefined) {
+                    this.handleUndefined(error, source);
                 } else {
-                    if (error.response.status === 401) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.unauthorized;
-                    } else {
-                        this.errorText = error.message;
-                    }
-                }
-            },
-
-            catchGetError(error: AxiosError, id: String) {
-                this.hasError = true;
-                if (error.response == undefined) {
-                    this.errorText = this.errorMessages.unknownError;
-                } else {
-                    if (error.response.status === 404) {
-                        this.errorText = `Profil ${id} existiert nicht!`;
+                    if (error.response.status === 400) {
+                        this.handle400(error, source);
                     } else if (error.response.status === 401) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.unauthorized;
+                        this.handle401(error);
+                    } else if (error.response.status == 403) {
+                        this.handle403();
+                    } else if (error.response.status === 404) {
+                        this.handle404(error, source, id);
+                    } else if (error.response.status === 409) {
+                        this.handle409(error, source);
                     } else if (error.response.status === 500) {
-                        this.errorText = this.errorMessages.internalServerError;
-                    } else if (error.response.status === 400) {
-                        this.errorText = this.errorMessages.idNotFound;
-                    }
-                }
-            },
-
-            catchGetProfileError(error: AxiosError, id: String) {
-                this.hasError = true;
-                if (error.response == undefined) {
-                    this.errorText = this.errorMessages.unknownError;
-                } else {
-                    if (error.response.status === 404) {
-                        this.errorText = `Nutzer ${id} existiert nicht!`;
-                    } else if (error.response.status === 401) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.unauthorized;
-                    } else if (error.response.status === 500) {
-                        this.errorText = this.errorMessages.internalServerError;
-                    } else if (error.response.status === 400) {
-                        this.errorText = this.errorMessages.idNotFound;
-                    }
-                }
-            },
-
-            catchDeleteError(error: AxiosError, id: String) {
-                this.hasError = true;
-                if (error.response == undefined) {
-                    this.errorText = this.errorMessages.unknownError;
-                } else {
-                    if (error.response.status === 404) {
-                        this.errorText = `Profil ${id} existiert nicht!`;
-                    } else if (error.response.status === 401) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.unauthorized;
-                    } else if (error.response.status === 403) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.notAllowed;
-                    } else if (error.response.status === 500) {
-                        this.errorText = this.errorMessages.internalServerError;
-                    } else if (error.response.status === 400) {
-                        this.errorText = this.errorMessages.idNotFound;
+                        this.handle500();
                     } else if (error.response.status === 502) {
-                        this.errorText = this.errorMessages.mailNotSent;
+                        this.handle502(error, source);
                     } else {
-                        this.errorText = this.errorMessages.unknownError;
+                        this.handleUndefined(error, source);
                     }
                 }
             },
 
-            catchExportError(error: AxiosError) {
-                this.hasError = true;
-                if (error.response == undefined) {
-                    this.errorText = this.errorMessages.unknownError;
+            handleUndefined(error: AxiosError, source:string) {
+                this.errorText = this.errorMessages.unknownError;
+                if (source === 'Import' && error.response?.data.message.contains('Mapping')) {
+                    const colNameNotFound = `${error.response?.data.message
+                        .toString()
+                        .split(",")[0]
+                        .split(' ')[2]}`
+                    this.errorText = `Spalte \"${colNameNotFound}\" wurde in der CSV Datei nicht gefunden!`;
+                }
+            },
+
+            handle400(error: AxiosError, source: string) {
+                if (source === 'GetProfile' || source === 'Import') {
+                    this.handle400forProfile(error, source);
                 } else {
-                    if (error.response.status === 403) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.notAllowed;
-                    } else if (error.response.status === 500) {
-                        this.errorText = this.errorMessages.internalServerError;
+                    this.errorText = this.errorMessages.idNotFound;
+                }
+            },
+
+            handle400forProfile(error: AxiosError, source: string) {
+                if (error.response?.data.message) {
+                    const message: string = error.response?.data.message.toString();
+                    if (message === 'Der Nutzer hat bereits ein Profil!') {
+                        this.errorText = message;
+                    } else if (message.includes('VALIDATION')) {
+                        this.errorText = message.split(/(\[|\])/)[2];
+                    } else if (message === 'Datum nicht in passendem Format!') {
+                        this.errorText = message;
                     } else {
-                        this.errorText = this.errorMessages.unknownError;
-                    }
-                }
-            },
-
-            catchGetRoleError(error: AxiosError, id: String) {
-                this.hasError = true;
-                if (error.response == undefined) {
-                    this.errorText = this.errorMessages.unknownError;
-                } else {
-                    if (error.response.status === 404) {
-                        this.errorText = `Rolle ${id} existiert nicht!`;
-                    } else if (error.response.status === 401) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.unauthorized;
-                    } else if (error.response.status === 403) {
-                        this.authStore.logout();
-                        this.errorText = this.errorMessages.notAllowed;
-                    } else if (error.response.status === 500) {
-                        this.errorText = this.errorMessages.internalServerError;
-                    } else if (error.response.status === 400) {
-                        this.errorText = 'Rollen Id konnte nicht aufgelöst werden!'
-                    }
-                }
-            },
-
-            catchTokenError(error: AxiosError) {
-                this.hasError = true;
-                if (error.response == undefined) {
-                    this.errorText = this.errorMessages.unknownError;
-                } else {
-                    if (error.response.status === 401) {
-                        if (error.response?.data.cause.causeExceptionName === "UserIsLockedException") {
-                            this.errorText = error.response?.data.message.toString();
+                        if (source === 'Import' && error.response.data.message.includes('Mapping')) {
+                            this.errorInCSVFile(error);
+                        } else {
+                            this.errorText = this.errorMessages.unknownError;
                         }
-                    } else if (error.response.status === 500) {
-                        this.errorText = this.errorMessages.internalServerError;
                     }
+                } else {
+                    this.errorText = error.response?.data;
                 }
-            }
+            },
 
+            errorInCSVFile(error: AxiosError) {
+                const colNameNotFound = `${error.response?.data.message
+                    .toString()
+                    .split(",")[0]
+                    .split(' ')[2]}`
+                this.errorText = `Spalte \"${colNameNotFound}\" wurde in der CSV Datei nicht gefunden!`;
+            },
+
+            handle401(error: AxiosError) {
+                if (error.response?.data.cause.causeExceptionName === "UserIsLockedException") {
+                    this.errorText = error.response?.data.message.toString();
+                } else {
+                    this.authStore.logout();
+                    this.errorText = this.errorMessages.unauthorized;
+                }
+            },
+
+            handle403() {
+                this.authStore.logout();
+                this.errorText = this.errorMessages.notAllowed;
+            },
+
+            handle404(error: AxiosError, source: string, id: string) {
+                if (source === 'GetRoleId') {
+                    this.errorText = `Rolle ${id} existiert nicht!`; //get Role ID
+                } else if (source === 'GetId' || source === 'Delete') {
+                    this.errorText = `Profil ${id} existiert nicht!`; //get ID
+                } else if (source === 'GetProfileId') {
+                    this.errorText = `Nutzer ${id} existiert nicht!`; //get Profile ID
+                } else if (source === 'PostPatch' || source == 'Import') {
+                    this.errorText = `${error.response?.data.message}`; //post patch
+                } else {
+                    this.errorText = this.errorMessages.unknownError;
+                }
+            },
+
+            handle409(error: AxiosError, source: string) {
+                if (source === 'PostPatch' || source === 'Import') {
+                    this.errorText = 'Der Nutzer hat bereits ein Profil!'; //post patch
+                } else {
+                    this.errorText = this.errorMessages.unknownError;
+                }
+            },
+
+            handle500() {
+                this.errorText = this.errorMessages.internalServerError;
+            },
+
+            handle502(error: AxiosError, source: string) {
+                if (source === 'Delete') {
+                    this.errorText = this.errorMessages.mailNotSent; //delete ID
+                } else if (source === 'PostPatch' || source === 'Import') {
+                    this.errorText = this.errorMessages.mailNotSent; //post patch
+                    this.allowed = true; //post patch
+                } else {
+                    this.errorText = this.errorMessages.unknownError;
+                }
+            },
         }
     }
 )

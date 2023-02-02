@@ -19,7 +19,7 @@ export const useDetailStore = defineStore('detailStore', {
                     this.details = ConvertResponseToDetailModel.toDetailModel(response.data);
                     profilePicId = response.data.profilePicId;
                 }).catch((error) => {
-                    errorStore.catchGetError(error, id);
+                    errorStore.catchAllAxiosErrors(error, 'GetId', id);
                 });
                 await axiosInstance({
                     url: `/api/v1/images/${profilePicId}`,
@@ -33,7 +33,7 @@ export const useDetailStore = defineStore('detailStore', {
                     }
                 }).catch((error) => {
                     console.log(error);
-                    errorStore.catchDownloadImageError(error);
+                    errorStore.catchAllAxiosErrors(error, 'DownloadImage', '');
                 })
                 this.loading = false;
             },

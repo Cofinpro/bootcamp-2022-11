@@ -24,7 +24,7 @@ export const useUserStore = defineStore('userStore', {
                     this.users.push(ConvertToUserModel.toUserModel(element));
                 })
             }).catch((error) => {
-                errorStore.catchGetAllError(error);
+                errorStore.catchAllAxiosErrors(error, 'GetAll', '');
             })
         },
 
@@ -35,7 +35,7 @@ export const useUserStore = defineStore('userStore', {
                     this.hasProfile = response.data;
                 }
             ).catch((error) => {
-                errorStore.catchGetProfileError(error, userId);
+                errorStore.catchAllAxiosErrors(error, 'GetProfile', userId);
             });
             this.loading = false;
         },
@@ -47,7 +47,7 @@ export const useUserStore = defineStore('userStore', {
                     this.profileId = response.data;
                 }
             ).catch((error) => {
-                errorStore.catchGetError(error, userId);
+                errorStore.catchAllAxiosErrors(error, 'GetId', userId);
             });
             this.loading = false;
         },
@@ -57,12 +57,13 @@ export const useUserStore = defineStore('userStore', {
             const errorStore = useErrorStore()
             await axiosInstance.patch(`/api/v1/users/${userId}/lock`).then((response) => {
                 if (response.status === 202) {
-                    throw new AxiosError(response.data.message, String(response.status));
+                    const error = new AxiosError(response.data.message, String(response.status));
+                    errorStore.catchCustomAxios(error);
                 } else {
                     errorStore.toggleHasError();
                 }
             }).catch((error) => {
-                errorStore.catchPostPatchError(error);
+                errorStore.catchAllAxiosErrors(error, 'PostPatch','');
             });
             this.loading = false;
         },

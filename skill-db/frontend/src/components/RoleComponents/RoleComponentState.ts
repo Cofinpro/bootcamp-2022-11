@@ -37,7 +37,7 @@ export class RoleComponentState {
                 this.allRoles.push(role)
             });
         }).catch((error) => {
-            errorStore.catchGetAllError(error);
+            errorStore.catchAllAxiosErrors(error, 'GetAll', '');
         });
     }
 
@@ -77,7 +77,7 @@ export class RoleComponentState {
                 this.selectedUsers.push(ConvertToUserModel.toUserModel(element));
             });
         }).catch((error) => {
-            errorStore.catchGetRoleError(error, id);
+            errorStore.catchAllAxiosErrors(error, 'GetRoleId', id);
         });
     }
 
@@ -97,12 +97,13 @@ export class RoleComponentState {
         const errorStore = useErrorStore()
         await axiosInstance.patch(`/api/v1/users/${id}/${newRole}`).then((response) => {
             if (response.status === 202) {
-                throw new AxiosError(response.data.message, String(response.status));
+                const error = new AxiosError(response.data.message, String(response.status));
+                errorStore.catchCustomAxios(error);
             } else {
                 errorStore.toggleHasError();
             }
         }).catch((error) => {
-            errorStore.catchPostPatchError(error);
+            errorStore.catchAllAxiosErrors(error, 'PostPatch', '');
         });
     }
 }

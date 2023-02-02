@@ -24,7 +24,7 @@ const isAdminOrHR = computed(() => {
 
 async function emitToParentAndReset() {
   emits('upload:csv', fileInput.value.files[0])
-  fileInput.value = null;
+  fileInput.value = undefined;
 }
 
 </script>
