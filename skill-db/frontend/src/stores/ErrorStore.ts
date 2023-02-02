@@ -78,24 +78,40 @@ export const useErrorStore = defineStore(
             },
 
             handle400(error: AxiosError, source: string) {
-                if (source === 'GetProfile') {
-                    this.handle400forProfile(error); //Profile
+                if (source === 'GetProfile' || source === 'Import') {
+                    this.handle400forProfile(error, source);
                 } else {
                     this.errorText = this.errorMessages.idNotFound;
                 }
             },
 
-            handle400forProfile(error: AxiosError) {
-                const message: string = error.response?.data.message.toString();
-                if (message === 'Der Nutzer hat bereits ein Profil!') {
-                    this.errorText = message;
-                } else if (message.includes('VALIDATION')) {
-                    this.errorText = message.split(/(\[|\])/)[2];
-                } else if (message === 'Datum nicht in passendem Format!') {
-                    this.errorText = message;
+            handle400forProfile(error: AxiosError, source: string) {
+                if (error.response?.data.message) {
+                    const message: string = error.response?.data.message.toString();
+                    if (message === 'Der Nutzer hat bereits ein Profil!') {
+                        this.errorText = message;
+                    } else if (message.includes('VALIDATION')) {
+                        this.errorText = message.split(/(\[|\])/)[2];
+                    } else if (message === 'Datum nicht in passendem Format!') {
+                        this.errorText = message;
+                    } else {
+                        if (source === 'Import' && error.response.data.message.includes('Mapping')) {
+                            this.errorInCSVFile(error);
+                        } else {
+                            this.errorText = this.errorMessages.unknownError;
+                        }
+                    }
                 } else {
-                    this.errorText = this.errorMessages.unknownError;
+                    this.errorText = error.response?.data;
                 }
+            },
+
+            errorInCSVFile(error: AxiosError) {
+                const colNameNotFound = `${error.response?.data.message
+                    .toString()
+                    .split(",")[0]
+                    .split(' ')[2]}`
+                this.errorText = `Spalte \"${colNameNotFound}\" wurde in der CSV Datei nicht gefunden!`;
             },
 
             handle401(error: AxiosError) {

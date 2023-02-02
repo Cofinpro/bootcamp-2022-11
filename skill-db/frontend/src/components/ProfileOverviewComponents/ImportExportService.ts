@@ -25,7 +25,7 @@ async function getExcel(): Promise<Blob> {
         blob = response.data;
     }).catch((error) => {
         const errorStore = useErrorStore();
-        errorStore.catchExportError(error);
+        errorStore.catchAllAxiosErrors(error, 'Export', '');
     });
     return blob;
 }
@@ -40,7 +40,7 @@ export async function postCSVAndReload(file: File): Promise<void> {
     }).catch(error => {
         const errorStore = useErrorStore();
         console.log(error);
-        errorStore.catchImportError(error);
+        errorStore.catchAllAxiosErrors(error, 'Import', '');
     });
     const overviewStore = useOverviewStore();
     await overviewStore.loadOverview();
